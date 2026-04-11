@@ -6,65 +6,130 @@
     <title>仲良し ＊インスタンス＊ 2</title>
     <style>
         /* =========================================
-           基本デザイン（絶対壊さない！）
+           Googleサイト風（マテリアルデザイン）UI設定
+           ※機能は一切壊していません！
            ========================================= */
-        body { margin: 0; font-family: "Helvetica Neue", Arial, sans-serif; background-color: #f5fff5; color: #333; text-align: center; }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+        body { 
+            margin: 0; 
+            font-family: "Google Sans", "Noto Sans JP", Roboto, Arial, sans-serif; 
+            background-color: #ffffff; 
+            color: #202124; 
+            text-align: center; 
+        }
         
+        /* ★修正部分：黒いナビゲーションバーをスッキリさせ、位置を完璧に揃える */
         nav { 
-            background: #000000; 
-            padding: 10px 0; 
+            background: #202124; 
+            height: 50px; /* 余白を消して、高さをスッキリ固定 */
+            padding: 0; 
             position: sticky; 
             top: 0; 
             z-index: 100; 
             display: flex; 
             justify-content: space-between; 
-            align-items: center;
-            height: 48px; 
+            align-items: center; /* 縦のど真ん中に揃える */
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
         }
 
-        .nav-left { display: flex; align-items: center; padding-left: 15px; color: white; font-size: 1.2rem; }
-        .nav-logo { background-color: #87ceeb; color: black; font-weight: bold; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-right: 10px; }
-        .nav-right { display: flex; align-items: center; padding-right: 15px; }
-        nav a.main-link { color: white; text-decoration: none; margin: 0 10px; font-size: 0.9rem; display: flex; align-items: center; }
-        nav a.main-link:hover { color: #ccc; }
-
-        header { background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80'); background-size: cover; background-position: center; padding: 80px 20px; color: #006699; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        header p { font-size: 1.2rem; font-weight: bold; }
+        /* ★修正部分：左右のアイテムも縦ズレしないように固定 */
+        .nav-left { display: flex; align-items: center; padding-left: 20px; color: white; font-size: 1.1rem; font-weight: 500; letter-spacing: 0.3px; height: 100%; }
+        .nav-logo { background-color: #8ab4f8; color: #202124; font-weight: bold; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-right: 12px; }
+        .nav-right { display: flex; align-items: center; padding-right: 15px; height: 100%; }
         
-        .menu-btn { font-size: 1.4rem; color: white; cursor: pointer; user-select: none; margin-left: 15px; }
-        .container { max-width: 900px; margin: 40px auto; padding: 20px; line-height: 1.8; }
-        .news-box { background: white; border: 2px solid #add8e6; border-radius: 10px; padding: 15px; margin: 20px 0; text-align: left; }
-        .news-box h3 { margin-top: 0; color: #006699; border-bottom: 1px solid #eee; }
-        .btn { display: inline-block; background: #ffab19; color: white; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; transition: 0.3s; margin-top: 10px; }
-        .btn:hover { background: #e69917; transform: scale(1.05); }
-        footer { margin-top: 50px; padding: 20px; font-size: 0.8rem; color: #777; }
+        nav a.main-link { color: white; text-decoration: none; margin: 0 10px; font-size: 0.9rem; display: flex; align-items: center; font-weight: 500; opacity: 0.9; transition: opacity 0.2s; height: 100%; }
+        nav a.main-link:hover { opacity: 1; }
+
+        /* ★修正部分：メニューボタンの丸枠とアイコンをど真ん中に */
+        .menu-btn { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 36px; 
+            height: 36px; 
+            font-size: 1.4rem; 
+            color: white; 
+            cursor: pointer; 
+            user-select: none; 
+            margin-left: 10px; 
+            border-radius: 50%; 
+            transition: background 0.2s; 
+        }
+        .menu-btn:hover { background: rgba(255,255,255,0.1); }
+        
+        /* ヘッダー（Googleサイトのバナー風） */
+        header { 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80'); 
+            background-size: cover; 
+            background-position: center; 
+            padding: 100px 20px; 
+            color: #ffffff; 
+        }
+        header h1 { font-size: 2.8rem; margin-bottom: 10px; font-weight: 700; letter-spacing: 1px; }
+        header p { font-size: 1.2rem; font-weight: 400; opacity: 0.9; }
+        
+        .container { max-width: 900px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+        
+        /* ニュースボックス（Googleのカード風デザイン） */
+        .news-box { 
+            background: #f8f9fa; 
+            border: 1px solid #dadce0; 
+            border-radius: 8px; 
+            padding: 20px 25px; 
+            margin: 30px 0; 
+            text-align: left; 
+        }
+        .news-box h3 { margin-top: 0; color: #202124; font-size: 1.3rem; margin-bottom: 10px; }
+        .news-box ul { padding-left: 20px; color: #3c4043; }
+
+        /* ボタン（Googleサイト標準の青いボタン風） */
+        .btn { 
+            display: inline-block; 
+            background: #1a73e8; 
+            color: white; 
+            padding: 10px 24px; 
+            border-radius: 4px; 
+            text-decoration: none; 
+            font-weight: 500; 
+            letter-spacing: 0.25px;
+            transition: 0.2s; 
+            margin-top: 10px; 
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3);
+        }
+        .btn:hover { background: #1b66c9; box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15); }
+        
+        footer { margin-top: 50px; padding: 30px; font-size: 0.85rem; color: #5f6368; background-color: #f8f9fa; border-top: 1px solid #dadce0;}
 
         /* サイドバー */
-        .sidebar { height: 100%; width: 280px; position: fixed; top: 0; left: -280px; background-color: #ffffff; overflow-x: hidden; transition: 0.3s; padding-top: 50px; z-index: 200; text-align: left; box-shadow: 2px 0 10px rgba(0,0,0,0.1); }
-        .sidebar a { padding: 12px 15px 12px 25px; text-decoration: none; font-size: 0.95rem; color: #3c4043; display: flex; align-items: center; transition: 0.2s; border-radius: 0 20px 20px 0; margin-right: 15px; margin-bottom: 2px; }
+        .sidebar { height: 100%; width: 280px; position: fixed; top: 0; left: -280px; background-color: #ffffff; overflow-x: hidden; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding-top: 50px; z-index: 200; text-align: left; box-shadow: 0 8px 10px -5px rgba(0,0,0,0.2), 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12); }
+        .sidebar a { padding: 12px 15px 12px 25px; text-decoration: none; font-size: 0.95rem; color: #3c4043; display: flex; align-items: center; transition: 0.2s; border-radius: 0 24px 24px 0; margin-right: 10px; font-weight: 500; }
         .sidebar a:hover { background-color: #f1f3f4; color: #1a73e8; }
-        .close-btn { position: absolute; top: 5px; right: 10px; font-size: 2rem; color: #5f6368 !important; background: none !important; border-radius: 50% !important; padding: 0 10px !important; }
-        .sidebar-heading { padding: 15px 25px 5px 25px; font-size: 0.85rem; font-weight: bold; color: #5f6368; }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; color: #5f6368 !important; background: none !important; border-radius: 50% !important; padding: 0 12px !important; }
+        .sidebar-heading { padding: 15px 25px 5px 25px; font-size: 0.85rem; font-weight: bold; color: #1a73e8; letter-spacing: 0.5px; }
         .game-icon { width: 24px; height: 24px; border-radius: 4px; margin-right: 12px; object-fit: cover; }
 
         /* ゲームを画面に開く枠 */
-        #game-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; }
-        #game-frame { width: 90%; max-width: 900px; height: 80%; max-height: 700px; background-color: white; border: none; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        #game-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(32,33,36,0.95); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; }
+        #game-frame { width: 95%; max-width: 1000px; height: 85%; max-height: 800px; background-color: #000; border: none; border-radius: 8px; box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.2); }
         
-        /* ボタンエリア */
-        .modal-controls { margin-bottom: 15px; display: flex; gap: 10px; }
-        .close-game-btn { padding: 10px 25px; background-color: #ff4757; color: white; border: none; border-radius: 30px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .fullscreen-btn { padding: 10px 25px; background-color: #1a73e8; color: white; border: none; border-radius: 30px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .close-game-btn:hover, .fullscreen-btn:hover { opacity: 0.8; transform: scale(1.05); }
+        /* モーダルボタンエリア */
+        .modal-controls { margin-bottom: 15px; display: flex; gap: 12px; }
+        .close-game-btn, .fullscreen-btn { padding: 8px 24px; color: white; border: none; border-radius: 4px; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: 0.2s; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3); }
+        .close-game-btn { background-color: #ea4335; }
+        .fullscreen-btn { background-color: #1a73e8; }
+        .close-game-btn:hover { background-color: #d93025; box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15); }
+        .fullscreen-btn:hover { background-color: #1b66c9; box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15); }
 
         /* ゲームギャラリー */
-        .game-gallery-title { margin-top: 60px; font-size: 2rem; color: #006699; border-bottom: 3px dashed #add8e6; display: inline-block; padding: 0 20px 10px; }
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-top: 30px; padding: 10px; }
-        .game-card { position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s; aspect-ratio: 1 / 1; background-color: #fff; }
-        .game-card:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
+        .game-gallery-title { margin-top: 60px; font-size: 2rem; color: #202124; font-weight: 400; padding: 0 0 10px; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; margin-top: 20px; padding: 10px; }
+        
+        /* ゲームカード（Googleの画像カード風） */
+        .game-card { position: relative; cursor: pointer; border-radius: 8px; overflow: hidden; background-color: #fff; border: 1px solid #dadce0; transition: box-shadow 0.2s, transform 0.2s; aspect-ratio: 1 / 1; }
+        .game-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(32,33,36,0.28); border-color: transparent; }
         .game-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .game-card-name { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0, 0, 0, 0.7); color: white; font-size: 0.9rem; font-weight: bold; padding: 8px 0; text-align: center; opacity: 0; transition: opacity 0.3s; }
+        .game-card-name { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); color: white; font-size: 0.95rem; font-weight: 500; padding: 20px 0 10px; text-align: center; opacity: 0; transition: opacity 0.2s; }
         .game-card:hover .game-card-name { opacity: 1; }
     </style>
 </head>
@@ -76,24 +141,23 @@
         <span>仲良し ＊インスタンス＊ 2</span>
     </div>
     <div class="nav-right">
-        <a href="#" class="main-link">🏠 ホーム</a>
-        <div class="menu-btn" onclick="toggleMenu()">☰ ⌵</div>
+        <a href="#" class="main-link">ホーム</a>
+        <div class="menu-btn" onclick="toggleMenu()">☰</div>
     </div>
 </nav>
 
 <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="close-btn" onclick="toggleMenu()">×</a>
     <div class="sidebar-heading">リンク集</div>
-    <a href="https://katuotube-1-1-sdw5.onrender.com/login" target="_blank">▶️かつおtube</a>
     <a href="https://choco-wocboc6-nzqk.onrender.com/login" target="_blank">▶️chocotube</a>
-    <a href="https://xeroxyt-ntv4x-3a.vercel.app" target="_blank">▶️XeroxYT-NTv4X</a>
+    <a href="https://script.google.com/macros/s/AKfycbzBtpGnRtEWOKVkeQJuPwm-rj8xzzR4J7zN4zCOu9n0LQO-kNF6LZlrpHyAtyWV5ndfsw/exec" target="_blank">▶️XeroxYT-NTv4X</a>
     <a href="http://wista.f5.si" target="_blank">▶️Wista</a>
     <a href="https://youtube-plus-plus.onrender.com/" target="_blank">▶️Youtube Plus+</a>
     <a href="https://jsyamato.onrender.com/wkt" target="_blank">▶️WakameTube</a>
+    <a href="https://siawaseok.duckdns.org/" target="_blank">▶️しあTube</a>
     <a href="https://cl-5sm8.onrender.com/" target="_blank">🎮CloudMoon</a>
     <a href="https://yandex.by/games" target="_blank">🎮Yandex Games</a>
-    <hr style="border: 0; height: 1px; background: #e0e0e0; margin: 15px 0;">
-    </a>
+    <hr style="border: 0; height: 1px; background: #dadce0; margin: 15px 0;">
 </div>
 
 <header>
@@ -102,8 +166,8 @@
 </header>
 
 <div class="container">
-    <p>☆仲良しインスタンスへようこそ☆</p>
-    <p>このサイトは <strong>2a_exe</strong> が運営しているサイトです。<br>
+    <p style="font-size: 1.1rem; color: #3c4043;">☆仲良し*インスタンス*へようこそ☆</p>
+    <p style="color: #5f6368;">このサイトは <strong>2a_exe</strong> が運営しているサイトです。<br>
     このサイトを仲良しインスタンス2にアプデしました。<br>
     どうぞ楽しんでいってください☆</p>
 
@@ -115,34 +179,22 @@
         </ul>
     </div>
 
-    <p><strong>公式Scratchリンク</strong></p>
+    <p style="margin-top: 40px; color: #3c4043;"><strong>公式Scratchリンク</strong></p>
     <a href="https://scratch.mit.edu/users/2a_exe/" class="btn" target="_blank">Scratchプロフィールを見る</a>
 
-    <h2 class="game-gallery-title">🎮GAME🌈</h2>
+    <h2 class="game-gallery-title">🎮 NAKAYOSI GAMES 🌈</h2>
     
     <div class="game-grid">
         <div class="game-card" onclick="openGame('https://hayalauncher.onrender.com/')">
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SQLuYaScWKDGwVsOL5zf3kKIzhaK5ILQ8buSBEQsnDUQRz6saWleaGWNqUiasIexugZcIzpQGF8TaxtBmLoBhVww7_ElqGl0bsblZwjU4JzVQw8D-JR2ZVHRQttcnSaBbsdPpi7riPcdPG-Mjyt_0eoVB-TaXWSj_MEOMU7Bk-tFQnjMY09uNWAjK9UL_J00htNcwmJXmx3JOtoutYB9y13o6gJ2k0hFYcapxM=w1280" alt="Eaglecraft">
+            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SQ_ge_HeBPlCL-UDfBH3_vwGZRyzXEzClUcvLAqdDyasCZLe_uYEFOmntXcLczf_saCXLDQUtHnuXLMP25lHe0UZ6Q8Lz3xMmw-FkJid8GaGEXyI3psWMtrUgfq0MCStUrLHwWB4sGG-_sQPg9GG_-BtR8gIIVtDNERSZTcvBvKe_H_wX2xoKpFvg9K_25VyodLg0ApG8v-TBdkr8dKvaf4z_GNPJn47CcYUdw=w1280" alt="Eaglecraft">
             <div class="game-card-name">Eaglecraft</div>
         </div>
-        <div class="game-card" onclick="openGame('https://among-us-megaserver.pages.dev/')">
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0STSONFZmx-EdEoa7E5oHmG3_ZgkuLfVwwVSvXSVPGila-iOMXykGX0mshs_dbPB2_oRP8wGDAeRSHSyXsDef8uMCPzUxO7N-tryKLubIbj8kCDVMbwhEqFb_h-2ZdZW1vBiKYhmvBiZ8G3xvJTkp5ZxOub_9biPKAi77YQujR1r1RQS9VaHpuXUiRMPiZ-7Wx_8mt5MCJEItcSpI_AYAEs7HXcBIQOCk2Xtz8g=w1280" alt="among us">
-            <div class="game-card-name">among us</div>
-        </div>
-        <div class="game-card" onclick="openGame('https://aooni-vcya.onrender.com/')">
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SSnifOp69fulAkL1-azclbQLr_UEcPflB5lymnJ5rBGNEG_fRO-ndm6y51o2bJSpKaqGQU51WMLlSoSZ1LWsg3hDwFBGp12H0xzJNXnEmUKxpdkbpNmkXvJH1eJS0XYOv3KIJ_tHdCG8M4yt6QlY4MuZMuOTCUzM0C88Wd2iBrKxGpqLchbvR8fMoAbnFMI9-ybWwKq1LIW_ydS5DSW8Sy64bhL2o04GPc3-7Y=w1280" alt="青鬼2016">
-            <div class="game-card-name">青鬼2016</div>
-        </div>
-        <div class="game-card" onclick="openGame('https://monkeymart-2.onrender.com')">
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SRkZzvNAjop00YQJHxRXUghg3Beg3Qjb0whJhv7pYI1uR_R4IUaJJOQPxK6ICH1U2hiF41KncPpPPjkXUjKyKpLLCGM4DGa4gLm7dYoDbwqEihaOEEDlAaF9gGi9kAri4imtYKn91DQ8giL8D5zJwSLO5fxagKV8jqz2z5GuCFCU2d1e0XTg8MYMhhh9bySFsr8wzbBC3RPLDg_c5j2T7cyl--4tehXLwC0h4k=w1280" alt="monkey mart">
-            <div class="game-card-name">monkey mart</div>
-        </div>
-        <div class="game-card" onclick="openGame('https://subwaysurfers-3.onrender.com/')">
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0ST_ev83Ratgx7eiQf8KIjgvITujO49iUc2i1bKfYCqB8zCTOkhEGwfUyK9wdxbdvuKNc-P18TdURWy1nuYmtj0iHuwxXD0qY5hgM1nSTCm0nRHnv3LwqDbUmhlbXiNHhpseDchYjiRlpED86orTyA6IRJAo3_upnlKukDVMj0y23DLcCfRd6dDA1XiN8Mh6xOysO7hRm0dwDMjes2o1ntkGJgta89yUebZPDIA=w1280" alt="subwaysurfers">
-            <div class="game-card-name">subwaysurfers</div>
+        <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbwMccc783yv5Ftx2nkZ6BpHDi66OYtby8TRsYzgDufHka0zzRHHcV19NgtnFJH0ltbEvQ/exec')">
+            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SQoyW615zE1kfjiseQuquxAQv1lOwUyTwzSqEFynE7bqdNIoudWztnKZMPEp1aQdiDJl4NXjR92rm1ytgp38HaiKVwmrqpyqSjkpmN20U9JkGYlz4gCKHtN6fKXJsssJMCFKdCMgfp3qWtsO_DCtjMmRHsKvtvm0hhJBsu4ASq1M77PjJexRnowDxxoub6Tb8yIRzb6Zdr68TkxZYE4VIVN_JzW8zBUzYDRJlI=w1280" alt="only up">
+            <div class="game-card-name">ONLY UP</div>
         </div>
         <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbxRR9j9VoEVe3ftwVkqAslFNtnJ1UUWj8hLc51en9qR8fsVz2gho9geBFjasY0IV8gJBQ/exec')">
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SQEwgc-byg2rkiTo3SqiJknKow4MBJJvphj-IRUADuxyVu0NKmGUH0GLPfEIjZzSynp_ovIgHZ99RqHHC0RmvwbUatoEprmSgoPbEQ5OcgEZhjW76zq_BRWtwC4WxtWiE-cYwPHaYk08Pj23KbN-1WwBmcf-GAL2XcYbESh40i8zb-VuAuDQiwLZoVQhtbTuCbGkMLD6AFmZzi38CTIku48KflmEgiGXq2PVV0=w1280" alt="roblox">
+            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0ST3NMxKVn0P8bO0mdUAH2vHrhWyA2m1er0cCL6uD0_jTvt23gzFdKtiYGwBGLBmfLyWGlHphxIwPzaJLPGglLdvJnMhKCbzcvr4y52vpdttUaMYOnzXCCRLhT_T8RPkEucxygUE9Bmacy2ymW7NkpVYVNWkl-PAV_-H_nWeUUQTzyjayXAMa2e_z3acOVEN2on9F4tS5SPV11e-I2dtlUFGQSMiAfL0bRO3OeI=w1280" alt="roblox">
             <div class="game-card-name">roblox</div>
         </div>
     </div>
@@ -189,13 +241,11 @@
     function closeGame() {
         document.getElementById('game-modal').style.display = 'none';
         document.getElementById('game-frame').src = '';
-        // 全画面を解除して閉じる
         if (document.fullscreenElement) {
             document.exitFullscreen();
         }
     }
 
-    // ★全画面切り替え機能
     function toggleFullScreen() {
         var frame = document.getElementById("game-frame");
         if (!document.fullscreenElement) {
