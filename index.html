@@ -52,19 +52,19 @@
             color: var(--text-color); 
             text-align: center; 
             transition: background-color 0.3s, color 0.3s;
-            font-size: 16px; /* ★設定用にベースサイズを追加（見た目は変わりません） */
+            font-size: 16px; 
         }
         
         /* ホーム画面用の左上フローティングメニューボタン */
         .floating-menu-btn {
             position: fixed;
-            top: 15px; /* ←設定でここを上書きできるようにしました */
+            top: 15px; 
             left: 15px;
             width: 45px;
             height: 45px;
             background-color: rgba(32, 33, 36, 0.7);
             color: white;
-            border-radius: 50%; /* ←設定でここを上書きできるようにしました */
+            border-radius: 50%; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -109,7 +109,7 @@
         
         .container { max-width: 900px; margin: 40px auto; padding: 20px; line-height: 1.6; }
         
-        /* ニュースボックス（設定や利用規約の枠としても流用します！） */
+        /* ニュースボックス */
         .news-box { 
             background: var(--card-bg); border: 1px solid var(--card-border); 
             border-radius: 12px; padding: 20px 25px; margin: 30px 0; text-align: left; 
@@ -131,7 +131,8 @@
         footer { margin-top: 50px; padding: 30px; font-size: 0.85rem; color: var(--text-muted); background-color: var(--card-bg); border-top: 1px solid var(--card-border);}
 
         /* =========================================
-           ★ 大進化させたサイドバー（メニュー）UI
+           ★ サイドバー（メニュー）UI
+           スクロール問題を修正しました！
            ========================================= */
         .sidebar { 
             height: 100%; 
@@ -142,14 +143,22 @@
             background-color: var(--sidebar-bg); 
             backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px);
+            /* ★修正点: 縦スクロールを有効にし、はみ出しを管理 */
+            overflow-y: auto; 
             overflow-x: hidden; 
             transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
             padding-top: 70px; 
+            /* ★修正点: 下に余白を作って、最後の項目まで見やすく */
+            padding-bottom: 40px; 
             z-index: 200; 
             text-align: left; 
             box-shadow: 4px 0 25px rgba(0,0,0,0.15); 
             border-radius: 0 25px 25px 0; 
         }
+        /* スクロールバーのデザインも可愛く（任意） */
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 10px; }
+
         body.dark-mode .sidebar { box-shadow: 4px 0 25px rgba(0,0,0,0.6); }
 
         .close-btn { 
@@ -232,16 +241,9 @@
         .game-card-name { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); color: white; font-size: 0.95rem; padding: 25px 0 15px; text-align: center; opacity: 0; transition: opacity 0.2s; font-family: sans-serif; font-weight: bold;}
         .game-card:hover .game-card-name { opacity: 1; }
 
-        /* 追加した設定UI用のスタイル */
-        .settings-control {
-            margin-bottom: 20px;
-        }
-        .settings-control label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        /* 設定UI */
+        .settings-control { margin-bottom: 20px; }
+        .settings-control label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
         select, input[type="range"] {
             padding: 10px 15px; border-radius: 8px; border: 1px solid var(--card-border); 
             background: var(--card-bg); color: var(--text-color); font-family: 'Hachi Maru Pop', cursive; 
@@ -294,7 +296,11 @@
     <a href="https://siawaseok.duckdns.org/" target="_blank">▶️ しあTube☆</a>
     <a href="https://cl-5sm8.onrender.com/" target="_blank">🎮 CloudMoon</a>
     <a href="https://yandex.by/games" target="_blank">🎮 Yandex Games</a>
+    
     <hr style="border: 0; height: 1px; background: var(--divider); margin: 20px;">
+    <div style="text-align: center; color: var(--text-muted); font-size: 0.7rem; padding-bottom: 20px;">
+        End of Menu
+    </div>
 </div>
 
 <div id="home-page">
@@ -354,7 +360,7 @@
         
         <div class="news-box">
             <h3>🎨 テーマカラーの変更</h3>
-            <p style="font-size: 0.9rem;">メインカラー（ボタンやメニューのアクセント）を好きな色に変えられます！</p>
+            <p style="font-size: 0.9rem;">メインカラーを好きな色に変えられます！</p>
             <div class="settings-control" style="display: flex; align-items: center; gap: 15px;">
                 <input type="color" id="primary-color-picker" value="#1a73e8" onchange="changePrimaryColor(this.value)" style="width: 60px; height: 45px; border: none; cursor: pointer; background: transparent; padding: 0;">
                 <button class="btn" onclick="resetPrimaryColor()" style="margin-top: 0; padding: 8px 16px;">デフォルトに戻す</button>
@@ -363,7 +369,6 @@
             <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
 
             <h3>🔘 フローティングメニューUIの位置</h3>
-            <p style="font-size: 0.9rem;">ホーム画面で左上に出る「☰」ボタンの配置を変更します。</p>
             <div class="settings-control">
                 <select id="menu-position-select" onchange="changeMenuPosition(this.value)">
                     <option value="top-left">左上 (デフォルト)</option>
@@ -376,7 +381,6 @@
             <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
 
             <h3>⬜ メニューボタンの形</h3>
-            <p style="font-size: 0.9rem;">ホーム画面の「☰」ボタンの形を丸か四角か選べます。</p>
             <div class="settings-control">
                 <select onchange="changeMenuShape(this.value)">
                     <option value="50%">まる (デフォルト)</option>
@@ -387,8 +391,7 @@
 
             <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
 
-            <h3>🔤 文字の大きさ (フォントサイズ)</h3>
-            <p style="font-size: 0.9rem;">サイト全体の文字の大きさを調整できます。</p>
+            <h3>🔤 文字の大きさ</h3>
             <div class="settings-control" style="display: flex; align-items: center; gap: 10px;">
                 <span style="font-size: 0.8rem;">小</span>
                 <input type="range" min="12" max="22" value="16" oninput="changeFontSize(this.value)">
@@ -397,8 +400,7 @@
             
             <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
 
-            <h3>✨ サイトの背景模様（パターン）</h3>
-            <p style="font-size: 0.9rem;">可愛い模様を背景に追加できます。</p>
+            <h3>✨ サイトの背景模様</h3>
             <div class="settings-control">
                 <select onchange="changeBackgroundPattern(this.value)">
                     <option value="none">なし (無地)</option>
@@ -410,7 +412,6 @@
             <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
             
             <h3>🌓 ダークモード / ライトモード</h3>
-            <p style="font-size: 0.9rem;">目の疲れを軽減したい時はダークモードに。</p>
             <button class="btn" onclick="toggleTheme()" style="margin-top: 0;">モードを切り替える</button>
         </div>
     </div>
@@ -419,54 +420,16 @@
 <div id="terms-page" style="display: none;">
     <div class="container" style="margin-top: 20px;">
         <h2 style="color: var(--text-color);">📜 利用規約</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px;">
-            この規約は、当サイト「仲良し ＊インスタンス＊ 2」をみんなで楽しく、安全に利用するための大切なお約束です。必ず最後まで読んでから遊んでね！
-        </p>
-        
         <div class="news-box">
-            <h3>第1条（当サイトの目的と利用）</h3>
-            <p style="font-size: 0.9rem;">
-                1. 本サイトは、2a_exeが個人的に運営するエンターテイメント・ゲームポータルサイトです。<br>
-                2. ユーザーは、本規約に同意することを条件に、本サイトの全機能を無料で利用することができます。
-            </p>
-            
-            <h3 style="margin-top: 25px;">第2条（絶対やっちゃダメなこと！禁止事項）</h3>
-            <p style="font-size: 0.9rem;">ユーザーは、以下の行為をしてはいけません。みんなで仲良く使うためのルールです。</p>
-            <ul style="font-size: 0.9rem; margin-top: 10px;">
-                <li>他のユーザーや運営者（2a_exe）に対する誹謗中傷、嫌がらせ、脅迫行為。</li>
-                <li>サイトのプログラムを不正にいじったり、サーバーに過度な負担をかける行為（DDoS攻撃など）。</li>
-                <li>バグやチートを利用して、ゲームやサイトのバランスを意図的に壊す行為。</li>
-                <li>法律や公序良俗に反するすべての行為。</li>
+            <h3>第1条（目的）</h3>
+            <p style="font-size: 0.9rem;">本サイトは2a_exeが運営するポータルサイトです。</p>
+            <h3>第2条（禁止事項）</h3>
+            <ul style="font-size: 0.9rem;">
+                <li>嫌がらせ、誹謗中傷、不正アクセスなど。</li>
             </ul>
-            
-            <h3 style="margin-top: 25px;">第3条（外部コンテンツ・ゲームの利用について）</h3>
-            <p style="font-size: 0.9rem;">
-                1. 本サイト内には、Scratch、Roblox、外部のブラウザゲームなどへのリンクや埋め込み（iframe）が含まれています。<br>
-                2. これら外部コンテンツの著作権や運営責任は、それぞれの提供元に帰属します。<br>
-                3. 外部ゲーム内で発生したトラブル、データ消失、アカウントのBAN等について、当サイトは一切の責任を負いません。自己責任で遊んでください。
-            </p>
-
-            <h3 style="margin-top: 25px;">第4条（著作権・知的財産権）</h3>
-            <p style="font-size: 0.9rem;">
-                本サイトのデザイン、テキスト、独自のシステムに関する著作権は、原則として運営者（2a_exe）に帰属します。無断でまるごとコピーして自分のサイトとして公開するなどの行為は禁止します。（※ただし、利用している外部APIやフォントなどは提供元の規約に従います）
-            </p>
-
-            <h3 style="margin-top: 25px;">第5条（個人情報の取り扱い・プライバシー）</h3>
-            <p style="font-size: 0.9rem;">
-                当サイトでは、ユーザーの個人情報（名前、住所、電話番号など）を勝手に収集することはありません。設定変更（ダークモードなど）は、お使いのブラウザ上のみで処理され、運営者のサーバーには送られません。安心してご利用ください。
-            </p>
-            
-            <h3 style="margin-top: 25px;">第6条（免責事項）</h3>
-            <p style="font-size: 0.9rem;">
-                運営者は、当サイトを「現状のまま」提供します。サイトが突然停止したり、データが消えたりした場合でも、損害賠償などの責任は一切負いかねます。
-            </p>
-            
-            <h3 style="margin-top: 25px;">第7条（規約の改定）</h3>
-            <p style="font-size: 0.9rem;">
-                本規約は、より良いサイト運営のために事前の予告なく変更される場合があります。変更後はサイト上に掲示した時点から有効となります。
-            </p>
-        </div>
-        <p style="text-align: right; color: var(--text-muted); font-size: 0.8rem; margin-top: 10px;">最終更新日：2026年4月12日</p>
+            <h3>第3条（免責）</h3>
+            <p style="font-size: 0.9rem;">外部サイトでのトラブルに責任は負いません。自己責任で！</p>
+            </div>
     </div>
 </div>
 
@@ -476,33 +439,27 @@
 
 <div id="game-modal">
     <div class="modal-controls">
-        <button class="fullscreen-btn" onclick="toggleFullScreen()">📺 全画面にする</button>
+        <button class="fullscreen-btn" onclick="toggleFullScreen()">全画面</button>
         <button class="close-game-btn" onclick="closeGame()">✖ 閉じる</button>
     </div>
-    <iframe id="game-frame" src="" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" allow="fullscreen"></iframe>
+    <iframe id="game-frame" src=""></iframe>
 </div>
 
 <script>
-    // 訪問者カウンター
+    // カウンター
     document.getElementById('count').innerText = Math.floor(Math.random() * 100) + 1200;
 
-    // メニューの開閉
+    // メニュー開閉
     function toggleMenu() {
         var sidebar = document.getElementById("mySidebar");
-        if (sidebar.style.left === "0px") {
-            sidebar.style.left = "-350px"; 
-        } else {
-            sidebar.style.left = "0px";
-        }
+        sidebar.style.left = (sidebar.style.left === "0px") ? "-350px" : "0px";
     }
 
-    // ページを一瞬で切り替える機能
+    // ページ切替
     function showPage(pageId) {
-        document.getElementById('home-page').style.display = 'none';
-        document.getElementById('games-page').style.display = 'none';
-        document.getElementById('settings-page').style.display = 'none';
-        document.getElementById('terms-page').style.display = 'none';
-        
+        ['home', 'games', 'settings', 'terms'].forEach(p => {
+            document.getElementById(p + '-page').style.display = 'none';
+        });
         document.getElementById(pageId + '-page').style.display = 'block';
 
         if (pageId === 'home') {
@@ -512,101 +469,43 @@
             document.getElementById('top-nav').style.display = 'flex';
             document.getElementById('floating-menu').style.display = 'none';
         }
-
         document.getElementById("mySidebar").style.left = "-350px";
         window.scrollTo(0, 0);
     }
 
-    // ダークモード切替
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        document.getElementById("mySidebar").style.left = "-350px";
+    // 各種設定用関数
+    function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+    function changePrimaryColor(color) { document.documentElement.style.setProperty('--primary', color); }
+    function resetPrimaryColor() { 
+        let c = document.body.classList.contains('dark-mode') ? '#8ab4f8' : '#1a73e8';
+        changePrimaryColor(c);
+    }
+    function changeMenuPosition(pos) {
+        let m = document.getElementById('floating-menu');
+        m.style.top = m.style.bottom = m.style.left = m.style.right = 'auto';
+        if(pos.includes('top')) m.style.top = '15px'; else m.style.bottom = '15px';
+        if(pos.includes('left')) m.style.left = '15px'; else m.style.right = '15px';
+    }
+    function changeMenuShape(r) { document.getElementById('floating-menu').style.borderRadius = r; }
+    function changeFontSize(s) { document.body.style.fontSize = s + 'px'; }
+    function changeBackgroundPattern(p) {
+        let b = document.body.style;
+        if(p==='none') b.backgroundImage = 'none';
+        else if(p==='dots') { b.backgroundImage = 'radial-gradient(var(--text-muted) 1px, transparent 1px)'; b.backgroundSize = '25px 25px'; }
+        else { b.backgroundImage = 'linear-gradient(var(--card-border) 1px, transparent 1px), linear-gradient(90deg, var(--card-border) 1px, transparent 1px)'; b.backgroundSize = '30px 30px'; }
     }
 
-    // ★新規設定：テーマカラーの変更
-    function changePrimaryColor(color) {
-        document.documentElement.style.setProperty('--primary', color);
-    }
-
-    // ★新規設定：テーマカラーのリセット
-    function resetPrimaryColor() {
-        var defaultColor = document.body.classList.contains('dark-mode') ? '#8ab4f8' : '#1a73e8';
-        document.getElementById('primary-color-picker').value = defaultColor;
-        document.documentElement.style.setProperty('--primary', defaultColor);
-    }
-
-    // ★新規設定：フローティングメニューUIの位置変更
-    function changeMenuPosition(position) {
-        var menuBtn = document.getElementById('floating-menu');
-        menuBtn.style.top = 'auto';
-        menuBtn.style.bottom = 'auto';
-        menuBtn.style.left = 'auto';
-        menuBtn.style.right = 'auto';
-
-        if (position === 'top-left') {
-            menuBtn.style.top = '15px'; menuBtn.style.left = '15px';
-        } else if (position === 'top-right') {
-            menuBtn.style.top = '15px'; menuBtn.style.right = '15px';
-        } else if (position === 'bottom-left') {
-            menuBtn.style.bottom = '15px'; menuBtn.style.left = '15px';
-        } else if (position === 'bottom-right') {
-            menuBtn.style.bottom = '15px'; menuBtn.style.right = '15px';
-        }
-    }
-
-    // ★新規設定：メニューボタンの形を変える
-    function changeMenuShape(radius) {
-        document.getElementById('floating-menu').style.borderRadius = radius;
-    }
-
-    // ★新規設定：文字の大きさを変える
-    function changeFontSize(size) {
-        document.body.style.fontSize = size + 'px';
-    }
-
-    // ★新規設定：背景のパターンを変える
-    function changeBackgroundPattern(pattern) {
-        if (pattern === 'none') {
-            document.body.style.backgroundImage = 'none';
-        } else if (pattern === 'dots') {
-            document.body.style.backgroundImage = 'radial-gradient(var(--text-muted) 1px, transparent 1px)';
-            document.body.style.backgroundSize = '25px 25px';
-        } else if (pattern === 'grid') {
-            document.body.style.backgroundImage = 'linear-gradient(var(--card-border) 1px, transparent 1px), linear-gradient(90deg, var(--card-border) 1px, transparent 1px)';
-            document.body.style.backgroundSize = '30px 30px';
-        }
-    }
-
-    // ゲームを開く
     function openGame(url) {
-        if (document.getElementById("mySidebar").style.left === "0px") toggleMenu(); 
-        if(url && url.length > 5) {
-            document.getElementById('game-modal').style.display = 'flex'; 
-            document.getElementById('game-frame').src = url;
-        } else {
-            alert('ゲームのURLがまだ設定されていません！');
-        }
+        document.getElementById('game-modal').style.display = 'flex';
+        document.getElementById('game-frame').src = url;
     }
-
-    // ゲームを閉じる
     function closeGame() {
         document.getElementById('game-modal').style.display = 'none';
         document.getElementById('game-frame').src = '';
-        if (document.fullscreenElement) {
-            document.exitFullscreen();
-        }
     }
-
-    // 全画面表示
     function toggleFullScreen() {
-        var frame = document.getElementById("game-frame");
-        if (!document.fullscreenElement) {
-            frame.requestFullscreen().catch(err => {
-                alert(`全画面エラー: ${err.message}`);
-            });
-        } else {
-            document.exitFullscreen();
-        }
+        let f = document.getElementById("game-frame");
+        if (!document.fullscreenElement) f.requestFullscreen(); else document.exitFullscreen();
     }
 </script>
 
