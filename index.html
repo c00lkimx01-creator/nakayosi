@@ -1,585 +1,657 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>仲良し *インスタンス* 2</title>
-    <style>
-        /* =========================================
-           Hachi Maru Popフォント & ダークモード対応UI
-           ★メニューUIを超絶進化バージョン！
-           ========================================= */
-        @import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仲良し *インスタンス* 2 — 情報ポータル</title>
+<style>
+/* ============================================================
+   仲良し *インスタンス* 2  ／  情報サイト風UI
+   - 編集しやすいよう、リンク/ゲーム/お知らせは <script> 内の
+     データ配列を書き換えるだけでOKです。
+   - カラーは :root のCSS変数を編集してください。
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap');
 
-        /* ★カラー変数（ここでライト/ダークの色を管理します） */
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #202124;
-            --text-muted: #5f6368;
-            --nav-bg: #202124;
-            --nav-text: #ffffff;
-            --card-bg: #f8f9fa;
-            --card-border: #dadce0;
-            --sidebar-bg: rgba(255, 255, 255, 0.95);
-            --sidebar-text: #3c4043;
-            --sidebar-hover: #ffffff;
-            --primary: #1a73e8; /* ←設定でここを上書きします！ */
-            --btn-hover: #1b66c9;
-            --divider: #dadce0;
-        }
+:root{
+  --bg:#f5f6f8;
+  --surface:#ffffff;
+  --surface-2:#fafbfc;
+  --text:#1a1a1a;
+  --text-muted:#6b7280;
+  --border:#e3e6eb;
+  --primary:#0b5fa5;
+  --primary-hover:#094a82;
+  --accent:#c0392b;
+  --header-bg:#ffffff;
+  --topbar-bg:#0b5fa5;
+  --topbar-text:#ffffff;
+  --tag-bg:#eef3f9;
+}
+body.dark-mode{
+  --bg:#0f1115;
+  --surface:#171a20;
+  --surface-2:#1c2027;
+  --text:#e6e8eb;
+  --text-muted:#9aa0a6;
+  --border:#2a2f37;
+  --primary:#5aa9ff;
+  --primary-hover:#7dbcff;
+  --accent:#ff6b5b;
+  --header-bg:#171a20;
+  --topbar-bg:#0a0d12;
+  --topbar-text:#e6e8eb;
+  --tag-bg:#222831;
+}
 
-        /* ★ダークモード用のカラー */
-        body.dark-mode {
-            --bg-color: #121212;
-            --text-color: #e8eaed;
-            --text-muted: #9aa0a6;
-            --nav-bg: #000000;
-            --nav-text: #ffffff;
-            --card-bg: #1e1e1e;
-            --card-border: #3c4043;
-            --sidebar-bg: rgba(31, 31, 31, 0.95);
-            --sidebar-text: #e8eaed;
-            --sidebar-hover: #2d2d2d;
-            --primary: #8ab4f8; /* ←設定でここを上書きします！ */
-            --btn-hover: #aecbfa;
-            --divider: #3c4043;
-        }
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:15px;
+  line-height:1.7;
+  transition:background .25s,color .25s;
+}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:'Noto Serif JP',serif;line-height:1.35;margin:0 0 .5em}
 
-        body { 
-            margin: 0; 
-            font-family: 'Hachi Maru Pop', cursive; 
-            background-color: var(--bg-color); 
-            color: var(--text-color); 
-            text-align: center; 
-            transition: background-color 0.3s, color 0.3s;
-            font-size: 16px; 
-        }
-        
-        /* ホーム画面用の左上フローティングメニューボタン */
-        .floating-menu-btn {
-            position: fixed;
-            top: 15px; 
-            left: 15px;
-            width: 45px;
-            height: 45px;
-            background-color: rgba(32, 33, 36, 0.7);
-            color: white;
-            border-radius: 50%; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 90;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: 0.3s;
-            backdrop-filter: blur(5px);
-        }
-        .floating-menu-btn:hover { background-color: rgba(32, 33, 36, 1); transform: scale(1.05); }
+/* ───── トップバー（青い細い帯） ───── */
+.topbar{
+  background:var(--topbar-bg);color:var(--topbar-text);
+  font-size:.78rem;padding:6px 0;
+}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar a{color:var(--topbar-text);opacity:.85}
+.topbar a:hover{opacity:1;text-decoration:none}
+.topbar .crumbs span{opacity:.7}
 
-        /* 別ページ用のナビゲーションバー */
-        nav { 
-            background: var(--nav-bg); height: 50px; padding: 0; position: sticky; 
-            top: 0; z-index: 100; display: flex; justify-content: space-between; 
-            align-items: center; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3);
-        }
+/* ───── サイトヘッダー ───── */
+.site-header{
+  background:var(--header-bg);
+  border-bottom:1px solid var(--border);
+}
+.header-inner{
+  max-width:1180px;margin:0 auto;padding:18px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--text)}
+.brand-logo{
+  width:44px;height:44px;border-radius:6px;
+  background:var(--primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif JP',serif;font-weight:700;font-size:1.4rem;
+}
+.brand-title{font-family:'Noto Serif JP',serif;font-size:1.4rem;font-weight:700;letter-spacing:.5px}
+.brand-sub{font-size:.75rem;color:var(--text-muted);margin-top:2px}
+.header-search{display:flex;align-items:center;gap:8px}
+.header-search input{
+  border:1px solid var(--border);background:var(--surface-2);color:var(--text);
+  padding:8px 12px;border-radius:4px;font-size:.85rem;width:220px;outline:none;
+}
+.header-search input:focus{border-color:var(--primary)}
+.icon-btn{
+  background:transparent;border:1px solid var(--border);color:var(--text);
+  width:36px;height:36px;border-radius:4px;cursor:pointer;font-size:1rem;
+}
+.icon-btn:hover{background:var(--surface-2)}
 
-        .nav-left { display: flex; align-items: center; padding-left: 10px; color: var(--nav-text); font-size: 1.1rem; height: 100%; }
-        .nav-logo { background-color: #8ab4f8; color: #202124; font-weight: bold; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-right: 12px; font-family: sans-serif;}
-        .nav-right { display: flex; align-items: center; padding-right: 15px; height: 100%; }
-        
-        nav a.main-link { color: var(--nav-text); text-decoration: none; margin: 0 10px; font-size: 0.9rem; display: flex; align-items: center; opacity: 0.9; transition: opacity 0.2s; height: 100%; }
-        nav a.main-link:hover { opacity: 1; }
+/* ───── グローバルナビ ───── */
+.gnav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.gnav-inner{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:4px;overflow-x:auto}
+.gnav a{
+  padding:14px 16px;color:var(--text);font-weight:500;font-size:.92rem;
+  border-bottom:3px solid transparent;white-space:nowrap;
+}
+.gnav a:hover{color:var(--primary);text-decoration:none;background:var(--surface-2)}
+.gnav a.active{color:var(--primary);border-bottom-color:var(--primary)}
+.gnav .menu-toggle{display:none}
 
-        .menu-btn-nav { 
-            display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; 
-            font-size: 1.4rem; color: var(--nav-text); cursor: pointer; user-select: none; 
-            margin-right: 10px; border-radius: 50%; transition: background 0.2s; 
-        }
-        .menu-btn-nav:hover { background: rgba(255,255,255,0.1); }
-        
-        /* ヘッダー */
-        header { 
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80'); 
-            background-size: cover; background-position: center; 
-            padding: 100px 20px; color: #ffffff; 
-        }
-        header h1 { font-size: 2.5rem; margin-bottom: 10px; letter-spacing: 1px; }
-        header p { font-size: 1.2rem; opacity: 0.9; }
-        
-        .container { max-width: 900px; margin: 40px auto; padding: 20px; line-height: 1.6; }
-        
-        /* ニュースボックス */
-        .news-box { 
-            background: var(--card-bg); border: 1px solid var(--card-border); 
-            border-radius: 12px; padding: 20px 25px; margin: 30px 0; text-align: left; 
-            transition: 0.3s;
-        }
-        .news-box h3 { margin-top: 0; color: var(--text-color); font-size: 1.3rem; margin-bottom: 10px; }
-        .news-box ul { padding-left: 20px; color: var(--text-muted); }
+/* ───── レイアウト ───── */
+.wrap{max-width:1180px;margin:0 auto;padding:24px 20px 60px;display:grid;grid-template-columns:1fr 320px;gap:28px}
+.main{min-width:0}
+.aside{min-width:0}
+@media (max-width:880px){
+  .wrap{grid-template-columns:1fr}
+  .header-search input{width:140px}
+  .gnav .menu-toggle{display:flex;align-items:center;justify-content:center;padding:12px 14px;border:none;background:transparent;color:var(--text);cursor:pointer;font-size:1.2rem}
+  .gnav-inner > .gnav-links{display:none;flex-direction:column;width:100%}
+  .gnav-inner.open > .gnav-links{display:flex}
+  .gnav-inner{flex-wrap:wrap}
+  .gnav a{width:100%;border-bottom:1px solid var(--border)}
+}
 
-        /* ボタン */
-        .btn { 
-            display: inline-block; background: var(--primary); color: #fff; 
-            padding: 10px 24px; border-radius: 8px; text-decoration: none; 
-            letter-spacing: 0.25px; transition: 0.2s; margin-top: 10px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); border: none; font-family: 'Hachi Maru Pop', cursive; cursor: pointer;
-        }
-        .dark-mode .btn { color: #202124; font-weight: bold;} 
-        .btn:hover { background: var(--btn-hover); box-shadow: 0 4px 10px rgba(0,0,0,0.3); transform: translateY(-2px); }
-        
-        footer { margin-top: 50px; padding: 30px; font-size: 0.85rem; color: var(--text-muted); background-color: var(--card-bg); border-top: 1px solid var(--card-border);}
+/* ───── ヒーロー（情報サイト風の特集） ───── */
+.hero{
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:30px;margin-bottom:24px;
+  display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;
+}
+.hero h1{font-size:1.7rem;margin:0 0 8px}
+.hero p{margin:0;color:var(--text-muted)}
+.hero .tag{display:inline-block;background:var(--tag-bg);color:var(--primary);font-size:.72rem;padding:3px 10px;border-radius:3px;font-weight:700;margin-bottom:10px;letter-spacing:.05em}
+@media(max-width:600px){.hero{grid-template-columns:1fr}}
 
-        /* =========================================
-           ★ サイドバー（メニュー）UI
-           スクロール問題を修正しました！
-           ========================================= */
-        .sidebar { 
-            height: 100%; 
-            width: 320px; 
-            position: fixed; 
-            top: 0; 
-            left: -350px; 
-            background-color: var(--sidebar-bg); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
-            /* ★修正点: 縦スクロールを有効にし、はみ出しを管理 */
-            overflow-y: auto; 
-            overflow-x: hidden; 
-            transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
-            padding-top: 70px; 
-            /* ★修正点: 下に余白を作って、最後の項目まで見やすく */
-            padding-bottom: 40px; 
-            z-index: 200; 
-            text-align: left; 
-            box-shadow: 4px 0 25px rgba(0,0,0,0.15); 
-            border-radius: 0 25px 25px 0; 
-        }
-        /* スクロールバーのデザインも可愛く（任意） */
-        .sidebar::-webkit-scrollbar { width: 5px; }
-        .sidebar::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 10px; }
+/* ───── セクション共通 ───── */
+.section{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:24px}
+.section-head{
+  padding:14px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.section-head h2{font-size:1.1rem;margin:0;display:flex;align-items:center;gap:10px}
+.section-head h2::before{content:"";width:4px;height:18px;background:var(--primary);border-radius:2px}
+.section-head .more{font-size:.8rem;color:var(--text-muted)}
+.section-body{padding:18px 20px}
 
-        body.dark-mode .sidebar { box-shadow: 4px 0 25px rgba(0,0,0,0.6); }
+/* ニュース一覧 */
+.news-list{list-style:none;margin:0;padding:0}
+.news-list li{
+  display:grid;grid-template-columns:90px 70px 1fr;gap:14px;
+  padding:12px 0;border-bottom:1px dashed var(--border);align-items:baseline;font-size:.92rem;
+}
+.news-list li:last-child{border-bottom:none}
+.news-list .date{color:var(--text-muted);font-size:.82rem;font-variant-numeric:tabular-nums}
+.news-list .cat{
+  font-size:.7rem;padding:2px 6px;border-radius:3px;text-align:center;
+  background:var(--tag-bg);color:var(--primary);font-weight:700;
+}
+.news-list .cat.update{background:#fdecea;color:#c0392b}
+body.dark-mode .news-list .cat.update{background:#3a1f1d;color:#ff8a7a}
+@media(max-width:520px){.news-list li{grid-template-columns:auto auto;grid-template-rows:auto auto}.news-list .title{grid-column:1/-1}}
 
-        .close-btn { 
-            position: absolute; 
-            top: 15px; 
-            right: 20px; 
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem; 
-            color: var(--text-muted) !important; 
-            background: var(--card-bg); 
-            border-radius: 50%; 
-            text-decoration: none;
-            transition: 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .close-btn:hover { 
-            background: #ea4335; 
-            color: white !important; 
-            transform: rotate(90deg); 
-        }
+/* リンクカテゴリ */
+.link-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.link-cat{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:var(--surface-2)}
+.link-cat h3{font-family:'Noto Sans JP',sans-serif;font-size:.95rem;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border);color:var(--primary)}
+.link-cat ul{list-style:none;margin:0;padding:0}
+.link-cat li{padding:5px 0;font-size:.9rem;display:flex;align-items:center;gap:6px}
+.link-cat li::before{content:"›";color:var(--text-muted);font-weight:700}
 
-        .sidebar-heading { 
-            padding: 15px 25px 5px 25px; 
-            font-size: 0.85rem; 
-            font-weight: bold; 
-            color: var(--text-muted); 
-            letter-spacing: 1px; 
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .sidebar-heading::before {
-            content: ''; display: block; width: 12px; height: 4px; 
-            background-color: var(--primary); border-radius: 2px;
-        }
+/* ゲームグリッド */
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+.game-card{
+  background:var(--surface-2);border:1px solid var(--border);border-radius:6px;
+  overflow:hidden;cursor:pointer;transition:.2s;
+}
+.game-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08);border-color:var(--primary)}
+.game-card .thumb{aspect-ratio:16/10;background:#000;overflow:hidden}
+.game-card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.game-card .name{padding:8px 10px;font-size:.82rem;font-weight:500;color:var(--text);line-height:1.3}
 
-        .sidebar a:not(.close-btn) { 
-            padding: 12px 20px; 
-            text-decoration: none; 
-            font-size: 1rem; 
-            color: var(--sidebar-text); 
-            display: flex; 
-            align-items: center; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            border-radius: 12px; 
-            margin: 8px 20px; 
-            font-weight: 500;
-            border: 1px solid transparent;
-        }
-        .sidebar a:not(.close-btn):hover { 
-            background-color: var(--sidebar-hover); 
-            color: var(--primary); 
-            transform: translateX(8px); 
-            border: 1px solid var(--card-border);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
+/* サイドバーウィジェット */
+.widget{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:20px}
+.widget-head{padding:12px 16px;border-bottom:1px solid var(--border);font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px}
+.widget-head::before{content:"";width:4px;height:14px;background:var(--accent);border-radius:2px}
+.widget-body{padding:14px 16px;font-size:.88rem}
+.widget-body ul{list-style:none;margin:0;padding:0}
+.widget-body li{padding:6px 0;border-bottom:1px dashed var(--border)}
+.widget-body li:last-child{border-bottom:none}
+.stat-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border);font-size:.88rem}
+.stat-row:last-child{border-bottom:none}
+.stat-row span:last-child{color:var(--primary);font-weight:700;font-variant-numeric:tabular-nums}
 
-        /* ゲームを画面に開く枠 */
-        #game-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; }
-        #game-frame { width: 95%; max-width: 1000px; height: 85%; max-height: 800px; background-color: #000; border: none; border-radius: 12px; box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12); }
-        
-        .modal-controls { margin-bottom: 15px; display: flex; gap: 12px; }
-        .close-game-btn, .fullscreen-btn { padding: 8px 24px; color: white; border: none; border-radius: 8px; font-size: 0.95rem; cursor: pointer; transition: 0.2s; font-family: 'Hachi Maru Pop', cursive;}
-        .close-game-btn { background-color: #ea4335; }
-        .fullscreen-btn { background-color: var(--primary); }
-        .dark-mode .fullscreen-btn { color: #202124; font-weight: bold;}
-        .close-game-btn:hover, .fullscreen-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
-        
-        /* ゲームギャラリー */
-        .game-gallery-title { font-size: 2rem; color: var(--text-color); padding: 0 0 10px; }
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; margin-top: 20px; padding: 10px; }
-        
-        .game-card { position: relative; cursor: pointer; border-radius: 12px; overflow: hidden; background-color: var(--card-bg); border: 1px solid var(--card-border); transition: box-shadow 0.2s, transform 0.2s; aspect-ratio: 1 / 1; }
-        .game-card:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); border-color: transparent; }
-        .game-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .game-card-name { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); color: white; font-size: 0.95rem; padding: 25px 0 15px; text-align: center; opacity: 0; transition: opacity 0.2s; font-family: sans-serif; font-weight: bold;}
-        .game-card:hover .game-card-name { opacity: 1; }
+/* 設定ページ */
+.setting-row{padding:16px 0;border-bottom:1px solid var(--border)}
+.setting-row:last-child{border-bottom:none}
+.setting-row label{display:block;font-weight:500;margin-bottom:8px;font-size:.95rem}
+.setting-row .desc{font-size:.82rem;color:var(--text-muted);margin-bottom:10px}
+select,input[type=range],input[type=color]{
+  font-family:inherit;font-size:.9rem;
+  background:var(--surface-2);color:var(--text);
+  border:1px solid var(--border);border-radius:4px;padding:7px 10px;outline:none;
+}
+input[type=range]{padding:0;height:6px;width:200px;-webkit-appearance:none;appearance:none;background:var(--border);border-radius:3px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--primary);cursor:pointer}
+input[type=color]{padding:2px;width:46px;height:36px;cursor:pointer}
 
-        /* 設定UI */
-        .settings-control { margin-bottom: 20px; }
-        .settings-control label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
-        select, input[type="range"] {
-            padding: 10px 15px; border-radius: 8px; border: 1px solid var(--card-border); 
-            background: var(--card-bg); color: var(--text-color); font-family: 'Hachi Maru Pop', cursive; 
-            font-size: 1rem; cursor: pointer; outline: none; width: 100%; max-width: 250px;
-        }
-        input[type="range"] {
-            padding: 0; height: 6px; background: var(--card-border); border-radius: 5px; outline: none;
-            appearance: none; -webkit-appearance: none;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none; width: 18px; height: 18px;
-            border-radius: 50%; background: var(--primary); cursor: pointer;
-        }
-    </style>
+.btn{
+  display:inline-block;background:var(--primary);color:#fff;border:none;
+  padding:8px 18px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.88rem;font-weight:500;
+}
+.btn:hover{background:var(--primary-hover);text-decoration:none;color:#fff}
+.btn.ghost{background:transparent;color:var(--primary);border:1px solid var(--primary)}
+.btn.ghost:hover{background:var(--primary);color:#fff}
+
+/* フッター */
+footer{background:var(--surface);border-top:1px solid var(--border);margin-top:40px}
+.footer-inner{max-width:1180px;margin:0 auto;padding:30px 20px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px}
+.footer-inner h4{font-size:.85rem;margin:0 0 10px;color:var(--text);font-family:'Noto Sans JP',sans-serif}
+.footer-inner ul{list-style:none;margin:0;padding:0;font-size:.82rem}
+.footer-inner li{padding:3px 0}
+.footer-inner a{color:var(--text-muted)}
+.footer-copy{border-top:1px solid var(--border);padding:14px 20px;text-align:center;font-size:.78rem;color:var(--text-muted)}
+@media(max-width:700px){.footer-inner{grid-template-columns:1fr 1fr}}
+
+/* ゲームモーダル（情報サイト風に控えめに） */
+#game-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;flex-direction:column;justify-content:center;align-items:center;padding:20px}
+#game-frame{width:100%;max-width:1100px;height:85%;background:#000;border:none;border-radius:6px}
+.modal-controls{margin-bottom:12px;display:flex;gap:10px}
+.modal-controls button{padding:7px 18px;border:none;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.88rem;color:#fff}
+.btn-close{background:#c0392b}
+.btn-fs{background:var(--primary)}
+
+/* テキストユーティリティ */
+.muted{color:var(--text-muted)}
+.center{text-align:center}
+.page{display:none}
+.page.active{display:block}
+</style>
 </head>
 <body>
 
-<div id="floating-menu" class="floating-menu-btn" onclick="toggleMenu()">☰</div>
+<!-- ───── トップバー ───── -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="crumbs"><span>運営：</span>2a_exe　<span>｜</span>　<span>更新：</span><span id="today"></span></div>
+    <div>
+      <a href="javascript:void(0)" onclick="showPage('terms')">利用規約</a>　|　
+      <a href="https://sites.google.com/view/nakayosi-instance/" target="_blank">公式サイト</a>　|　
+      <a href="javascript:void(0)" onclick="toggleTheme()">🌓 表示切替</a>
+    </div>
+  </div>
+</div>
 
-<nav id="top-nav" style="display: none;">
-    <div class="nav-left">
-        <div class="menu-btn-nav" onclick="toggleMenu()">☰</div>
-        <div class="nav-logo">N</div>
-        <span>仲良し *インスタンス* 2</span>
+<!-- ───── サイトヘッダー ───── -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="javascript:void(0)" onclick="showPage('home')">
+      <div class="brand-logo">N</div>
+      <div>
+        <div class="brand-title">仲良し *インスタンス* 2</div>
+        <div class="brand-sub">NAKAYOSI INSTANCE 2 ／ Information Portal</div>
+      </div>
+    </a>
+    <div class="header-search">
+      <input type="search" placeholder="サイト内を検索…" id="searchInput" onkeyup="filterLinks(this.value)">
+      <button class="icon-btn" onclick="toggleTheme()" title="ダーク/ライト">🌓</button>
     </div>
-    <div class="nav-right">
-        <a href="javascript:void(0)" onclick="showPage('home')" class="main-link">🔙ホームに戻る</a>
+  </div>
+</header>
+
+<!-- ───── グローバルナビ ───── -->
+<nav class="gnav">
+  <div class="gnav-inner" id="gnav">
+    <button class="menu-toggle" onclick="document.getElementById('gnav').classList.toggle('open')">☰ メニュー</button>
+    <div class="gnav-links" id="gnavLinks">
+      <a href="javascript:void(0)" onclick="showPage('home')" class="nav-link" data-page="home">ホーム</a>
+      <a href="javascript:void(0)" onclick="showPage('news')" class="nav-link" data-page="news">お知らせ</a>
+      <a href="javascript:void(0)" onclick="showPage('links')" class="nav-link" data-page="links">リンク集</a>
+      <a href="javascript:void(0)" onclick="showPage('games')" class="nav-link" data-page="games">ゲーム</a>
+      <a href="https://nakayoshi-chat-u6k4.onrender.com/" target="_blank">CHAT ↗</a>
+      <a href="javascript:void(0)" onclick="showPage('settings')" class="nav-link" data-page="settings">設定</a>
+      <a href="javascript:void(0)" onclick="showPage('terms')" class="nav-link" data-page="terms">利用規約</a>
     </div>
+  </div>
 </nav>
 
-<div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="close-btn" onclick="toggleMenu()">×</a>
-    
-    <div class="sidebar-heading">🔝メインメニュー</div>
-    <a href="javascript:void(0)" onclick="showPage('home')">　🏠︎┣ ホーム</a>
-    <a href="https://nakayoshi-chat-u6k4.onrender.com/" target="_blank">　💬┣ 仲良しCHAT</a>
-    <a href="javascript:void(0)" onclick="showPage('games')">　🎮┣ 仲良しGAMES</a>
-    
-    <div class="sidebar-heading">⚙️設定と情報</div>
-    <a href="javascript:void(0)" onclick="toggleTheme()">　🌓┣ ダーク/ライト切替</a>
-    <a href="javascript:void(0)" onclick="showPage('settings')">　⚙️┣ 詳細設定</a>
-    <a href="javascript:void(0)" onclick="showPage('terms')">　📜┣ 利用規約 (必読!)</a>
+<!-- ───── 本体 ───── -->
+<div class="wrap">
+  <main class="main">
 
-    <div class="sidebar-heading">▶️Tubeリンク集</div>
-    <a href="https://nkys-t-ube.duckdns.org" target="_blank">　🌈┣ 仲良しTube +</a>
-    <a href="https://youtube-plus-plus-kok8.onrender.com/genesis/" target="_blank">　▶️┣ Youtube ᴘʟᴜꜱ+</a>
-    <a href="https://lg8rhr-8000.csb.app/" target="_blank">　▶️┣ 仙人tube ᴘʟᴜꜱ+</a>
-    <a href="https://53vfny-3000.csb.app/" target="_blank">　▶️┣ MinTube ᴘʀᴏ</a>
-    <a href="https://chocotube-plus-2a.onrender.com/" target="_blank">　🍫┣ チョコTube</a>
-    <a href="https://script.google.com/macros/s/AKfycbzA0pSEaCuLy0I7sZnZdvLKHCgcGbSCPbVLNVLxkj8aWWKMrHpsEDBGcx-cOhk4jwP2/exec" target="_blank">　▶️┣ しあTube</a>
-    <a href="http://wista.f5.si" target="_blank">　▶️┣ Wista</a>
-    
-        <div class="sidebar-heading">🎮ゲームリンク集</div>
-    <a href="https://cloudmoon-cloud-gaming.onrender.com/" target="_blank">　🎮┣ CloudMoon</a>
-    <a href="https://unblockedgames1024.gitlab.io/" target="_blank">　🎮┣ UBG 66</a>
-    <a href="https://unblockedgames77.gitlab.io/" target="_blank">　🎮┣ UBG 77</a>
-    <a href="https://unblockedgplus.gitlab.io/game/" target="_blank">　🎮┣ UBG+</a>
-    
-    <div class="sidebar-heading">🏷️その他リンク集🅝🅔🅦</div>
-    <a href="https://p2p.mirotalk.com/join?room=yuj88433&name=random&avatar=0&audio=1&video=1&screen=1&chat=0&hide=0&notify=0&duration=unlimited" target="_blank">　💬┣ Voice Chat</a>
-    <a href="https://www.google.com/" target="_blank">　📚┣ Manga Raw</a>
-    <a href="https://script.google.com/macros/s/AKfycbxNXcspk89u5m5SQ2yfpdbTYQdwmMQJP9PQ5HgD_B_7tBvT6FaQvD-pitkUoRGYNDVB/exec" target="_blank">　📂┣ PixelCraft</a>
-    <a href="https://padlet-viewer.smooth.ytalt.f5.si/" target="_blank">　📂┣ TOKA_KUN padlet</a>
-    
-    <div class="sidebar-heading">🌐Ploxyリンク集🅝🅔🅦</div>
-    <a href="https://shadow.nana.simplix.cl/" target="_blank">　🌐┣ shadow</a>
-    <a href="https://ddx.v2.nana.2fine.de/" target="_blank">　🌐┣ DDX v2</a>
-    <a href="https://lunar.v2.nana.arrieta.cl/" target="_blank">　🌐┣o lunar v2</a>
-    <a href="https://rammer.nana.pierrou.org/" target="_blank">　🌐┣ Rammer Head</a>
-    <a href="https://rammer.nana.dbaustral.cl/" target="_blank">　🌐┣ Rammer Head 予備1</a>
-    <a href="https://rammer.nana.dataon.cl/" target="_blank">　🌐┣ Rammer Head 予備2</a>
-    
-    <hr style="border: 0; height: 1px; background: var(--divider); margin: 20px;">
-    <div style="text-align: center; color: var(--text-muted); font-size: 0.7rem; padding-bottom: 20px;">
-        End of Menu
-    </div>
-</div>
-
-<div id="home-page">
-    <header>
-        <h1>仲良し ＊インスタンス＊ 2</h1>
-        <h1>ⓦⓔⓛⓒⓞⓜⓔ</h1>
-        <h2>☆ホーム☆</h2>
-    </header>
-
-    <div class="container">
-        <p style="font-size: 1.1rem; color: var(--text-color);">☆ 仲良し *インスタンス* 2 へようこそ ☆</p>
-        <p style="color: var(--text-muted);">このサイトは <strong>2a_exe</strong> が運営しているサイトです。<br>
-        このサイトを仲良し*インスタンス* 2 にアプデしました。<br>
-        どうぞ楽しんでいってください ☆</p>
-
-        <div class="news-box">
-            <h3>📢 最新のお知らせ</h3>
-            <ul>
-                <li>2026/04/13：サイトを "Duckdns.org" のPageに移行しました！</li>
-                <li>2026/04/24：仲良しTube アップデート!!</li>
-                <li>2026/05/15：RammerHead復活!?</li>
-            </ul>
+    <!-- ホーム -->
+    <section id="home-page" class="page active">
+      <div class="hero">
+        <div>
+          <span class="tag">WELCOME</span>
+          <h1>仲良し *インスタンス* 2 へようこそ</h1>
+          <p>2a_exe が運営する総合ポータルです。チャット・動画・ゲーム・プロキシなど、便利なリンクをまとめています。</p>
         </div>
+        <a class="btn" href="https://sites.google.com/view/nakayosi-instance/%E3%83%9B%E3%83%BC%E3%83%A0" target="_blank">公式サイトへ</a>
+      </div>
 
-        <p style="margin-top: 40px; color: var(--text-color);"><strong>公式webサイト URL</strong></p>
-        <a href="https://sites.google.com/view/nakayosi-instance/%E3%83%9B%E3%83%BC%E3%83%A0" class="btn" target="_blank">公式サイトを見る</a>
-
-        <p style="margin-top:60px; font-size: 0.9rem;">
-            📊 累計訪問者数: <span id="count">12,348</span>
-        </p>
-    </div>
-</div>
-
-<div id="games-page" style="display: none;">
-    <div class="container" style="margin-top: 20px;">
-        <h2 class="game-gallery-title">🎮 NAKAYOSI GAMES 🌈</h2>
-        
-        <div class="game-grid">
-            <div class="game-card" onclick="openGame('https://hayalauncher.onrender.com/')">
-                <img src="https://eaglercraft.com/img/Official_Minecraft_Trailer.webp" alt="Eaglecraft">
-                <div class="game-card-name">Eaglecraft</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbwMccc783yv5Ftx2nkZ6BpHDi66OYtby8TRsYzgDufHka0zzRHHcV19NgtnFJH0ltbEvQ/exec')">
-                <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2562240/header.jpg?t=1767686251" alt="only up">
-                <div class="game-card-name">ONLY UP</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbxRR9j9VoEVe3ftwVkqAslFNtnJ1UUWj8hLc51en9qR8fsVz2gho9geBFjasY0IV8gJBQ/exec')">
-                <img src="https://www4.minijuegosgratis.com/v3/games/thumbnails/250888_7_sq.jpg" alt="roblox">
-                <div class="game-card-name">Roblox Barrys Prison</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbw4urIQgR3zAfmFsn3NWFC6kpsGYSWafyi6AWtyVNSyBkySH9O46LVnhej6fW7beFME/exec')">
-                <img src="https://i.scdn.co/image/ab67616d0000b27354761f903652136279c6552f" alt="roblox 99">
-                <div class="game-card-name">Roblox 99</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbzD78lGmoq37iyrMDWZavBLxIRpQ_HmutXT9arsozaDkYaHVSfk7YliEmd3EL4nXM_4Bw/exec')">
-                <img src="https://cdn1.epicgames.com/spt-assets/4f2537e2a2124cdd8fbd18b7068167d9/slender-the-arrival-4rvfj.png" alt="srender man">
-                <div class="game-card-name">Slender Man</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbzuhv-wKflC3QgCI_d8xsy90ngRlqgKj-qfICMuzhimGuYwWXFI5tPWwwfjrYk-biJu/exec')">
-                <img src="https://www.desura.games/files/images/fe/fe917ef48f1fb76ebbf7a135d2b55322.jpg" alt="Poly Track">
-                <div class="game-card-name">Poly Track</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbxkvPO4mEcWEk5a9TgEuR7qyiYZs7hL80XF5pwK8QMKHqmA7qUqxvIePB3PF9c3Bqc93w/exec')">
-                <img src="https://play-lh.googleusercontent.com/yU2xBCEG4x9JJNXj041T8SGRdq2Qos7cgqSOKB1nNOqlx-dDxCpQlVDCuc_YSX-YmJU" alt="Poly Track">
-                <div class="game-card-name">N00b miner</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbxzGXZ-dYcADWPNv7OSO6OdaFl8sJtBNY8J1KO5EQ33_I37NN0nQkaej4HqNCAkvxHHqA/exec')">
-                <img src="https://cdn1.epicgames.com/offer/50118b7f954e450f8823df1614b24e80/FGSS04_KeyArt_OfferImagePortrait_1200x1600_1200x1600-4bd46574e78464352e1f2c55714701f7" alt="Poly Track">
-                <div class="game-card-name">Fall Guys</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbw3eTm2fi2WtzFV9x4H30gtzkoHUIIhH3saOGup-TC4MImYcKeVv5hEscrVwzwJ5vMXwg/exec')">
-                <img src="https://say.games/_next/image?url=https%3A%2F%2Fweb-saystore-backend.sgdn.io%2Fgunspiw%2Ficon___bqkktB9DMKoO&w=3840&q=75" alt="Poly Track">
-                <div class="game-card-name">Gun Spin</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://script.google.com/macros/s/AKfycbyendSzfWzjivGUAoNgH5QDpJIxJDyJvSYwXWxcV_8gl9xkdTMV2BvDpjiWNw5pGaVT/exec')">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTTYSqZcSQo-Wj4Lqq1O7PLTolesXzV9IRJQ&s" alt="Poly Track">
-                <div class="game-card-name">Slope City</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://taiko.ani-nya.com/')">
-                <img src="https://makeshop-multi-images.akamaized.net/redwave/itemimages/000000001554.jpg" alt="Poly Track">
-                <div class="game-card-name">太鼓の達人</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&hqpen&interpolate#717953555')">
-                <img src="https://store-images.s-microsoft.com/image/apps.30063.13589262686196899.16e3418a-cbf2-4748-9724-1c9dc9b7a0b9.672da915-9117-4230-960d-4f59f3d7beb5" alt="Poly Track">
-                <div class="game-card-name">Among Us</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&hqpen&interpolate#815938308')">
-                <img src="https://i.ytimg.com/vi/0X_iKZ9sl8w/maxresdefault.jpg" alt="Poly Track">
-                <div class="game-card-name">Splatoon</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&interpolate&clones=Infinity&offscreen&hqpen#1000009994')">
-                <img src="https://www.datocms-assets.com/145957/1744284280-tetris-mobile.png?auto=format&fit=max&w=1200" alt="Poly Track">
-                <div class="game-card-name">TETRIS</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&offscreen&hqpen&interpolate#993930034')">
-                <img src="https://v1.padlet.pics/1/image.webp?t=c_limit%2Cdpr_1%2Ch_360%2Cw_480&url=https%3A%2F%2Fpadlet-artifacts.storage.googleapis.com%2F772a28a8d4b75d6bf5e784ae9d29c547046e54cb%2F6d587b48e304e2b6dddf1c78a196c1d8-h-eecd7c55129fe0f64ab0d624ee3724c6.png" alt="Poly Track">
-                <div class="game-card-name">大乱闘スマッシュブラザーズ</div>
-            </div>
-            <div class="game-card" onclick="openGame('https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&hqpen&interpolate#911281961')">
-                <img src="https://store-jp.nintendo.com/dw/image/v2/BFGJ_PRD/on/demandware.static/-/Sites-all-master-catalog/ja_JP/dw777a27be/products/D70010000043363/heroBanner/d5f672aaf8d60243399b854ffcb11671121f560715505cec327509d6144958cc.jpg?sw=1368&strip=false" alt="Poly Track">
-                <div class="game-card-name">スイカゲーム</div>
-            </div>
+      <div class="section">
+        <div class="section-head">
+          <h2>📢 新着のお知らせ</h2>
+          <a class="more" href="javascript:void(0)" onclick="showPage('news')">一覧 ›</a>
         </div>
-    </div>
-</div>
-
-<div id="settings-page" style="display: none;">
-    <div class="container" style="margin-top: 20px;">
-        <h2 style="color: var(--text-color);">⚙️ 詳細設定</h2>
-        
-        <div class="news-box">
-            <h3>🎨 テーマカラーの変更</h3>
-            <p style="font-size: 0.9rem;">メインカラーを好きな色に変えられます！</p>
-            <div class="settings-control" style="display: flex; align-items: center; gap: 15px;">
-                <input type="color" id="primary-color-picker" value="#1a73e8" onchange="changePrimaryColor(this.value)" style="width: 60px; height: 45px; border: none; cursor: pointer; background: transparent; padding: 0;">
-                <button class="btn" onclick="resetPrimaryColor()" style="margin-top: 0; padding: 8px 16px;">デフォルトに戻す</button>
-            </div>
-            
-            <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
-
-            <h3>🔘 フローティングメニューUIの位置</h3>
-            <div class="settings-control">
-                <select id="menu-position-select" onchange="changeMenuPosition(this.value)">
-                    <option value="top-left">左上 (デフォルト)</option>
-                    <option value="top-right">右上</option>
-                    <option value="bottom-left">左下</option>
-                    <option value="bottom-right">右下</option>
-                </select>
-            </div>
-
-            <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
-
-            <h3>⬜ メニューボタンの形</h3>
-            <div class="settings-control">
-                <select onchange="changeMenuShape(this.value)">
-                    <option value="50%">まる (デフォルト)</option>
-                    <option value="12px">ちょい丸四角</option>
-                    <option value="0px">カクカク四角</option>
-                </select>
-            </div>
-
-            <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
-
-            <h3>🔤 文字の大きさ</h3>
-            <div class="settings-control" style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 0.8rem;">小</span>
-                <input type="range" min="12" max="22" value="16" oninput="changeFontSize(this.value)">
-                <span style="font-size: 1.2rem;">大</span>
-            </div>
-            
-            <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
-
-            <h3>✨ サイトの背景模様</h3>
-            <div class="settings-control">
-                <select onchange="changeBackgroundPattern(this.value)">
-                    <option value="none">なし (無地)</option>
-                    <option value="dots">水玉ドット</option>
-                    <option value="grid">方眼紙グリッド</option>
-                </select>
-            </div>
-            
-            <hr style="border: 0; height: 1px; background: var(--divider); margin: 30px 0;">
-            
-            <h3>🌓 ダークモード / ライトモード</h3>
-            <button class="btn" onclick="toggleTheme()" style="margin-top: 0;">モードを切り替える</button>
+        <div class="section-body">
+          <ul class="news-list" id="newsListHome"></ul>
         </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>🎮 注目のゲーム</h2><a class="more" href="javascript:void(0)" onclick="showPage('games')">すべて見る ›</a></div>
+        <div class="section-body">
+          <div class="game-grid" id="gameGridHome"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- お知らせ -->
+    <section id="news-page" class="page">
+      <div class="section">
+        <div class="section-head"><h2>📢 お知らせ一覧</h2></div>
+        <div class="section-body"><ul class="news-list" id="newsListAll"></ul></div>
+      </div>
+    </section>
+
+    <!-- リンク集 -->
+    <section id="links-page" class="page">
+      <div class="section">
+        <div class="section-head"><h2>🔗 リンク集</h2><span class="muted" style="font-size:.8rem">検索: 上のサーチバー</span></div>
+        <div class="section-body"><div class="link-cats" id="linkCats"></div></div>
+      </div>
+    </section>
+
+    <!-- ゲーム -->
+    <section id="games-page" class="page">
+      <div class="section">
+        <div class="section-head"><h2>🎮 NAKAYOSI GAMES</h2><span class="muted" style="font-size:.8rem" id="gameCount"></span></div>
+        <div class="section-body"><div class="game-grid" id="gameGridAll"></div></div>
+      </div>
+    </section>
+
+    <!-- 設定 -->
+    <section id="settings-page" class="page">
+      <div class="section">
+        <div class="section-head"><h2>⚙️ 詳細設定</h2></div>
+        <div class="section-body">
+
+          <div class="setting-row">
+            <label>🎨 テーマカラー</label>
+            <div class="desc">メインカラーを好きな色に変更できます。</div>
+            <input type="color" id="primary-color-picker" value="#0b5fa5" onchange="changePrimaryColor(this.value)">
+            <button class="btn ghost" onclick="resetPrimaryColor()" style="margin-left:8px">デフォルトに戻す</button>
+          </div>
+
+          <div class="setting-row">
+            <label>🌓 表示モード</label>
+            <div class="desc">ライト／ダークを切り替えます。</div>
+            <button class="btn" onclick="toggleTheme()">モードを切り替える</button>
+          </div>
+
+          <div class="setting-row">
+            <label>🔤 文字の大きさ</label>
+            <div class="desc">本文の文字サイズを調整します。</div>
+            <span class="muted">小</span>
+            <input type="range" min="13" max="20" value="15" oninput="changeFontSize(this.value)">
+            <span class="muted">大</span>
+          </div>
+
+          <div class="setting-row">
+            <label>✨ 背景パターン</label>
+            <div class="desc">サイト背景に模様を表示します。</div>
+            <select onchange="changeBackgroundPattern(this.value)">
+              <option value="none">なし（無地）</option>
+              <option value="dots">水玉ドット</option>
+              <option value="grid">方眼グリッド</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 利用規約 -->
+    <section id="terms-page" class="page">
+      <div class="section">
+        <div class="section-head"><h2>📜 利用規約</h2></div>
+        <div class="section-body">
+          <h3>第1条（目的）</h3>
+          <p>本サイトは 2a_exe が運営するポータルサイトです。</p>
+          <h3>第2条（禁止事項）</h3>
+          <ul><li>嫌がらせ、誹謗中傷、不正アクセスなど。</li></ul>
+          <h3>第3条（免責）</h3>
+          <p>外部サイトでのトラブルに責任は負いません。自己責任でご利用ください。</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ───── サイドバー ───── -->
+  <aside class="aside">
+    <div class="widget">
+      <div class="widget-head">📊 サイト情報</div>
+      <div class="widget-body">
+        <div class="stat-row"><span>累計訪問者</span><span id="count">12,348</span></div>
+        <div class="stat-row"><span>登録リンク数</span><span id="linkCount">—</span></div>
+        <div class="stat-row"><span>登録ゲーム数</span><span id="gameStat">—</span></div>
+        <div class="stat-row"><span>運営者</span><span>2a_exe</span></div>
+      </div>
     </div>
+
+    <div class="widget">
+      <div class="widget-head">🔥 人気リンク</div>
+      <div class="widget-body">
+        <ul>
+          <li><a href="https://nakayoshi-chat-u6k4.onrender.com/" target="_blank">💬 仲良しCHAT</a></li>
+          <li><a href="https://nkys-t-ube.duckdns.org" target="_blank">🌈 仲良しTube +</a></li>
+          <li><a href="https://cloudmoon-cloud-gaming.onrender.com/" target="_blank">🎮 CloudMoon</a></li>
+          <li><a href="https://shadow.nana.simplix.cl/" target="_blank">🌐 shadow proxy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-head">📅 最近の更新</div>
+      <div class="widget-body"><ul id="recentNews"></ul></div>
+    </div>
+  </aside>
 </div>
 
-<div id="terms-page" style="display: none;">
-    <div class="container" style="margin-top: 20px;">
-        <h2 style="color: var(--text-color);">📜 利用規約</h2>
-        <div class="news-box">
-            <h3>第1条（目的）</h3>
-            <p style="font-size: 0.9rem;">本サイトは2a_exeが運営するポータルサイトです。</p>
-            <h3>第2条（禁止事項）</h3>
-            <ul style="font-size: 0.9rem;">
-                <li>嫌がらせ、誹謗中傷、不正アクセスなど。</li>
-            </ul>
-            <h3>第3条（免責）</h3>
-            <p style="font-size: 0.9rem;">外部サイトでのトラブルに責任は負いません。自己責任でお願いします。</p>
-            </div>
-    </div>
-</div>
-
+<!-- ───── フッター ───── -->
 <footer>
-    © 2026 2a_exe. All Rights Reserved.
+  <div class="footer-inner">
+    <div>
+      <h4>仲良し *インスタンス* 2</h4>
+      <p class="muted" style="font-size:.82rem;margin:0">2a_exe が運営する情報ポータル。チャット・動画・ゲーム・プロキシなどへの導線を提供します。</p>
+    </div>
+    <div><h4>メニュー</h4><ul>
+      <li><a href="javascript:void(0)" onclick="showPage('home')">ホーム</a></li>
+      <li><a href="javascript:void(0)" onclick="showPage('news')">お知らせ</a></li>
+      <li><a href="javascript:void(0)" onclick="showPage('links')">リンク集</a></li>
+      <li><a href="javascript:void(0)" onclick="showPage('games')">ゲーム</a></li>
+    </ul></div>
+    <div><h4>サポート</h4><ul>
+      <li><a href="javascript:void(0)" onclick="showPage('settings')">設定</a></li>
+      <li><a href="javascript:void(0)" onclick="showPage('terms')">利用規約</a></li>
+    </ul></div>
+    <div><h4>外部</h4><ul>
+      <li><a href="https://sites.google.com/view/nakayosi-instance/" target="_blank">公式サイト ↗</a></li>
+      <li><a href="https://nakayoshi-chat-u6k4.onrender.com/" target="_blank">仲良しCHAT ↗</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-copy">© 2026 2a_exe. All Rights Reserved.</div>
 </footer>
 
+<!-- ───── ゲームモーダル ───── -->
 <div id="game-modal">
-    <div class="modal-controls">
-        <button class="fullscreen-btn" onclick="toggleFullScreen()">全画面</button>
-        <button class="close-game-btn" onclick="closeGame()">✖ 閉じる</button>
-    </div>
-    <iframe id="game-frame" src=""></iframe>
+  <div class="modal-controls">
+    <button class="btn-fs" onclick="toggleFullScreen()">全画面</button>
+    <button class="btn-close" onclick="closeGame()">✖ 閉じる</button>
+  </div>
+  <iframe id="game-frame" src=""></iframe>
 </div>
 
 <script>
-    // カウンター
-    document.getElementById('count').innerText = Math.floor(Math.random() * 100) + 1200;
+/* =================================================================
+   ★ 編集はここだけでOK ★
+   下のデータ配列を書き換えるとサイトに反映されます。
+   ================================================================= */
 
-    // メニュー開閉
-    function toggleMenu() {
-        var sidebar = document.getElementById("mySidebar");
-        sidebar.style.left = (sidebar.style.left === "0px") ? "-350px" : "0px";
-    }
+// お知らせ（新しいものを上に）
+const NEWS = [
+  { date:"2026/05/15", cat:"更新", title:"RammerHead 復活!?" },
+  { date:"2026/04/24", cat:"更新", title:"仲良しTube アップデート!!" },
+  { date:"2026/04/13", cat:"お知らせ", title:'サイトを "Duckdns.org" のPageに移行しました！' },
+];
 
-    // ページ切替
-    function showPage(pageId) {
-        ['home', 'games', 'settings', 'terms'].forEach(p => {
-            document.getElementById(p + '-page').style.display = 'none';
-        });
-        document.getElementById(pageId + '-page').style.display = 'block';
+// リンク集（カテゴリごと）
+const LINK_CATEGORIES = [
+  { title:"▶️ Tubeリンク集", items:[
+    { name:"仲良しTube +",        url:"https://nkys-t-ube.duckdns.org" },
+    { name:"Youtube ᴘʟᴜꜱ+",       url:"https://youtube-plus-plus-kok8.onrender.com/genesis/" },
+    { name:"仙人tube ᴘʟᴜꜱ+",       url:"https://lg8rhr-8000.csb.app/" },
+    { name:"MinTube ᴘʀᴏ",         url:"https://53vfny-3000.csb.app/" },
+    { name:"チョコTube",          url:"https://chocotube-plus-2a.onrender.com/" },
+    { name:"しあTube",            url:"https://script.google.com/macros/s/AKfycbzA0pSEaCuLy0I7sZnZdvLKHCgcGbSCPbVLNVLxkj8aWWKMrHpsEDBGcx-cOhk4jwP2/exec" },
+    { name:"Wista",               url:"http://wista.f5.si" },
+  ]},
+  { title:"🎮 ゲームリンク集", items:[
+    { name:"CloudMoon",  url:"https://cloudmoon-cloud-gaming.onrender.com/" },
+    { name:"UBG 66",     url:"https://unblockedgames1024.gitlab.io/" },
+    { name:"UBG 77",     url:"https://unblockedgames77.gitlab.io/" },
+    { name:"UBG+",       url:"https://unblockedgplus.gitlab.io/game/" },
+  ]},
+  { title:"🏷️ その他リンク集", items:[
+    { name:"Voice Chat",        url:"https://p2p.mirotalk.com/join?room=yuj88433&name=random&avatar=0&audio=1&video=1&screen=1&chat=0&hide=0&notify=0&duration=unlimited" },
+    { name:"Manga Raw",         url:"https://www.google.com/" },
+    { name:"PixelCraft",        url:"https://script.google.com/macros/s/AKfycbxNXcspk89u5m5SQ2yfpdbTYQdwmMQJP9PQ5HgD_B_7tBvT6FaQvD-pitkUoRGYNDVB/exec" },
+    { name:"TOKA_KUN padlet",   url:"https://padlet-viewer.smooth.ytalt.f5.si/" },
+  ]},
+  { title:"🌐 Proxyリンク集", items:[
+    { name:"shadow",           url:"https://shadow.nana.simplix.cl/" },
+    { name:"DDX v2",           url:"https://ddx.v2.nana.2fine.de/" },
+    { name:"lunar v2",         url:"https://lunar.v2.nana.arrieta.cl/" },
+    { name:"Rammer Head",      url:"https://rammer.nana.pierrou.org/" },
+    { name:"Rammer Head 予備1", url:"https://rammer.nana.dbaustral.cl/" },
+    { name:"Rammer Head 予備2", url:"https://rammer.nana.dataon.cl/" },
+  ]},
+  { title:"💬 メインサービス", items:[
+    { name:"仲良しCHAT", url:"https://nakayoshi-chat-u6k4.onrender.com/" },
+  ]},
+];
 
-        if (pageId === 'home') {
-            document.getElementById('top-nav').style.display = 'none';
-            document.getElementById('floating-menu').style.display = 'flex';
-        } else {
-            document.getElementById('top-nav').style.display = 'flex';
-            document.getElementById('floating-menu').style.display = 'none';
-        }
-        document.getElementById("mySidebar").style.left = "-350px";
-        window.scrollTo(0, 0);
-    }
+// ゲーム一覧
+const GAMES = [
+  { name:"Eaglecraft",                  img:"https://eaglercraft.com/img/Official_Minecraft_Trailer.webp", url:"https://hayalauncher.onrender.com/" },
+  { name:"ONLY UP",                     img:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2562240/header.jpg?t=1767686251", url:"https://script.google.com/macros/s/AKfycbwMccc783yv5Ftx2nkZ6BpHDi66OYtby8TRsYzgDufHka0zzRHHcV19NgtnFJH0ltbEvQ/exec" },
+  { name:"Roblox Barrys Prison",        img:"https://www4.minijuegosgratis.com/v3/games/thumbnails/250888_7_sq.jpg", url:"https://script.google.com/macros/s/AKfycbxRR9j9VoEVe3ftwVkqAslFNtnJ1UUWj8hLc51en9qR8fsVz2gho9geBFjasY0IV8gJBQ/exec" },
+  { name:"Roblox 99",                   img:"https://i.scdn.co/image/ab67616d0000b27354761f903652136279c6552f", url:"https://script.google.com/macros/s/AKfycbw4urIQgR3zAfmFsn3NWFC6kpsGYSWafyi6AWtyVNSyBkySH9O46LVnhej6fW7beFME/exec" },
+  { name:"Slender Man",                 img:"https://cdn1.epicgames.com/spt-assets/4f2537e2a2124cdd8fbd18b7068167d9/slender-the-arrival-4rvfj.png", url:"https://script.google.com/macros/s/AKfycbzD78lGmoq37iyrMDWZavBLxIRpQ_HmutXT9arsozaDkYaHVSfk7YliEmd3EL4nXM_4Bw/exec" },
+  { name:"Poly Track",                  img:"https://www.desura.games/files/images/fe/fe917ef48f1fb76ebbf7a135d2b55322.jpg", url:"https://script.google.com/macros/s/AKfycbzuhv-wKflC3QgCI_d8xsy90ngRlqgKj-qfICMuzhimGuYwWXFI5tPWwwfjrYk-biJu/exec" },
+  { name:"N00b miner",                  img:"https://play-lh.googleusercontent.com/yU2xBCEG4x9JJNXj041T8SGRdq2Qos7cgqSOKB1nNOqlx-dDxCpQlVDCuc_YSX-YmJU", url:"https://script.google.com/macros/s/AKfycbxkvPO4mEcWEk5a9TgEuR7qyiYZs7hL80XF5pwK8QMKHqmA7qUqxvIePB3PF9c3Bqc93w/exec" },
+  { name:"Fall Guys",                   img:"https://cdn1.epicgames.com/offer/50118b7f954e450f8823df1614b24e80/FGSS04_KeyArt_OfferImagePortrait_1200x1600_1200x1600-4bd46574e78464352e1f2c55714701f7", url:"https://script.google.com/macros/s/AKfycbxzGXZ-dYcADWPNv7OSO6OdaFl8sJtBNY8J1KO5EQ33_I37NN0nQkaej4HqNCAkvxHHqA/exec" },
+  { name:"Gun Spin",                    img:"https://say.games/_next/image?url=https%3A%2F%2Fweb-saystore-backend.sgdn.io%2Fgunspiw%2Ficon___bqkktB9DMKoO&w=3840&q=75", url:"https://script.google.com/macros/s/AKfycbw3eTm2fi2WtzFV9x4H30gtzkoHUIIhH3saOGup-TC4MImYcKeVv5hEscrVwzwJ5vMXwg/exec" },
+  { name:"Slope City",                  img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTTYSqZcSQo-Wj4Lqq1O7PLTolesXzV9IRJQ&s", url:"https://script.google.com/macros/s/AKfycbyendSzfWzjivGUAoNgH5QDpJIxJDyJvSYwXWxcV_8gl9xkdTMV2BvDpjiWNw5pGaVT/exec" },
+  { name:"太鼓の達人",                  img:"https://makeshop-multi-images.akamaized.net/redwave/itemimages/000000001554.jpg", url:"https://taiko.ani-nya.com/" },
+  { name:"Among Us",                    img:"https://store-images.s-microsoft.com/image/apps.30063.13589262686196899.16e3418a-cbf2-4748-9724-1c9dc9b7a0b9.672da915-9117-4230-960d-4f59f3d7beb5", url:"https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&hqpen&interpolate#717953555" },
+  { name:"Splatoon",                    img:"https://i.ytimg.com/vi/0X_iKZ9sl8w/maxresdefault.jpg", url:"https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&hqpen&interpolate#815938308" },
+  { name:"TETRIS",                      img:"https://www.datocms-assets.com/145957/1744284280-tetris-mobile.png?auto=format&fit=max&w=1200", url:"https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&interpolate&clones=Infinity&offscreen&hqpen#1000009994" },
+  { name:"大乱闘スマッシュブラザーズ",  img:"https://v1.padlet.pics/1/image.webp?t=c_limit%2Cdpr_1%2Ch_360%2Cw_480&url=https%3A%2F%2Fpadlet-artifacts.storage.googleapis.com%2F772a28a8d4b75d6bf5e784ae9d29c547046e54cb%2F6d587b48e304e2b6dddf1c78a196c1d8-h-eecd7c55129fe0f64ab0d624ee3724c6.png", url:"https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&offscreen&hqpen&interpolate#993930034" },
+  { name:"スイカゲーム",                img:"https://store-jp.nintendo.com/dw/image/v2/BFGJ_PRD/on/demandware.static/-/Sites-all-master-catalog/ja_JP/dw777a27be/products/D70010000043363/heroBanner/d5f672aaf8d60243399b854ffcb11671121f560715505cec327509d6144958cc.jpg?sw=1368&strip=false", url:"https://mirror.turbowarp.xyz/embed?addons=pause&settings-button&hqpen&interpolate#911281961" },
+];
 
-    // 各種設定用関数
-    function toggleTheme() { document.body.classList.toggle('dark-mode'); }
-    function changePrimaryColor(color) { document.documentElement.style.setProperty('--primary', color); }
-    function resetPrimaryColor() { 
-        let c = document.body.classList.contains('dark-mode') ? '#8ab4f8' : '#1a73e8';
-        changePrimaryColor(c);
-    }
-    function changeMenuPosition(pos) {
-        let m = document.getElementById('floating-menu');
-        m.style.top = m.style.bottom = m.style.left = m.style.right = 'auto';
-        if(pos.includes('top')) m.style.top = '15px'; else m.style.bottom = '15px';
-        if(pos.includes('left')) m.style.left = '15px'; else m.style.right = '15px';
-    }
-    function changeMenuShape(r) { document.getElementById('floating-menu').style.borderRadius = r; }
-    function changeFontSize(s) { document.body.style.fontSize = s + 'px'; }
-    function changeBackgroundPattern(p) {
-        let b = document.body.style;
-        if(p==='none') b.backgroundImage = 'none';
-        else if(p==='dots') { b.backgroundImage = 'radial-gradient(var(--text-muted) 1px, transparent 1px)'; b.backgroundSize = '25px 25px'; }
-        else { b.backgroundImage = 'linear-gradient(var(--card-border) 1px, transparent 1px), linear-gradient(90deg, var(--card-border) 1px, transparent 1px)'; b.backgroundSize = '30px 30px'; }
-    }
+/* =================================================================
+   ↓ 以下、レンダリングと既存機能（基本いじらなくてOK）
+   ================================================================= */
 
-    function openGame(url) {
-        document.getElementById('game-modal').style.display = 'flex';
-        document.getElementById('game-frame').src = url;
-    }
-    function closeGame() {
-        document.getElementById('game-modal').style.display = 'none';
-        document.getElementById('game-frame').src = '';
-    }
-    function toggleFullScreen() {
-        let f = document.getElementById("game-frame");
-        if (!document.fullscreenElement) f.requestFullscreen(); else document.exitFullscreen();
-    }
+// 日付
+const t = new Date();
+document.getElementById('today').textContent =
+  `${t.getFullYear()}/${String(t.getMonth()+1).padStart(2,'0')}/${String(t.getDate()).padStart(2,'0')}`;
+
+// 訪問者カウンター（疑似）
+document.getElementById('count').textContent = (Math.floor(Math.random()*100)+12300).toLocaleString();
+
+// ニュース描画
+function renderNews(){
+  const html = NEWS.map(n=>{
+    const cls = n.cat==='更新' ? 'cat update' : 'cat';
+    return `<li><span class="date">${n.date}</span><span class="${cls}">${n.cat}</span><span class="title">${n.title}</span></li>`;
+  }).join('');
+  document.getElementById('newsListHome').innerHTML = html;
+  document.getElementById('newsListAll').innerHTML = html;
+  document.getElementById('recentNews').innerHTML =
+    NEWS.slice(0,4).map(n=>`<li><div class="muted" style="font-size:.75rem">${n.date}</div>${n.title}</li>`).join('');
+}
+
+// リンク描画
+function renderLinks(){
+  let total = 0;
+  document.getElementById('linkCats').innerHTML = LINK_CATEGORIES.map(cat=>{
+    total += cat.items.length;
+    return `<div class="link-cat" data-cat="${cat.title}">
+      <h3>${cat.title}</h3>
+      <ul>${cat.items.map(i=>`<li><a href="${i.url}" target="_blank" data-name="${i.name}">${i.name}</a></li>`).join('')}</ul>
+    </div>`;
+  }).join('');
+  document.getElementById('linkCount').textContent = total;
+}
+
+// ゲーム描画
+function renderGames(){
+  const cards = GAMES.map(g=>`
+    <div class="game-card" onclick="openGame('${g.url}')">
+      <div class="thumb"><img src="${g.img}" alt="${g.name}" loading="lazy"></div>
+      <div class="name">${g.name}</div>
+    </div>`).join('');
+  document.getElementById('gameGridAll').innerHTML = cards;
+  document.getElementById('gameGridHome').innerHTML = GAMES.slice(0,8).map(g=>`
+    <div class="game-card" onclick="openGame('${g.url}')">
+      <div class="thumb"><img src="${g.img}" alt="${g.name}" loading="lazy"></div>
+      <div class="name">${g.name}</div>
+    </div>`).join('');
+  document.getElementById('gameCount').textContent = `全 ${GAMES.length} 件`;
+  document.getElementById('gameStat').textContent = GAMES.length;
+}
+
+// 検索（リンクのみ簡易フィルタ）
+function filterLinks(q){
+  q = q.trim().toLowerCase();
+  if(q) showPage('links');
+  document.querySelectorAll('#linkCats .link-cat').forEach(cat=>{
+    let visible = 0;
+    cat.querySelectorAll('li').forEach(li=>{
+      const name = li.querySelector('a').dataset.name.toLowerCase();
+      const ok = !q || name.includes(q);
+      li.style.display = ok ? '' : 'none';
+      if(ok) visible++;
+    });
+    cat.style.display = visible ? '' : 'none';
+  });
+}
+
+// ページ切替
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el = document.getElementById(id+'-page');
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(a=>{
+    a.classList.toggle('active', a.dataset.page===id);
+  });
+  document.getElementById('gnav').classList.remove('open');
+  window.scrollTo(0,0);
+}
+
+// 設定
+function toggleTheme(){ document.body.classList.toggle('dark-mode'); }
+function changePrimaryColor(c){ document.documentElement.style.setProperty('--primary',c); }
+function resetPrimaryColor(){
+  const c = document.body.classList.contains('dark-mode') ? '#5aa9ff' : '#0b5fa5';
+  changePrimaryColor(c);
+  document.getElementById('primary-color-picker').value = c;
+}
+function changeFontSize(s){ document.body.style.fontSize = s+'px'; }
+function changeBackgroundPattern(p){
+  const b = document.body.style;
+  if(p==='none'){ b.backgroundImage='none'; }
+  else if(p==='dots'){ b.backgroundImage='radial-gradient(var(--text-muted) 1px,transparent 1px)'; b.backgroundSize='25px 25px'; }
+  else { b.backgroundImage='linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px)'; b.backgroundSize='30px 30px'; }
+}
+
+// ゲームモーダル
+function openGame(url){
+  document.getElementById('game-modal').style.display='flex';
+  document.getElementById('game-frame').src=url;
+}
+function closeGame(){
+  document.getElementById('game-modal').style.display='none';
+  document.getElementById('game-frame').src='';
+}
+function toggleFullScreen(){
+  const f = document.getElementById('game-frame');
+  if(!document.fullscreenElement) f.requestFullscreen(); else document.exitFullscreen();
+}
+
+// 初期化
+renderNews();
+renderLinks();
+renderGames();
+showPage('home');
 </script>
-
 </body>
 </html>
