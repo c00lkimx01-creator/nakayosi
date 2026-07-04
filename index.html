@@ -11,7 +11,74 @@
      データ配列を書き換えるだけでOKです。
    - カラーは :root のCSS変数を編集してください。
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&family=Press+Start+2P&display=swap');
+
+/* リアルタイム時計（ピクセルフォント） */
+.pixel-clock{
+  font-family:'Press Start 2P',monospace;
+  font-size:.78rem;
+  letter-spacing:1px;
+  color:var(--topbar-text);
+  padding:2px 8px;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:3px;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+/* ───── ニュース / 地震速報ティッカー ───── */
+.ticker{
+  background:linear-gradient(90deg,#111 0%,#1a1a1a 100%);
+  color:#f2f2f2;
+  border-bottom:1px solid #000;
+  display:flex;align-items:stretch;
+  font-size:.82rem;
+  overflow:hidden;
+  position:relative;
+}
+.ticker-label{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;
+  font-weight:700;letter-spacing:.05em;
+  background:var(--accent);color:#fff;
+  flex-shrink:0;
+  font-family:'Noto Sans JP',sans-serif;
+  box-shadow:2px 0 0 rgba(0,0,0,.3);
+  z-index:2;
+}
+.ticker-label.eq{background:#c0392b}
+.ticker-label.news{background:#0b5fa5}
+.ticker-label .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#fff;
+  animation:blink 1.2s infinite;
+}
+@keyframes blink{50%{opacity:.2}}
+.ticker-track{
+  flex:1;
+  overflow:hidden;
+  position:relative;
+  mask-image:linear-gradient(90deg,transparent 0,#000 24px,#000 calc(100% - 24px),transparent 100%);
+}
+.ticker-move{
+  display:inline-flex;
+  white-space:nowrap;
+  padding-left:100%;
+  animation:ticker-scroll 45s linear infinite;
+}
+.ticker-move:hover{animation-play-state:paused}
+.ticker-move span{
+  padding:6px 28px 6px 0;
+  color:#f2f2f2;
+}
+.ticker-move span.eq-item{color:#ffb4a8;font-weight:700}
+.ticker-move span.eq-item::before{content:"⚠ ";}
+.ticker-move span.news-item::before{content:"■ ";color:#5aa9ff;margin-right:4px}
+@keyframes ticker-scroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-100%)}
+}
+body.dark-mode .ticker{background:linear-gradient(90deg,#000 0%,#0a0d12 100%)}
 
 :root{
   --bg:#f5f6f8;
@@ -241,10 +308,22 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 </head>
 <body>
 
+<!-- ───── 地震速報 / ニュース ティッカー ───── -->
+<div class="ticker" id="ticker">
+  <div class="ticker-label eq"><span class="dot"></span>地震速報</div>
+  <div class="ticker-label news" style="border-left:1px solid rgba(255,255,255,.2)">NEWS</div>
+  <div class="ticker-track">
+    <div class="ticker-move" id="tickerMove">
+      <!-- JSで注入 -->
+      <span>読み込み中…</span>
+    </div>
+  </div>
+</div>
+
 <!-- ───── トップバー ───── -->
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="crumbs"><span>運営：</span>2a_exe　<span>｜</span>　<span>更新：</span><span id="today"></span></div>
+    <div class="crumbs"><span>運営：</span>2a_exe　<span>｜</span>　<span>更新：</span><span id="today"></span>　<span>｜</span>　<span class="pixel-clock" id="clock">00:00:00</span></div>
     <div>
       <a href="javascript:void(0)" onclick="showPage('terms')">利用規約</a>　|　
       <a href="https://sites.google.com/view/nakayosi-instance/" target="_blank">公式サイト</a>　|　
@@ -575,6 +654,19 @@ const t = new Date();
 document.getElementById('today').textContent =
   `${t.getFullYear()}/${String(t.getMonth()+1).padStart(2,'0')}/${String(t.getDate()).padStart(2,'0')}`;
 
+// リアルタイム時計（HH:MM:SS）
+(function(){
+  const el = document.getElementById('clock');
+  if(!el) return;
+  const pad = n => String(n).padStart(2,'0');
+  const tick = () => {
+    const d = new Date();
+    el.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  };
+  tick();
+  setInterval(tick, 1000);
+})();
+
 // 訪問者カウンター（疑似）
 document.getElementById('count').textContent = (Math.floor(Math.random()*100)+12300).toLocaleString();
 
@@ -683,6 +775,30 @@ renderNews();
 renderLinks();
 renderGames();
 showPage('home');
+
+/* ───── ティッカー（地震速報 / ニュース） ─────
+   下記の EQ_ITEMS / NEWS_ITEMS を書き換えると内容が変わります。
+   将来的にAPI連携する場合は fetchTicker() を実装してください。 */
+const EQ_ITEMS = [
+  "現在、震度3以上の地震情報はありません。",
+  "気象庁データを参照中… 最新の緊急地震速報はここに流れます。"
+];
+const NEWS_ITEMS = [
+  "🎉 仲良し*インスタンス*2 情報ポータルをリニューアルしました！",
+  "🎮 新しいゲームを追加しました。ゲームページをチェック！",
+  "📢 サーバーメンテナンスは毎週日曜 深夜に実施予定です。",
+  "🔗 リンク集を随時更新中。おすすめサイトを追加しました。"
+];
+function renderTicker(){
+  const track = document.getElementById('tickerMove');
+  if(!track) return;
+  const eq   = EQ_ITEMS.map(t=>`<span class="eq-item">${t}</span>`).join('');
+  const news = NEWS_ITEMS.map(t=>`<span class="news-item">${t}</span>`).join('');
+  // 2周分入れて途切れを防ぐ
+  track.innerHTML = eq + news + eq + news;
+}
+renderTicker();
+
 </script>
 </body>
 </html>
