@@ -259,7 +259,10 @@ body.dark-mode .news-list .cat.update{background:#3a1f1d;color:#ff8a7a}
   border-bottom:1px dashed var(--border);
   color:var(--primary);letter-spacing:.02em;
 }
-.link-cat ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.link-cat ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:340px;overflow-y:auto}
+.link-cat ul::-webkit-scrollbar{width:6px}
+.link-cat ul::-webkit-scrollbar-track{background:transparent}
+.link-cat ul::-webkit-scrollbar-thumb{background:color-mix(in oklab,var(--primary) 35%,transparent);border-radius:3px}
 .link-cat li{
   padding:0;font-size:.9rem;display:block;
 }
