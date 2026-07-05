@@ -15,70 +15,75 @@
 
 /* リアルタイム時計（ピクセルフォント） */
 .pixel-clock{
-  font-family:'Press Start 2P',monospace;
-  font-size:.78rem;
-  letter-spacing:1px;
-  color:var(--topbar-text);
-  padding:2px 8px;
-  border:1px solid rgba(255,255,255,.25);
-  border-radius:3px;
+  font-family:'Press Start 2P','Courier New',monospace;
+  font-size:1.15rem;
+  letter-spacing:2px;
+  color:var(--primary);
+  padding:6px 12px;
+  border:2px solid var(--primary);
+  border-radius:4px;
+  background:var(--surface-2);
   font-variant-numeric:tabular-nums;
   white-space:nowrap;
+  display:inline-block;
+  line-height:1;
 }
+.brand-clock{margin-left:14px}
+body.dark-mode .pixel-clock{background:#0a1220}
 
-/* ───── ニュース / 地震速報ティッカー ───── */
+/* 速報／ニュースティッカー */
 .ticker{
-  background:linear-gradient(90deg,#111 0%,#1a1a1a 100%);
-  color:#f2f2f2;
-  border-bottom:1px solid #000;
-  display:flex;align-items:stretch;
-  font-size:.82rem;
+  display:flex;
+  align-items:center;
+  gap:0;
+  background:linear-gradient(90deg,#0a0d12 0%,#1a1f2a 100%);
+  color:#e6e8eb;
+  font-size:.85rem;
+  padding:5px 0;
   overflow:hidden;
-  position:relative;
+  border-bottom:1px solid var(--border);
+}
+.ticker-inner{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  gap:0;
+  width:100%;
 }
 .ticker-label{
-  display:flex;align-items:center;gap:6px;
-  padding:6px 14px;
-  font-weight:700;letter-spacing:.05em;
-  background:var(--accent);color:#fff;
   flex-shrink:0;
-  font-family:'Noto Sans JP',sans-serif;
-  box-shadow:2px 0 0 rgba(0,0,0,.3);
-  z-index:2;
+  padding:5px 14px;
+  font-weight:700;
+  font-size:.75rem;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
 }
-.ticker-label.eq{background:#c0392b}
-.ticker-label.news{background:#0b5fa5}
-.ticker-label .dot{
-  width:8px;height:8px;border-radius:50%;
-  background:#fff;
-  animation:blink 1.2s infinite;
-}
-@keyframes blink{50%{opacity:.2}}
+.ticker-label.eq{background:#b91c1c;color:#fff}
+.ticker-label.eq::before{content:"";width:8px;height:8px;border-radius:50%;background:#ff6b5b}
+.ticker-label.news{background:#0b5fa5;color:#fff}
 .ticker-track{
   flex:1;
   overflow:hidden;
   position:relative;
-  mask-image:linear-gradient(90deg,transparent 0,#000 24px,#000 calc(100% - 24px),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 4%,#000 96%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 4%,#000 96%,transparent 100%);
 }
 .ticker-move{
   display:inline-flex;
+  gap:56px;
   white-space:nowrap;
-  padding-left:100%;
-  animation:ticker-scroll 45s linear infinite;
+  animation:tickerScroll 70s linear infinite;
 }
-.ticker-move:hover{animation-play-state:paused}
-.ticker-move span{
-  padding:6px 28px 6px 0;
-  color:#f2f2f2;
+@keyframes tickerScroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
 }
-.ticker-move span.eq-item{color:#ffb4a8;font-weight:700}
-.ticker-move span.eq-item::before{content:"⚠ ";}
-.ticker-move span.news-item::before{content:"■ ";color:#5aa9ff;margin-right:4px}
-@keyframes ticker-scroll{
-  from{transform:translateX(0)}
-  to{transform:translateX(-100%)}
-}
-body.dark-mode .ticker{background:linear-gradient(90deg,#000 0%,#0a0d12 100%)}
+.ticker-item{display:inline-flex;align-items:center;gap:6px}
+body.dark-mode .ticker{background:#05070a;border-color:#2a2f37}
+
 
 :root{
   --bg:#f5f6f8;
@@ -167,9 +172,10 @@ h1,h2,h3{font-family:'Noto Serif JP',serif;line-height:1.35;margin:0 0 .5em}
 
 /* ───── グローバルナビ ───── */
 .gnav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
-.gnav-inner{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:4px;overflow-x:auto}
+.gnav-inner{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:2px;flex-wrap:wrap;overflow-x:hidden}
+.gnav-links{display:flex;flex-wrap:wrap;align-items:center;gap:0;width:100%}
 .gnav a{
-  padding:14px 16px;color:var(--text);font-weight:500;font-size:.92rem;
+  padding:10px 13px;color:var(--text);font-weight:500;font-size:.88rem;
   border-bottom:3px solid transparent;white-space:nowrap;
 }
 .gnav a:hover{color:var(--primary);text-decoration:none;background:var(--surface-2)}
@@ -308,22 +314,20 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 </head>
 <body>
 
-<!-- ───── 地震速報 / ニュース ティッカー ───── -->
+<!-- ───── 速報／ニュースティッカー ───── -->
 <div class="ticker" id="ticker">
-  <div class="ticker-label eq"><span class="dot"></span>地震速報</div>
-  <div class="ticker-label news" style="border-left:1px solid rgba(255,255,255,.2)">NEWS</div>
-  <div class="ticker-track">
-    <div class="ticker-move" id="tickerMove">
-      <!-- JSで注入 -->
-      <span>読み込み中…</span>
-    </div>
+  <div class="ticker-inner">
+    <span class="ticker-label eq">地震速報</span>
+    <span class="ticker-label warn" style="background:#f59e0b">気象警報</span>
+    <span class="ticker-label news">News</span>
+    <div class="ticker-track"><div class="ticker-move" id="tickerMove"></div></div>
   </div>
 </div>
 
 <!-- ───── トップバー ───── -->
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="crumbs"><span>運営：</span>2a_exe　<span>｜</span>　<span>更新：</span><span id="today"></span>　<span>｜</span>　<span class="pixel-clock" id="clock">00:00:00</span></div>
+    <div class="crumbs"><span>運営：</span>2a_exe　<span>｜</span>　<span>更新：</span><span id="today"></span></div>
     <div>
       <a href="javascript:void(0)" onclick="showPage('terms')">利用規約</a>　|　
       <a href="https://sites.google.com/view/nakayosi-instance/" target="_blank">公式サイト</a>　|　
@@ -332,13 +336,14 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
   </div>
 </div>
 
+
 <!-- ───── サイトヘッダー ───── -->
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="javascript:void(0)" onclick="showPage('home')">
       <div class="brand-logo">N</div>
       <div>
-        <div class="brand-title">仲良し *インスタンス* 2</div>
+        <div class="brand-title">仲良し *インスタンス* 2 <span class="pixel-clock brand-clock" id="clock">00:00:00</span></div>
         <div class="brand-sub">NAKAYOSI INSTANCE 2 ／ Information Portal</div>
       </div>
     </a>
@@ -645,6 +650,62 @@ const GAMES = [
 
 ];
 
+// ティッカー表示データ（APIで更新）
+let EQ_ITEMS = ["地震情報を読み込み中..."];
+let NEWS_ITEMS = NEWS.map(n => `${n.date} ${n.title}`);
+
+function renderTicker(){
+  const move = document.getElementById('tickerMove');
+  if(!move) return;
+  const eqParts = EQ_ITEMS.map(t => `<span class="ticker-item"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:#ff6b5b;display:inline-block"></span>${t}</span>`).join('');
+  const newsParts = NEWS_ITEMS.map(t => `<span class="ticker-item">${t}</span>`).join('');
+  const cycle = eqParts + newsParts;
+  move.innerHTML = cycle + cycle;
+}
+
+// P2P地震情報 API から実際の地震情報を取得
+async function fetchEarthquakes(){
+  try{
+    const res = await fetch('https://api.p2pquake.net/v2/history?codes=551&limit=5');
+    if(!res.ok) throw new Error('API error');
+    const data = await res.json();
+    const items = data.map(d => {
+      const eq = d.earthquake || {};
+      const h = eq.hypocenter || {};
+      const time = (eq.time || d.time || '').replace(/-/g,'/').slice(5,16);
+      const place = h.name || '不明';
+      const mag = h.magnitude != null && h.magnitude !== -1 ? `M${h.magnitude}` : '';
+      const scale = eq.maxScale != null ? scaleToShindo(eq.maxScale) : '';
+      return `${time} ${place} ${mag}${scale ? ' 最大震度' + scale : ''}`;
+    });
+    if(items.length) EQ_ITEMS = items;
+    else EQ_ITEMS = ["現在、地震に関する情報はありません。"];
+  }catch(e){
+    EQ_ITEMS = ["地震情報を取得できませんでした。"];
+  }
+  renderTicker();
+}
+function scaleToShindo(s){
+  const map = {10:'1',20:'2',30:'3',40:'4',45:'5弱',50:'5強',55:'6弱',60:'6強',70:'7'};
+  return map[s] || '';
+}
+
+// NHK ニュース RSS から実ニュースを取得（rss2json 経由）
+async function fetchNews(){
+  try{
+    const url = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www3.nhk.or.jp/rss/news/cat0.xml');
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('API error');
+    const data = await res.json();
+    if(data.items && data.items.length){
+      NEWS_ITEMS = data.items.slice(0,10).map(i => `📰 ${i.title}`);
+    }
+  }catch(e){
+    // フォールバックとしてローカルNEWSを使用
+  }
+  renderTicker();
+}
+
 /* =================================================================
    ↓ 以下、レンダリングと既存機能（基本いじらなくてOK）
    ================================================================= */
@@ -740,20 +801,54 @@ function showPage(id){
   window.scrollTo(0,0);
 }
 
-// 設定
-function toggleTheme(){ document.body.classList.toggle('dark-mode'); }
-function changePrimaryColor(c){ document.documentElement.style.setProperty('--primary',c); }
+// 設定（localStorageに保存）
+const SETTINGS_KEY = 'nakayosi_settings_v1';
+function loadSettings(){
+  try{ return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveSettings(patch){
+  const s = Object.assign(loadSettings(), patch);
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+}
+function toggleTheme(){
+  document.body.classList.toggle('dark-mode');
+  saveSettings({ dark: document.body.classList.contains('dark-mode') });
+}
+function changePrimaryColor(c){
+  document.documentElement.style.setProperty('--primary',c);
+  saveSettings({ primary: c });
+}
 function resetPrimaryColor(){
   const c = document.body.classList.contains('dark-mode') ? '#5aa9ff' : '#0b5fa5';
   changePrimaryColor(c);
   document.getElementById('primary-color-picker').value = c;
 }
-function changeFontSize(s){ document.body.style.fontSize = s+'px'; }
+function changeFontSize(s){
+  document.body.style.fontSize = s+'px';
+  saveSettings({ fontSize: s });
+}
 function changeBackgroundPattern(p){
   const b = document.body.style;
   if(p==='none'){ b.backgroundImage='none'; }
   else if(p==='dots'){ b.backgroundImage='radial-gradient(var(--text-muted) 1px,transparent 1px)'; b.backgroundSize='25px 25px'; }
   else { b.backgroundImage='linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px)'; b.backgroundSize='30px 30px'; }
+  saveSettings({ bg: p });
+}
+function applySavedSettings(){
+  const s = loadSettings();
+  if(s.dark) document.body.classList.add('dark-mode');
+  if(s.primary){
+    document.documentElement.style.setProperty('--primary', s.primary);
+    const p = document.getElementById('primary-color-picker'); if(p) p.value = s.primary;
+  }
+  if(s.fontSize){
+    document.body.style.fontSize = s.fontSize+'px';
+    const r = document.querySelector('input[type=range]'); if(r) r.value = s.fontSize;
+  }
+  if(s.bg){
+    changeBackgroundPattern(s.bg);
+    const sel = document.querySelector('#settings-page select'); if(sel) sel.value = s.bg;
+  }
 }
 
 // ゲームモーダル
@@ -774,31 +869,14 @@ function toggleFullScreen(){
 renderNews();
 renderLinks();
 renderGames();
-showPage('home');
-
-/* ───── ティッカー（地震速報 / ニュース） ─────
-   下記の EQ_ITEMS / NEWS_ITEMS を書き換えると内容が変わります。
-   将来的にAPI連携する場合は fetchTicker() を実装してください。 */
-const EQ_ITEMS = [
-  "現在、震度3以上の地震情報はありません。",
-  "気象庁データを参照中… 最新の緊急地震速報はここに流れます。"
-];
-const NEWS_ITEMS = [
-  "🎉 仲良し*インスタンス*2 情報ポータルをリニューアルしました！",
-  "🎮 新しいゲームを追加しました。ゲームページをチェック！",
-  "📢 サーバーメンテナンスは毎週日曜 深夜に実施予定です。",
-  "🔗 リンク集を随時更新中。おすすめサイトを追加しました。"
-];
-function renderTicker(){
-  const track = document.getElementById('tickerMove');
-  if(!track) return;
-  const eq   = EQ_ITEMS.map(t=>`<span class="eq-item">${t}</span>`).join('');
-  const news = NEWS_ITEMS.map(t=>`<span class="news-item">${t}</span>`).join('');
-  // 2周分入れて途切れを防ぐ
-  track.innerHTML = eq + news + eq + news;
-}
 renderTicker();
-
+showPage('home');
+applySavedSettings();
+fetchEarthquakes();
+fetchNews();
+// 5分ごとに更新
+setInterval(fetchEarthquakes, 5*60*1000);
+setInterval(fetchNews, 10*60*1000);
 </script>
 </body>
 </html>
