@@ -11,24 +11,27 @@
      データ配列を書き換えるだけでOKです。
    - カラーは :root のCSS変数を編集してください。
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&family=Press+Start+2P&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Kosugi+Maru&family=Zen+Maru+Gothic:wght@400;500;700&family=Shippori+Mincho:wght@500;700&family=Kaisei+Decol:wght@400;700&family=DotGothic16&family=Yusei+Magic&display=swap');
 
 /* リアルタイム時計（ピクセルフォント） */
 .pixel-clock{
   font-family:'Press Start 2P','Courier New',monospace;
-  font-size:1.15rem;
-  letter-spacing:2px;
+  font-size:2rem;
+  letter-spacing:3px;
   color:var(--primary);
-  padding:6px 12px;
-  border:2px solid var(--primary);
-  border-radius:4px;
+  padding:12px 20px;
+  border:3px solid var(--primary);
+  border-radius:8px;
   background:var(--surface-2);
   font-variant-numeric:tabular-nums;
   white-space:nowrap;
   display:inline-block;
   line-height:1;
+  box-shadow:0 4px 14px -6px color-mix(in oklab, var(--primary) 55%, transparent), inset 0 0 0 1px color-mix(in oklab, var(--primary) 20%, transparent);
+  text-shadow:0 0 8px color-mix(in oklab, var(--primary) 45%, transparent);
 }
-.brand-clock{margin-left:14px}
+@media(max-width:600px){.pixel-clock{font-size:1.4rem;padding:8px 12px;letter-spacing:2px}}
+.brand-clock{margin-left:18px;vertical-align:middle}
 body.dark-mode .pixel-clock{background:#0a1220}
 
 /* 速報／ニュースティッカー */
@@ -234,13 +237,61 @@ h1,h2,h3{font-family:'Noto Serif JP',serif;line-height:1.35;margin:0 0 .5em}
 body.dark-mode .news-list .cat.update{background:#3a1f1d;color:#ff8a7a}
 @media(max-width:520px){.news-list li{grid-template-columns:auto auto;grid-template-rows:auto auto}.news-list .title{grid-column:1/-1}}
 
-/* リンクカテゴリ */
-.link-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.link-cat{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:var(--surface-2)}
-.link-cat h3{font-family:'Noto Sans JP',sans-serif;font-size:.95rem;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border);color:var(--primary)}
-.link-cat ul{list-style:none;margin:0;padding:0}
-.link-cat li{padding:5px 0;font-size:.9rem;display:flex;align-items:center;gap:6px}
-.link-cat li::before{content:"›";color:var(--text-muted);font-weight:700}
+/* リンクカテゴリ（カード風・タイル型UI） */
+.link-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.link-cat{
+  position:relative;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px 18px 14px;
+  background:linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+  overflow:hidden;
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.link-cat::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+}
+.link-cat:hover{transform:translateY(-2px);box-shadow:0 10px 24px -14px color-mix(in oklab, var(--primary) 45%, transparent);border-color:color-mix(in oklab, var(--primary) 45%, var(--border))}
+.link-cat h3{
+  font-family:inherit;font-size:1rem;font-weight:700;
+  margin:0 0 14px;padding:0 0 10px 6px;
+  border-bottom:1px dashed var(--border);
+  color:var(--primary);letter-spacing:.02em;
+}
+.link-cat ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.link-cat li{
+  padding:0;font-size:.9rem;display:block;
+}
+.link-cat li::before{content:none}
+.link-cat li a{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:8px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  color:var(--text);
+  transition:.18s ease;
+  font-weight:500;
+}
+.link-cat li a::before{
+  content:"→";
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:6px;
+  background:color-mix(in oklab, var(--primary) 12%, transparent);
+  color:var(--primary);font-weight:700;font-size:.85rem;
+  flex-shrink:0;
+  transition:.18s ease;
+}
+.link-cat li a:hover{
+  background:color-mix(in oklab, var(--primary) 10%, var(--surface));
+  border-color:var(--primary);
+  color:var(--primary);
+  text-decoration:none;
+  transform:translateX(3px);
+}
+.link-cat li a:hover::before{background:var(--primary);color:#fff;transform:translateX(2px)}
+body.dark-mode .link-cat li a{background:var(--surface-2)}
+body.dark-mode .link-cat li a:hover{background:color-mix(in oklab, var(--primary) 18%, var(--surface-2))}
 
 /* ゲームグリッド */
 .game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
@@ -445,6 +496,23 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
             <label>🌓 表示モード</label>
             <div class="desc">ライト／ダークを切り替えます。</div>
             <button class="btn" onclick="toggleTheme()">モードを切り替える</button>
+          </div>
+
+          <div class="setting-row">
+            <label>🅰️ サイトフォント</label>
+            <div class="desc">サイト全体の日本語フォントを変更できます。</div>
+            <select id="font-select" onchange="changeFont(this.value)">
+              <option value="'Noto Sans JP',sans-serif">Noto Sans JP（標準・ゴシック）</option>
+              <option value="'M PLUS Rounded 1c',sans-serif">M PLUS Rounded 1c（丸ゴシック）</option>
+              <option value="'Zen Maru Gothic',sans-serif">Zen Maru Gothic（やわらか丸ゴ）</option>
+              <option value="'Kosugi Maru',sans-serif">Kosugi Maru（手書き風）</option>
+              <option value="'Yusei Magic',sans-serif">Yusei Magic（黒板風）</option>
+              <option value="'Kaisei Decol',serif">Kaisei Decol（レトロ明朝）</option>
+              <option value="'Shippori Mincho',serif">Shippori Mincho（明朝体）</option>
+              <option value="'Noto Serif JP',serif">Noto Serif JP（明朝）</option>
+              <option value="'DotGothic16',monospace">DotGothic16（ドット・ピクセル）</option>
+              <option value="system-ui,-apple-system,sans-serif">システム標準</option>
+            </select>
           </div>
 
           <div class="setting-row">
@@ -824,6 +892,10 @@ function changeFontSize(s){
   document.body.style.fontSize = s+'px';
   saveSettings({ fontSize: s });
 }
+function changeFont(f){
+  document.body.style.fontFamily = f;
+  saveSettings({ font: f });
+}
 function changeBackgroundPattern(p){
   const b = document.body.style;
   if(p==='none'){ b.backgroundImage='none'; }
@@ -844,7 +916,11 @@ function applySavedSettings(){
   }
   if(s.bg){
     changeBackgroundPattern(s.bg);
-    const sel = document.querySelector('#settings-page select'); if(sel) sel.value = s.bg;
+    const sel = document.querySelector('#settings-page select:not(#font-select)'); if(sel) sel.value = s.bg;
+  }
+  if(s.font){
+    document.body.style.fontFamily = s.font;
+    const fs = document.getElementById('font-select'); if(fs) fs.value = s.font;
   }
 }
 
