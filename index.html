@@ -353,6 +353,21 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 
 /* ゲームモーダル（情報サイト風に控えめに） */
 #game-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;flex-direction:column;justify-content:center;align-items:center;padding:20px}
+/* News modal */
+#news-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1100;justify-content:center;align-items:flex-start;padding:40px 16px;overflow-y:auto;backdrop-filter:blur(4px)}
+#news-modal.open{display:flex}
+.nm-panel{background:var(--surface);color:var(--text);max-width:680px;width:100%;border-radius:14px;padding:0;position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);border:1px solid var(--border);overflow:hidden}
+.nm-close{position:absolute;right:10px;top:10px;z-index:2;background:rgba(0,0,0,.55);color:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.nm-close:hover{background:rgba(0,0,0,.8)}
+.nm-thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--primary),var(--accent));overflow:hidden}
+.nm-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.nm-src{display:inline-block;background:var(--primary);color:var(--primary-foreground,#fff);font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:4px;margin:16px 20px 0}
+.nm-title{font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:700;line-height:1.4;margin:10px 20px 6px}
+.nm-date{font-size:.78rem;color:var(--text-muted);margin:0 20px 14px;font-variant-numeric:tabular-nums}
+.nm-desc{font-size:.94rem;line-height:1.75;color:var(--text);margin:0 20px 18px;white-space:pre-wrap}
+.nm-link{display:inline-block;margin:0 20px 22px;padding:9px 16px;background:var(--primary);color:#fff;border-radius:6px;font-size:.85rem;font-weight:600;text-decoration:none}
+.nm-link:hover{opacity:.9}
+@media(max-width:600px){.nm-title{font-size:1.1rem}.nm-desc{font-size:.88rem}}
 #game-frame{width:100%;max-width:1100px;height:85%;background:#000;border:none;border-radius:6px}
 .modal-controls{margin-bottom:12px;display:flex;gap:10px}
 .modal-controls button{padding:7px 18px;border:none;border-radius:4px;cursor:pointer;font-family:inherit;font-size:.88rem;color:#fff}
@@ -364,6 +379,55 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 .center{text-align:center}
 .page{display:none}
 .page.active{display:block}
+
+/* ───── ニュースフィード（画像付きカード） ───── */
+.news-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.news-card{
+  display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;overflow:hidden;transition:.2s;color:var(--text);
+}
+.news-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px -16px color-mix(in oklab,var(--primary) 55%,transparent);border-color:color-mix(in oklab,var(--primary) 45%,var(--border));text-decoration:none}
+.news-card .nc-thumb{aspect-ratio:16/9;background:linear-gradient(135deg,var(--primary),var(--accent));overflow:hidden;position:relative}
+.news-card .nc-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.news-card .nc-src{position:absolute;left:8px;top:8px;background:rgba(0,0,0,.62);color:#fff;font-size:.66rem;font-weight:700;padding:3px 8px;border-radius:4px}
+.news-card .nc-body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.news-card .nc-title{font-family:'Noto Sans JP',sans-serif;font-weight:700;font-size:.92rem;line-height:1.4;margin:0}
+.news-card .nc-desc{font-size:.8rem;color:var(--text-muted);margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.news-card .nc-date{font-size:.72rem;color:var(--text-muted);margin-top:auto;font-variant-numeric:tabular-nums}
+
+/* ───── 地震速報ページ ───── */
+.eq-filter{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.eq-filter select,.eq-filter button{
+  border:1px solid var(--border);background:var(--surface-2);color:var(--text);
+  padding:9px 12px;border-radius:6px;font-size:.88rem;outline:none;font-family:inherit;
+}
+.eq-filter select:focus{border-color:var(--primary)}
+.eq-list{display:flex;flex-direction:column;gap:12px}
+.eq-item{
+  display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;
+  border:1px solid var(--border);border-radius:10px;padding:12px 14px;background:var(--surface);
+}
+.eq-shindo{
+  width:58px;height:58px;border-radius:10px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;color:#fff;font-weight:700;line-height:1;flex-shrink:0;background:#9ca3af;
+}
+.eq-shindo small{font-size:.55rem;font-weight:500;opacity:.9;margin-bottom:2px}
+.eq-shindo b{font-size:1.5rem}
+.s10{background:#6b7280}.s20{background:#3b82f6}.s30{background:#10b981}.s40{background:#f59e0b}
+.s45,.s50{background:#f97316}.s55,.s60{background:#dc2626}.s70{background:#7c2d12}
+.eq-meta .eq-place{font-weight:700;font-size:1rem;margin:0 0 3px}
+.eq-meta .eq-sub{font-size:.8rem;color:var(--text-muted);display:flex;flex-wrap:wrap;gap:12px}
+.eq-meta .eq-hit{font-size:.78rem;color:var(--primary);margin-top:4px}
+.eq-empty{padding:30px;text-align:center;color:var(--text-muted)}
+.eq-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;font-size:.72rem;color:var(--text-muted)}
+.eq-legend span{display:inline-flex;align-items:center;gap:5px}
+.eq-legend i{width:14px;height:14px;border-radius:3px;display:inline-block}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<style>
+#quakeMap{height:360px;border-radius:10px;border:1px solid var(--border);margin:14px 0;z-index:0}
+.eq-map-popup b{color:var(--primary)}
 </style>
 </head>
 <body>
@@ -415,6 +479,8 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
     <div class="gnav-links" id="gnavLinks">
       <a href="javascript:void(0)" onclick="showPage('home')" class="nav-link" data-page="home">ホーム</a>
       <a href="javascript:void(0)" onclick="showPage('news')" class="nav-link" data-page="news">お知らせ</a>
+      <a href="javascript:void(0)" onclick="showPage('newsfeed')" class="nav-link" data-page="newsfeed">📰 ニュース</a>
+      <a href="javascript:void(0)" onclick="showPage('quake')" class="nav-link" data-page="quake">🔴 地震速報</a>
       <a href="javascript:void(0)" onclick="showPage('links')" class="nav-link" data-page="links">リンク集</a>
       <a href="javascript:void(0)" onclick="showPage('games')" class="nav-link" data-page="games">ゲーム</a>
       <a href="https://nkys-chat-ver-1-3-0--kageproject.replit.app/" target="_blank">CHAT ↗</a>
@@ -451,6 +517,23 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
       </div>
 
       <div class="section">
+        <div class="section-head">
+          <h2>🔴 地震速報（リアルタイム）</h2>
+          <a class="more" href="javascript:void(0)" onclick="showPage('quake')">くわしく見る ›</a>
+        </div>
+        <div class="section-body"><div class="eq-list" id="eqListHome"></div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">
+          <h2>📰 最新ニュース</h2>
+          <a class="more" href="javascript:void(0)" onclick="showPage('newsfeed')">もっと見る ›</a>
+        </div>
+        <div class="section-body"><div class="news-cards" id="newsCardsHome"></div></div>
+      </div>
+
+
+      <div class="section">
         <div class="section-head"><h2>🎮 注目のゲーム</h2><a class="more" href="javascript:void(0)" onclick="showPage('games')">すべて見る ›</a></div>
         <div class="section-body">
           <div class="game-grid" id="gameGridHome"></div>
@@ -482,7 +565,36 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
       </div>
     </section>
 
-    <!-- 設定 -->
+    <!-- ニュース（API・画像付き） -->
+    <section id="newsfeed-page" class="page">
+      <div class="section">
+        <div class="section-head"><h2>📰 最新ニュース</h2><span class="muted" style="font-size:.8rem">提供: NHK NEWS WEB</span></div>
+        <div class="section-body"><div class="news-cards" id="newsCardsAll"></div></div>
+      </div>
+    </section>
+
+    <!-- 地震速報（API・リアルタイム） -->
+    <section id="quake-page" class="page">
+      <div class="section">
+        <div class="section-head"><h2>🔴 地震速報 / 最近の地震</h2><span class="muted" style="font-size:.8rem" id="eqUpdated"></span></div>
+        <div class="section-body">
+          <p class="muted" style="font-size:.85rem;margin-top:0">日本で最近発生した地震をリアルタイムで表示します。県・市区町村を選ぶと、その地域で観測された地震だけを絞り込めます。</p>
+          <div class="eq-filter">
+            <select id="eqPref" onchange="onPrefChange()"><option value="">▼ 都道府県を選択</option></select>
+            <select id="eqCity" onchange="renderQuakeList()"><option value="">▼ 市区町村を選択</option></select>
+            <button onclick="resetEqFilter()">クリア</button>
+            <button onclick="fetchQuakes(true)">🔄 更新</button>
+          </div>
+          <div id="quakeMap" aria-label="日本の地震マップ"></div>
+          <div class="eq-list" id="eqListAll"><div class="eq-empty">地震情報を読み込み中…</div></div>
+          <div class="eq-legend">
+            <span><i class="s10"></i>震度1</span><span><i class="s20"></i>2</span><span><i class="s30"></i>3</span>
+            <span><i class="s40"></i>4</span><span><i class="s50"></i>5弱/強</span><span><i class="s60"></i>6弱/強</span><span><i class="s70"></i>7</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="settings-page" class="page">
       <div class="section">
         <div class="section-head"><h2>⚙️ 詳細設定</h2></div>
@@ -493,6 +605,15 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
             <div class="desc">メインカラーを好きな色に変更できます。</div>
             <input type="color" id="primary-color-picker" value="#0b5fa5" onchange="changePrimaryColor(this.value)">
             <button class="btn ghost" onclick="resetPrimaryColor()" style="margin-left:8px">デフォルトに戻す</button>
+          </div>
+
+          <div class="setting-row">
+            <label>🕒 時刻の表示形式</label>
+            <div class="desc">ヘッダー時計を「24時間表示（通常）」または「AM/PM表示」に切り替えます。</div>
+            <select id="clock-format-select" onchange="changeClockFormat(this.value)">
+              <option value="24">24時間表示（通常タイプ）</option>
+              <option value="ampm">AM/PM表示（PMタイプ）</option>
+            </select>
           </div>
 
           <div class="setting-row">
@@ -598,6 +719,8 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
     <div><h4>メニュー</h4><ul>
       <li><a href="javascript:void(0)" onclick="showPage('home')">ホーム</a></li>
       <li><a href="javascript:void(0)" onclick="showPage('news')">お知らせ</a></li>
+      <li><a href="javascript:void(0)" onclick="showPage('newsfeed')">📰 ニュース</a></li>
+      <li><a href="javascript:void(0)" onclick="showPage('quake')">🔴 地震速報</a></li>
       <li><a href="javascript:void(0)" onclick="showPage('links')">リンク集</a></li>
       <li><a href="javascript:void(0)" onclick="showPage('games')">ゲーム</a></li>
     </ul></div>
@@ -615,6 +738,14 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 </footer>
 
 <!-- ───── ゲームモーダル ───── -->
+<!-- ───── ニュースモーダル ───── -->
+<div id="news-modal" onclick="if(event.target===this)closeNewsModal()">
+  <div class="nm-panel">
+    <button class="nm-close" onclick="closeNewsModal()" aria-label="閉じる">✖</button>
+    <div id="news-modal-body"></div>
+  </div>
+</div>
+
 <div id="game-modal">
   <div class="modal-controls">
     <button class="btn-fs" onclick="toggleFullScreen()">全画面</button>
@@ -731,34 +862,208 @@ function renderTicker(){
   move.innerHTML = cycle + cycle;
 }
 
-// P2P地震情報 API から実際の地震情報を取得
-async function fetchEarthquakes(){
-  try{
-    const res = await fetch('https://api.p2pquake.net/v2/history?codes=551&limit=5');
-    if(!res.ok) throw new Error('API error');
-    const data = await res.json();
-    const items = data.map(d => {
-      const eq = d.earthquake || {};
-      const h = eq.hypocenter || {};
-      const time = (eq.time || d.time || '').replace(/-/g,'/').slice(5,16);
-      const place = h.name || '不明';
-      const mag = h.magnitude != null && h.magnitude !== -1 ? `M${h.magnitude}` : '';
-      const scale = eq.maxScale != null ? scaleToShindo(eq.maxScale) : '';
-      return `${time} ${place} ${mag}${scale ? ' 最大震度' + scale : ''}`;
-    });
-    if(items.length) EQ_ITEMS = items;
-    else EQ_ITEMS = ["現在、地震に関する情報はありません。"];
-  }catch(e){
-    EQ_ITEMS = ["地震情報を取得できませんでした。"];
-  }
-  renderTicker();
-}
 function scaleToShindo(s){
   const map = {10:'1',20:'2',30:'3',40:'4',45:'5弱',50:'5強',55:'6弱',60:'6強',70:'7'};
   return map[s] || '';
 }
 
-// NHK ニュース RSS から実ニュースを取得（rss2json 経由）
+// P2P地震情報 API から実際の地震情報を取得（速報 + 詳細一覧）
+let QUAKES = []; // 正規化した地震データ
+async function fetchQuakes(force){
+  try{
+    const res = await fetch('https://api.p2pquake.net/v2/history?codes=551&limit=100');
+    if(!res.ok) throw new Error('API error');
+    const data = await res.json();
+    QUAKES = data.map(d => {
+      const eq = d.earthquake || {};
+      const h = eq.hypocenter || {};
+      return {
+        time: (eq.time || d.time || '').replace(/-/g,'/'),
+        place: h.name || '震源不明',
+        lat: (h.latitude != null && h.latitude !== -200) ? h.latitude : null,
+        lng: (h.longitude != null && h.longitude !== -200) ? h.longitude : null,
+        mag: (h.magnitude != null && h.magnitude !== -1) ? h.magnitude : null,
+        depth: (h.depth != null && h.depth !== -1) ? h.depth : null,
+        maxScale: eq.maxScale != null ? eq.maxScale : 0,
+        tsunami: eq.domesticTsunami || 'Unknown',
+        points: Array.isArray(d.points) ? d.points : [],
+      };
+    }).filter(q => q.time);
+
+    // ティッカー更新
+    EQ_ITEMS = QUAKES.slice(0,6).map(q => {
+      const sh = scaleToShindo(q.maxScale);
+      return `${q.time.slice(5,16)} ${q.place} ${q.mag!=null?'M'+q.mag:''}${sh?' 最大震度'+sh:''}`;
+    });
+    if(!EQ_ITEMS.length) EQ_ITEMS = ["現在、地震に関する情報はありません。"];
+  }catch(e){
+    if(!QUAKES.length) EQ_ITEMS = ["地震情報を取得できませんでした。"];
+  }
+  renderTicker();
+  buildPrefOptions();
+  renderQuakeHome();
+  renderQuakeList();
+  renderQuakeMap();
+  const up = document.getElementById('eqUpdated');
+  if(up) up.textContent = '最終更新: ' + new Date().toLocaleTimeString('ja-JP');
+}
+
+function eqShindoBox(scale){
+  const sh = scaleToShindo(scale) || '—';
+  return `<div class="eq-shindo s${scale||10}"><small>震度</small><b>${sh}</b></div>`;
+}
+function tsunamiText(t){
+  if(t==='None') return '津波の心配なし';
+  if(t==='Watch') return '津波注意報';
+  if(t==='Warning') return '津波警報';
+  return '';
+}
+
+function renderQuakeHome(){
+  const el = document.getElementById('eqListHome');
+  if(!el) return;
+  if(!QUAKES.length){ el.innerHTML = '<div class="eq-empty">地震情報を取得できませんでした。</div>'; return; }
+  el.innerHTML = QUAKES.slice(0,3).map(q => quakeItemHtml(q)).join('');
+}
+
+function quakeItemHtml(q, hit){
+  const ts = tsunamiText(q.tsunami);
+  return `<div class="eq-item">
+    ${eqShindoBox(q.maxScale)}
+    <div class="eq-meta">
+      <p class="eq-place">${q.place}</p>
+      <div class="eq-sub">
+        <span>🕒 ${q.time.slice(0,16)}</span>
+        ${q.mag!=null?`<span>規模 M${q.mag}</span>`:''}
+        ${q.depth!=null?`<span>深さ ${q.depth}km</span>`:''}
+        ${ts?`<span>${ts}</span>`:''}
+      </div>
+      ${hit?`<div class="eq-hit">${hit}</div>`:''}
+    </div>
+  </div>`;
+}
+
+// 都道府県・市区町村フィルタ
+function buildPrefOptions(){
+  const sel = document.getElementById('eqPref');
+  if(!sel || sel.dataset.built) return;
+  const prefs = [...new Set(QUAKES.flatMap(q => q.points.map(p => p.pref)).filter(Boolean))].sort();
+  if(!prefs.length) return;
+  sel.innerHTML = '<option value="">▼ 都道府県を選択</option>' + prefs.map(p => `<option value="${p}">${p}</option>`).join('');
+  sel.dataset.built = '1';
+}
+function onPrefChange(){
+  const pref = document.getElementById('eqPref').value;
+  const citySel = document.getElementById('eqCity');
+  if(pref){
+    const cities = [...new Set(QUAKES.flatMap(q => q.points.filter(p => p.pref===pref).map(p => p.addr)).filter(Boolean))].sort();
+    citySel.innerHTML = '<option value="">▼ 市区町村を選択（全て）</option>' + cities.map(c => `<option value="${c}">${c}</option>`).join('');
+  }else{
+    citySel.innerHTML = '<option value="">▼ 市区町村を選択</option>';
+  }
+  renderQuakeList();
+}
+function resetEqFilter(){
+  const p = document.getElementById('eqPref'); if(p) p.value='';
+  const c = document.getElementById('eqCity'); if(c) c.innerHTML='<option value="">▼ 市区町村を選択</option>';
+  renderQuakeList();
+}
+function renderQuakeList(){
+  const el = document.getElementById('eqListAll');
+  if(!el) return;
+  const pref = (document.getElementById('eqPref')||{}).value || '';
+  const city = (document.getElementById('eqCity')||{}).value || '';
+  let list = QUAKES;
+  if(pref){
+    list = QUAKES.filter(q => q.points.some(p => p.pref===pref && (!city || p.addr===city)));
+  }
+  if(!list.length){
+    el.innerHTML = '<div class="eq-empty">該当する地震の記録は見つかりませんでした。</div>';
+    return;
+  }
+  el.innerHTML = list.slice(0,50).map(q => {
+    let hit = '';
+    if(pref){
+      const pts = q.points.filter(p => p.pref===pref && (!city || p.addr===city));
+      if(pts.length){
+        const mx = Math.max(...pts.map(p => p.scale||0));
+        const where = city || pref;
+        hit = `📍 ${where}：観測震度 ${scaleToShindo(mx)||'—'}`;
+      }
+    }
+    return quakeItemHtml(q, hit);
+  }).join('');
+  renderQuakeMap();
+}
+
+
+// 地震マップ（Leaflet + OSM）
+let QUAKE_MAP = null;
+let QUAKE_MARKERS = [];
+function shindoColor(scale){
+  if(scale>=70) return '#7e22ce';
+  if(scale>=60) return '#b91c1c';
+  if(scale>=50) return '#dc2626';
+  if(scale>=40) return '#f59e0b';
+  if(scale>=30) return '#eab308';
+  if(scale>=20) return '#22c55e';
+  return '#3b82f6';
+}
+function renderQuakeMap(){
+  const el = document.getElementById('quakeMap');
+  if(!el || typeof L === 'undefined') return;
+  if(!QUAKE_MAP){
+    QUAKE_MAP = L.map(el, { scrollWheelZoom:false }).setView([37.5, 138.0], 5);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(QUAKE_MAP);
+  }
+  // 既存マーカー削除
+  QUAKE_MARKERS.forEach(m => QUAKE_MAP.removeLayer(m));
+  QUAKE_MARKERS = [];
+
+  const pref = (document.getElementById('eqPref')||{}).value || '';
+  const city = (document.getElementById('eqCity')||{}).value || '';
+  let list = QUAKES;
+  if(pref){
+    list = QUAKES.filter(q => q.points.some(p => p.pref===pref && (!city || p.addr===city)));
+  }
+  const shown = list.slice(0, 30).filter(q => q.lat != null && q.lng != null);
+  const bounds = [];
+  shown.forEach((q, idx) => {
+    const color = shindoColor(q.maxScale || 0);
+    const radius = 6 + Math.min(14, (q.maxScale||10)/6);
+    const marker = L.circleMarker([q.lat, q.lng], {
+      radius: radius,
+      color: '#fff',
+      weight: 2,
+      fillColor: color,
+      fillOpacity: idx === 0 ? 0.95 : 0.65
+    }).addTo(QUAKE_MAP);
+    const sh = scaleToShindo(q.maxScale) || '—';
+    marker.bindPopup(`<div class="eq-map-popup"><b>${q.place}</b><br>🕒 ${q.time.slice(0,16)}<br>${q.mag!=null?'規模 M'+q.mag+' ':''}${q.depth!=null?'深さ '+q.depth+'km':''}<br>最大震度 <b>${sh}</b></div>`);
+    QUAKE_MARKERS.push(marker);
+    bounds.push([q.lat, q.lng]);
+  });
+  if(shown.length && shown[0]){
+    // 最新震央を開く
+    QUAKE_MARKERS[0].openPopup();
+  }
+  if(pref && bounds.length){
+    QUAKE_MAP.fitBounds(bounds, { padding:[30,30], maxZoom:8 });
+  } else {
+    QUAKE_MAP.setView([37.5, 138.0], 5);
+  }
+  setTimeout(() => QUAKE_MAP.invalidateSize(), 100);
+}
+
+// NHK ニュース RSS から実ニュースを取得（rss2json 経由）＋画像付きカード描画
+let NEWS_FEED = [];
+function newsImg(url){
+  return 'https://api.microlink.io/?url=' + encodeURIComponent(url) + '&embed=image.url';
+}
+function stripHtml(s){ return (s||'').replace(/<[^>]*>/g,'').trim(); }
 async function fetchNews(){
   try{
     const url = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www3.nhk.or.jp/rss/news/cat0.xml');
@@ -767,12 +1072,67 @@ async function fetchNews(){
     const data = await res.json();
     if(data.items && data.items.length){
       NEWS_ITEMS = data.items.slice(0,10).map(i => `📰 ${i.title}`);
+      NEWS_FEED = data.items.slice(0,18).map(i => ({
+        title: i.title,
+        desc: stripHtml(i.description).slice(0,120),
+        fullDesc: stripHtml(i.description),
+        content: stripHtml(i.content || i.description || ''),
+        date: (i.pubDate||'').replace('T',' ').slice(0,16).replace(/-/g,'/'),
+        link: i.link,
+        img: (i.thumbnail || (i.enclosure && i.enclosure.link)) || newsImg(i.link),
+        src: 'NHK',
+      }));
     }
   }catch(e){
     // フォールバックとしてローカルNEWSを使用
   }
   renderTicker();
+  renderNewsFeed();
 }
+function newsCardHtml(n, idx){
+  const fb = "this.onerror=null;this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,var(--primary),var(--accent))';";
+  return `<a class="news-card" href="javascript:void(0)" onclick="openNewsModal(${idx})">
+    <div class="nc-thumb"><span class="nc-src">${n.src}</span><img src="${n.img}" alt="" loading="lazy" onerror="${fb}"></div>
+    <div class="nc-body">
+      <p class="nc-title">${n.title}</p>
+      ${n.desc?`<p class="nc-desc">${n.desc}</p>`:''}
+      <span class="nc-date">🕒 ${n.date}</span>
+    </div>
+  </a>`;
+}
+function openNewsModal(idx){
+  const n = NEWS_FEED[idx];
+  if(!n) return;
+  const modal = document.getElementById('news-modal');
+  const body = document.getElementById('news-modal-body');
+  const fb = "this.onerror=null;this.style.display='none';";
+  body.innerHTML = `
+    <div class="nm-thumb"><img src="${n.img}" alt="" onerror="${fb}"></div>
+    <span class="nm-src">${n.src}</span>
+    <h2 class="nm-title">${n.title}</h2>
+    <div class="nm-date">🕒 ${n.date}</div>
+    <p class="nm-desc">${(n.content||n.fullDesc||n.desc||'本文はありません。').replace(/\n/g,'<br>')}</p>
+    <a class="nm-link" href="${n.link}" target="_blank" rel="noopener">元のニュースを開く ↗</a>
+  `;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeNewsModal(){
+  document.getElementById('news-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function renderNewsFeed(){
+  const all = document.getElementById('newsCardsAll');
+  const home = document.getElementById('newsCardsHome');
+  if(!NEWS_FEED.length){
+    if(all) all.innerHTML = '<div class="eq-empty">ニュースを取得できませんでした。</div>';
+    if(home) home.innerHTML = '<div class="eq-empty">ニュースを読み込み中…</div>';
+    return;
+  }
+  if(all) all.innerHTML = NEWS_FEED.map((n,i)=>newsCardHtml(n,i)).join('');
+  if(home) home.innerHTML = NEWS_FEED.slice(0,6).map((n,i)=>newsCardHtml(n,i)).join('');
+}
+
 
 /* =================================================================
    ↓ 以下、レンダリングと既存機能（基本いじらなくてOK）
@@ -784,17 +1144,30 @@ document.getElementById('today').textContent =
   `${t.getFullYear()}/${String(t.getMonth()+1).padStart(2,'0')}/${String(t.getDate()).padStart(2,'0')}`;
 
 // リアルタイム時計（HH:MM:SS）
-(function(){
+let CLOCK_FORMAT = '24';
+function changeClockFormat(v){
+  CLOCK_FORMAT = (v === 'ampm') ? 'ampm' : '24';
+  saveSettings({ clockFormat: CLOCK_FORMAT });
+  renderClock();
+}
+function renderClock(){
   const el = document.getElementById('clock');
   if(!el) return;
   const pad = n => String(n).padStart(2,'0');
-  const tick = () => {
-    const d = new Date();
-    el.textContent = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-  };
-  tick();
-  setInterval(tick, 1000);
-})();
+  const d = new Date();
+  let h = d.getHours();
+  const m = pad(d.getMinutes());
+  const sec = pad(d.getSeconds());
+  if(CLOCK_FORMAT === 'ampm'){
+    const suf = h >= 12 ? 'PM' : 'AM';
+    let hh = h % 12; if(hh === 0) hh = 12;
+    el.textContent = `${pad(hh)}:${m}:${sec} ${suf}`;
+  } else {
+    el.textContent = `${pad(h)}:${m}:${sec}`;
+  }
+}
+renderClock();
+setInterval(renderClock, 1000);
 
 // 訪問者カウンター（疑似）
 document.getElementById('count').textContent = (Math.floor(Math.random()*100)+12300).toLocaleString();
@@ -867,6 +1240,7 @@ function showPage(id){
   });
   document.getElementById('gnav').classList.remove('open');
   window.scrollTo(0,0);
+  if(id === 'quake'){ setTimeout(() => { try{ renderQuakeMap(); }catch(e){} }, 60); }
 }
 
 // 設定（localStorageに保存）
@@ -921,6 +1295,11 @@ function applySavedSettings(){
     changeBackgroundPattern(s.bg);
     const sel = document.querySelector('#settings-page select:not(#font-select)'); if(sel) sel.value = s.bg;
   }
+  if(s.clockFormat){
+    CLOCK_FORMAT = s.clockFormat;
+    const cf = document.getElementById('clock-format-select'); if(cf) cf.value = s.clockFormat;
+    renderClock();
+  }
   if(s.font){
     document.body.style.fontFamily = s.font;
     const fs = document.getElementById('font-select'); if(fs) fs.value = s.font;
@@ -948,10 +1327,10 @@ renderGames();
 renderTicker();
 showPage('home');
 applySavedSettings();
-fetchEarthquakes();
+fetchQuakes();
 fetchNews();
-// 5分ごとに更新
-setInterval(fetchEarthquakes, 5*60*1000);
+// 定期更新（地震は速報性重視で頻度高め）
+setInterval(fetchQuakes, 60*1000);
 setInterval(fetchNews, 10*60*1000);
 </script>
 </body>
