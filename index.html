@@ -33,19 +33,23 @@
 @media(max-width:600px){.pixel-clock{font-size:1.4rem;padding:8px 12px;letter-spacing:2px}}
 .brand-clock{margin-left:18px;vertical-align:middle}
 .brand-weather{
-  display:inline-flex;align-items:center;gap:4px;
+  display:inline-flex;align-items:center;gap:6px;
   margin-left:10px;vertical-align:middle;
-  padding:4px 10px;border-radius:999px;
-  background:rgba(255,255,255,.15);
-  color:#fff;font-size:.85rem;font-weight:600;
-  backdrop-filter:blur(4px);
+  padding:5px 12px;border-radius:999px;
+  background:#ffffff;
+  color:#0a1220;font-size:.95rem;font-weight:800;
+  border:2px solid rgba(255,255,255,.9);
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
   cursor:pointer;
-  transition:background .2s;
+  transition:transform .15s, box-shadow .15s;
+  text-shadow:none;
 }
-.brand-weather:hover{background:rgba(255,255,255,.28)}
-.brand-weather .wx-i{font-size:1.05rem;line-height:1}
-.brand-weather .wx-t{font-variant-numeric:tabular-nums}
-@media(max-width:600px){.brand-weather{margin-left:6px;padding:3px 8px;font-size:.75rem}}
+.brand-weather:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.45)}
+.brand-weather .wx-i{font-size:1.25rem;line-height:1}
+.brand-weather .wx-t{font-variant-numeric:tabular-nums;color:#0a1220;font-weight:800;letter-spacing:.5px}
+@media(max-width:600px){.brand-weather{margin-left:6px;padding:4px 10px;font-size:.85rem}.brand-weather .wx-i{font-size:1.1rem}}
+body.dark-mode .brand-weather{background:#f8fafc;color:#0a1220;border-color:#f8fafc}
+body.dark-mode .brand-weather .wx-t{color:#0a1220}
 body.dark-mode .pixel-clock{background:#0a1220}
 
 /* 速報／ニュースティッカー */
@@ -472,6 +476,12 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 <style>
 #quakeMap{height:360px;border-radius:10px;border:1px solid var(--border);margin:14px 0;z-index:0}
 .eq-map-popup b{color:var(--primary)}
+#wxMap{height:380px;border-radius:10px;border:1px solid var(--border);margin:14px 0;z-index:0;background:#e8eef4}
+@media(max-width:600px){#wxMap{height:300px}}
+#wxMap .leaflet-control-attribution{font-size:.62rem}
+.wx-map-wrap{margin:14px 0}
+.wx-map-legend{display:flex;flex-wrap:wrap;gap:10px;font-size:.75rem;color:var(--text-muted);margin-top:6px;align-items:center}
+.wx-map-legend .sw{display:inline-block;width:14px;height:8px;border-radius:2px;vertical-align:middle;margin-right:4px}
 </style>
 </head>
 <body>
@@ -632,6 +642,19 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
             </div>
           </div>
           <div id="wxToday"></div>
+          <div class="wx-map-wrap">
+            <h3 style="margin:18px 0 10px;font-size:1rem">🗺️ 雨雲レーダー（マップ）</h3>
+            <div id="wxMap" aria-label="雨雲レーダーマップ"></div>
+            <div class="wx-map-legend">
+              <span>雨の強さ:</span>
+              <span><i class="sw" style="background:#93c5fd"></i>弱</span>
+              <span><i class="sw" style="background:#3b82f6"></i>中</span>
+              <span><i class="sw" style="background:#1e3a8a"></i>強</span>
+              <span><i class="sw" style="background:#f59e0b"></i>非常に強い</span>
+              <span><i class="sw" style="background:#dc2626"></i>猛烈</span>
+              <a id="wxYahooMap" href="https://weather.yahoo.co.jp/weather/zoomradar/" target="_blank" rel="noopener" style="margin-left:auto;color:var(--primary);font-weight:700;text-decoration:none">Yahoo!天気 雨雲レーダーを開く ↗</a>
+            </div>
+          </div>
           <h3 style="margin:18px 0 10px;font-size:1rem">週間予報</h3>
           <div class="wx-week" id="wxWeek"><div class="wx-empty">読み込み中…</div></div>
           <p class="muted" style="font-size:.75rem;margin-top:14px">※ 「設定」ページで都道府県・地域を選ぶと、その地域の予報が表示されます。</p>
@@ -1677,11 +1700,78 @@ applySavedSettings = function(){
   }
 };
 
+// ================= 天気マップ（雨雲レーダー） =================
+const PREF_COORDS = {
+  '北海道':[43.06,141.35,7],'青森県':[40.82,140.74,8],'岩手県':[39.70,141.15,8],'宮城県':[38.27,140.87,8],
+  '秋田県':[39.72,140.10,8],'山形県':[38.24,140.36,8],'福島県':[37.75,140.47,8],'茨城県':[36.34,140.45,8],
+  '栃木県':[36.57,139.88,8],'群馬県':[36.39,139.06,8],'埼玉県':[35.86,139.65,9],'千葉県':[35.60,140.12,8],
+  '東京都':[35.69,139.69,10],'神奈川県':[35.45,139.64,9],'新潟県':[37.90,139.02,8],'富山県':[36.70,137.21,9],
+  '石川県':[36.59,136.63,9],'福井県':[36.07,136.22,9],'山梨県':[35.66,138.57,9],'長野県':[36.65,138.18,8],
+  '岐阜県':[35.39,136.72,8],'静岡県':[34.98,138.38,8],'愛知県':[35.18,136.91,9],'三重県':[34.73,136.51,8],
+  '滋賀県':[35.00,135.87,9],'京都府':[35.02,135.76,9],'大阪府':[34.69,135.52,10],'兵庫県':[34.69,135.18,8],
+  '奈良県':[34.69,135.83,9],'和歌山県':[34.23,135.17,9],'鳥取県':[35.50,134.24,9],'島根県':[35.47,133.05,8],
+  '岡山県':[34.66,133.93,9],'広島県':[34.40,132.46,8],'山口県':[34.19,131.47,8],'徳島県':[34.07,134.56,9],
+  '香川県':[34.34,134.04,9],'愛媛県':[33.84,132.77,8],'高知県':[33.56,133.53,8],'福岡県':[33.61,130.42,9],
+  '佐賀県':[33.25,130.30,9],'長崎県':[32.75,129.88,8],'熊本県':[32.79,130.74,8],'大分県':[33.24,131.61,8],
+  '宮崎県':[31.91,131.42,8],'鹿児島県':[31.56,130.56,7],'沖縄県':[26.21,127.68,8]
+};
+let WX_MAP=null, WX_MARKER=null, WX_RAIN=null, WX_RAIN_TIMES=[], WX_RAIN_IDX=0;
+
+async function initWxMap(){
+  const el = document.getElementById('wxMap');
+  if(!el || typeof L === 'undefined') return;
+  const [lat,lng,zoom] = PREF_COORDS[WX_PREF] || [36.5,138.2,5];
+  const fixSize = () => { try{ WX_MAP && WX_MAP.invalidateSize(true); }catch(_){} };
+  if(!WX_MAP){
+    try{
+      WX_MAP = L.map(el, { scrollWheelZoom:false, zoomControl:true, worldCopyJump:false }).setView([lat,lng], zoom);
+    }catch(e){ console.warn('map init failed', e); return; }
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom:12, minZoom:4, subdomains:'abc',
+      attribution:'&copy; OpenStreetMap contributors | Rain: RainViewer'
+    }).addTo(WX_MAP);
+    // 表示直後・遅延ロード・リサイズに備え複数回サイズ再計算
+    [50,200,500,1200].forEach(t => setTimeout(fixSize, t));
+    window.addEventListener('resize', fixSize);
+  } else {
+    WX_MAP.setView([lat,lng], zoom);
+    [50,250].forEach(t => setTimeout(fixSize, t));
+  }
+  if(WX_MARKER){ WX_MAP.removeLayer(WX_MARKER); WX_MARKER=null; }
+  if(WX_PREF){
+    WX_MARKER = L.marker([lat,lng]).addTo(WX_MAP).bindPopup(`<b>${WX_PREF}</b>`).openPopup();
+  }
+  // Yahoo!天気マップリンクを都道府県ページへ
+  const ym = document.getElementById('wxYahooMap');
+  if(ym){
+    ym.href = WX_PREF
+      ? 'https://weather.yahoo.co.jp/weather/search/?p=' + encodeURIComponent(WX_PREF)
+      : 'https://weather.yahoo.co.jp/weather/zoomradar/';
+  }
+  // 雨雲（RainViewer 無料タイル）
+  try{
+    const res = await fetch('https://api.rainviewer.com/public/weather-maps.json');
+    const data = await res.json();
+    const frames = (data.radar && data.radar.nowcast && data.radar.nowcast.length)
+      ? data.radar.nowcast
+      : (data.radar && data.radar.past) ? data.radar.past : [];
+    if(frames.length){
+      const f = frames[frames.length-1];
+      const host = data.host;
+      if(WX_RAIN){ WX_MAP.removeLayer(WX_RAIN); WX_RAIN=null; }
+      WX_RAIN = L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/4/1_1.png`, {
+        opacity:0.65, maxZoom:12, minZoom:4, tileSize:256
+      }).addTo(WX_RAIN ? null : WX_MAP);
+      fixSize();
+    }
+  }catch(e){ console.warn('rain layer failed', e); }
+}
+
 // showPage拡張: 天気ページ表示時に読み込み
 const _origShowPage = showPage;
 showPage = function(id){
   _origShowPage(id);
-  if(id === 'weather'){ buildWxPrefOptions(); fetchWeather(); }
+  if(id === 'weather'){ buildWxPrefOptions(); fetchWeather(); setTimeout(initWxMap, 100); }
 };
 
 // 初期化
