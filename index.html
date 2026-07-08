@@ -50,6 +50,24 @@
 @media(max-width:600px){.brand-weather{margin-left:6px;padding:4px 10px;font-size:.85rem}.brand-weather .wx-i{font-size:1.1rem}}
 body.dark-mode .brand-weather{background:#f8fafc;color:#0a1220;border-color:#f8fafc}
 body.dark-mode .brand-weather .wx-t{color:#0a1220}
+/* 通知ベル */
+.notif-btn{position:relative;background:transparent;border:none;font-size:1.35rem;cursor:pointer;padding:6px 8px;border-radius:8px;color:inherit;line-height:1;transition:background .15s}
+.notif-btn:hover{background:color-mix(in oklab, var(--primary) 15%, transparent)}
+.notif-dot{position:absolute;top:4px;right:4px;width:10px;height:10px;background:#e11d48;border:2px solid var(--header-bg,#fff);border-radius:50%;display:none;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.notif-btn.has-new .notif-dot{display:block;animation:notifPulse 1.6s ease-in-out infinite}
+@keyframes notifPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.75}}
+.notif-panel{position:absolute;top:calc(100% + 8px);right:0;width:min(340px,calc(100vw - 24px));background:var(--surface,#fff);color:var(--text,inherit);border:1px solid var(--border,#e5e7eb);border-radius:12px;box-shadow:0 12px 32px -8px rgba(0,0,0,.25);z-index:1200;display:none;overflow:hidden}
+.notif-panel.open{display:block}
+.notif-panel .np-head{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.9rem}
+.notif-panel .np-list{max-height:360px;overflow-y:auto;list-style:none;margin:0;padding:0}
+.notif-panel .np-list li{padding:10px 14px;border-bottom:1px solid var(--border);font-size:.85rem;line-height:1.45}
+.notif-panel .np-list li:last-child{border-bottom:none}
+.notif-panel .np-list li.new{background:color-mix(in oklab, #e11d48 8%, transparent)}
+.notif-panel .np-list .np-date{color:var(--text-muted);font-size:.72rem;display:block;margin-bottom:2px;font-variant-numeric:tabular-nums}
+.notif-panel .np-list .np-badge{display:inline-block;font-size:.62rem;padding:1px 6px;border-radius:4px;background:#e11d48;color:#fff;margin-left:6px;vertical-align:middle}
+.notif-wrap{position:relative;display:inline-block}
+/* 動画対応 */
+.nm-video{width:100%;border-radius:8px;background:#000;margin-bottom:10px;max-height:60vh}
 body.dark-mode .pixel-clock{background:#0a1220}
 
 /* 速報／ニュースティッカー */
@@ -521,6 +539,15 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
     </a>
     <div class="header-search">
       <input type="search" placeholder="サイト内を検索…" id="searchInput" onkeyup="filterLinks(this.value)">
+      <div class="notif-wrap">
+        <button class="notif-btn" id="notifBtn" onclick="toggleNotif(event)" title="お知らせ通知" aria-label="通知">
+          🔔<span class="notif-dot" id="notifDot"></span>
+        </button>
+        <div class="notif-panel" id="notifPanel">
+          <div class="np-head"><span>📢 お知らせ</span><a href="javascript:void(0)" onclick="showPage('news');closeNotif()" style="font-size:.75rem;font-weight:500">一覧 ›</a></div>
+          <ul class="np-list" id="notifList"></ul>
+        </div>
+      </div>
       <button class="icon-btn" onclick="toggleTheme()" title="ダーク/ライト">🌓</button>
     </div>
   </div>
@@ -1194,16 +1221,24 @@ async function fetchNews(){
     const data = await res.json();
     if(data.items && data.items.length){
       NEWS_ITEMS = data.items.slice(0,10).map(i => `📰 ${i.title}`);
-      NEWS_FEED = data.items.slice(0,30).map(i => ({
-        title: i.title,
-        desc: stripHtml(i.description).slice(0,120),
-        fullDesc: stripHtml(i.description),
-        content: stripHtml(i.content || i.description || ''),
-        date: (i.pubDate||'').replace('T',' ').slice(0,16).replace(/-/g,'/'),
-        link: i.link,
-        img: (i.thumbnail || (i.enclosure && i.enclosure.link)) || newsImg(i.link),
-        src: 'NHK',
-      }));
+      NEWS_FEED = data.items.slice(0,30).map(i => {
+        const enc = i.enclosure || null;
+        const encType = (enc && enc.type) ? String(enc.type) : '';
+        const encLink = (enc && enc.link) ? String(enc.link) : '';
+        const isVideo = /^video\//i.test(encType) || /\.(mp4|m3u8|webm|mov)(\?|$)/i.test(encLink);
+        return {
+          title: i.title,
+          desc: stripHtml(i.description).slice(0,120),
+          fullDesc: stripHtml(i.description),
+          content: stripHtml(i.content || i.description || ''),
+          date: (i.pubDate||'').replace('T',' ').slice(0,16).replace(/-/g,'/'),
+          link: i.link,
+          img: (i.thumbnail || (!isVideo && encLink)) || newsImg(i.link),
+          video: isVideo ? encLink : null,
+          videoType: isVideo ? (encType || 'video/mp4') : null,
+          src: 'NHK',
+        };
+      });
     }
   }catch(e){
     // フォールバックとしてローカルNEWSを使用
@@ -1213,8 +1248,9 @@ async function fetchNews(){
 }
 function newsCardHtml(n, idx){
   const fb = "this.onerror=null;this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,var(--primary),var(--accent))';";
+  const playBadge = n.video ? '<span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);pointer-events:none">▶</span>' : '';
   return `<a class="news-card" href="javascript:void(0)" onclick="openNewsModal(${idx})">
-    <div class="nc-thumb"><span class="nc-src">${n.src}</span><img src="${n.img}" alt="" loading="lazy" onerror="${fb}"></div>
+    <div class="nc-thumb"><span class="nc-src">${n.src}${n.video?' 🎬':''}</span><img src="${n.img}" alt="" loading="lazy" onerror="${fb}">${playBadge}</div>
     <div class="nc-body">
       <p class="nc-title">${n.title}</p>
       ${n.desc?`<p class="nc-desc">${n.desc}</p>`:''}
@@ -1228,9 +1264,12 @@ function openNewsModal(idx){
   const modal = document.getElementById('news-modal');
   const body = document.getElementById('news-modal-body');
   const fb = "this.onerror=null;this.style.display='none';";
+  const mediaHtml = n.video
+    ? `<video class="nm-video" controls playsinline preload="metadata" ${n.img?`poster="${n.img}"`:''}><source src="${n.video}" type="${n.videoType||'video/mp4'}">お使いのブラウザは動画に対応していません。</video>`
+    : `<div class="nm-thumb"><img src="${n.img}" alt="" onerror="${fb}"></div>`;
   body.innerHTML = `
-    <div class="nm-thumb"><img src="${n.img}" alt="" onerror="${fb}"></div>
-    <span class="nm-src">${n.src}</span>
+    ${mediaHtml}
+    <span class="nm-src">${n.src}${n.video?' 🎬':''}</span>
     <h2 class="nm-title">${n.title}</h2>
     <div class="nm-date">🕒 ${n.date}</div>
     <p class="nm-desc">${(n.content||n.fullDesc||n.desc||'本文はありません。').replace(/\n/g,'<br>')}</p>
@@ -1305,6 +1344,44 @@ function renderNews(){
   document.getElementById('recentNews').innerHTML =
     NEWS.slice(0,4).map(n=>`<li><div class="muted" style="font-size:.75rem">${n.date}</div>${n.title}</li>`).join('');
 }
+
+// 通知（お知らせ）
+const NOTIF_KEY = 'nakayosi_notif_lastseen_v1';
+function getLastSeen(){ try{ return localStorage.getItem(NOTIF_KEY) || ''; }catch(e){ return ''; } }
+function setLastSeen(v){ try{ localStorage.setItem(NOTIF_KEY, v); }catch(e){} }
+function renderNotif(){
+  const list = document.getElementById('notifList');
+  const btn  = document.getElementById('notifBtn');
+  if(!list || !btn) return;
+  const lastSeen = getLastSeen();
+  let hasNew = false;
+  list.innerHTML = NEWS.slice(0,8).map(n=>{
+    const isNew = !lastSeen || n.date > lastSeen;
+    if(isNew) hasNew = true;
+    return `<li class="${isNew?'new':''}"><span class="np-date">${n.date}${isNew?'<span class="np-badge">NEW</span>':''}</span>${n.title}</li>`;
+  }).join('') || '<li style="color:var(--text-muted)">お知らせはありません</li>';
+  btn.classList.toggle('has-new', hasNew);
+}
+function toggleNotif(e){
+  if(e) e.stopPropagation();
+  const panel = document.getElementById('notifPanel');
+  const wasOpen = panel.classList.contains('open');
+  panel.classList.toggle('open');
+  if(!wasOpen){
+    // 開いた時点で既読
+    if(NEWS[0]) setLastSeen(NEWS[0].date);
+    renderNotif();
+  }
+}
+function closeNotif(){
+  const panel = document.getElementById('notifPanel');
+  if(panel) panel.classList.remove('open');
+}
+document.addEventListener('click', (e)=>{
+  const wrap = document.querySelector('.notif-wrap');
+  if(wrap && !wrap.contains(e.target)) closeNotif();
+});
+
 
 // リンク描画
 function renderLinks(){
@@ -1777,6 +1854,7 @@ showPage = function(id){
 
 // 初期化
 renderNews();
+renderNotif();
 renderLinks();
 renderGames();
 renderTicker();
