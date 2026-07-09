@@ -542,6 +542,12 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 .eq-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;font-size:.72rem;color:var(--text-muted)}
 .eq-legend span{display:inline-flex;align-items:center;gap:5px}
 .eq-legend i{width:14px;height:14px;border-radius:3px;display:inline-block}
+
+.theme-toggle-btn{display:inline-flex;align-items:center;justify-content:center;gap:0;color:var(--text)}
+.theme-toggle-btn .theme-icon{display:none;width:20px;height:20px}
+.theme-toggle-btn .theme-icon-moon{display:block}
+body.dark-mode .theme-toggle-btn .theme-icon-moon{display:none}
+body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -603,7 +609,10 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
           <ul class="np-list" id="notifList"></ul>
         </div>
       </div>
-      <button class="icon-btn" onclick="toggleTheme()" title="ダーク/ライト">🌓</button>
+      <button class="icon-btn theme-toggle-btn" onclick="toggleTheme()" title="ダーク/ライト" aria-label="ダーク/ライト切替">
+        <svg class="theme-icon theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <svg class="theme-icon theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
   </div>
 </header>
@@ -791,6 +800,17 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
             <label>🌓 表示モード</label>
             <div class="desc">ライト／ダークを切り替えます。</div>
             <button class="btn" onclick="toggleTheme()">モードを切り替える</button>
+          </div>
+
+          <div class="setting-row">
+            <label>🕵️ 偽装モード（タブのタイトル・アイコン）</label>
+            <div class="desc">ブラウザタブに表示されるページタイトルとファビコンを別のサイトに偽装します。授業中などにこっそり使いたいときに便利です。</div>
+            <select id="disguise-select" onchange="changeDisguise(this.value)">
+              <option value="off">オフ（通常表示）</option>
+              <option value="google">Google</option>
+              <option value="gtranslate">Google 翻訳</option>
+              <option value="classroom">ホーム - Classroom</option>
+            </select>
           </div>
 
           <div class="setting-row">
@@ -1586,6 +1606,35 @@ function applySavedSettings(){
     const pv = document.getElementById('bg-image-preview');
     if(pv) pv.innerHTML = `<img src="${s.bgImage}" alt="背景プレビュー" style="max-width:220px;max-height:130px;border-radius:8px;border:1px solid var(--border)">`;
   }
+  if(s.disguise){
+    const d = document.getElementById('disguise-select'); if(d) d.value = s.disguise;
+    applyDisguise(s.disguise);
+  }
+}
+
+
+// ================= 偽装モード =================
+const DISGUISE_PRESETS = {
+  off:        { title: null, favicon: null },
+  google:     { title: 'Google',            favicon: 'https://www.google.com/favicon.ico' },
+  gtranslate: { title: 'Google 翻訳',        favicon: 'https://translate.google.com/favicon.ico' },
+  classroom:  { title: 'ホーム - Classroom', favicon: 'https://ssl.gstatic.com/classroom/favicon.png' }
+};
+let ORIGINAL_TITLE = document.title;
+function setFavicon(href){
+  let link = document.querySelector('link[rel="icon"]');
+  if(!link){ link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+  if(href){ link.href = href; link.type = ''; }
+  else { link.href = '/favicon.ico'; link.type = 'image/x-icon'; }
+}
+function applyDisguise(mode){
+  const p = DISGUISE_PRESETS[mode] || DISGUISE_PRESETS.off;
+  if(p.title){ document.title = p.title; setFavicon(p.favicon); }
+  else { document.title = ORIGINAL_TITLE; setFavicon(null); }
+}
+function changeDisguise(mode){
+  saveSettings({ disguise: mode });
+  applyDisguise(mode);
 }
 
 // ================= 背景画像（GIF対応） =================
