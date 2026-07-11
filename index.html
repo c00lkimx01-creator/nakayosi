@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/site-icon.png">
 <title>仲良し *インスタンス* 2 — 情報ポータル</title>
 <style>
 /* ============================================================
@@ -1788,7 +1789,7 @@ function setFavicon(href){
   let link = document.querySelector('link[rel="icon"]');
   if(!link){ link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
   if(href){ link.href = href; link.type = ''; }
-  else { link.href = '/favicon.ico'; link.type = 'image/x-icon'; }
+  else { link.href = '/site-icon.png'; link.type = 'image/png'; }
 }
 function applyDisguise(mode){
   const p = DISGUISE_PRESETS[mode] || DISGUISE_PRESETS.off;
