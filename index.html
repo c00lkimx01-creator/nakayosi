@@ -428,6 +428,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 #game-modal{display:none;position:fixed;inset:0;background:rgba(8,10,16,.94);backdrop-filter:blur(10px);z-index:1000;flex-direction:column;justify-content:center;align-items:center;padding:24px;gap:0}
 .gm-shell{width:100%;max-width:1180px;height:min(88vh,900px);background:#0f1420;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06)}
 .gm-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(180deg,#1a2030,#141926);border-bottom:1px solid rgba(255,255,255,.06)}
+#game-modal.fs-active .gm-bar{display:none}
 .gm-title{flex:1;min-width:0;color:#fff;font-weight:700;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:10px}
 .gm-title .gm-logo{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#7c3aed,#ec4899);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 .gm-title .gm-logo svg{width:14px;height:14px;fill:#fff}
@@ -1605,6 +1606,15 @@ function filterLinksByTag(tag){
 }
 
 // ゲーム描画 (CrazyGames風)
+const TAG_ICONS = {
+  'GAMES':'🎮',
+  '.io':'🌐',
+  'Shooter':'🔫',
+  'Puzzle':'🧩',
+  'Horror':'👻',
+  'Minecraft':'⛏️',
+  'Clicker':'👆'
+};
 let CG_ACTIVE_TAG = 'ALL';
 function renderGames(){
   const playSvg = '<span class="play-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
@@ -1626,11 +1636,11 @@ function renderGames(){
   const tags = ['ALL', ...Array.from(new Set(GAMES.map(g => g.tag).filter(Boolean)))];
   const chipsEl = document.getElementById('cgChips');
   if(chipsEl){
-    chipsEl.innerHTML = tags.map(t => `<button class="cg-chip${t===CG_ACTIVE_TAG?' active':''}" onclick="filterGamesByTag('${t}')">${t==='ALL'?'すべて':t}</button>`).join('');
+    chipsEl.innerHTML = tags.map(t => `<button class="cg-chip${t===CG_ACTIVE_TAG?' active':''}" onclick="filterGamesByTag('${t}')">${t==='ALL'?'すべて':(TAG_ICONS[t]||'🏷️')+' '+t}</button>`).join('');
   }
   const catsEl = document.getElementById('cgCats');
   if(catsEl){
-    catsEl.innerHTML = tags.map(t => `<li><button class="cg-cat${t===CG_ACTIVE_TAG?' active':''}" onclick="filterGamesByTag('${t}')">${t==='ALL'?'🎮 すべて':'🏷️ '+t} <span class="cg-count">${t==='ALL'?GAMES.length:GAMES.filter(g=>g.tag===t).length}</span></button></li>`).join('');
+    catsEl.innerHTML = tags.map(t => `<li><button class="cg-cat${t===CG_ACTIVE_TAG?' active':''}" onclick="filterGamesByTag('${t}')">${t==='ALL'?'🎮 すべて':(TAG_ICONS[t]||'🏷️')+' '+t} <span class="cg-count">${t==='ALL'?GAMES.length:GAMES.filter(g=>g.tag===t).length}</span></button></li>`).join('');
   }
 
   // Hero: featured (first game)
@@ -1869,11 +1879,20 @@ function reloadGame(){
   const src = f.src; f.src=''; setTimeout(()=>{ f.src = src; }, 40);
 }
 function toggleFullScreen(){
-  const shell = document.querySelector('#game-modal .gm-shell') || document.getElementById('game-frame');
-  if(!document.fullscreenElement){ shell.requestFullscreen?.(); } else { document.exitFullscreen(); }
+  const frame = document.getElementById('game-frame');
+  if(!document.fullscreenElement){ frame.requestFullscreen?.(); } else { document.exitFullscreen(); }
 }
+function syncGameBar(){
+  const modal = document.getElementById('game-modal');
+  if(document.fullscreenElement && modal.contains(document.fullscreenElement)){
+    modal.classList.add('fs-active');
+  } else {
+    modal.classList.remove('fs-active');
+  }
+}
+document.addEventListener('fullscreenchange', syncGameBar);
 document.addEventListener('keydown',(e)=>{
-  if(e.key==='Escape' && document.getElementById('game-modal').style.display==='flex') closeGame();
+  if(e.key==='Escape' && !document.fullscreenElement && document.getElementById('game-modal').style.display==='flex') closeGame();
 });
 
 
