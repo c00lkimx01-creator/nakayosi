@@ -695,7 +695,7 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
       <a href="javascript:void(0)" onclick="showPage('settings')" class="nav-link" data-page="settings">設定</a>
       <a href="javascript:void(0)" onclick="showPage('terms')" class="nav-link" data-page="terms">利用規約</a>
       <a href="https://script.google.com/macros/s/AKfycbxfO1SQu_E3Ybd54mIO7knJBtzrrq4hoOa4YzDzNWkPWURjn2mbDiXaFaZXwygWR24A1Q/exec" target="_blank">🤖AI ↗</a>
-      <a href="https://nkys-chat-ver-1-3-0--kageproject.replit.app/" target="_blank">💬CHAT ↗</a>
+      <a href="javascript:void(0)" onclick="openChatModal()">💬CHAT</a>
     </div>
   </div>
 </nav>
@@ -990,7 +990,7 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
       <div class="widget-head">🔥 人気リンク</div>
       <div class="widget-body">
         <ul>
-          <li><a href="https://nkys-chat-ver-1-3-0--kageproject.replit.app/" target="_blank">💬 仲良しCHAT</a></li>
+          <li><a href="javascript:void(0)" onclick="openChatModal()">💬 仲良しCHAT</a></li>
           <li><a href="https://ono-tube.duckdns.org" target="_blank">▶️斧Tube / AXETube 🅝🅔🅦</a></li>
           <li><a href="https://appetize.io/embed/xc1w6f1krd589zhp22a0mgftyw?autoplay=false&debutrue&&device=galaxytabs7&osVersion=26.0&orientation=landscape" target="_blank">💻Galaxy Tabs7</a></li>
           <li><a href="https://rammer.nana.3d-mart.ru/" target="_blank">🌐Rammer Head</a></li>
@@ -1027,7 +1027,7 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
     </ul></div>
     <div><h4>外部</h4><ul>
       <li><a href="https://sites.google.com/view/nakayosi-instance/" target="_blank">公式サイト ↗</a></li>
-      <li><a href="https://nkys-chat-ver-1-3-0--kageproject.replit.app/" target="_blank">仲良しCHAT ↗</a></li>
+      <li><a href="javascript:void(0)" onclick="openChatModal()">仲良しCHAT ↗</a></li>
       <li><a href="https://script.google.com/macros/s/AKfycbxfO1SQu_E3Ybd54mIO7knJBtzrrq4hoOa4YzDzNWkPWURjn2mbDiXaFaZXwygWR24A1Q/exec" target="_blank">AI ↗</a></li>
     </ul></div>
   </div>
@@ -2174,6 +2174,34 @@ fetchNews();
 setInterval(fetchQuakes, 30*1000);
 setInterval(fetchNews, 10*60*1000);
 setInterval(() => { if(WX_PREF) fetchWeather(); }, 15*60*1000);
+</script>
+
+<!-- ───── CHATモーダル ───── -->
+<div id="chat-modal" onclick="if(event.target===this)closeChatModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1200;justify-content:center;align-items:center;padding:20px;backdrop-filter:blur(4px)">
+  <div style="background:var(--surface);width:100%;max-width:1100px;height:90vh;border-radius:14px;position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.6);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface-2);border-bottom:1px solid var(--border)">
+      <strong style="font-size:.95rem">💬 CHAT</strong>
+      <div style="display:flex;gap:8px">
+        <a href="https://cozy-bundle-up.lovable.app" target="_blank" rel="noopener" style="font-size:.85rem;color:var(--primary);text-decoration:none">新しいタブで開く ↗</a>
+        <button onclick="closeChatModal()" aria-label="閉じる" style="background:transparent;border:0;font-size:1.1rem;cursor:pointer;color:var(--text)">✖</button>
+      </div>
+    </div>
+    <iframe id="chat-iframe" src="about:blank" style="flex:1;width:100%;border:0;background:#fff" allow="clipboard-read; clipboard-write; microphone; camera"></iframe>
+  </div>
+</div>
+<script>
+function openChatModal(){
+  const m=document.getElementById('chat-modal');
+  const f=document.getElementById('chat-iframe');
+  if(f.src!=='https://cozy-bundle-up.lovable.app/') f.src='https://cozy-bundle-up.lovable.app/';
+  m.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closeChatModal(){
+  document.getElementById('chat-modal').style.display='none';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChatModal();});
 </script>
 </body>
 </html>
