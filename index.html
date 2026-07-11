@@ -2177,30 +2177,161 @@ setInterval(fetchNews, 10*60*1000);
 setInterval(() => { if(WX_PREF) fetchWeather(); }, 15*60*1000);
 </script>
 
-<!-- ───── CHATモーダル ───── -->
-<div id="chat-modal" onclick="if(event.target===this)closeChatModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1200;justify-content:center;align-items:center;padding:20px;backdrop-filter:blur(4px)">
-  <div style="background:var(--surface);width:100%;max-width:1100px;height:90vh;border-radius:14px;position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.6);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface-2);border-bottom:1px solid var(--border)">
-      <strong style="font-size:.95rem">💬 CHAT</strong>
-      <div style="display:flex;gap:8px">
-        <a href="https://cozy-bundle-up.lovable.app" target="_blank" rel="noopener" style="font-size:.85rem;color:var(--primary);text-decoration:none">新しいタブで開く ↗</a>
-        <button onclick="closeChatModal()" aria-label="閉じる" style="background:transparent;border:0;font-size:1.1rem;cursor:pointer;color:var(--text)">✖</button>
+<!-- ───── CHATモーダル（サイトデザイン統一版） ───── -->
+<style>
+  .chat-modal-backdrop{
+    display:none;position:fixed;inset:0;z-index:1200;
+    background:radial-gradient(ellipse at top, color-mix(in oklab, var(--primary) 20%, transparent) 0%, rgba(0,0,0,.78) 60%);
+    backdrop-filter:blur(6px) saturate(120%);
+    -webkit-backdrop-filter:blur(6px) saturate(120%);
+    justify-content:center;align-items:center;padding:20px;
+    animation:chatFade .18s ease-out;
+  }
+  @keyframes chatFade{from{opacity:0}to{opacity:1}}
+  @keyframes chatPop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+
+  .chat-modal{
+    background:var(--surface);
+    width:100%;max-width:1100px;height:90vh;
+    border-radius:16px;position:relative;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.55), 0 0 0 1px var(--border), inset 0 0 0 1px color-mix(in oklab, var(--primary) 8%, transparent);
+    overflow:hidden;display:flex;flex-direction:column;
+    animation:chatPop .22s cubic-bezier(.2,.9,.3,1);
+    font-family:'Zen Maru Gothic','M PLUS Rounded 1c','Noto Sans JP',system-ui,sans-serif;
+  }
+
+  .chat-modal__header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 16px;
+    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+    color:#fff;
+    border-bottom:1px solid color-mix(in oklab, var(--primary) 40%, transparent);
+    box-shadow:0 2px 12px -4px color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+  .chat-modal__title{
+    display:flex;align-items:center;gap:10px;
+    font-weight:700;font-size:1rem;letter-spacing:.3px;
+  }
+  .chat-modal__title .chat-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:3px 10px;border-radius:999px;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    font-size:.75rem;font-weight:700;letter-spacing:.5px;
+  }
+  .chat-modal__title .chat-status{
+    display:inline-block;width:8px;height:8px;border-radius:50%;
+    background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.28), 0 0 10px rgba(34,197,94,.55);
+    animation:chatPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes chatPulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+  .chat-modal__actions{display:flex;align-items:center;gap:4px}
+  .chat-iconbtn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:34px;height:34px;border-radius:8px;
+    background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.20);
+    color:#fff;cursor:pointer;font-size:1rem;line-height:1;
+    transition:background .15s, transform .15s, border-color .15s;
+    text-decoration:none;
+  }
+  .chat-iconbtn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.45);transform:translateY(-1px);color:#fff;text-decoration:none}
+  .chat-iconbtn:active{transform:translateY(0)}
+  .chat-iconbtn.danger:hover{background:rgba(255,90,90,.35);border-color:rgba(255,180,180,.6)}
+
+  .chat-modal__frame-wrap{
+    position:relative;flex:1;background:var(--surface-2);
+  }
+  .chat-modal__frame{
+    position:absolute;inset:0;width:100%;height:100%;
+    border:0;background:#fff;
+  }
+  .chat-modal__loading{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:12px;
+    background:var(--surface-2);color:var(--text-muted);
+    font-size:.9rem;pointer-events:none;transition:opacity .25s;
+  }
+  .chat-modal__loading.hidden{opacity:0}
+  .chat-spinner{
+    width:36px;height:36px;border-radius:50%;
+    border:3px solid color-mix(in oklab, var(--primary) 20%, transparent);
+    border-top-color:var(--primary);
+    animation:chatSpin .8s linear infinite;
+  }
+  @keyframes chatSpin{to{transform:rotate(360deg)}}
+
+  .chat-modal__footer{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:8px 14px;
+    background:var(--surface-2);
+    border-top:1px solid var(--border);
+    color:var(--text-muted);font-size:.78rem;
+  }
+  .chat-modal__footer .chat-url{
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    max-width:60%;font-family:'Courier New',monospace;
+  }
+
+  @media(max-width:640px){
+    .chat-modal-backdrop{padding:0}
+    .chat-modal{height:100vh;max-height:100vh;width:100vw;max-width:100vw;border-radius:0}
+    .chat-modal__title{font-size:.9rem}
+    .chat-modal__title .chat-badge{display:none}
+    .chat-iconbtn{width:38px;height:38px}
+    .chat-modal__footer{display:none}
+  }
+</style>
+
+<div id="chat-modal" class="chat-modal-backdrop" onclick="if(event.target===this)closeChatModal()">
+  <div class="chat-modal" role="dialog" aria-modal="true" aria-labelledby="chat-modal-title">
+    <div class="chat-modal__header">
+      <div class="chat-modal__title" id="chat-modal-title">
+        <span class="chat-status" aria-hidden="true"></span>
+        <span>💬 仲良しCHAT</span>
+        <span class="chat-badge">LIVE</span>
+      </div>
+      <div class="chat-modal__actions">
+        <button class="chat-iconbtn" onclick="reloadChat()" title="再読み込み" aria-label="再読み込み">↻</button>
+        <a class="chat-iconbtn" href="https://cozy-bundle-up.lovable.app" target="_blank" rel="noopener" title="新しいタブで開く" aria-label="新しいタブで開く">↗</a>
+        <button class="chat-iconbtn danger" onclick="closeChatModal()" title="閉じる (Esc)" aria-label="閉じる">✕</button>
       </div>
     </div>
-    <iframe id="chat-iframe" src="about:blank" style="flex:1;width:100%;border:0;background:#fff" allow="clipboard-read; clipboard-write; microphone; camera"></iframe>
+    <div class="chat-modal__frame-wrap">
+      <div id="chat-loading" class="chat-modal__loading">
+        <div class="chat-spinner" aria-hidden="true"></div>
+        <div>CHATを読み込み中...</div>
+      </div>
+      <iframe id="chat-iframe" class="chat-modal__frame" src="about:blank"
+              allow="clipboard-read; clipboard-write; microphone; camera"
+              onload="document.getElementById('chat-loading').classList.add('hidden')"></iframe>
+    </div>
+    <div class="chat-modal__footer">
+      <span class="chat-url">cozy-bundle-up.lovable.app</span>
+      <span>Esc で閉じる</span>
+    </div>
   </div>
 </div>
 <script>
+const CHAT_URL='https://cozy-bundle-up.lovable.app/';
 function openChatModal(){
   const m=document.getElementById('chat-modal');
   const f=document.getElementById('chat-iframe');
-  if(f.src!=='https://cozy-bundle-up.lovable.app/') f.src='https://cozy-bundle-up.lovable.app/';
+  const l=document.getElementById('chat-loading');
+  if(f.src!==CHAT_URL){ l.classList.remove('hidden'); f.src=CHAT_URL; }
   m.style.display='flex';
   document.body.style.overflow='hidden';
 }
 function closeChatModal(){
   document.getElementById('chat-modal').style.display='none';
   document.body.style.overflow='';
+}
+function reloadChat(){
+  const f=document.getElementById('chat-iframe');
+  const l=document.getElementById('chat-loading');
+  l.classList.remove('hidden');
+  f.src=CHAT_URL+'?t='+Date.now();
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChatModal();});
 </script>
