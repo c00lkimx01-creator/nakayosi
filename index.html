@@ -692,6 +692,7 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
       <a href="javascript:void(0)" onclick="showPage('quake')" class="nav-link" data-page="quake">🔴 地震速報</a>
       <a href="javascript:void(0)" onclick="showPage('links')" class="nav-link" data-page="links">リンク集</a>
       <a href="javascript:void(0)" onclick="showPage('games')" class="nav-link" data-page="games">ゲーム</a>
+      <a href="javascript:void(0)" onclick="showPage('tv')" class="nav-link" data-page="tv">📺 TV</a>
       <a href="javascript:void(0)" onclick="showPage('settings')" class="nav-link" data-page="settings">設定</a>
       <a href="javascript:void(0)" onclick="showPage('terms')" class="nav-link" data-page="terms">利用規約</a>
       <a href="https://script.google.com/macros/s/AKfycbxfO1SQu_E3Ybd54mIO7knJBtzrrq4hoOa4YzDzNWkPWURjn2mbDiXaFaZXwygWR24A1Q/exec" target="_blank">🤖AI ↗</a>
@@ -845,6 +846,31 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
             <span><i class="s10"></i>震度1</span><span><i class="s20"></i>2</span><span><i class="s30"></i>3</span>
             <span><i class="s40"></i>4</span><span><i class="s50"></i>5弱/強</span><span><i class="s60"></i>6弱/強</span><span><i class="s70"></i>7</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 📺 TV（世界のニュースチャンネル） -->
+    <section id="tv-page" class="page">
+      <div class="section">
+        <div class="section-head">
+          <h2>📺 世界のTVニュース <span class="live-badge">LIVE</span></h2>
+          <span class="muted" style="font-size:.8rem">HLS対応チャンネル + YouTubeフォールバック</span>
+        </div>
+        <div class="section-body">
+          <div class="tv-wrap">
+            <div class="tv-player" id="tv-player-container">
+              <p class="tv-placeholder">▶︎ 右のリストからチャンネルを選択してください</p>
+            </div>
+            <aside class="tv-side">
+              <h3 class="tv-side-title">チャンネル一覧</h3>
+              <div id="tv-region-nav" class="tv-region-nav"></div>
+              <div id="tv-channel-list" class="tv-channel-list custom-scrollbar"></div>
+            </aside>
+          </div>
+          <p class="muted" style="font-size:.75rem;margin-top:10px">
+            ショートカット: <b>Space</b> 再生/一時停止 ・ <b>←/→</b> 10秒 ・ <b>F</b> フルスクリーン
+          </p>
         </div>
       </div>
     </section>
@@ -2336,5 +2362,255 @@ function reloadChat(){
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChatModal();});
 </script>
+
+<!-- 📺 TV feature (HLS + region list) -->
+<style>
+  #tv-page .tv-wrap{
+    display:flex;flex-direction:row;gap:16px;
+    height:min(72vh,720px);
+  }
+  #tv-page .tv-player{
+    flex:1 1 75%;min-width:0;background:#000;
+    border-radius:14px;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px -12px rgba(0,0,0,.35);
+    aspect-ratio:16/9;
+  }
+  #tv-page .tv-player video,#tv-page .tv-player iframe{
+    width:100%;height:100%;background:#000;border:0;display:block;
+  }
+  #tv-page .tv-placeholder{color:#cbd5e1;font-size:1rem;margin:0;padding:20px;text-align:center}
+  #tv-page .tv-side{
+    flex:0 0 300px;max-width:340px;
+    background:var(--surface-2,#111827);color:#e5e7eb;
+    border-radius:14px;padding:14px;
+    display:flex;flex-direction:column;min-height:0;
+  }
+  #tv-page .tv-side-title{
+    font-size:1rem;font-weight:700;margin:0 0 10px;
+    padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.12);color:#fff;
+  }
+  #tv-page .tv-region-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;flex-shrink:0}
+  #tv-page .tv-region-btn{
+    font-size:.75rem;background:#374151;color:#fff;
+    border:0;padding:5px 12px;border-radius:999px;cursor:pointer;
+    transition:background .15s, box-shadow .15s;
+  }
+  #tv-page .tv-region-btn:hover{background:#4b5563}
+  #tv-page .tv-region-btn.active{background:var(--primary,#2563eb);box-shadow:0 0 0 2px color-mix(in oklab,var(--primary,#60a5fa) 55%,transparent)}
+  #tv-page .tv-channel-list{overflow-y:auto;flex:1 1 auto;min-height:0;padding-right:4px}
+  #tv-page .tv-region-header{
+    font-size:1rem;font-weight:700;color:#60a5fa;margin:14px 0 6px;
+  }
+  #tv-page .tv-region-header:first-child{margin-top:0}
+  #tv-page .tv-channel-btn{
+    display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+    width:100%;text-align:left;background:#1f2937;color:#fff;
+    border:0;padding:10px 12px;border-radius:10px;margin-bottom:6px;cursor:pointer;
+    transition:background .15s, box-shadow .15s;
+  }
+  #tv-page .tv-channel-btn:hover{background:#374151}
+  #tv-page .tv-channel-btn.active{background:var(--primary,#2563eb);box-shadow:inset 0 0 0 2px #93c5fd}
+  #tv-page .tv-channel-name{font-weight:700;font-size:.95rem}
+  #tv-page .tv-channel-genre{
+    font-size:.7rem;color:#cbd5e1;background:#0f172a;
+    padding:2px 8px;border-radius:6px;display:inline-block;
+  }
+  #tv-page .custom-scrollbar::-webkit-scrollbar{width:6px}
+  #tv-page .custom-scrollbar::-webkit-scrollbar-track{background:rgba(31,41,55,.6)}
+  #tv-page .custom-scrollbar::-webkit-scrollbar-thumb{background:rgba(107,114,128,.9);border-radius:10px}
+  @media (max-width:900px){
+    #tv-page .tv-wrap{flex-direction:column;height:auto}
+    #tv-page .tv-side{flex:1 1 auto;max-width:none;max-height:60vh}
+    #tv-page .tv-player{aspect-ratio:16/9}
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+(function(){
+  const tvData = {"na/bloomberg":{"name":"Bloomberg","genre":"full","hlsUrl":"https://proxy-siawaseok.duckdns.org/proxy/m3u8?url=https%3A%2F%2Fbloomberg.com%2Fmedia-manifest%2Fstreams%2Fus.m3u8","fallbackVideoId":"iEpJwprxDdk"},"na/cnbc":{"name":"CNBC","genre":"full","hlsUrl":"https://cdn-ca2-na.lncnetworks.host/hls/cnbc_live/index.m3u8","fallbackVideoId":"9NyxcX3rhQs"},"na/cnn":{"name":"CNN","genre":"full","hlsUrl":"https://turnerlive.warnermediacdn.com/hls/live/586495/cnngo/cnn_slate/VIDEO_0_3564000.m3u8","fallbackVideoId":"w_Ma8oQLmSM"},"na/yahoo":{"name":"Yahoo Finance","genre":"tech","hlsUrl":"","fallbackVideoId":"KQp-e_XQnDE"},"na/nasa":{"name":"Sen Space Live","genre":"tech","hlsUrl":"","fallbackVideoId":"aB1yRz0HhdY"},"na/fox-news":{"name":"Fox News","genre":"optional","hlsUrl":"https://247preview.foxnews.com/hls/live/2020027/fncv3preview/primary.m3u8","fallbackVideoId":"QaftgYkG-ek"},"na/newsmax":{"name":"Newsmax","genre":"optional","hlsUrl":"","fallbackVideoId":"S-lFBzloL2Y"},"na/abc-news":{"name":"ABC News","genre":"optional","hlsUrl":"https://lnc-abc-news.tubi.video/index.m3u8","fallbackVideoId":""},"na/cbs-news":{"name":"CBS News","genre":"optional","hlsUrl":"https://cbsn-us.cbsnstream.cbsnews.com/out/v1/55a8648e8f134e82a470f83d562deeca/master.m3u8","fallbackVideoId":"R9L8sDK8iEc"},"na/nbc-news":{"name":"NBC News","genre":"optional","hlsUrl":"https://dai2.xumo.com/amagi_hls_data_xumo1212A-xumo-nbcnewsnow/CDN/master.m3u8","fallbackVideoId":"yMr0neQhu6c"},"na/cbc-news":{"name":"CBC News","genre":"optional","hlsUrl":"https://cbcnewshd-f.akamaihd.net/i/cbcnews_1@8981/index_2500_av-p.m3u8","fallbackVideoId":"jxP_h3V-Dv8"},"na/ctv-news":{"name":"CTV News","genre":"optional","hlsUrl":"https://pe-fa-lp02a.9c9media.com/live/News1Digi/p/hls/00000201/38ef78f479b07aa0/index/0c6a10a2/live/stream/h264/v1/3500000/manifest.m3u8","fallbackVideoId":""},"na/reuters-tv":{"name":"Reuters TV","genre":"optional","hlsUrl":"https://reuters-reutersnow-1-eu.rakuten.wurl.tv/playlist.m3u8","fallbackVideoId":""},"eu/sky":{"name":"SkyNews","genre":"full","hlsUrl":"https://linear901-oo-hls0-prd-gtm.delivery.skycdp.com/17501/sde-fast-skynews/master.m3u8","fallbackVideoId":"uvviIF4725I"},"eu/euronews":{"name":"Euronews","genre":"full","hlsUrl":"https://dash4.antik.sk/live/test_euronews/playlist.m3u8","fallbackVideoId":"pykpO5kQJ98"},"eu/dw":{"name":"DW","genre":"full","hlsUrl":"https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/master.m3u8","fallbackVideoId":"LuKwFajn37U"},"eu/france24":{"name":"France 24","genre":"full","hlsUrl":"https://amg00106-france24-france24-samsunguk-qvpp8.amagi.tv/playlist/amg00106-france24-france24-samsunguk/playlist.m3u8","fallbackVideoId":"u9foWyMSETk"},"eu/bbc-news":{"name":"BBC News","genre":"optional","hlsUrl":"https://vs-hls-push-uk.live.fastly.md.bbci.co.uk/x=4/i=urn:bbc:pips:service:bbc_news_channel_hd/iptv_hd_abr_v1.m3u8","fallbackVideoId":"bjgQzJzCZKs"},"eu/gb-news":{"name":"GB News","genre":"optional","hlsUrl":"https://live-gbnews.simplestreamcdn.com/live5/gbnews/bitrate1.isml/manifest.m3u8","fallbackVideoId":""},"eu/the-guardian":{"name":"The Guardian","genre":"optional","hlsUrl":"https://rakuten-guardian-1-ie.samsung.wurl.tv/playlist.m3u8","fallbackVideoId":""},"eu/france24-en":{"name":"France 24 English","genre":"optional","hlsUrl":"","fallbackVideoId":"Ap-UM1O9RBU"},"eu/rtve":{"name":"RTVE 24H","genre":"optional","hlsUrl":"","fallbackVideoId":"7_srED6k0bE"},"eu/phoenix":{"name":"Phoenix","genre":"optional","hlsUrl":"https://zdf-hls-19.akamaized.net/hls/live/2016502/de/veryhigh/master.m3u8","fallbackVideoId":""},"eu/rtp3":{"name":"RTP3","genre":"optional","hlsUrl":"https://streaming-live.rtp.pt/livetvhlsDVR/rtpnHDdvr.smil/playlist.m3u8?DVR=","fallbackVideoId":""},"eu/trt-haber":{"name":"TRT Haber","genre":"optional","hlsUrl":"","fallbackVideoId":"3XHebGJG0bc"},"eu/ntv-turkey":{"name":"NTV","genre":"optional","hlsUrl":"","fallbackVideoId":"pqq5c6k70kk"},"eu/cnn-turk":{"name":"CNN TURK","genre":"optional","hlsUrl":"","fallbackVideoId":"lsY4GFoj_xY"},"eu/rt":{"name":"RT","genre":"optional","hlsUrl":"https://rt-glb.rttv.com/dvr/rtnews/playlist.m3u8","fallbackVideoId":""},"eu/tvp-info":{"name":"TVP Info","genre":"optional","hlsUrl":"","fallbackVideoId":"3jKb-uThfrg"},"eu/telewizja-republika":{"name":"Telewizja Republika","genre":"optional","hlsUrl":"","fallbackVideoId":"dzntyCTgJMQ"},"eu/welt":{"name":"WELT","genre":"optional","hlsUrl":"","fallbackVideoId":"L-TNmYmaAKQ"},"eu/tagesschau24":{"name":"Tagesschau24","genre":"optional","hlsUrl":"https://tagesschau.akamaized.net/hls/live/2020115/tagesschau/tagesschau_1/master.m3u8","fallbackVideoId":"fC_q9TkO1uU"},"eu/euronews-fr":{"name":"Euronews FR","genre":"optional","hlsUrl":"","fallbackVideoId":"NiRIbKwAejk"},"eu/ert-news":{"name":"ERT News","genre":"optional","hlsUrl":"https://ertflix.ascdn.broadpeak.io/ertlive/ertnews/default/index.m3u8","fallbackVideoId":""},"eu/france24-fr":{"name":"France 24 FR","genre":"optional","hlsUrl":"","fallbackVideoId":"l8PMl7tUDIE"},"eu/france-info":{"name":"France Info","genre":"optional","hlsUrl":"","fallbackVideoId":"Z-Nwo-ypKtM"},"eu/bfmtv":{"name":"BFMTV","genre":"optional","hlsUrl":"","fallbackVideoId":"smB_F6DW7cI"},"eu/tv5monde-info":{"name":"TV5 Monde Info","genre":"optional","hlsUrl":"https://ott.tv5monde.com/Content/HLS/Live/channel(info)/index.m3u8","fallbackVideoId":""},"eu/nrk1":{"name":"NRK1","genre":"optional","hlsUrl":"https://nrk-nrk1.akamaized.net/21/0/hls/nrk_1/playlist.m3u8","fallbackVideoId":""},"eu/aljazeera-balkans":{"name":"Al Jazeera Balkans","genre":"optional","hlsUrl":"https://live-hls-web-ajb.getaj.net/AJB/index.m3u8","fallbackVideoId":""},"latam/cnn-brasil":{"name":"CNN Brasil","genre":"optional","hlsUrl":"","fallbackVideoId":"qcTn899skkc"},"latam/record-news":{"name":"Record News","genre":"optional","hlsUrl":"https://stream.ads.ottera.tv/playlist.m3u8?network_id=2116","fallbackVideoId":""},"latam/tn-argentina":{"name":"TN (Todo Noticias)","genre":"optional","hlsUrl":"","fallbackVideoId":"cb12KmMMDJA"},"latam/c5n":{"name":"C5N","genre":"optional","hlsUrl":"","fallbackVideoId":"SF06Qy1Ct6Y"},"latam/dw-espanol":{"name":"DW Español","genre":"optional","hlsUrl":"https://dwamdstream104.akamaized.net/hls/live/2015530/dwstream104/stream04/streamPlaylist.m3u8","fallbackVideoId":""},"latam/rt-espanol":{"name":"RT Español","genre":"optional","hlsUrl":"https://rt-esp.rttv.com/dvr/rtesp/playlist.m3u8","fallbackVideoId":""},"latam/cgtn-espanol":{"name":"CGTN Español","genre":"optional","hlsUrl":"https://news.cgtn.com/resource/live/espanol/cgtn-e.m3u8","fallbackVideoId":""},"asia/tbs-news":{"name":"TBS NEWS DIG","genre":"optional","hlsUrl":"https://dp57jmgi8kb6i.cloudfront.net/out/v1/197c216d82a449f89c55f451d995daed/index_7.m3u8","fallbackVideoId":"aUDm173E8k8"},"asia/ntv-news":{"name":"NTV News (Japan)","genre":"optional","hlsUrl":"https://dpg5xwfcfl8qq.cloudfront.net/out/v1/d5e0a776979146a0a300aa8b251c62db/index_7.m3u8","fallbackVideoId":""},"asia/ndtv":{"name":"NDTV 24x7","genre":"optional","hlsUrl":"https://ndtvindiaelemarchana.akamaized.net/hls/live/2003679/ndtvindia/master.m3u8","fallbackVideoId":""},"asia/cgtn":{"name":"CGTN","genre":"optional","hlsUrl":"https://news.cgtn.com/resource/live/english/cgtn-news.m3u8","fallbackVideoId":""},"asia/cna-asia":{"name":"CNA (NewsAsia)","genre":"optional","hlsUrl":"","fallbackVideoId":"XWq5kBlakcQ"},"asia/nhk-world":{"name":"NHK World Japan","genre":"optional","hlsUrl":"https://media-tyo.hls.nhkworld.jp/hls/w/live/master.m3u8","fallbackVideoId":"f0lYfG_vY_U"},"asia/arirang-news":{"name":"Arirang News","genre":"optional","hlsUrl":"https://amdlive-ch01-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/playlist.m3u8","fallbackVideoId":""},"asia/india-today":{"name":"India Today","genre":"optional","hlsUrl":"https://indiatodaylive.akamaized.net/hls/live/2014320/indiatoday/indiatodaylive/playlist.m3u8","fallbackVideoId":"sYZtOFzM78M"},"asia/abp-news":{"name":"ABP News","genre":"optional","hlsUrl":"https://abplivetv.pc.cdn.bitgravity.com/httppush/abp_livetv/abp_abpnews/master.m3u8","fallbackVideoId":""},"me/alarabiya":{"name":"AlArabiya","genre":"full","hlsUrl":"https://live.alarabiya.net/alarabiapublish/alarabiya.smil/playlist.m3u8","fallbackVideoId":"n7eQejkXbnM"},"me/aljazeera":{"name":"AlJazeera","genre":"full","hlsUrl":"https://live-hls-apps-aje-fa.getaj.net/AJE/index.m3u8","fallbackVideoId":"gCNeDWCI0vo"},"me/al-hadath":{"name":"Al Hadath","genre":"optional","hlsUrl":"https://av.alarabiya.net/alarabiapublish/alhadath.smil/playlist.m3u8","fallbackVideoId":"xWXpl7azI8k"},"me/sky-news-arabia":{"name":"Sky News Arabia","genre":"optional","hlsUrl":"https://live-stream.skynewsarabia.com/c-horizontal-channel/horizontal-stream/index.m3u8","fallbackVideoId":"U--OjmpjF5o"},"me/trt-world":{"name":"TRT World","genre":"optional","hlsUrl":"https://tv-trtworld.medya.trt.com.tr/master.m3u8","fallbackVideoId":"ABfFhWzWs0s"},"me/cgtn-arabic":{"name":"CGTN Arabic","genre":"optional","hlsUrl":"https://news.cgtn.com/resource/live/arabic/cgtn-a.m3u8","fallbackVideoId":""},"me/kan-11":{"name":"Kan 11","genre":"optional","hlsUrl":"https://kan11.media.kan.org.il/hls/live/2024514/2024514/master.m3u8","fallbackVideoId":"TCnaIE_SAtM"},"me/i24-news":{"name":"i24NEWS (Israel)","genre":"optional","hlsUrl":"https://bcovlive-a.akamaihd.net/6e3dd61ac4c34d6f8fb9698b565b9f50/eu-central-1/5377161796001/playlist-all_dvr.m3u8","fallbackVideoId":"myKybZUK0IA"},"me/asharq-news":{"name":"Asharq News","genre":"optional","hlsUrl":"","fallbackVideoId":"f6VpkfV7m4Y"},"me/aljazeera-arabic":{"name":"AlJazeera Arabic","genre":"optional","hlsUrl":"https://live-hls-web-aja.getaj.net/AJA/index.m3u8","fallbackVideoId":"bNyUyrR0PHo"},"me/aljazeera-mubasher":{"name":"Al Jazeera Mubasher","genre":"optional","hlsUrl":"https://live-hls-web-ajm.getaj.net/AJM/index.m3u8","fallbackVideoId":""},"me/alarabiya-business":{"name":"Al Arabiya Business","genre":"optional","hlsUrl":"https://live.alarabiya.net/alarabiapublish/aswaaq.smil/playlist.m3u8","fallbackVideoId":""},"me/al-qahera-news":{"name":"Al Qahera News","genre":"optional","hlsUrl":"https://bcovlive-a.akamaihd.net/d30cbb3350af4cb7a6e05b9eb1bfd850/eu-west-1/6057955906001/playlist.m3u8","fallbackVideoId":""},"me/press-tv":{"name":"Press TV","genre":"optional","hlsUrl":"https://cdnlive.presstv.ir/cdnlive/smil:cdnlive.smil/playlist.m3u8","fallbackVideoId":""},"me/dw-arabic":{"name":"DW Arabic","genre":"optional","hlsUrl":"https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/index.m3u8","fallbackVideoId":""},"me/rt-arabic":{"name":"RT Arabic","genre":"optional","hlsUrl":"https://rt-arb.rttv.com/dvr/rtarab/playlist.m3u8","fallbackVideoId":""},"me/rudaw":{"name":"Rudaw","genre":"optional","hlsUrl":"https://svs.itworkscdn.net/rudawlive/rudawlive.smil/playlist.m3u8","fallbackVideoId":""},"africa/ktn-news":{"name":"KTN News","genre":"optional","hlsUrl":"","fallbackVideoId":"RmHtsdVb3mo"},"africa/sabc-news":{"name":"SABC News","genre":"optional","hlsUrl":"https://sabconetanw.cdn.mangomolo.com/news/smil:news.stream.smil/playlist.m3u8","fallbackVideoId":""},"africa/arise-news":{"name":"Arise News","genre":"optional","hlsUrl":"https://liveedge-arisenews.visioncdn.com/live-hls/arisenews/arisenews/arisenews_web/master.m3u8","fallbackVideoId":"4uHZdlX-DT4"},"oc/abc-news-au":{"name":"ABC News Australia","genre":"optional","hlsUrl":"https://abc-iview-mediapackagestreams-2.akamaized.net/out/v1/6e1cc6d25ec0480ea099a5399d73bc4b/index.m3u8","fallbackVideoId":"vOTiJkg1voo"}};
+  const regionsMap = {na:"北米",eu:"ヨーロッパ",latam:"中南米",asia:"アジア",me:"中東",africa:"アフリカ",oc:"オセアニア"};
+  const genresMap = {full:"全ジャンル",tech:"テクノロジー・ビジネス",optional:"その他"};
+
+  let inited = false;
+  let currentHls = null;
+  let regionNav, channelList, playerContainer;
+
+  function stopTv(){
+    if (currentHls){ try{currentHls.destroy();}catch(e){} currentHls = null; }
+    if (playerContainer){
+      playerContainer.innerHTML = '<p class="tv-placeholder">▶︎ 右のリストからチャンネルを選択してください</p>';
+    }
+    document.querySelectorAll('#tv-page .tv-channel-btn.active').forEach(b=>b.classList.remove('active'));
+  }
+
+  function updateActiveRegionBtn(code){
+    document.querySelectorAll('#tv-page .tv-region-btn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.region === code);
+    });
+  }
+
+  async function playMedia(hlsUrl, fallbackVideoId){
+    if (currentHls){ try{currentHls.destroy();}catch(e){} currentHls = null; }
+    if (hlsUrl && hlsUrl.trim() !== ""){
+      playerContainer.innerHTML = '<video id="tv-hls-video" controls autoplay playsinline></video>';
+      const video = document.getElementById('tv-hls-video');
+      if (window.Hls && Hls.isSupported()){
+        currentHls = new Hls();
+        currentHls.loadSource(hlsUrl);
+        currentHls.attachMedia(video);
+        currentHls.on(Hls.Events.MANIFEST_PARSED, ()=>video.play().catch(()=>{}));
+        currentHls.on(Hls.Events.ERROR, (_e, data)=>{
+          if (data && data.fatal && fallbackVideoId){
+            playFallback(fallbackVideoId);
+          }
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')){
+        video.src = hlsUrl;
+        video.addEventListener('loadedmetadata', ()=>video.play().catch(()=>{}));
+      } else if (fallbackVideoId){
+        playFallback(fallbackVideoId);
+      } else {
+        playerContainer.innerHTML = '<p class="tv-placeholder">この環境ではHLS再生に対応していません。</p>';
+      }
+    } else if (fallbackVideoId && fallbackVideoId.trim() !== ""){
+      playFallback(fallbackVideoId);
+    } else {
+      playerContainer.innerHTML = '<p class="tv-placeholder">再生可能なメディアがありません。</p>';
+    }
+  }
+
+  function playFallback(videoId){
+    const embed = 'https://www.youtube.com/embed/' + encodeURIComponent(videoId) + '?autoplay=1&rel=0';
+    playerContainer.innerHTML = '<iframe src="'+embed+'" allow="autoplay; fullscreen; encrypted-media" allowfullscreen title="YouTube fallback"></iframe>';
+  }
+
+  function initTvPage(){
+    if (inited) return;
+    regionNav = document.getElementById('tv-region-nav');
+    channelList = document.getElementById('tv-channel-list');
+    playerContainer = document.getElementById('tv-player-container');
+    if (!regionNav || !channelList || !playerContainer) return;
+
+    const grouped = {};
+    for (const [key, item] of Object.entries(tvData)){
+      const r = key.split('/')[0];
+      (grouped[r] ||= []).push(item);
+    }
+
+    for (const [code, items] of Object.entries(grouped)){
+      const name = regionsMap[code] || code;
+
+      const btn = document.createElement('button');
+      btn.className = 'tv-region-btn';
+      btn.textContent = name;
+      btn.dataset.region = code;
+      btn.onclick = (e)=>{
+        updateActiveRegionBtn(code);
+        const h = document.getElementById('tv-region-' + code);
+        if (h) h.scrollIntoView({behavior:'smooth', block:'start'});
+        e.currentTarget.blur();
+      };
+      regionNav.appendChild(btn);
+
+      const header = document.createElement('h3');
+      header.id = 'tv-region-' + code;
+      header.className = 'tv-region-header';
+      header.textContent = name;
+      channelList.appendChild(header);
+
+      items.forEach(item=>{
+        const cb = document.createElement('button');
+        cb.className = 'tv-channel-btn';
+        const genre = genresMap[item.genre] || item.genre;
+        cb.innerHTML = '<span class="tv-channel-name"></span><span class="tv-channel-genre"></span>';
+        cb.querySelector('.tv-channel-name').textContent = item.name;
+        cb.querySelector('.tv-channel-genre').textContent = genre;
+        cb.onclick = (e)=>{
+          document.querySelectorAll('#tv-page .tv-channel-btn').forEach(b=>b.classList.remove('active'));
+          cb.classList.add('active');
+          updateActiveRegionBtn(code);
+          playMedia(item.hlsUrl, item.fallbackVideoId);
+          cb.blur();
+        };
+        channelList.appendChild(cb);
+      });
+    }
+
+    const first = Object.keys(grouped)[0];
+    if (first) updateActiveRegionBtn(first);
+
+    channelList.addEventListener('scroll', ()=>{
+      const rect = channelList.getBoundingClientRect();
+      const headers = channelList.querySelectorAll('h3[id^="tv-region-"]');
+      let active = null;
+      const atBottom = channelList.scrollHeight - channelList.scrollTop - channelList.clientHeight <= 10;
+      if (atBottom && headers.length){
+        active = headers[headers.length-1].id.replace('tv-region-','');
+      } else {
+        for (let i = headers.length-1; i >= 0; i--){
+          if (headers[i].getBoundingClientRect().top <= rect.top + 80){
+            active = headers[i].id.replace('tv-region-','');
+            break;
+          }
+        }
+      }
+      if (!active && headers.length) active = headers[0].id.replace('tv-region-','');
+      if (active) updateActiveRegionBtn(active);
+    });
+
+    // キーボードショートカット（TVページ表示中のみ有効）
+    document.addEventListener('keydown', (e)=>{
+      const tvPage = document.getElementById('tv-page');
+      if (!tvPage || !tvPage.classList.contains('active')) return;
+      const v = document.getElementById('tv-hls-video');
+      if (!v) return;
+      const tag = (e.target && e.target.tagName) || '';
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (e.key === 'ArrowRight'){ v.currentTime += 10; }
+      else if (e.key === 'ArrowLeft'){ v.currentTime -= 10; }
+      else if (e.key === 'f' || e.key === 'F'){
+        if (!document.fullscreenElement){ v.requestFullscreen && v.requestFullscreen().catch(()=>{}); }
+        else { document.exitFullscreen && document.exitFullscreen(); }
+      } else if (e.key === ' ' || e.key === 'Spacebar'){
+        e.preventDefault();
+        if (v.paused) v.play(); else v.pause();
+      }
+    });
+
+    inited = true;
+  }
+
+  // showPage をラップして TV ページ表示時に初期化・離脱時に停止
+  function hookShowPage(){
+    if (typeof window.showPage !== 'function'){
+      setTimeout(hookShowPage, 50); return;
+    }
+    if (window.__tvShowPageHooked) return;
+    const orig = window.showPage;
+    window.showPage = function(name){
+      const wasTv = document.getElementById('tv-page')?.classList.contains('active');
+      const ret = orig.apply(this, arguments);
+      if (name === 'tv'){ initTvPage(); }
+      else if (wasTv){ stopTv(); }
+      return ret;
+    };
+    window.__tvShowPageHooked = true;
+
+    // 既に TV ページが active（ディープリンク等）なら初期化
+    if (document.getElementById('tv-page')?.classList.contains('active')){
+      initTvPage();
+    }
+  }
+
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', hookShowPage);
+  } else {
+    hookShowPage();
+  }
+})();
+</script>
+
 </body>
 </html>
