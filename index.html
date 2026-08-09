@@ -722,6 +722,34 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
           <ul class="np-list" id="notifList"></ul>
         </div>
       </div>
+      <div class="settings-wrap">
+        <button class="icon-btn settings-btn" id="settingsBtn" onclick="toggleSettingsMenu(event)" title="設定" aria-label="設定" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.35.4.64.73.82H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+        <div class="settings-menu" id="settingsMenu" role="dialog" aria-label="設定">
+          <div class="sm-head"><span data-i18n="settings">設定</span><button class="sm-x" onclick="closeSettingsMenu()" aria-label="閉じる">✕</button></div>
+          <div class="sm-body">
+            <div class="sm-row">
+              <span class="sm-label" data-i18n="language">言語 / Language</span>
+              <div class="sm-seg" id="smLang">
+                <button type="button" data-lang="ja">日本語</button>
+                <button type="button" data-lang="en">English</button>
+              </div>
+            </div>
+            <div class="sm-row">
+              <span class="sm-label" data-i18n="theme">表示モード</span>
+              <div class="sm-seg" id="smTheme">
+                <button type="button" data-theme="light" data-i18n="light">ライト</button>
+                <button type="button" data-theme="dark" data-i18n="dark">ダーク</button>
+              </div>
+            </div>
+            <label class="sm-row sm-check"><input type="checkbox" id="smMotion"><span data-i18n="motion">アニメーションを有効にする</span></label>
+            <label class="sm-row sm-check"><input type="checkbox" id="smClock"><span data-i18n="showClock">ヘッダーに時計を表示</span></label>
+            <label class="sm-row sm-check"><input type="checkbox" id="smWeather"><span data-i18n="showWeather">ヘッダーに天気を表示</span></label>
+            <div class="sm-foot"><a href="javascript:void(0)" onclick="showPage('settings');closeSettingsMenu()" data-i18n="moreSettings">詳細設定を開く ›</a></div>
+          </div>
+        </div>
+      </div>
       <button class="icon-btn theme-toggle-btn" onclick="toggleTheme()" title="ダーク/ライト" aria-label="ダーク/ライト切替">
         <svg class="theme-icon theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
         <svg class="theme-icon theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -914,13 +942,32 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
         </div>
         <div class="section-body">
           <div class="tv-wrap">
-            <div class="tv-player" id="tv-player-container">
-              <p class="tv-placeholder">▶︎ 右のリストからチャンネルを選択してください</p>
+            <div class="tv-main">
+              <div class="tv-player" id="tv-player-container">
+                <p class="tv-placeholder" data-i18n="tvPick">▶︎ 一覧からチャンネルを選んでください</p>
+              </div>
+              <div class="tv-nowbar" id="tv-nowbar">
+                <div class="tv-now-meta">
+                  <span class="tv-now-dot" aria-hidden="true"></span>
+                  <div>
+                    <div class="tv-now-name" id="tv-now-name" data-i18n="tvNotSelected">チャンネル未選択</div>
+                    <div class="tv-now-sub" id="tv-now-sub" data-i18n="tvNotSelectedSub">下の一覧から選ぶと再生が始まります</div>
+                  </div>
+                </div>
+                <div class="tv-now-actions">
+                  <button class="tv-ctl" id="tvPrev" title="前のチャンネル" aria-label="前のチャンネル">‹</button>
+                  <button class="tv-ctl" id="tvNext" title="次のチャンネル" aria-label="次のチャンネル">›</button>
+                  <button class="tv-ctl" id="tvFs" title="全画面" aria-label="全画面">⛶</button>
+                  <button class="tv-ctl" id="tvStop" title="停止" aria-label="停止">■</button>
+                </div>
+              </div>
             </div>
             <aside class="tv-side">
-              <h3 class="tv-side-title">チャンネル一覧</h3>
+              <h3 class="tv-side-title" data-i18n="tvChannels">チャンネル一覧</h3>
+              <div class="tv-search"><input type="search" id="tvSearch" placeholder="チャンネルを検索…" data-i18n-ph="tvSearchPh" autocomplete="off"></div>
               <div id="tv-region-nav" class="tv-region-nav"></div>
               <div id="tv-channel-list" class="tv-channel-list custom-scrollbar"></div>
+              <p class="tv-empty" id="tvEmpty" hidden data-i18n="tvNoResult">該当するチャンネルがありません</p>
             </aside>
           </div>
           <p class="muted" style="font-size:.75rem;margin-top:10px">
@@ -2384,6 +2431,7 @@ setInterval(() => { if(WX_PREF) fetchWeather(); }, 15*60*1000);
         <span class="chat-badge">LIVE</span>
       </div>
       <div class="chat-modal__actions">
+        <button class="chat-iconbtn" id="chatExpandBtn" onclick="toggleChatExpand()" title="拡大／縮小" aria-label="拡大／縮小">⛶</button>
         <button class="chat-iconbtn" onclick="reloadChat()" title="再読み込み" aria-label="再読み込み">↻</button>
         <a class="chat-iconbtn" href="https://cozy-bundle-up.lovable.app" target="_blank" rel="noopener" title="新しいタブで開く" aria-label="新しいタブで開く">↗</a>
         <button class="chat-iconbtn danger" onclick="closeChatModal()" title="閉じる (Esc)" aria-label="閉じる">✕</button>
@@ -2807,6 +2855,735 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChatModal();});
   } else {
     hookShowPage();
   }
+})();
+</script>
+
+<!-- ===== アニメーションレイヤー（追記） ===== -->
+<style>
+/* --- ページ遷移 --- */
+@keyframes pgIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.page.active{animation:pgIn .38s cubic-bezier(.2,.7,.3,1) both}
+
+/* --- スクロール連動フェードイン --- */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1)}
+.rv.rv-in{opacity:1;transform:none}
+
+/* --- ヘッダー：流れるグラデーション --- */
+@keyframes hdrFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.site-header{position:relative;overflow:hidden}
+.site-header::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(120deg,transparent 0%,color-mix(in oklab,#fff 16%,transparent) 35%,transparent 60%,color-mix(in oklab,#fff 10%,transparent) 85%,transparent 100%);
+  background-size:280% 100%;animation:hdrFlow 14s ease-in-out infinite;mix-blend-mode:overlay;
+}
+.site-header > *{position:relative;z-index:1}
+
+/* --- グローバルナビ（下線は ::after のみ・二重線を防ぐ） --- */
+.gnav a{position:relative;transition:color .2s,background .2s;border-bottom-color:transparent !important}
+.gnav a.active{border-bottom-color:transparent !important}
+.gnav a::after{
+  content:"";position:absolute;left:12px;right:12px;bottom:0;height:3px;
+  background:var(--primary);border-radius:2px;
+  transform:scaleX(0);transform-origin:center;transition:transform .28s cubic-bezier(.2,.7,.3,1);
+}
+.gnav a:hover::after{transform:scaleX(1)}
+.gnav a.active::after{transform:scaleX(1)}
+.gnav a:hover{text-shadow:0 0 10px color-mix(in oklab,var(--primary) 55%,transparent)}
+@media (max-width:820px){
+  .gnav a{border-bottom:1px solid var(--border) !important}
+  .gnav a::after{bottom:-1px}
+}
+
+/* --- ゴーストスクリーン（初回ロードのスケルトン） --- */
+#ghost-screen{
+  position:fixed;inset:0;z-index:9999;background:var(--bg,var(--surface));
+  padding:0;overflow:hidden;transition:opacity .45s ease,visibility .45s;
+}
+#ghost-screen.gs-hide{opacity:0;visibility:hidden;pointer-events:none}
+#ghost-screen .gs-inner{max-width:1180px;margin:0 auto;padding:18px 16px;display:flex;flex-direction:column;gap:14px}
+#ghost-screen .gs-bar{height:56px;border-radius:10px}
+#ghost-screen .gs-nav{height:38px;border-radius:8px}
+#ghost-screen .gs-hero{height:180px;border-radius:14px}
+#ghost-screen .gs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+#ghost-screen .gs-card{height:130px;border-radius:12px}
+
+
+/* --- ピクセル時計 --- */
+@keyframes clkPop{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pixel-clock{animation:clkPop 1s ease-in-out infinite}
+@keyframes wxFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.brand-weather .wx-i{display:inline-block;animation:wxFloat 2.6s ease-in-out infinite}
+
+/* --- カード類のホバー --- */
+.link-cat,.news-card,#home-page .section{will-change:transform}
+.news-card{transition:transform .22s cubic-bezier(.2,.7,.3,1),box-shadow .22s,border-color .22s}
+.news-card:hover{transform:translateY(-4px);box-shadow:0 16px 30px -18px color-mix(in oklab,var(--primary) 60%,transparent);border-color:color-mix(in oklab,var(--primary) 50%,var(--border))}
+.link-cat:hover{transform:translateY(-5px)}
+#home-page .section:hover{transform:translateY(-3px);box-shadow:0 14px 28px -20px color-mix(in oklab,var(--primary) 55%,transparent)}
+.game-card:hover{transform:translateY(-6px) scale(1.015);box-shadow:0 20px 34px -20px rgba(0,0,0,.55)}
+.game-card:hover .thumb img{transform:scale(1.09)}
+.cg-hero-card:hover{transform:translateY(-4px)}
+.cg-hero-card:hover img{transform:scale(1.06)}
+
+/* --- ボタンのプレス＆リップル --- */
+button,.gm-btn,.tag-chip,.cg-chip,.cg-hero-play{position:relative;overflow:hidden}
+button:active,.gm-btn:active,.tag-chip:active,.cg-chip:active,.cg-hero-play:active{transform:scale(.96)}
+@keyframes rippleGo{to{transform:scale(2.6);opacity:0}}
+.rippling::before{
+  content:"";position:absolute;left:var(--rx,50%);top:var(--ry,50%);width:120px;height:120px;margin:-60px 0 0 -60px;
+  border-radius:50%;background:currentColor;opacity:.22;transform:scale(0);pointer-events:none;
+  animation:rippleGo .55s ease-out forwards;
+}
+
+/* --- LIVE / 地震速報 --- */
+@keyframes radarRing{0%{transform:scale(.6);opacity:.7}100%{transform:scale(2.4);opacity:0}}
+.live-badge{position:relative;overflow:visible}
+.live-badge::after{
+  content:"";position:absolute;left:9px;top:50%;width:9px;height:9px;margin-top:-4.5px;
+  border-radius:50%;border:2px solid currentColor;animation:radarRing 1.6s ease-out infinite;pointer-events:none;
+}
+
+/* --- ティッカー：ホバーで一時停止 --- */
+.ticker:hover .ticker-move{animation-play-state:paused}
+
+/* --- モーダル --- */
+@keyframes mdlFade{from{opacity:0}to{opacity:1}}
+@keyframes mdlPop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+#news-modal.open,#game-modal[style*="flex"]{animation:mdlFade .2s ease-out}
+#news-modal.open > *,#game-modal[style*="flex"] > *{animation:mdlPop .28s cubic-bezier(.2,.9,.3,1)}
+
+/* --- スケルトンシマー --- */
+@keyframes shimmer{0%{background-position:-320px 0}100%{background-position:320px 0}}
+.skeleton-shimmer{
+  background:linear-gradient(90deg,var(--surface-2) 0px,color-mix(in oklab,var(--primary) 12%,var(--surface-2)) 160px,var(--surface-2) 320px);
+  background-size:640px 100%;animation:shimmer 1.2s linear infinite;border-radius:8px;
+}
+
+/* --- モーション低減 --- */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  .rv{opacity:1 !important;transform:none !important}
+}
+</style>
+<script>
+// ゴーストスクリーン（スケルトン）を最初に描画し、読み込み後にフェードアウト
+(function(){
+  var g = document.createElement('div');
+  g.id = 'ghost-screen';
+  g.setAttribute('aria-hidden','true');
+  var cards = '';
+  for (var i=0;i<8;i++) cards += '<div class="gs-card skeleton-shimmer"></div>';
+  g.innerHTML = '<div class="gs-inner">'
+    + '<div class="gs-bar skeleton-shimmer"></div>'
+    + '<div class="gs-nav skeleton-shimmer"></div>'
+    + '<div class="gs-hero skeleton-shimmer"></div>'
+    + '<div class="gs-grid">' + cards + '</div>'
+    + '</div>';
+  function mount(){ if(document.body && !document.getElementById('ghost-screen')) document.body.appendChild(g); }
+  if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount);
+  function hide(){ mount(); g.classList.add('gs-hide'); setTimeout(function(){ g.remove(); }, 600); }
+  if (document.readyState === 'complete') setTimeout(hide, 400);
+  else window.addEventListener('load', function(){ setTimeout(hide, 400); });
+  setTimeout(hide, 6000);
+})();
+</script>
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+
+
+  var SEL = '.section, .link-cat, .news-card, .game-card, .cg-hero-card, .hero, .eq-item';
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      var el = e.target;
+      var group = el.parentElement ? Array.prototype.filter.call(el.parentElement.children, function(c){return c.classList.contains('rv');}) : [];
+      var i = Math.min(group.indexOf(el), 11);
+      el.style.transitionDelay = (i > 0 ? i * 60 : 0) + 'ms';
+      el.classList.add('rv-in');
+      io.unobserve(el);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+  function observe(root){
+    (root || document).querySelectorAll(SEL).forEach(function(el){
+      if (el.classList.contains('rv')) return;
+      el.classList.add('rv');
+      io.observe(el);
+    });
+  }
+
+  function boot(){
+    observe(document);
+    new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        Array.prototype.forEach.call(m.addedNodes, function(n){
+          if (n.nodeType !== 1) return;
+          if (n.matches && n.matches(SEL)) { n.classList.add('rv'); io.observe(n); }
+          observe(n);
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+
+    // ページ切替時に、表示されたページ内の要素を再観測
+    document.addEventListener('click', function(){ setTimeout(function(){ observe(document); }, 30); }, true);
+
+    // ボタンのリップル
+    document.addEventListener('pointerdown', function(ev){
+      var b = ev.target.closest('button, .gm-btn, .tag-chip, .cg-chip, .cg-hero-play');
+      if (!b) return;
+      var r = b.getBoundingClientRect();
+      b.style.setProperty('--rx', (ev.clientX - r.left) + 'px');
+      b.style.setProperty('--ry', (ev.clientY - r.top) + 'px');
+      b.classList.remove('rippling');
+      void b.offsetWidth;
+      b.classList.add('rippling');
+      setTimeout(function(){ b.classList.remove('rippling'); }, 600);
+    }, true);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+
+<!-- ============ UI PATCH v2（通知/タップ/言語/設定/TV/CHAT） ============ -->
+<style>
+/* ---------- 1. ベル通知の表示バグ修正 ---------- */
+.site-header{overflow:visible !important;position:relative;z-index:120}
+.site-header::before,.site-header::after{border-radius:inherit}
+.header-search{position:relative;z-index:2}
+.notif-wrap{position:relative;z-index:1400}
+.notif-panel{
+  z-index:1400;
+  background:var(--surface);
+  background-color:var(--surface);
+  box-shadow:0 18px 48px -12px rgba(0,0,0,.38), 0 0 0 1px var(--border);
+  max-height:min(70vh,520px);display:none;
+}
+.notif-panel.open{display:block}
+.notif-panel .np-list{max-height:min(58vh,420px)}
+body.dark-mode .notif-panel{background:var(--surface-2)}
+.gnav{z-index:50}
+@media (max-width:600px){
+  .notif-panel{position:fixed;top:auto;right:12px;left:12px;width:auto;margin-top:8px}
+}
+
+/* ---------- 2. 設定（歯車）メニュー ---------- */
+.settings-wrap{position:relative;display:inline-block;z-index:1400}
+.settings-btn{display:inline-flex;align-items:center;justify-content:center}
+.settings-btn svg{transition:transform .35s cubic-bezier(.2,.8,.3,1)}
+.settings-btn[aria-expanded="true"] svg{transform:rotate(90deg)}
+.settings-menu{
+  position:absolute;top:calc(100% + 8px);right:0;width:min(300px,calc(100vw - 24px));
+  background:var(--surface);color:var(--text);border:1px solid var(--border);
+  border-radius:14px;box-shadow:0 18px 48px -12px rgba(0,0,0,.4);
+  z-index:1500;display:none;overflow:hidden;
+}
+body.dark-mode .settings-menu{background:var(--surface-2)}
+.settings-menu.open{display:block;animation:smPop .18s ease-out}
+@keyframes smPop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.settings-menu .sm-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border);font-weight:700;font-size:.9rem}
+.settings-menu .sm-x{background:transparent;border:0;color:var(--text-muted);cursor:pointer;font-size:.9rem;padding:2px 6px;border-radius:6px}
+.settings-menu .sm-x:hover{background:var(--surface-2)}
+.settings-menu .sm-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:12px}
+.settings-menu .sm-row{display:flex;flex-direction:column;gap:6px;font-size:.85rem}
+.settings-menu .sm-label{color:var(--text-muted);font-size:.75rem;font-weight:700;letter-spacing:.04em}
+.settings-menu .sm-seg{display:flex;gap:6px}
+.settings-menu .sm-seg button{
+  flex:1;padding:8px 10px;border-radius:9px;border:1px solid var(--border);
+  background:var(--surface-2);color:var(--text);font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.settings-menu .sm-seg button.active{background:var(--primary);color:#fff;border-color:transparent}
+.settings-menu .sm-check{flex-direction:row;align-items:center;gap:9px;cursor:pointer;font-weight:600}
+.settings-menu .sm-check input{width:16px;height:16px;accent-color:var(--primary)}
+.settings-menu .sm-foot{border-top:1px solid var(--border);padding-top:10px;font-size:.8rem}
+@media (max-width:600px){
+  .settings-menu{position:fixed;top:auto;right:12px;left:12px;width:auto}
+}
+body.no-motion *,body.no-motion *::before,body.no-motion *::after{animation:none !important;transition:none !important}
+
+/* ---------- 3. タップ対応アニメーション ---------- */
+button,.gm-btn,.tag-chip,.cg-chip,.cg-hero-play,.gnav a,.link-cat li a,.game-card,.news-card,
+#tv-page .tv-channel-btn,#tv-page .tv-region-btn,.icon-btn,.notif-btn,.chat-iconbtn,.tv-ctl{
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.tap-ripple{position:relative;overflow:hidden}
+.rippling::before{
+  content:"";position:absolute;left:var(--rx,50%);top:var(--ry,50%);width:120px;height:120px;margin:-60px 0 0 -60px;
+  border-radius:50%;background:currentColor;opacity:.2;transform:scale(0);pointer-events:none;z-index:3;
+  animation:rippleGo .5s ease-out forwards;
+}
+.is-pressed{transform:scale(.97) !important;transition:transform .08s ease-out !important}
+.game-card.is-pressed,.news-card.is-pressed,.link-cat.is-pressed{transform:scale(.985) !important}
+@media (hover:none){
+  .news-card:hover,.link-cat:hover,#home-page .section:hover,.game-card:hover,.cg-hero-card:hover{transform:none;box-shadow:none}
+  .game-card:hover .thumb img,.cg-hero-card:hover img{transform:none}
+  .notif-btn:hover .notif-ico{transform:none}
+  .news-card:active{transform:scale(.985)}
+  .game-card:active{transform:scale(.98)}
+}
+
+/* ---------- 4. TVページ見やすさ改善 ---------- */
+body.tv-active .wrap{grid-template-columns:minmax(0,1fr) !important}
+body.tv-active .wrap > .aside{display:none}
+#tv-page .tv-wrap{grid-template-columns:minmax(0,1fr) 340px}
+#tv-page .tv-main{display:flex;flex-direction:column;gap:12px;min-width:0}
+#tv-page .tv-player{max-height:min(72vh,720px)}
+#tv-page .tv-nowbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  background:var(--tv-surface);border:1px solid var(--tv-hair);border-radius:14px;
+  padding:12px 14px;color:var(--tv-text);
+}
+#tv-page .tv-now-meta{display:flex;align-items:center;gap:10px;min-width:0}
+#tv-page .tv-now-dot{width:9px;height:9px;border-radius:50%;background:var(--tv-text-mute);flex-shrink:0}
+#tv-page .tv-nowbar.live .tv-now-dot{background:var(--tv-live);box-shadow:0 0 10px rgba(255,59,48,.7);animation:tv-pulse 1.6s ease-out infinite}
+#tv-page .tv-now-name{font-weight:700;font-size:1rem;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tv-page .tv-now-sub{font-size:.75rem;color:var(--tv-text-dim);margin-top:2px}
+#tv-page .tv-now-actions{display:flex;gap:6px;flex-shrink:0}
+#tv-page .tv-ctl{
+  width:38px;height:38px;border-radius:11px;border:1px solid var(--tv-hair);
+  background:var(--tv-surface-2);color:var(--tv-text);cursor:pointer;font-size:1rem;line-height:1;
+  display:inline-flex;align-items:center;justify-content:center;transition:background .15s,transform .12s;
+}
+#tv-page .tv-ctl:hover{background:#22222a}
+#tv-page .tv-ctl:active{transform:scale(.94)}
+#tv-page .tv-search{margin:0 12px 12px 0}
+#tv-page .tv-search input{
+  width:100%;box-sizing:border-box;padding:9px 12px;border-radius:11px;
+  border:1px solid var(--tv-hair);background:var(--tv-surface-2);color:var(--tv-text);
+  font-family:inherit;font-size:.85rem;outline:none;
+}
+#tv-page .tv-search input::placeholder{color:var(--tv-text-mute)}
+#tv-page .tv-search input:focus{border-color:var(--tv-accent)}
+#tv-page .tv-channel-btn{padding:12px;gap:12px;align-items:center}
+#tv-page .tv-channel-btn .tv-ch-badge{
+  flex-shrink:0;width:34px;height:34px;border-radius:10px;
+  background:var(--tv-surface-2);color:var(--tv-text-dim);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.85rem;letter-spacing:.02em;
+}
+#tv-page .tv-channel-btn.active .tv-ch-badge{background:var(--tv-accent);color:#fff}
+#tv-page .tv-channel-btn .tv-ch-text{display:flex;flex-direction:column;min-width:0;gap:2px;text-align:left}
+#tv-page .tv-channel-btn .tv-channel-name{font-size:.92rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tv-page .tv-channel-btn .tv-channel-genre{font-size:.7rem;color:var(--tv-text-mute)}
+#tv-page .tv-channel-list{mask-image:none}
+#tv-page .tv-empty{color:var(--tv-text-mute);font-size:.82rem;padding:14px 12px 6px 0;margin:0}
+#tv-page .tv-side{max-height:min(82vh,820px)}
+@media (max-width:900px){
+  #tv-page .tv-wrap{grid-template-columns:1fr}
+  #tv-page .tv-side{max-height:none;order:2}
+  #tv-page .tv-channel-list{max-height:52vh}
+  #tv-page .tv-now-actions{width:100%;justify-content:space-between}
+  #tv-page .tv-ctl{flex:1}
+}
+body.tv-fs-mode #tv-page .tv-player{position:fixed;inset:0;z-index:2000;max-height:none;border-radius:0;aspect-ratio:auto}
+
+/* ---------- 5. CHAT改善 ---------- */
+.chat-modal{max-width:1180px;height:min(92vh,980px);transition:max-width .2s ease,height .2s ease,border-radius .2s ease}
+.chat-modal-backdrop.expanded{padding:0}
+.chat-modal-backdrop.expanded .chat-modal{max-width:100vw;width:100vw;height:100vh;border-radius:0}
+.chat-modal__frame-wrap{position:relative;flex:1 1 auto;min-height:0}
+.chat-modal__frame{width:100%;height:100%;border:0;display:block;background:var(--surface)}
+.chat-fallback{
+  position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  background:var(--surface);color:var(--text);text-align:center;padding:24px;font-size:.9rem;
+}
+.chat-fallback.show{display:flex}
+.chat-fallback a{
+  padding:10px 18px;border-radius:10px;background:var(--primary);color:#fff;text-decoration:none;font-weight:700;font-size:.85rem;
+}
+@media (max-width:768px){
+  .chat-modal-backdrop{padding:0}
+  .chat-modal{height:100dvh;max-height:100dvh;width:100vw;max-width:100vw;border-radius:0}
+  .chat-modal__header{padding-top:calc(12px + env(safe-area-inset-top))}
+  .chat-modal__footer{padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+  #chatExpandBtn{display:none}
+}
+</style>
+
+<script>
+(function(){
+  /* ================= 共通ストレージ ================= */
+  var PREF_KEY='nk_prefs_v2';
+  function loadPrefs(){ try{ return JSON.parse(localStorage.getItem(PREF_KEY)||'{}')||{}; }catch(e){ return {}; } }
+  function savePrefs(p){ try{ localStorage.setItem(PREF_KEY, JSON.stringify(p)); }catch(e){} }
+  var prefs = loadPrefs();
+  function setPref(k,v){ prefs[k]=v; savePrefs(prefs); }
+
+  /* ================= 1. ベル通知の既読タイミング修正 ================= */
+  function fixNotif(){
+    if (typeof window.toggleNotif !== 'function'){ setTimeout(fixNotif,80); return; }
+    var panel=document.getElementById('notifPanel');
+    if(!panel) return;
+    window.toggleNotif=function(e){
+      if(e) e.stopPropagation();
+      var open=panel.classList.toggle('open');
+      var btn=document.getElementById('settingsBtn');
+      if(open){ closeSettingsMenu(); }
+      else { markNotifSeen(); }
+    };
+    window.closeNotif=function(){
+      if(panel.classList.contains('open')){ panel.classList.remove('open'); markNotifSeen(); }
+    };
+    function markNotifSeen(){
+      try{
+        if(window.NEWS && NEWS[0]) localStorage.setItem('nakayosi_notif_lastseen_v1', NEWS[0].date);
+      }catch(err){}
+      if(typeof window.renderNotif==='function') setTimeout(window.renderNotif,320);
+    }
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') window.closeNotif(); });
+  }
+  fixNotif();
+
+  /* ================= 2. 設定メニュー ================= */
+  window.toggleSettingsMenu=function(e){
+    if(e) e.stopPropagation();
+    var m=document.getElementById('settingsMenu'), b=document.getElementById('settingsBtn');
+    if(!m) return;
+    var open=m.classList.toggle('open');
+    if(b) b.setAttribute('aria-expanded', open?'true':'false');
+    if(open && typeof window.closeNotif==='function') window.closeNotif();
+    if(open) syncSettingsUI();
+  };
+  window.closeSettingsMenu=function(){
+    var m=document.getElementById('settingsMenu'), b=document.getElementById('settingsBtn');
+    if(m) m.classList.remove('open');
+    if(b) b.setAttribute('aria-expanded','false');
+  };
+  document.addEventListener('click',function(e){
+    var w=document.querySelector('.settings-wrap');
+    if(w && !w.contains(e.target)) window.closeSettingsMenu();
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') window.closeSettingsMenu(); });
+
+  function syncSettingsUI(){
+    var lang=getLang();
+    document.querySelectorAll('#smLang button').forEach(function(b){ b.classList.toggle('active', b.dataset.lang===lang); });
+    var dark=document.body.classList.contains('dark-mode');
+    document.querySelectorAll('#smTheme button').forEach(function(b){ b.classList.toggle('active', (b.dataset.theme==='dark')===dark); });
+    var m=document.getElementById('smMotion'); if(m) m.checked = !document.body.classList.contains('no-motion');
+    var c=document.getElementById('smClock'); if(c) c.checked = prefs.showClock!==false;
+    var w=document.getElementById('smWeather'); if(w) w.checked = prefs.showWeather!==false;
+  }
+
+  function applyToggles(){
+    document.body.classList.toggle('no-motion', prefs.motion===false);
+    var clock=document.getElementById('clock');
+    if(clock) clock.style.display = prefs.showClock===false ? 'none' : '';
+    var wx=document.getElementById('brandWx');
+    if(wx) wx.style.display = prefs.showWeather===false ? 'none' : '';
+  }
+
+  function bindSettings(){
+    var lang=document.getElementById('smLang');
+    if(!lang){ setTimeout(bindSettings,80); return; }
+    lang.addEventListener('click',function(e){
+      var b=e.target.closest('button[data-lang]'); if(!b) return;
+      setLang(b.dataset.lang); syncSettingsUI();
+    });
+    document.getElementById('smTheme').addEventListener('click',function(e){
+      var b=e.target.closest('button[data-theme]'); if(!b) return;
+      var wantDark=b.dataset.theme==='dark';
+      if(document.body.classList.contains('dark-mode')!==wantDark && typeof window.toggleTheme==='function') window.toggleTheme();
+      syncSettingsUI();
+    });
+    document.getElementById('smMotion').addEventListener('change',function(){ setPref('motion', this.checked); applyToggles(); });
+    document.getElementById('smClock').addEventListener('change',function(){ setPref('showClock', this.checked); applyToggles(); });
+    document.getElementById('smWeather').addEventListener('change',function(){ setPref('showWeather', this.checked); applyToggles(); });
+    applyToggles(); syncSettingsUI();
+  }
+  bindSettings();
+
+  /* ================= 3. 言語（日本語 / English） ================= */
+  var DICT={
+    "ホーム":"Home","お知らせ":"News","お知らせ一覧":"All Announcements","新着のお知らせ":"Latest News",
+    "リンク":"Links","リンク集":"Links","ゲーム":"Games","設定":"Settings","詳細設定":"Advanced Settings",
+    "天気":"Weather","地震":"Earthquake","検索":"Search","チャンネル一覧":"Channels",
+    "サイト内を検索…":"Search this site…","チャンネルを検索…":"Search channels…",
+    "言語 / Language":"Language","表示モード":"Appearance","ライト":"Light","ダーク":"Dark",
+    "アニメーションを有効にする":"Enable animations","ヘッダーに時計を表示":"Show clock in header",
+    "ヘッダーに天気を表示":"Show weather in header","詳細設定を開く ›":"Open advanced settings ›",
+    "一覧 ›":"View all ›","閉じる":"Close","再読み込み":"Reload","新しいタブで開く":"Open in new tab",
+    "チャンネル未選択":"No channel selected","下の一覧から選ぶと再生が始まります":"Pick a channel from the list to start",
+    "該当するチャンネルがありません":"No matching channels",
+    "▶︎ 一覧からチャンネルを選んでください":"▶︎ Choose a channel from the list",
+    "世界のTVニュース":"World TV News","お知らせはありません":"No announcements",
+    "CHATを読み込み中...":"Loading chat…","Esc で閉じる":"Press Esc to close",
+    "拡大／縮小":"Expand / Restore","全画面":"Fullscreen","停止":"Stop",
+    "前のチャンネル":"Previous channel","次のチャンネル":"Next channel",
+    "ダーク/ライト":"Dark / Light","通知":"Notifications",
+    "ニュース":"News","地震速報":"Earthquake Alerts","利用規約":"Terms","公式サイト":"Official Site",
+    "表示切替":"Theme","メニュー":"Menu","サポート":"Support","外部":"External",
+    "サイト情報":"Site Info","累計訪問者":"Total visitors","登録リンク数":"Links","登録ゲーム数":"Games",
+    "運営者":"Operator","人気リンク":"Popular Links","最近の更新":"Recent Updates",
+    "北米":"North America","ヨーロッパ":"Europe","中南米":"Latin America","アジア":"Asia",
+    "中東":"Middle East","アフリカ":"Africa","オセアニア":"Oceania",
+    "全ジャンル":"General","テクノロジー・ビジネス":"Tech & Business","その他":"Other",
+    "更新":"Updated","運営":"Operated by","一覧":"All",
+    "チャットの読み込みに時間がかかっています。":"The chat is taking a while to load.",
+    "HLS対応チャンネル + YouTubeフォールバック":"HLS channels with YouTube fallback"
+  };
+  var I18N_SCOPE='header, .gnav, main, .wrap, footer, .settings-menu, .notif-panel, .chat-modal, #tv-page';
+  function getLang(){ return prefs.lang==='en' ? 'en' : 'ja'; }
+
+  function translateNode(root, toEn){
+    var walker=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var n;
+    while((n=walker.nextNode())){
+      var raw=n.nodeValue, t=raw.trim();
+      if(!t) continue;
+      if(toEn){
+        if(DICT[t]){
+          if(!n.__ja) n.__ja=raw;
+          n.nodeValue=raw.replace(t, DICT[t]);
+        } else {
+          // 絵文字＋語句のパターンにも対応
+          var m=t.match(/^([^\p{L}\p{N}]*)(.+?)([^\p{L}\p{N}]*)$/u);
+          if(m && DICT[m[2]]){
+            if(!n.__ja) n.__ja=raw;
+            n.nodeValue=raw.replace(m[2], DICT[m[2]]);
+          }
+        }
+      } else if(n.__ja){
+        n.nodeValue=n.__ja; n.__ja=null;
+      }
+    }
+    root.querySelectorAll('[placeholder],[title],[aria-label]').forEach(function(el){
+      ['placeholder','title','aria-label'].forEach(function(a){
+        var v=el.getAttribute(a); if(!v) return;
+        var key='__'+a;
+        if(toEn){
+          if(DICT[v.trim()]){ if(!el[key]) el[key]=v; el.setAttribute(a, DICT[v.trim()]); }
+        } else if(el[key]){ el.setAttribute(a, el[key]); el[key]=null; }
+      });
+    });
+  }
+
+  function applyI18n(){
+    var toEn=getLang()==='en';
+    document.documentElement.lang = toEn?'en':'ja';
+    document.querySelectorAll(I18N_SCOPE).forEach(function(root){ translateNode(root, toEn); });
+  }
+  function setLang(l){ setPref('lang', l); applyI18n(); }
+  window.__setSiteLang=setLang;
+
+  var i18nTimer=null;
+  function scheduleI18n(){
+    if(getLang()!=='en') return;
+    clearTimeout(i18nTimer);
+    i18nTimer=setTimeout(applyI18n,150);
+  }
+
+  /* ================= 4. タップ／クリック アニメーション ================= */
+  var RIPPLE_SEL='button, .gm-btn, .tag-chip, .cg-chip, .cg-hero-play, .icon-btn, .gnav a, .tv-ctl, .chat-iconbtn, .link-cat li a, .game-card, .news-card, .cg-hero-card, #tv-page .tv-channel-btn, #tv-page .tv-region-btn';
+  var pressed=null, startY=0, cancelled=false;
+
+  function pressStart(x,y,target){
+    if(document.body.classList.contains('no-motion')) return;
+    var b=target.closest && target.closest(RIPPLE_SEL);
+    if(!b) return;
+    pressed=b; cancelled=false; startY=y;
+    b.classList.add('tap-ripple','is-pressed');
+    var r=b.getBoundingClientRect();
+    b.style.setProperty('--rx',(x-r.left)+'px');
+    b.style.setProperty('--ry',(y-r.top)+'px');
+    b.classList.remove('rippling');
+    void b.offsetWidth;
+    b.classList.add('rippling');
+    setTimeout(function(){ b.classList.remove('rippling'); },560);
+  }
+  function pressEnd(){
+    if(pressed){ pressed.classList.remove('is-pressed'); pressed=null; }
+  }
+  document.addEventListener('touchstart',function(ev){
+    var t=ev.touches&&ev.touches[0]; if(!t) return;
+    pressStart(t.clientX,t.clientY,ev.target);
+  },{passive:true, capture:true});
+  document.addEventListener('touchmove',function(ev){
+    var t=ev.touches&&ev.touches[0];
+    if(pressed && t && Math.abs(t.clientY-startY)>8){ pressed.classList.remove('rippling'); pressEnd(); }
+  },{passive:true, capture:true});
+  document.addEventListener('touchend',pressEnd,{passive:true, capture:true});
+  document.addEventListener('touchcancel',pressEnd,{passive:true, capture:true});
+  document.addEventListener('mousedown',function(ev){ if(ev.button===0) pressStart(ev.clientX,ev.clientY,ev.target); },true);
+  document.addEventListener('mouseup',pressEnd,true);
+  document.addEventListener('mouseleave',pressEnd,true);
+
+  /* ================= 5. TV 改善 ================= */
+  var tvLast=null;
+  function tvButtons(){
+    return Array.prototype.filter.call(
+      document.querySelectorAll('#tv-channel-list .tv-channel-btn'),
+      function(b){ return b.style.display!=='none'; }
+    );
+  }
+  function decorateChannels(){
+    document.querySelectorAll('#tv-channel-list .tv-channel-btn').forEach(function(b){
+      if(b.dataset.decorated) return;
+      var nameEl=b.querySelector('.tv-channel-name'), genreEl=b.querySelector('.tv-channel-genre');
+      if(!nameEl) return;
+      var name=nameEl.textContent||'';
+      var badge=document.createElement('span');
+      badge.className='tv-ch-badge';
+      badge.textContent=name.replace(/[^A-Za-z0-9\u3040-\u30ff\u4e00-\u9faf]/g,'').slice(0,2).toUpperCase()||'TV';
+      var text=document.createElement('span');
+      text.className='tv-ch-text';
+      text.appendChild(nameEl);
+      if(genreEl) text.appendChild(genreEl);
+      b.insertBefore(text,b.firstChild);
+      b.insertBefore(badge,b.firstChild);
+      b.dataset.name=name;
+      b.dataset.decorated='1';
+    });
+  }
+  function updateNowBar(btn){
+    var name=document.getElementById('tv-now-name'), sub=document.getElementById('tv-now-sub'), bar=document.getElementById('tv-nowbar');
+    if(!name||!sub||!bar) return;
+    if(!btn){
+      bar.classList.remove('live');
+      name.textContent = getLang()==='en' ? 'No channel selected' : 'チャンネル未選択';
+      sub.textContent = getLang()==='en' ? 'Pick a channel from the list to start' : '下の一覧から選ぶと再生が始まります';
+      return;
+    }
+    var region='';
+    var h=btn.previousElementSibling;
+    while(h && !(h.tagName==='H3')) h=h.previousElementSibling;
+    if(h) region=h.textContent;
+    bar.classList.add('live');
+    name.textContent=btn.dataset.name||'';
+    var g=btn.querySelector('.tv-channel-genre');
+    sub.textContent=[region,(g?g.textContent:'')].filter(Boolean).join(' ・ ');
+    try{ localStorage.setItem('nk_tv_last', btn.dataset.name||''); }catch(e){}
+    tvLast=btn;
+  }
+  function tvFilter(q){
+    q=(q||'').trim().toLowerCase();
+    var list=document.getElementById('tv-channel-list');
+    if(!list) return;
+    var shown=0;
+    list.querySelectorAll('.tv-channel-btn').forEach(function(b){
+      var ok=!q || (b.dataset.name||'').toLowerCase().indexOf(q)>=0;
+      b.style.display = ok?'':'none';
+      if(ok) shown++;
+    });
+    list.querySelectorAll('h3[id^="tv-region-"]').forEach(function(h){
+      var any=false, n=h.nextElementSibling;
+      while(n && n.tagName!=='H3'){ if(n.style.display!=='none') any=true; n=n.nextElementSibling; }
+      h.style.display=(!q||any)?'':'none';
+    });
+    var empty=document.getElementById('tvEmpty');
+    if(empty) empty.hidden = shown>0;
+  }
+  function tvStep(dir){
+    var btns=tvButtons(); if(!btns.length) return;
+    var i=btns.indexOf(document.querySelector('#tv-channel-list .tv-channel-btn.active'));
+    var next=btns[(i<0?0:(i+dir+btns.length))%btns.length];
+    if(next) next.click();
+  }
+  function bindTv(){
+    var list=document.getElementById('tv-channel-list');
+    if(!list){ setTimeout(bindTv,200); return; }
+    list.addEventListener('click',function(e){
+      var b=e.target.closest('.tv-channel-btn'); if(!b) return;
+      decorateChannels();
+      setTimeout(function(){ updateNowBar(b); },0);
+    });
+    var s=document.getElementById('tvSearch');
+    if(s) s.addEventListener('input',function(){ tvFilter(this.value); });
+    var prev=document.getElementById('tvPrev'), next=document.getElementById('tvNext'),
+        fs=document.getElementById('tvFs'), stop=document.getElementById('tvStop');
+    if(prev) prev.onclick=function(){ tvStep(-1); };
+    if(next) next.onclick=function(){ tvStep(1); };
+    if(fs) fs.onclick=function(){
+      var p=document.getElementById('tv-player-container'); if(!p) return;
+      var v=p.querySelector('video');
+      var el=v||p;
+      if(!document.fullscreenElement){ (el.requestFullscreen? el.requestFullscreen(): el.webkitRequestFullscreen && el.webkitRequestFullscreen()); }
+      else { document.exitFullscreen && document.exitFullscreen(); }
+    };
+    if(stop) stop.onclick=function(){
+      if(typeof window.stopTv==='function'){ window.stopTv(); }
+      else {
+        var p=document.getElementById('tv-player-container');
+        if(p) p.innerHTML='<p class="tv-placeholder">'+(getLang()==='en'?'▶︎ Choose a channel from the list':'▶︎ 一覧からチャンネルを選んでください')+'</p>';
+        document.querySelectorAll('#tv-channel-list .tv-channel-btn.active').forEach(function(b){b.classList.remove('active');});
+      }
+      updateNowBar(null);
+    };
+    var mo=new MutationObserver(function(){ decorateChannels(); scheduleI18n(); });
+    mo.observe(list,{childList:true});
+    decorateChannels();
+  }
+  bindTv();
+
+  /* ================= 6. CHAT 改善 ================= */
+  function bindChat(){
+    var modal=document.getElementById('chat-modal');
+    var frame=document.getElementById('chat-iframe');
+    if(!modal||!frame){ setTimeout(bindChat,200); return; }
+    var wrap=frame.parentElement;
+    if(!document.getElementById('chat-fallback')){
+      var fb=document.createElement('div');
+      fb.id='chat-fallback'; fb.className='chat-fallback';
+      fb.innerHTML='<div>チャットの読み込みに時間がかかっています。</div><a href="https://cozy-bundle-up.lovable.app" target="_blank" rel="noopener">新しいタブで開く</a>';
+      wrap.appendChild(fb);
+    }
+    var fbTimer=null;
+    frame.addEventListener('load',function(){
+      clearTimeout(fbTimer);
+      document.getElementById('chat-fallback').classList.remove('show');
+      var l=document.getElementById('chat-loading'); if(l) l.classList.add('hidden');
+    });
+    var origOpen=window.openChatModal;
+    window.openChatModal=function(){
+      if(typeof origOpen==='function') origOpen();
+      modal.classList.toggle('expanded', prefs.chatExpanded===true);
+      clearTimeout(fbTimer);
+      fbTimer=setTimeout(function(){
+        var l=document.getElementById('chat-loading');
+        if(l && !l.classList.contains('hidden')) document.getElementById('chat-fallback').classList.add('show');
+      },9000);
+      scheduleI18n();
+    };
+    var origClose=window.closeChatModal;
+    window.closeChatModal=function(){
+      if(typeof origClose==='function') origClose();
+      clearTimeout(fbTimer);
+    };
+    window.toggleChatExpand=function(){
+      var on=!modal.classList.contains('expanded');
+      modal.classList.toggle('expanded',on);
+      setPref('chatExpanded',on);
+    };
+  }
+  bindChat();
+
+  /* ================= 起動処理 ================= */
+  function boot(){
+    applyToggles();
+    document.body.classList.toggle('tv-active', !!(document.getElementById('tv-page')&&document.getElementById('tv-page').classList.contains('active')));
+    if(getLang()==='en') applyI18n();
+    syncSettingsUI();
+    var target=document.querySelector('main')||document.body;
+    var mo=new MutationObserver(scheduleI18n);
+    mo.observe(target,{childList:true,subtree:true});
+    if(typeof window.showPage==='function'){
+      var orig=window.showPage;
+      window.showPage=function(){
+        var r=orig.apply(this,arguments);
+        setTimeout(function(){
+          document.body.classList.toggle('tv-active', !!document.getElementById('tv-page') && document.getElementById('tv-page').classList.contains('active'));
+          decorateChannels(); scheduleI18n();
+        },60);
+        return r;
+      };
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
+  else boot();
 })();
 </script>
 
