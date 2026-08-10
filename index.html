@@ -795,34 +795,6 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
           <ul class="np-list" id="notifList"></ul>
         </div>
       </div>
-      <div class="settings-wrap">
-        <button class="icon-btn settings-btn" id="settingsBtn" onclick="toggleSettingsMenu(event)" title="設定" aria-label="設定" aria-haspopup="true" aria-expanded="false">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.35.4.64.73.82H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        </button>
-        <div class="settings-menu" id="settingsMenu" role="dialog" aria-label="設定">
-          <div class="sm-head"><span data-i18n="settings">設定</span><button class="sm-x" onclick="closeSettingsMenu()" aria-label="閉じる">✕</button></div>
-          <div class="sm-body">
-            <div class="sm-row">
-              <span class="sm-label" data-i18n="language">言語 / Language</span>
-              <div class="sm-seg" id="smLang">
-                <button type="button" data-lang="ja">日本語</button>
-                <button type="button" data-lang="en">English</button>
-              </div>
-            </div>
-            <div class="sm-row">
-              <span class="sm-label" data-i18n="theme">表示モード</span>
-              <div class="sm-seg" id="smTheme">
-                <button type="button" data-theme="light" data-i18n="light">ライト</button>
-                <button type="button" data-theme="dark" data-i18n="dark">ダーク</button>
-              </div>
-            </div>
-            <label class="sm-row sm-check"><input type="checkbox" id="smMotion"><span data-i18n="motion">アニメーションを有効にする</span></label>
-            <label class="sm-row sm-check"><input type="checkbox" id="smClock"><span data-i18n="showClock">ヘッダーに時計を表示</span></label>
-            <label class="sm-row sm-check"><input type="checkbox" id="smWeather"><span data-i18n="showWeather">ヘッダーに天気を表示</span></label>
-            <div class="sm-foot"><a href="javascript:void(0)" onclick="showPage('settings');closeSettingsMenu()" data-i18n="moreSettings">詳細設定を開く ›</a></div>
-          </div>
-        </div>
-      </div>
       <button class="icon-btn theme-toggle-btn" onclick="toggleTheme()" title="ダーク/ライト" aria-label="ダーク/ライト切替">
         <svg class="theme-icon theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
         <svg class="theme-icon theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
