@@ -3032,11 +3032,13 @@ button:active,.gm-btn:active,.tag-chip:active,.cg-chip:active,.cg-hero-play:acti
   background-size:640px 100%;animation:shimmer 1.2s linear infinite;border-radius:8px;
 }
 
-/* --- モーション低減 --- */
+/* --- モーション低減（控えめに短縮するだけ。完全停止はしない） --- */
 @media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
-  .rv{opacity:1 !important;transform:none !important}
+  .rv{transition-duration:.25s !important;transform:none !important}
+  .page.active{animation-duration:.2s !important}
 }
+/* 端末側でアニメーションが無効化されている場合の保険 */
+html.no-motion .rv{opacity:1 !important;transform:none !important}
 </style>
 <script>
 // ゴーストスクリーン（スケルトン）を最初に描画し、読み込み後にフェードアウト
@@ -3062,11 +3064,14 @@ button:active,.gm-btn:active,.tag-chip:active,.cg-chip:active,.cg-hero-play:acti
 </script>
 <script>
 (function(){
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
-
-
   var SEL = '.section, .link-cat, .news-card, .game-card, .cg-hero-card, .hero, .eq-item';
+
+  // IntersectionObserver が無い/壊れている環境（一部 Chromebook 等）では全表示
+  if (typeof IntersectionObserver !== 'function') {
+    document.documentElement.classList.add('no-motion');
+    return;
+  }
+
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if (!e.isIntersecting) return;
@@ -3077,7 +3082,7 @@ button:active,.gm-btn:active,.tag-chip:active,.cg-chip:active,.cg-hero-play:acti
       el.classList.add('rv-in');
       io.unobserve(el);
     });
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
 
   function observe(root){
     (root || document).querySelectorAll(SEL).forEach(function(el){
@@ -3118,6 +3123,17 @@ button:active,.gm-btn:active,.tag-chip:active,.cg-chip:active,.cg-hero-play:acti
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
+
+  // 保険: 何らかの理由で表示されないままの要素を強制的に見せる
+  function safety(){
+    document.querySelectorAll('.rv:not(.rv-in)').forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight + 200) el.classList.add('rv-in');
+    });
+  }
+  setTimeout(safety, 1200);
+  setTimeout(safety, 3000);
+  window.addEventListener('load', function(){ setTimeout(safety, 300); });
 })();
 </script>
 
