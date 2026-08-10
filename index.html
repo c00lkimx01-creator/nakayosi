@@ -42,15 +42,21 @@
   border:2px solid rgba(255,255,255,.9);
   box-shadow:0 2px 8px rgba(0,0,0,.35);
   cursor:pointer;
-  transition:transform .15s, box-shadow .15s;
+  transition:transform .15s, box-shadow .15s, background .25s, color .25s, border-color .25s;
   text-shadow:none;
 }
 .brand-weather:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.45)}
-.brand-weather .wx-i{font-size:1.25rem;line-height:1}
+.brand-weather .wx-i{font-size:1.25rem;line-height:0;display:inline-flex;align-items:center;color:currentColor}
+.brand-weather .wx-i svg{width:20px;height:20px;display:block;color:currentColor}
 .brand-weather .wx-t{font-variant-numeric:tabular-nums;color:#0a1220;font-weight:800;letter-spacing:.5px}
 @media(max-width:600px){.brand-weather{margin-left:6px;padding:4px 10px;font-size:.85rem}.brand-weather .wx-i{font-size:1.1rem}}
-body.dark-mode .brand-weather{background:#f8fafc;color:#0a1220;border-color:#f8fafc}
-body.dark-mode .brand-weather .wx-t{color:#0a1220}
+body.dark-mode .brand-weather{
+  background:#111827;color:#e8f1ff;
+  border-color:color-mix(in oklab, var(--primary) 55%, #1f2937);
+  box-shadow:0 2px 10px rgba(0,0,0,.55), inset 0 0 0 1px color-mix(in oklab, var(--primary) 18%, transparent);
+}
+body.dark-mode .brand-weather .wx-t{color:#e8f1ff}
+body.dark-mode .brand-weather .wx-i{color:color-mix(in oklab, var(--primary) 70%, #e8f1ff)}
 /* 通知ベル */
 .notif-btn{position:relative;background:transparent;border:none;font-size:1.35rem;cursor:pointer;padding:6px 8px;border-radius:8px;color:inherit;line-height:1;transition:background .15s;display:inline-flex;align-items:center;justify-content:center}
 .notif-btn .notif-ico{width:22px;height:22px;display:block;color:currentColor;transition:transform .2s}
@@ -213,6 +219,8 @@ h1,h2,h3{font-family:'Noto Serif JP',serif;line-height:1.35;margin:0 0 .5em}
   width:36px;height:36px;border-radius:4px;cursor:pointer;font-size:1rem;
 }
 .icon-btn:hover{background:var(--surface-2)}
+.theme-toggle-btn{border:none !important;background:transparent;border-radius:8px}
+.theme-toggle-btn:hover{background:color-mix(in oklab, var(--primary) 15%, transparent)}
 
 /* ───── グローバルナビ ───── */
 .gnav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
@@ -546,7 +554,10 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 .wx-actions a,.wx-actions button{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:.82rem;text-decoration:none;cursor:pointer;font-weight:600}
 .wx-actions a:hover,.wx-actions button:hover{border-color:var(--primary);color:var(--primary)}
 .wx-today{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px;background:var(--surface-2);border-radius:12px;border:1px solid var(--border);margin-bottom:16px}
-.wx-today .icon{font-size:3.8rem;line-height:1}
+.wx-today .icon{font-size:3.8rem;line-height:1;display:flex;align-items:center;color:var(--primary)}
+.wx-today .icon svg{width:3.4rem;height:3.4rem}
+.wx-week .i svg{width:2.2rem;height:2.2rem;color:var(--primary)}
+.wx-week .i{display:flex;justify-content:center}
 .wx-today .txt h3{margin:0 0 4px;font-size:1.05rem}
 .wx-today .txt p{margin:0;color:var(--text-muted);font-size:.88rem;line-height:1.6}
 .wx-today .temps{margin-top:6px;font-size:.95rem}
@@ -779,7 +790,7 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
     <a class="brand" href="javascript:void(0)" onclick="showPage('home')">
       <div class="brand-logo">N</div>
       <div>
-        <div class="brand-title">仲良し *インスタンス* 2 <span class="pixel-clock brand-clock" id="clock">00:00:00</span><span class="brand-weather" id="brandWx" onclick="showPage('weather')" title="天気ページを開く"><span class="wx-i">🌤️</span><span class="wx-t">--°</span></span></div>
+        <div class="brand-title">仲良し *インスタンス* 2 <span class="pixel-clock brand-clock" id="clock">00:00:00</span><span class="brand-weather" id="brandWx" onclick="showPage('weather')" title="天気ページを開く"><span class="wx-i"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.4" cy="8" r="3"/><path d="M8.4 2.6v1.6M3 8H1.6M4.6 4.2 3.5 3.1M12.2 4.2l1.1-1.1"/><path d="M9 19.5h8.4a3.5 3.5 0 0 0 .3-7 5.2 5.2 0 0 0-9.9-.9A3.6 3.6 0 0 0 9 19.5z"/></svg></span><span class="wx-t">--°</span></span></div>
         <div class="brand-sub">NAKAYOSI INSTANCE 2 ／ Information Portal</div>
       </div>
     </a>
@@ -2097,14 +2108,26 @@ const JMA_OFFICES = {
   "鹿児島県":"460100","沖縄県":"471000"
 };
 // 天気コード → 絵文字（主要な気象庁コード）
+function wxSvg(paths, extra){
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths+'</svg>';
+}
+const WX_SVG = {
+  sun:  '<circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.2 12H2M22 12h-2.2M5.1 5.1l1.6 1.6M17.3 17.3l1.6 1.6M18.9 5.1l-1.6 1.6M6.7 17.3l-1.6 1.6"/>',
+  cloud:'<path d="M7.2 18.5h9.6a3.8 3.8 0 0 0 .4-7.6 5.6 5.6 0 0 0-10.8-1A3.9 3.9 0 0 0 7.2 18.5z"/>',
+  part: '<circle cx="8.4" cy="8" r="3"/><path d="M8.4 2.6v1.6M3 8H1.6M4.6 4.2 3.5 3.1M12.2 4.2l1.1-1.1"/><path d="M9 19.5h8.4a3.5 3.5 0 0 0 .3-7 5.2 5.2 0 0 0-9.9-.9A3.6 3.6 0 0 0 9 19.5z"/>',
+  rain: '<path d="M7.4 15.6h9.2a3.6 3.6 0 0 0 .3-7.2 5.4 5.4 0 0 0-10.3-1 3.7 3.7 0 0 0 .8 8.2z"/><path d="M9 18.4 8 21M13 18.4 12 21M17 18.4 16 21"/>',
+  snow: '<path d="M7.4 15.6h9.2a3.6 3.6 0 0 0 .3-7.2 5.4 5.4 0 0 0-10.3-1 3.7 3.7 0 0 0 .8 8.2z"/><path d="M9 19h.01M12.5 20.5h.01M16 19h.01M10.5 21.5h.01M14.5 18h.01"/>',
+  storm:'<path d="M7.4 14.6h9.2a3.6 3.6 0 0 0 .3-7.2 5.4 5.4 0 0 0-10.3-1 3.7 3.7 0 0 0 .8 8.2z"/><path d="m13 16-3.2 4.4h3.2L11.4 24"/>'
+};
 function wxIcon(code){
   const c = String(code||'');
-  if(/^1|^123|^124|^125|^126|^127|^128/.test(c)) return '☀️';
-  if(/^2|^223|^231/.test(c)) return '☁️';
-  if(/^3|^313|^314|^315|^316|^317/.test(c)) return '🌧️';
-  if(/^4|^40[0-9]|^41[0-4]/.test(c)) return '🌨️';
-  if(/^5|^6|^7/.test(c)) return '⛈️';
-  return '🌤️';
+  let k = 'part';
+  if(/^1|^123|^124|^125|^126|^127|^128/.test(c)) k='sun';
+  else if(/^2|^223|^231/.test(c)) k='cloud';
+  else if(/^3|^313|^314|^315|^316|^317/.test(c)) k='rain';
+  else if(/^4|^40[0-9]|^41[0-4]/.test(c)) k='snow';
+  else if(/^5|^6|^7/.test(c)) k='storm';
+  return wxSvg(WX_SVG[k]);
 }
 let WX_PREF = '';
 let WX_CITY = '';
@@ -2939,20 +2962,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChatModal();});
   .gnav a::after{bottom:-1px}
 }
 
-/* --- ゴーストスクリーン（初回ロードのスケルトン） --- */
-#ghost-screen{
-  position:fixed;inset:0;z-index:9999;background:var(--bg,var(--surface));
-  padding:0;overflow:hidden;transition:opacity .45s ease,visibility .45s;
-}
-#ghost-screen.gs-hide{opacity:0;visibility:hidden;pointer-events:none}
-#ghost-screen .gs-inner{max-width:1180px;margin:0 auto;padding:18px 16px;display:flex;flex-direction:column;gap:14px}
-#ghost-screen .gs-bar{height:56px;border-radius:10px}
-#ghost-screen .gs-nav{height:38px;border-radius:8px}
-#ghost-screen .gs-hero{height:180px;border-radius:14px}
-#ghost-screen .gs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-#ghost-screen .gs-card{height:130px;border-radius:12px}
-
-
 /* --- ピクセル時計 --- */
 @keyframes clkPop{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
 .pixel-clock{animation:clkPop 1s ease-in-out infinite}
@@ -3012,28 +3021,6 @@ button:active,.gm-btn:active,.tag-chip:active,.cg-chip:active,.cg-hero-play:acti
 /* 端末側でアニメーションが無効化されている場合の保険 */
 html.no-motion .rv{opacity:1 !important;transform:none !important}
 </style>
-<script>
-// ゴーストスクリーン（スケルトン）を最初に描画し、読み込み後にフェードアウト
-(function(){
-  var g = document.createElement('div');
-  g.id = 'ghost-screen';
-  g.setAttribute('aria-hidden','true');
-  var cards = '';
-  for (var i=0;i<8;i++) cards += '<div class="gs-card skeleton-shimmer"></div>';
-  g.innerHTML = '<div class="gs-inner">'
-    + '<div class="gs-bar skeleton-shimmer"></div>'
-    + '<div class="gs-nav skeleton-shimmer"></div>'
-    + '<div class="gs-hero skeleton-shimmer"></div>'
-    + '<div class="gs-grid">' + cards + '</div>'
-    + '</div>';
-  function mount(){ if(document.body && !document.getElementById('ghost-screen')) document.body.appendChild(g); }
-  if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount);
-  function hide(){ mount(); g.classList.add('gs-hide'); setTimeout(function(){ g.remove(); }, 600); }
-  if (document.readyState === 'complete') setTimeout(hide, 400);
-  else window.addEventListener('load', function(){ setTimeout(hide, 400); });
-  setTimeout(hide, 6000);
-})();
-</script>
 <script>
 (function(){
   var SEL = '.section, .link-cat, .news-card, .game-card, .cg-hero-card, .hero, .eq-item';
@@ -3807,5 +3794,209 @@ body.tv-fs-mode #tv-page .tv-player{position:fixed;inset:0;z-index:2000;max-heig
 })();
 </script>
 
+
+<style>
+/* --- 検索イースターエッグ（パーティクル演出） --- */
+#egg-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99998}
+#egg-toast{
+  position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);
+  background:var(--surface,#fff);color:var(--text,#111);border:1px solid var(--border,#ddd);
+  padding:10px 18px;border-radius:999px;font-weight:800;font-size:.9rem;z-index:99999;
+  box-shadow:0 12px 30px -12px rgba(0,0,0,.5);opacity:0;transition:opacity .3s, transform .3s;pointer-events:none
+}
+#egg-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@keyframes eggSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+body.egg-spin{animation:eggSpin 1.4s cubic-bezier(.4,0,.2,1) 1}
+@keyframes eggShake{0%,100%{transform:translate(0,0)}20%{transform:translate(-8px,4px)}40%{transform:translate(7px,-5px)}60%{transform:translate(-5px,-3px)}80%{transform:translate(6px,4px)}}
+body.egg-shake{animation:eggShake .6s ease-in-out 2}
+body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
+@media (prefers-reduced-motion: reduce){body.egg-spin,body.egg-shake{animation:none}}
+</style>
+<script>
+(function(){
+  var canvas, ctx, parts = [], raf = null;
+  function ensure(){
+    if(canvas) return;
+    canvas = document.createElement('canvas');
+    canvas.id = 'egg-canvas';
+    document.body.appendChild(canvas);
+    ctx = canvas.getContext('2d');
+    resize();
+    window.addEventListener('resize', resize);
+  }
+  function resize(){
+    if(!canvas) return;
+    var d = window.devicePixelRatio || 1;
+    canvas.width = innerWidth * d; canvas.height = innerHeight * d;
+    ctx.setTransform(d,0,0,d,0,0);
+  }
+  function toast(msg){
+    var t = document.getElementById('egg-toast');
+    if(!t){ t = document.createElement('div'); t.id = 'egg-toast'; document.body.appendChild(t); }
+    t.textContent = msg;
+    requestAnimationFrame(function(){ t.classList.add('show'); });
+    clearTimeout(t._tm);
+    t._tm = setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  }
+  function loop(){
+    raf = null;
+    if(!ctx) return;
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    for(var i=parts.length-1;i>=0;i--){
+      var p = parts[i];
+      p.vy += p.g; p.vx *= p.fr; p.vy *= p.fr;
+      p.x += p.vx; p.y += p.vy; p.life -= 1; p.rot += p.vr;
+      if(p.life <= 0 || p.y > innerHeight + 60){ parts.splice(i,1); continue; }
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, p.life / p.fade));
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.c;
+      if(p.shape === 'circle'){ ctx.beginPath(); ctx.arc(0,0,p.s/2,0,6.2832); ctx.fill(); }
+      else if(p.shape === 'star'){
+        ctx.beginPath();
+        for(var k=0;k<10;k++){ var r = k%2 ? p.s*0.4 : p.s; var a = Math.PI*k/5;
+          ctx[k?'lineTo':'moveTo'](Math.cos(a)*r, Math.sin(a)*r); }
+        ctx.closePath(); ctx.fill();
+      }
+      else if(p.shape === 'heart'){
+        ctx.beginPath();
+        var w = p.s;
+        ctx.moveTo(0, w*0.3);
+        ctx.bezierCurveTo(w, -w*0.5, w*0.5, -w, 0, -w*0.35);
+        ctx.bezierCurveTo(-w*0.5, -w, -w, -w*0.5, 0, w*0.3);
+        ctx.fill();
+      }
+      else { ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s*0.6); }
+      ctx.restore();
+    }
+    if(parts.length) raf = requestAnimationFrame(loop);
+    else ctx.clearRect(0,0,innerWidth,innerHeight);
+  }
+  function start(){ ensure(); if(!raf) raf = requestAnimationFrame(loop); }
+  function spawn(n, fn){
+    ensure();
+    for(var i=0;i<n;i++) parts.push(fn(i));
+    start();
+  }
+  var rnd = function(a,b){ return a + Math.random()*(b-a); };
+  var pick = function(arr){ return arr[Math.floor(Math.random()*arr.length)]; };
+
+  function confetti(){
+    var cols = ['#f43f5e','#f59e0b','#22c55e','#3b82f6','#a855f7','#06b6d4'];
+    spawn(140, function(){
+      return { x: rnd(0,innerWidth), y: rnd(-innerHeight*0.4,0), vx: rnd(-1.5,1.5), vy: rnd(1,4),
+        g: 0.06, fr: 0.995, s: rnd(6,13), c: pick(cols), rot: rnd(0,6), vr: rnd(-0.2,0.2),
+        life: rnd(140,230), fade: 90, shape: 'rect' };
+    });
+  }
+  function fireworks(){
+    var bursts = 5;
+    for(var b=0;b<bursts;b++){
+      (function(b){
+        setTimeout(function(){
+          var cx = rnd(innerWidth*0.15, innerWidth*0.85), cy = rnd(innerHeight*0.15, innerHeight*0.5);
+          var col = 'hsl(' + Math.floor(rnd(0,360)) + ' 95% 62%)';
+          spawn(70, function(){
+            var a = Math.random()*6.2832, sp = rnd(1.5,6.5);
+            return { x: cx, y: cy, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp, g: 0.045, fr: 0.975,
+              s: rnd(3,6), c: col, rot: 0, vr: 0, life: rnd(60,110), fade: 60, shape: 'circle' };
+          });
+        }, b*380);
+      })(b);
+    }
+  }
+  function snow(){
+    spawn(160, function(){
+      return { x: rnd(0,innerWidth), y: rnd(-innerHeight,0), vx: rnd(-.5,.5), vy: rnd(.6,1.8),
+        g: 0.002, fr: 1, s: rnd(3,8), c: 'rgba(255,255,255,.95)', rot: 0, vr: 0,
+        life: rnd(300,520), fade: 120, shape: 'circle' };
+    });
+  }
+  function sakura(){
+    var cols = ['#ffd7e6','#ffb7d1','#ff9ec4','#ffe3ef'];
+    spawn(120, function(){
+      return { x: rnd(0,innerWidth), y: rnd(-innerHeight,0), vx: rnd(-1,1), vy: rnd(.8,2),
+        g: 0.003, fr: 1, s: rnd(7,13), c: pick(cols), rot: rnd(0,6), vr: rnd(-.06,.06),
+        life: rnd(300,520), fade: 120, shape: 'circle' };
+    });
+  }
+  function hearts(){
+    var cols = ['#ff4d6d','#ff8fa3','#e11d48','#ffb3c1'];
+    spawn(70, function(){
+      return { x: rnd(0,innerWidth), y: rnd(innerHeight*0.6, innerHeight+40), vx: rnd(-.6,.6), vy: rnd(-2.6,-1.1),
+        g: -0.004, fr: 1, s: rnd(7,15), c: pick(cols), rot: rnd(-.3,.3), vr: rnd(-.02,.02),
+        life: rnd(180,280), fade: 90, shape: 'heart' };
+    });
+  }
+  function stars(){
+    var cols = ['#fde68a','#fcd34d','#fbbf24','#fff7cc'];
+    spawn(90, function(){
+      return { x: rnd(0,innerWidth), y: rnd(-innerHeight*0.5,0), vx: rnd(-.8,.8), vy: rnd(1,3),
+        g: 0.02, fr: 0.999, s: rnd(4,9), c: pick(cols), rot: rnd(0,6), vr: rnd(-.12,.12),
+        life: rnd(180,300), fade: 100, shape: 'star' };
+    });
+  }
+  function rainDrops(){
+    spawn(220, function(){
+      return { x: rnd(0,innerWidth), y: rnd(-innerHeight,0), vx: 0.6, vy: rnd(9,16),
+        g: 0.2, fr: 1, s: rnd(2,3), c: 'rgba(147,197,253,.9)', rot: 0, vr: 0,
+        life: rnd(80,140), fade: 60, shape: 'rect' };
+    });
+  }
+  function bodyFx(cls, ms){
+    document.body.classList.add(cls);
+    setTimeout(function(){ document.body.classList.remove(cls); }, ms);
+  }
+
+  var EGGS = [
+    { keys:['お祝い','おめでとう','パーティー','ぱーてぃー','紙吹雪','congrats','party','confetti','祝'], run:function(){ confetti(); toast('🎉 おめでとう！'); } },
+    { keys:['花火','はなび','hanabi','firework','fireworks'], run:function(){ fireworks(); toast('🎆 花火だ！'); } },
+    { keys:['雪','ゆき','snow','クリスマス','christmas'], run:function(){ snow(); toast('❄️ 雪が降ってきた'); } },
+    { keys:['桜','さくら','sakura','春','花見'], run:function(){ sakura(); toast('🌸 桜が舞う'); } },
+    { keys:['好き','すき','愛','ハート','love','heart'], run:function(){ hearts(); toast('💗 ラブ！'); } },
+    { keys:['星','ほし','star','宇宙','space','流星'], run:function(){ stars(); toast('⭐ 星が降る'); } },
+    { keys:['雨','あめ','rain','梅雨'], run:function(){ rainDrops(); toast('☔ 雨が降ってきた'); } },
+    { keys:['回転','くるくる','barrel roll','do a barrel roll','spin','ロール'], run:function(){ bodyFx('egg-spin',1500); toast('🌀 ぐるぐる！'); } },
+    { keys:['地震','じしん','earthquake','ゆれ','揺れ'], run:function(){ bodyFx('egg-shake',1400); toast('🫨 ぐらぐら…'); } },
+    { keys:['傾く','askew','tilt','ななめ','斜め'], run:function(){ bodyFx('egg-tilt',3000); toast('📐 ちょっと斜め'); } },
+    { keys:['仲良し','なかよし','nakayosi','インスタンス'], run:function(){ confetti(); setTimeout(fireworks,250); toast('✨ 仲良し *インスタンス* 2 へようこそ！'); } }
+  ];
+
+  var lastEgg = '', timer = null;
+  function check(raw){
+    var q = String(raw||'').trim().toLowerCase();
+    if(!q){ lastEgg = ''; return; }
+    for(var i=0;i<EGGS.length;i++){
+      var e = EGGS[i];
+      for(var k=0;k<e.keys.length;k++){
+        if(q === e.keys[k].toLowerCase() || q.indexOf(e.keys[k].toLowerCase()) !== -1){
+          var id = i + ':' + q;
+          if(id === lastEgg) return;
+          lastEgg = id;
+          try{ e.run(); }catch(err){}
+          return;
+        }
+      }
+    }
+    lastEgg = '';
+  }
+  window.runSearchEasterEgg = check;
+
+  function bind(){
+    var input = document.getElementById('searchInput');
+    if(!input) return;
+    input.addEventListener('input', function(){
+      var v = this.value;
+      clearTimeout(timer);
+      timer = setTimeout(function(){ check(v); }, 320);
+    });
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){ clearTimeout(timer); lastEgg = ''; check(this.value); }
+    });
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+</script>
 </body>
 </html>
