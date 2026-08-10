@@ -674,6 +674,79 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
 .wx-map-legend{display:flex;flex-wrap:wrap;gap:10px;font-size:.75rem;color:var(--text-muted);margin-top:6px;align-items:center}
 .wx-map-legend .sw{display:inline-block;width:14px;height:8px;border-radius:2px;vertical-align:middle;margin-right:4px}
 </style>
+<style>
+/* ============================================================
+   全デバイス対応の調整（後から追記した上書きスタイル）
+   - SVGアイコンがタブレットで小さくなりすぎる問題の修正
+   - タッチ端末でもホバー系アニメーションが見えるように
+   ============================================================ */
+
+/* ── SVGアイコンを画面幅に応じてスケール ── */
+.game-card .play-badge{width:clamp(54px,8vw,74px);height:clamp(54px,8vw,74px)}
+.game-card .play-badge svg{width:clamp(24px,3.4vw,32px);height:clamp(24px,3.4vw,32px)}
+.gm-title .gm-logo{width:clamp(28px,3.4vw,36px);height:clamp(28px,3.4vw,36px)}
+.gm-title .gm-logo svg{width:clamp(16px,2.2vw,22px);height:clamp(16px,2.2vw,22px)}
+.gm-btn{height:clamp(38px,4.6vw,46px);min-width:clamp(38px,4.6vw,46px)}
+.gm-btn svg{width:clamp(18px,2.4vw,24px);height:clamp(18px,2.4vw,24px)}
+.icon-btn{width:clamp(38px,4.6vw,44px);height:clamp(38px,4.6vw,44px);font-size:clamp(1rem,1.8vw,1.15rem)}
+.icon-btn svg,.notif-btn svg,.notif-btn .notif-ico,.theme-icon{
+  width:clamp(22px,2.8vw,28px);height:clamp(22px,2.8vw,28px)
+}
+
+/* ── タブレット帯（601〜1024px）でアイコンが潰れないよう下限を確保 ── */
+@media (min-width:601px) and (max-width:1024px){
+  .icon-btn{width:44px;height:44px}
+  .icon-btn svg,.notif-btn svg,.notif-btn .notif-ico,.theme-icon{width:26px;height:26px}
+  .gm-btn{height:44px;min-width:44px}
+  .gm-btn svg{width:22px;height:22px}
+  .gm-title .gm-logo{width:34px;height:34px}
+  .gm-title .gm-logo svg{width:20px;height:20px}
+  .game-card .play-badge{width:66px;height:66px}
+  .game-card .play-badge svg{width:30px;height:30px}
+  .game-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+}
+
+/* ── ヒーローの装飾アニメーションを全デバイスで表示 ── */
+#home-page .home-hero-deco{
+  display:block !important;
+  animation:decoFloat 9s ease-in-out infinite;
+}
+@keyframes decoFloat{
+  0%,100%{transform:translateY(0) rotate(0deg);opacity:.9}
+  50%{transform:translateY(-8px) rotate(1.5deg);opacity:1}
+}
+@media(max-width:820px){
+  #home-page .home-hero-deco{min-height:96px}
+}
+@media(max-width:600px){
+  #home-page .home-hero-deco{min-height:72px}
+}
+
+/* ── タッチ端末（ホバー不可）でもアニメーションが見える ── */
+@keyframes playPulseTouch{
+  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.9}
+  50%{transform:translate(-50%,-50%) scale(1.1);opacity:1}
+}
+@keyframes kenburnsTouch{
+  0%{transform:scale(1)}
+  100%{transform:scale(1.07)}
+}
+@media (hover:none),(pointer:coarse){
+  .game-card .play-badge{
+    opacity:.92;
+    transform:translate(-50%,-50%) scale(1);
+    animation:playPulseTouch 2.4s ease-in-out infinite;
+  }
+  .cg-hero-card img{animation:kenburnsTouch 12s ease-in-out infinite alternate}
+  .game-card:active .thumb img{transform:scale(1.08)}
+  .cg-hero-card:active{transform:translateY(-3px)}
+}
+
+/* ── ティッカーはモバイルでも十分な速さで流す ── */
+@media(max-width:820px){
+  .ticker-move{animation-duration:40s}
+}
+</style>
 </head>
 <body>
 
