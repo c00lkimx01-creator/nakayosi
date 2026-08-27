@@ -79,6 +79,8 @@ body.dark-mode .brand-weather .wx-i{color:color-mix(in oklab, var(--primary) 70%
 .notif-wrap{position:relative;display:inline-block}
 /* 動画対応 */
 .nm-video{width:100%;border-radius:8px;background:#000;margin-bottom:10px;max-height:60vh}
+.nm-yt-wrap{position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;background:#000;margin-bottom:10px;overflow:hidden}
+.nm-yt-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 body.dark-mode .pixel-clock{background:#0a1220}
 
 /* 速報／ニュースティッカー */
@@ -574,6 +576,8 @@ body.gaming main,body.gaming footer,body.gaming .site-header{content-visibility:
 .wx-actions a,.wx-actions button{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-size:.82rem;text-decoration:none;cursor:pointer;font-weight:600}
 .wx-actions a:hover,.wx-actions button:hover{border-color:var(--primary);color:var(--primary)}
 .wx-today{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px;background:var(--surface-2);border-radius:12px;border:1px solid var(--border);margin-bottom:16px}
+.wx-tomorrow{border-style:dashed;opacity:.92}
+.wx-tomorrow .icon{color:var(--text-muted)}
 .wx-today .icon{font-size:3.8rem;line-height:1;display:flex;align-items:center;color:var(--primary)}
 .wx-today .icon svg{width:3.4rem;height:3.4rem}
 .wx-week .i svg{width:2.2rem;height:2.2rem;color:var(--primary)}
@@ -1428,7 +1432,7 @@ async function fetchQuakes(force){
   try{
     let data = null;
     const endpoints = [
-      'https://api.p2pquake.net/v2/history?codes=551&limit=100&_=' + Date.now(),
+      'https://api.p2pquake.net/v2/history?codes=551&limit=100&order=-1&_=' + Date.now(),
       'https://api.p2pquake.net/v2/jma/quake?limit=100&order=-1&_=' + Date.now()
     ];
     for(const ep of endpoints){
@@ -1455,6 +1459,8 @@ async function fetchQuakes(force){
         points: Array.isArray(d.points) ? d.points : [],
       };
     }).filter(q => q.time);
+    // APIの返却順に依存せず、発生時刻が新しい順になるよう必ず並び替える
+    QUAKES.sort((a,b) => new Date(b.time) - new Date(a.time));
 
     // ティッカー更新
     EQ_ITEMS = QUAKES.slice(0,6).map(q => {
@@ -1624,60 +1630,140 @@ function renderQuakeMap(){
   setTimeout(() => QUAKE_MAP.invalidateSize(), 100);
 }
 
-// NHK ニュース RSS から実ニュースを取得（rss2json 経由）＋画像付きカード描画
+// ニュース取得：複数の取得経路を「競争」させ、一番速く返ってきたものを採用（最速化）
+// ＋ YouTubeニュースチャンネルのフィードから動画付きニュースを合流させる
 let NEWS_FEED = [];
 function newsImg(url){
   return 'https://api.microlink.io/?url=' + encodeURIComponent(url) + '&embed=image.url';
 }
 function stripHtml(s){ return (s||'').replace(/<[^>]*>/g,'').trim(); }
+// タイムアウト付きfetch（応答のない経路でいつまでも待たされないようにする）
+async function fetchTimeout(url, ms, opts){
+  const ctrl = new AbortController();
+  const id = setTimeout(()=>ctrl.abort(), ms);
+  try{
+    return await fetch(url, { ...(opts||{}), signal: ctrl.signal });
+  } finally {
+    clearTimeout(id);
+  }
+}
 const NEWS_SOURCES = [
   { src:'NHK',   rss:'https://www3.nhk.or.jp/rss/news/cat0.xml' },
   { src:'NHK社会', rss:'https://www3.nhk.or.jp/rss/news/cat1.xml' },
   { src:'Yahoo', rss:'https://news.yahoo.co.jp/rss/topics/top-picks.xml' }
 ];
+// テキスト系ニュース：3つの取得経路を同時に投げ、最初に成功した結果を採用する
 async function fetchRss(rss){
   const bust = Date.now();
-  // 1) rss2json
-  try{
-    const r = await fetch('https://api.rss2json.com/v1/api.json?count=30&rss_url=' + encodeURIComponent(rss) + '&_=' + bust, { cache:'no-store' });
-    if(r.ok){
+  const attempts = [
+    (async () => {
+      const r = await fetchTimeout('https://api.rss2json.com/v1/api.json?count=30&rss_url=' + encodeURIComponent(rss) + '&_=' + bust, 6000, { cache:'no-store' });
+      if(!r.ok) throw new Error('rss2json error');
       const j = await r.json();
-      if(j.items && j.items.length) return j.items;
-    }
-  }catch(_){}
-  // 2) allorigins で生XMLを取得してパース
-  for(const proxy of ['https://api.allorigins.win/raw?url=', 'https://corsproxy.io/?']){
-    try{
-      const r = await fetch(proxy + encodeURIComponent(rss + '?_=' + bust), { cache:'no-store' });
-      if(!r.ok) continue;
+      if(!j.items || !j.items.length) throw new Error('empty');
+      return j.items;
+    })(),
+    ...['https://api.allorigins.win/raw?url=', 'https://corsproxy.io/?url='].map(proxy => (async () => {
+      const r = await fetchTimeout(proxy + encodeURIComponent(rss + (rss.includes('?')?'&':'?') + '_=' + bust), 6000, { cache:'no-store' });
+      if(!r.ok) throw new Error('proxy error');
       const xml = new DOMParser().parseFromString(await r.text(), 'text/xml');
       const items = [...xml.querySelectorAll('item')].map(it => {
         const g = (t)=> it.querySelector(t)?.textContent || '';
-        const media = it.querySelector('enclosure')?.getAttribute('url')
-          || it.getElementsByTagNameNS('*','thumbnail')[0]?.getAttribute('url') || '';
+        const encEl = it.querySelector('enclosure');
+        const media = encEl?.getAttribute('url') || it.getElementsByTagNameNS('*','thumbnail')[0]?.getAttribute('url') || '';
+        const encType = encEl?.getAttribute('type') || '';
         return { title:g('title'), description:g('description'), content:g('description'),
-                 pubDate:g('pubDate'), link:g('link'), thumbnail:media, enclosure: media?{link:media,type:'image/jpeg'}:null };
+                 pubDate:g('pubDate'), link:g('link'), thumbnail:media, enclosure: media?{link:media,type:encType||'image/jpeg'}:null };
       });
-      if(items.length) return items;
-    }catch(_){}
+      if(!items.length) throw new Error('empty');
+      return items;
+    })())
+  ];
+  try{
+    return await Promise.any(attempts);
+  }catch(_){
+    return [];
   }
-  return [];
+}
+// 動画ニュース：主要ニュースチャンネルのYouTubeフィードを利用（実際に再生できる動画付きニュース）
+const VIDEO_NEWS_CHANNELS = [
+  { src:'NHKニュース(動画)', handle:'NHKNEWS' },
+  { src:'ANNニュース(動画)', handle:'ANNnewsCH' },
+  { src:'TBS NEWS DIG(動画)', handle:'tbsnewsdig' }
+];
+const YT_CID_CACHE_KEY = 'nakayosi_yt_cid_v1';
+function loadYtCidCache(){
+  try{ return JSON.parse(localStorage.getItem(YT_CID_CACHE_KEY) || '{}'); }catch(_){ return {}; }
+}
+function saveYtCidCache(c){
+  try{ localStorage.setItem(YT_CID_CACHE_KEY, JSON.stringify(c)); }catch(_){}
+}
+// チャンネルハンドル→チャンネルIDの変換結果をローカルに保存し、2回目以降は即座に使えるようにする（高速化）
+async function resolveYtChannelId(handle){
+  const cache = loadYtCidCache();
+  const hit = cache[handle];
+  if(hit && hit.id && (Date.now() - hit.t) < 30*24*60*60*1000) return hit.id;
+  try{
+    const url = 'https://www.youtube.com/@' + handle;
+    const r = await fetchTimeout('https://api.allorigins.win/raw?url=' + encodeURIComponent(url), 7000);
+    if(!r.ok) throw new Error('resolve failed');
+    const html = await r.text();
+    const m = html.match(/"channelId":"(UC[0-9A-Za-z_-]{22})"/);
+    if(!m) throw new Error('not found');
+    cache[handle] = { id:m[1], t:Date.now() };
+    saveYtCidCache(cache);
+    return m[1];
+  }catch(e){
+    return (hit && hit.id) || null;
+  }
+}
+async function fetchYtChannelFeed(channelId){
+  const feedUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
+  const r = await fetchTimeout('https://api.allorigins.win/raw?url=' + encodeURIComponent(feedUrl + '&_=' + Date.now()), 7000, { cache:'no-store' });
+  if(!r.ok) throw new Error('yt feed error');
+  const xml = new DOMParser().parseFromString(await r.text(), 'text/xml');
+  return [...xml.getElementsByTagNameNS('*','entry')].map(e => {
+    const g = (t)=> e.getElementsByTagNameNS('*',t)[0]?.textContent || '';
+    const videoId = g('videoId');
+    const group = e.getElementsByTagNameNS('*','group')[0];
+    const desc = group ? (group.getElementsByTagNameNS('*','description')[0]?.textContent || '') : '';
+    return {
+      title: g('title'),
+      description: desc,
+      pubDate: g('published'),
+      link: videoId ? ('https://www.youtube.com/watch?v=' + videoId) : g('link'),
+      thumbnail: videoId ? ('https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg') : '',
+      videoId
+    };
+  }).filter(v => v.videoId);
+}
+async function fetchVideoNews(){
+  const results = await Promise.allSettled(VIDEO_NEWS_CHANNELS.map(async c => {
+    const cid = await resolveYtChannelId(c.handle);
+    if(!cid) return [];
+    const items = await fetchYtChannelFeed(cid);
+    return items.map(i => ({...i, __src:c.src}));
+  }));
+  return results.filter(r => r.status === 'fulfilled').flatMap(r => r.value);
 }
 async function fetchNews(){
   try{
-    const results = await Promise.all(NEWS_SOURCES.map(async s => (await fetchRss(s.rss)).map(i => ({...i, __src:s.src}))));
-    let items = results.flat();
+    const [textResultsArr, videoItems] = await Promise.all([
+      Promise.all(NEWS_SOURCES.map(async s => (await fetchRss(s.rss)).map(i => ({...i, __src:s.src})))),
+      fetchVideoNews().catch(()=>[])
+    ]);
+    let items = textResultsArr.flat().concat(videoItems);
     items.sort((a,b)=> new Date(b.pubDate||0) - new Date(a.pubDate||0));
     const seen = new Set();
     items = items.filter(i => { const k=(i.title||'').trim(); if(!k||seen.has(k)) return false; seen.add(k); return true; });
     const data = { items };
     if(data.items && data.items.length){
       NEWS_ITEMS = data.items.slice(0,10).map(i => `📰 ${i.title}`);
-      NEWS_FEED = data.items.slice(0,30).map(i => {
+      NEWS_FEED = data.items.slice(0,40).map(i => {
         const enc = i.enclosure || null;
         const encType = (enc && enc.type) ? String(enc.type) : '';
         const encLink = (enc && enc.link) ? String(enc.link) : '';
-        const isVideo = /^video\//i.test(encType) || /\.(mp4|m3u8|webm|mov)(\?|$)/i.test(encLink);
+        const isFileVideo = /^video\//i.test(encType) || /\.(mp4|m3u8|webm|mov)(\?|$)/i.test(encLink);
         return {
           title: i.title,
           desc: stripHtml(i.description).slice(0,120),
@@ -1685,9 +1771,10 @@ async function fetchNews(){
           content: stripHtml(i.content || i.description || ''),
           date: (i.pubDate||'').replace('T',' ').slice(0,16).replace(/-/g,'/'),
           link: i.link,
-          img: (i.thumbnail || (!isVideo && encLink)) || newsImg(i.link),
-          video: isVideo ? encLink : null,
-          videoType: isVideo ? (encType || 'video/mp4') : null,
+          img: (i.thumbnail || (!isFileVideo && encLink)) || newsImg(i.link),
+          video: isFileVideo ? encLink : null,
+          videoType: isFileVideo ? (encType || 'video/mp4') : null,
+          videoId: i.videoId || null,
           src: i.__src || 'NHK',
         };
       });
@@ -1700,9 +1787,10 @@ async function fetchNews(){
 }
 function newsCardHtml(n, idx){
   const fb = "this.onerror=null;this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,var(--primary),var(--accent))';";
-  const playBadge = n.video ? '<span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);pointer-events:none">▶</span>' : '';
+  const hasVideo = !!(n.video || n.videoId);
+  const playBadge = hasVideo ? '<span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);pointer-events:none">▶</span>' : '';
   return `<a class="news-card" href="javascript:void(0)" onclick="openNewsModal(${idx})">
-    <div class="nc-thumb"><span class="nc-src">${n.src}${n.video?' 🎬':''}</span><img src="${n.img}" alt="" loading="lazy" onerror="${fb}">${playBadge}</div>
+    <div class="nc-thumb"><span class="nc-src">${n.src}${hasVideo?' 🎬':''}</span><img src="${n.img}" alt="" loading="lazy" onerror="${fb}">${playBadge}</div>
     <div class="nc-body">
       <p class="nc-title">${n.title}</p>
       ${n.desc?`<p class="nc-desc">${n.desc}</p>`:''}
@@ -1716,12 +1804,15 @@ function openNewsModal(idx){
   const modal = document.getElementById('news-modal');
   const body = document.getElementById('news-modal-body');
   const fb = "this.onerror=null;this.style.display='none';";
-  const mediaHtml = n.video
-    ? `<video class="nm-video" controls playsinline preload="metadata" ${n.img?`poster="${n.img}"`:''}><source src="${n.video}" type="${n.videoType||'video/mp4'}">お使いのブラウザは動画に対応していません。</video>`
-    : `<div class="nm-thumb"><img src="${n.img}" alt="" onerror="${fb}"></div>`;
+  const hasVideo = !!(n.video || n.videoId);
+  const mediaHtml = n.videoId
+    ? `<div class="nm-yt-wrap"><iframe src="https://www.youtube.com/embed/${n.videoId}?autoplay=1&rel=0" title="${n.title.replace(/"/g,'&quot;')}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`
+    : n.video
+      ? `<video class="nm-video" controls playsinline preload="metadata" ${n.img?`poster="${n.img}"`:''}><source src="${n.video}" type="${n.videoType||'video/mp4'}">お使いのブラウザは動画に対応していません。</video>`
+      : `<div class="nm-thumb"><img src="${n.img}" alt="" onerror="${fb}"></div>`;
   body.innerHTML = `
     ${mediaHtml}
-    <span class="nm-src">${n.src}${n.video?' 🎬':''}</span>
+    <span class="nm-src">${n.src}${hasVideo?' 🎬':''}</span>
     <h2 class="nm-title">${n.title}</h2>
     <div class="nm-date">🕒 ${n.date}</div>
     <p class="nm-desc">${(n.content||n.fullDesc||n.desc||'本文はありません。').replace(/\n/g,'<br>')}</p>
@@ -2356,6 +2447,26 @@ async function fetchWeather(force){
     if(todayEl){
       const today = weathers[0] || '—';
       const todayCode = codes[0];
+      // 明日の天気（timeSeries[0]の2件目 = 翌日分。無い/空の場合は週間予報から補完）
+      let tmrwText = weathers[1] || '';
+      let tmrwCode = codes[1] || '';
+      let tmrwDate = times[1] ? new Date(times[1]) : null;
+      let tHi = null, tLo = null;
+      if(weekly && weekly.timeSeries[0]){
+        const wArea0 = weekly.timeSeries[0].areas[0];
+        const wTimes0 = weekly.timeSeries[0].timeDefines || [];
+        const wTempArea0 = weekly.timeSeries[1] ? weekly.timeSeries[1].areas[0] : null;
+        const wMax0 = wTempArea0?.tempsMax || [];
+        const wMin0 = wTempArea0?.tempsMin || [];
+        const targetDate = (tmrwDate || new Date(Date.now()+86400000)).toDateString();
+        let wi = wTimes0.findIndex(t => new Date(t).toDateString() === targetDate);
+        if(wi < 0) wi = 0; // 見つからなければ週間予報の先頭（通常は明日）を使う
+        if(!tmrwCode && wArea0.weatherCodes) tmrwCode = wArea0.weatherCodes[wi] || '';
+        if(wMax0[wi] && wMax0[wi] !== '') tHi = wMax0[wi];
+        if(wMin0[wi] && wMin0[wi] !== '') tLo = wMin0[wi];
+        if(!tmrwDate && wTimes0[wi]) tmrwDate = new Date(wTimes0[wi]);
+      }
+      if(!tmrwDate) tmrwDate = new Date(Date.now()+86400000);
       todayEl.innerHTML = `<div class="wx-today">
         <div class="icon">${wxIcon(todayCode)}</div>
         <div class="txt">
@@ -2364,6 +2475,17 @@ async function fetchWeather(force){
           <div class="temps">
             ${hi!=null?`<span class="hi">最高 ${hi}℃</span>`:''}
             ${lo!=null?`<span class="lo">最低 ${lo}℃</span>`:''}
+          </div>
+        </div>
+      </div>
+      <div class="wx-today wx-tomorrow">
+        <div class="icon">${wxIcon(tmrwCode)}</div>
+        <div class="txt">
+          <h3>明日の天気（${tmrwDate.toLocaleDateString('ja-JP',{month:'numeric',day:'numeric',weekday:'short'})}）</h3>
+          <p>${(tmrwText||'—').toString().replace(/\u3000/g,' ')}</p>
+          <div class="temps">
+            ${tHi!=null?`<span class="hi">最高 ${tHi}℃</span>`:''}
+            ${tLo!=null?`<span class="lo">最低 ${tLo}℃</span>`:''}
           </div>
         </div>
       </div>`;
