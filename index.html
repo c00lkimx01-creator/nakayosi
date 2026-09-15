@@ -6625,5 +6625,118 @@ body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
   });
 })();
 </script>
+
+<style id="glass-theme-mobile-menu-fix">
+/* Glass is the default presentation. The rain image remains visible through translucent surfaces. */
+body.glass-mode{
+  --bg:rgba(7,25,38,.24);--surface:rgba(13,38,53,.58);--surface-2:rgba(22,53,68,.48);
+  --text:#eef9ff;--text-muted:#b8d2df;--border:rgba(200,235,247,.25);
+  --primary:#75d4ff;--primary-hover:#a4e4ff;--accent:#ff8f80;
+  --header-bg:rgba(9,31,45,.48);--topbar-bg:rgba(3,19,30,.62);--topbar-text:#f5fbff;
+  --tag-bg:rgba(111,211,255,.15);
+  background-image:linear-gradient(rgba(2,17,28,.30),rgba(2,17,28,.42)),url("https://www.videosoftdev.com/images/video_editor/how-to/raindrops/raindrops-effect.gif")!important;
+  background-size:cover!important;background-position:center!important;background-attachment:fixed!important;background-repeat:no-repeat!important;
+}
+body.glass-mode .site-header,body.glass-mode .gnav,body.glass-mode .section,body.glass-mode .hero,body.glass-mode .link-cat,body.glass-mode .game-card,body.glass-mode .news-card,body.glass-mode .notif-panel,body.glass-mode .settings-menu{
+  background:var(--surface);backdrop-filter:blur(18px) saturate(135%);border-color:var(--border);
+  box-shadow:0 16px 38px -26px rgba(0,0,0,.72),inset 0 1px rgba(255,255,255,.12);
+}
+body.glass-mode .topbar,body.glass-mode .ticker{backdrop-filter:blur(18px) saturate(130%)}
+body.glass-mode .ticker{background:rgba(2,14,24,.68)}
+body.glass-mode .brand-weather{background:rgba(245,251,255,.82)}
+body.glass-mode .theme-icon{display:none}
+body.glass-mode .theme-toggle-btn::before{content:"◫";font-size:22px;line-height:1}
+
+/* NKYS in Search: rain-window glass search surface */
+#search-app[data-theme="glass"]{
+  --bg-color:transparent;--card-bg:rgba(8,28,42,.62);--input-bg:rgba(5,22,35,.72);
+  --text-color:#f2f9fc;--text-muted:#aec6d2;--accent-blue:#79d7ff;
+  --border-color:rgba(198,232,244,.24);--live-red:#ff6f67;color-scheme:dark;
+}
+body.glass-mode.search-page>.wrap{max-width:100%;padding-top:18px}
+body.glass-mode #search-page{min-height:calc(100dvh - 250px)}
+body.glass-mode #search-page>.section-head{background:rgba(5,23,35,.5);border:1px solid var(--border);border-bottom:0;backdrop-filter:blur(18px) saturate(135%)}
+body.glass-mode #search-app{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(rgba(3,18,29,.15),rgba(3,18,29,.3));border:1px solid var(--border);backdrop-filter:blur(3px);box-shadow:0 24px 60px -36px rgba(0,0,0,.85)}
+body.glass-mode #search-app::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(2,16,27,.08),rgba(2,16,27,.22));pointer-events:none}
+body.glass-mode #search-app .top-bar{width:min(calc(100% - 32px),860px);margin-top:12px;padding:8px 10px;border:1px solid var(--border-color);border-radius:999px;background:rgba(5,22,35,.5);backdrop-filter:blur(18px) saturate(140%)}
+body.glass-mode #search-app .top-btn{min-height:36px;padding:7px 12px;border-radius:999px;color:var(--text-color)}
+body.glass-mode #search-app .top-btn:hover{background:rgba(121,215,255,.13)}
+body.glass-mode #search-app .container:not(.results-mode){min-height:500px;padding-top:62px;justify-content:flex-start}
+body.glass-mode #search-app .container:not(.results-mode) .search-header{gap:26px}
+body.glass-mode #search-app .container:not(.results-mode) .logo{color:#f5fbff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:clamp(2.4rem,6vw,4rem);font-weight:750;letter-spacing:0;text-shadow:0 3px 24px rgba(0,0,0,.62)}
+body.glass-mode #search-app .privacy-badge{color:#dff5ff;background:rgba(4,20,32,.48);border-color:var(--border-color);backdrop-filter:blur(12px)}
+body.glass-mode #search-app .search-box{min-height:54px;padding:5px 16px;border-color:var(--border-color);background:rgba(4,19,31,.72);backdrop-filter:blur(22px) saturate(145%);box-shadow:0 16px 42px -24px rgba(0,0,0,.9),inset 0 1px rgba(255,255,255,.1)}
+body.glass-mode #search-app .search-box:focus-within{border-color:rgba(121,215,255,.62);box-shadow:0 0 0 3px rgba(121,215,255,.12),0 18px 42px -24px rgba(0,0,0,.95)}
+body.glass-mode #search-app .autocomplete-dropdown,body.glass-mode #search-app .modal-content,body.glass-mode #search-app .result-item,body.glass-mode #search-app .card,body.glass-mode #search-app .image-card,body.glass-mode #search-app .video-card{background:rgba(7,27,41,.8);border-color:var(--border-color);backdrop-filter:blur(22px) saturate(140%)}
+body.glass-mode #search-app .tabs{background:rgba(5,22,35,.45);border:1px solid var(--border-color);border-radius:12px;padding:7px;backdrop-filter:blur(16px)}
+.nkys-quick-actions{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:2px}
+.nkys-quick-action{width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border-color);border-radius:50%;background:var(--input-bg);color:var(--text-color);cursor:pointer;box-shadow:0 8px 22px -16px rgba(0,0,0,.8)}
+.nkys-quick-action:hover,.nkys-quick-action:focus-visible{color:var(--accent-blue);border-color:var(--accent-blue);transform:translateY(-1px)}
+.nkys-quick-action svg{width:20px;height:20px;fill:currentColor}
+.nkys-quick-action span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+body.glass-mode #search-app>footer{background:rgba(5,22,35,.48);backdrop-filter:blur(15px)}
+
+@media(max-width:1024px){
+  .gnav{position:sticky;top:0;z-index:1000}
+  .gnav-inner{position:relative;display:block;padding:0!important;overflow:visible}
+  .gnav .menu-toggle{display:flex;width:100%;min-height:52px;padding:0 16px;justify-content:space-between;font-size:.95rem;font-weight:700;border-radius:0!important;background:var(--surface)}
+  .gnav .menu-toggle::after{content:"⌄";font-size:1.35rem;transition:transform .2s ease}
+  .gnav-inner.open .menu-toggle::after{transform:rotate(180deg)}
+  .gnav-inner>.gnav-links{position:absolute!important;top:calc(100% + 1px)!important;left:8px!important;right:8px!important;inset-block-end:auto!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));flex-direction:initial!important;gap:6px;width:auto;height:auto;max-height:min(68dvh,540px);padding:10px!important;overflow-y:auto;overscroll-behavior:contain;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-10px)!important;border:1px solid var(--border);border-radius:0 0 14px 14px;background:var(--surface);box-shadow:0 22px 45px -22px rgba(0,0,0,.75);transition:opacity .18s ease,transform .18s ease,visibility .18s}
+  .gnav-inner.open>.gnav-links{opacity:1;visibility:visible;pointer-events:auto;transform:none!important}
+  .gnav-inner.open::before{display:none!important}
+  .gnav-links .drawer-close{display:none!important}
+  .gnav a{width:100%;min-width:0;min-height:46px;padding:9px 11px!important;border:1px solid var(--border)!important;border-radius:9px!important;background:var(--surface-2);font-size:.82rem;touch-action:manipulation;overflow:hidden;text-overflow:ellipsis}
+  .gnav a.active{background:color-mix(in oklab,var(--primary) 18%,var(--surface-2))}
+  body.glass-mode .gnav-inner>.gnav-links{background:rgba(5,24,36,.78);backdrop-filter:blur(22px) saturate(140%)}
+}
+@media(max-width:640px){
+  body.glass-mode.search-page>.wrap{padding:10px 8px calc(78px + env(safe-area-inset-bottom))}
+  #search-page>.section-head{padding:12px 14px}
+  body.glass-mode #search-app{min-height:calc(100dvh - 250px);border-radius:0 0 14px 14px}
+  body.glass-mode #search-app .top-bar{width:calc(100% - 20px);margin-top:10px;padding:5px 7px}
+  body.glass-mode #search-app .top-btn{padding:7px 9px;font-size:.75rem}
+  body.glass-mode #search-app .container:not(.results-mode){min-height:440px;padding:48px 14px 42px}
+  body.glass-mode #search-app .container:not(.results-mode) .logo{font-size:clamp(2rem,12vw,2.8rem)}
+  body.glass-mode #search-app .container:not(.results-mode) .search-box{min-height:52px}
+  .nkys-quick-actions{gap:8px}.nkys-quick-action{width:44px;height:44px}
+}
+@media(max-width:360px){.gnav-inner>.gnav-links{left:5px!important;right:5px!important;gap:5px;padding:7px!important}.gnav a{font-size:.76rem;padding:8px!important}.nav-ic{width:15px;height:15px}}
+</style>
+<script id="glass-theme-mobile-menu-fix-script">
+(function(){
+  const ORDER=['glass','dark','light'];
+  const KEY='nakayosi_theme_v2';
+  function current(){return document.body.classList.contains('glass-mode')?'glass':document.body.classList.contains('dark-mode')?'dark':'light'}
+  function apply(theme,save){
+    if(!ORDER.includes(theme))theme='glass';
+    document.body.classList.toggle('glass-mode',theme==='glass');
+    document.body.classList.toggle('dark-mode',theme==='dark');
+    document.body.dataset.theme=theme;
+    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme);
+    const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(theme)+1)%ORDER.length];btn.title=`表示: ${theme==='glass'?'グラス':theme==='dark'?'ダーク':'ライト'}（次: ${next==='glass'?'グラス':next==='dark'?'ダーク':'ライト'}）`;btn.setAttribute('aria-label',btn.title)}
+    document.querySelectorAll('#smTheme button[data-theme]').forEach(b=>b.classList.toggle('active',b.dataset.theme===theme));
+    if(save){try{localStorage.setItem(KEY,theme);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',theme==='dark'?'dark':'light')}catch(_){}}
+  }
+  function boot(){
+    let saved='glass';try{saved=localStorage.getItem(KEY)||'glass'}catch(_){}
+    apply(saved,false);
+    window.toggleTheme=function(){const now=current();apply(ORDER[(ORDER.indexOf(now)+1)%ORDER.length],true)};
+    const menu=document.querySelector('.menu-toggle'),nav=document.getElementById('gnav'),links=document.getElementById('gnavLinks');
+    if(menu&&nav){const close=()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.firstChild.textContent='☰ メニュー';document.body.style.overflow=''};menu.setAttribute('type','button');menu.setAttribute('aria-controls','gnavLinks');menu.setAttribute('aria-haspopup','true');menu.setAttribute('aria-expanded','false');menu.onclick=function(e){e.stopPropagation();const open=!nav.classList.contains('open');open?nav.classList.add('open'):nav.classList.remove('open');menu.setAttribute('aria-expanded',String(open));menu.firstChild.textContent=open?'✕ メニューを閉じる':'☰ メニュー';document.body.style.overflow=''};
+      if(links)links.addEventListener('click',e=>{if(e.target.closest('a'))close()});
+      document.addEventListener('click',e=>{if(nav.classList.contains('open')&&!nav.contains(e.target))close()});
+      document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('open')){close();menu.focus()}});
+      window.addEventListener('resize',()=>{if(innerWidth>1024)close()},{passive:true});
+    }
+    const sm=document.getElementById('smTheme');if(sm&&!sm.querySelector('[data-theme="glass"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass';b.textContent='グラス';sm.prepend(b)}
+    if(sm)sm.addEventListener('click',e=>{const b=e.target.closest('button[data-theme]');if(b){e.stopImmediatePropagation();apply(b.dataset.theme,true)}},true);
+    const header=document.querySelector('#search-app .search-header');
+    if(header&&!header.querySelector('.nkys-quick-actions')){const actions=document.createElement('div');actions.className='nkys-quick-actions';actions.setAttribute('aria-label','クイックアクセス');actions.innerHTML='<button type="button" class="nkys-quick-action" data-action="web" title="Web検索"><svg viewBox="0 0 24 24"><use href="#icon-web"></use></svg><span>Web検索</span></button><button type="button" class="nkys-quick-action" data-action="news" title="ニュース検索"><svg viewBox="0 0 24 24"><use href="#icon-news"></use></svg><span>ニュース検索</span></button><button type="button" class="nkys-quick-action" data-action="images" title="画像検索"><svg viewBox="0 0 24 24"><use href="#icon-image"></use></svg><span>画像検索</span></button><button type="button" class="nkys-quick-action" data-action="videos" title="動画検索"><svg viewBox="0 0 24 24"><use href="#icon-video"></use></svg><span>動画検索</span></button><button type="button" class="nkys-quick-action" data-action="settings" title="検索設定"><svg viewBox="0 0 24 24"><use href="#icon-settings"></use></svg><span>検索設定</span></button>';actions.addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;if(b.dataset.action==='settings'){if(typeof window.openSettings==='function')window.openSettings();return}const input=document.getElementById('sxSearchInput');if(input)input.focus();const tab=document.querySelector(`#search-app .tab[data-cat="${b.dataset.action}"]`);if(tab&&document.getElementById('mainContainer')?.classList.contains('results-mode'))tab.click()});header.appendChild(actions)}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
+</script>
+
 </body>
 </html>
