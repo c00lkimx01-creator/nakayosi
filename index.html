@@ -755,6 +755,67 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
 .cg-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 .cg-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
 
+
+/* ───── リンク集 2026 リデザイン ───── */
+#links-page .link-hub{display:grid;grid-template-columns:210px minmax(0,1fr);gap:22px;align-items:start}
+#links-page .link-sidebar{position:sticky;top:76px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px}
+#links-page .link-sidebar-title{padding:8px 10px 10px;font-size:.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em}
+#links-page .link-category-nav{display:grid;gap:3px}
+#links-page .link-category-btn{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:center;width:100%;padding:9px 10px;border:0;border-radius:6px;background:transparent;color:var(--text);font:inherit;font-size:.82rem;text-align:left;cursor:pointer;transition:background .16s,color .16s}
+#links-page .link-category-btn:hover{background:var(--surface-2);color:var(--primary)}
+#links-page .link-category-btn.active{background:var(--tag-bg);color:var(--primary);font-weight:700}
+#links-page .link-category-icon{width:28px;height:28px;border-radius:6px;background:var(--surface-2);border:1px solid var(--border);display:grid;place-items:center;font-size:.9rem}
+#links-page .link-category-btn.active .link-category-icon{background:var(--primary);border-color:var(--primary);color:#fff}
+#links-page .link-category-count{font-size:.7rem;color:var(--text-muted);font-variant-numeric:tabular-nums}
+#links-page .links-main{min-width:0}
+#links-page .links-hero{position:relative;overflow:hidden;border-radius:8px;background:var(--primary);color:#fff;padding:28px 30px;margin-bottom:16px}
+#links-page .links-hero::after{content:'↗';position:absolute;right:22px;top:-28px;font-size:9rem;line-height:1;font-weight:800;opacity:.08;transform:rotate(-8deg)}
+#links-page .links-eyebrow{margin:0 0 4px;font-size:.72rem;font-weight:800;letter-spacing:.14em;opacity:.78}
+#links-page .links-hero h1{position:relative;margin:0 0 6px;color:inherit;font:700 1.65rem/1.35 'Noto Sans JP',sans-serif;letter-spacing:0}
+#links-page .links-hero p{position:relative;margin:0;max-width:560px;font-size:.84rem;opacity:.82}
+#links-page .link-toolbar{display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:12px;align-items:center;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:14px}
+#links-page .link-search-box{position:relative}
+#links-page .link-search-icon{position:absolute;left:13px;top:50%;width:18px;height:18px;transform:translateY(-50%);fill:none;stroke:var(--text-muted);stroke-width:2;pointer-events:none}
+#links-page .link-search-input{width:100%;height:42px;padding:0 42px;border:1px solid var(--border);border-radius:6px;background:var(--surface-2);color:var(--text);font:inherit;font-size:.88rem;outline:none;transition:border-color .16s,box-shadow .16s}
+#links-page .link-search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in oklab,var(--primary) 14%,transparent)}
+#links-page .link-search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:0;border-radius:4px;background:transparent;color:var(--text-muted);font-size:1rem;cursor:pointer;display:none}
+#links-page .link-search-clear.visible{display:block}
+#links-page .link-search-clear:hover{background:var(--tag-bg);color:var(--primary)}
+#links-page .link-result-count{white-space:nowrap;font-size:.78rem;color:var(--text-muted)}
+#links-page .link-result-count strong{color:var(--text);font-size:1rem}
+#links-page .link-tag-bar{display:flex;gap:7px;margin:0 0 18px;padding:0 1px;overflow-x:auto;scrollbar-width:none}
+#links-page .link-tag-bar::-webkit-scrollbar{display:none}
+#links-page .tag-chip{flex:0 0 auto;border-radius:6px;padding:7px 12px;background:var(--surface);font-size:.76rem}
+#links-page .link-cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#links-page .link-cat{border-radius:8px;padding:0;background:var(--surface);box-shadow:none;overflow:hidden}
+#links-page .link-cat::before{display:none}
+#links-page .link-cat:hover{transform:none;box-shadow:none;border-color:var(--border)}
+#links-page .link-cat-head{display:flex;align-items:center;gap:10px;padding:14px 15px;border-bottom:1px solid var(--border);background:var(--surface-2)}
+#links-page .link-cat-mark{width:34px;height:34px;display:grid;place-items:center;border-radius:7px;background:var(--tag-bg);color:var(--primary);font-size:1rem;flex:0 0 auto}
+#links-page .link-cat-title{min-width:0;flex:1}
+#links-page .link-cat h2{margin:0;color:var(--text);font:700 .9rem/1.4 'Noto Sans JP',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0}
+#links-page .link-cat-sub{font-size:.68rem;color:var(--text-muted);margin-top:1px}
+#links-page .link-cat ul{max-height:430px;padding:5px;gap:1px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:color-mix(in oklab,var(--primary) 45%,transparent) transparent}
+#links-page .link-cat ul::-webkit-scrollbar{width:6px}
+#links-page .link-cat ul::-webkit-scrollbar-track{background:transparent}
+#links-page .link-cat ul::-webkit-scrollbar-thumb{background:color-mix(in oklab,var(--primary) 45%,transparent);border-radius:6px}
+#links-page .link-cat li a{position:relative;display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 10px;border:0;border-radius:6px;background:transparent;min-height:54px}
+#links-page .link-cat li a::before{content:attr(data-initial);width:34px;height:34px;border-radius:7px;background:var(--surface-2);border:1px solid var(--border);font-size:.78rem;color:var(--primary);transform:none}
+#links-page .link-cat li a:hover{background:var(--tag-bg);transform:none;color:var(--text)}
+#links-page .link-cat li a:hover::before{background:var(--primary);border-color:var(--primary);color:#fff;transform:none}
+#links-page .link-info{min-width:0;display:flex;flex-direction:column}
+#links-page .lk-name{font-weight:650;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#links-page .lk-domain{font-size:.66rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+#links-page .link-trailing{display:flex;align-items:center;gap:7px}
+#links-page .lk-tag{margin:0;border-radius:4px;padding:2px 6px;font-size:.6rem;letter-spacing:0;max-width:82px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#links-page .link-open-icon{width:15px;height:15px;fill:none;stroke:var(--text-muted);stroke-width:1.8;flex:0 0 auto}
+#links-page .link-empty{grid-column:1/-1;padding:54px 20px;text-align:center;border:1px dashed var(--border);border-radius:8px;background:var(--surface);color:var(--text-muted)}
+#links-page .link-empty-icon{font-size:2rem;margin-bottom:8px;opacity:.55}
+#links-page .link-empty strong{display:block;color:var(--text);font-size:.95rem;margin-bottom:3px}
+@media(max-width:1024px){#links-page .link-hub{grid-template-columns:1fr}#links-page .link-sidebar{position:static;padding:8px;overflow:hidden}#links-page .link-sidebar-title{display:none}#links-page .link-category-nav{display:flex;overflow-x:auto;gap:6px;scrollbar-width:none}#links-page .link-category-nav::-webkit-scrollbar{display:none}#links-page .link-category-btn{flex:0 0 auto;width:auto;grid-template-columns:26px auto auto;padding:7px 10px}#links-page .link-category-icon{width:25px;height:25px}}
+@media(max-width:700px){#links-page .links-hero{padding:22px 20px}#links-page .links-hero h1{font-size:1.35rem}#links-page .link-toolbar{grid-template-columns:1fr;padding:10px}#links-page .link-result-count{text-align:right}#links-page .link-cats{grid-template-columns:1fr}#links-page .link-cat ul{max-height:360px}#links-page .lk-tag{display:none}}
+@media(prefers-reduced-motion:reduce){#links-page *{scroll-behavior:auto!important;transition:none!important}}
+
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" onload="if(typeof renderQuakeMap==='function')renderQuakeMap();if(typeof initWxMap==='function'&&document.getElementById('wxMap'))try{initWxMap()}catch(e){}"></script>
@@ -1274,9 +1335,28 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
     <!-- リンク集 -->
     <section id="links-page" class="page">
-      <div class="section">
-        <div class="section-head"><h2>🔗 リンク集</h2><span class="muted" style="font-size:.8rem">検索: 上のサーチバー</span></div>
-        <div class="section-body"><div class="link-tag-bar" id="linkTagBar"></div><div class="link-cats" id="linkCats"></div></div>
+      <div class="link-hub">
+        <aside class="link-sidebar" aria-label="リンクカテゴリ">
+          <div class="link-sidebar-title">Categories</div>
+          <nav class="link-category-nav" id="linkCategoryNav"></nav>
+        </aside>
+        <div class="links-main">
+          <div class="links-hero">
+            <p class="links-eyebrow">NAKAYOSI DIRECTORY</p>
+            <h1>リンク集</h1>
+            <p>動画、ゲーム、チャットなど、いつものサイトをすばやく見つけられます。</p>
+          </div>
+          <div class="link-toolbar">
+            <label class="link-search-box" aria-label="リンクを検索">
+              <svg class="link-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input class="link-search-input" id="linkSearchInput" type="search" placeholder="サイト名・タグ・URLで検索" autocomplete="off" oninput="filterLinks(this.value)">
+              <button class="link-search-clear" id="linkSearchClear" type="button" onclick="clearLinkSearch()" aria-label="検索をクリア">×</button>
+            </label>
+            <div class="link-result-count" id="linkResultCount" aria-live="polite"></div>
+          </div>
+          <div class="link-tag-bar" id="linkTagBar" aria-label="タグで絞り込む"></div>
+          <div class="link-cats" id="linkCats"></div>
+        </div>
       </div>
     </section>
 
@@ -3805,36 +3885,66 @@ document.addEventListener('click', (e)=>{
 
 
 // リンク描画
-function renderLinks(){
-  let total = 0;
-  const allTags = new Set();
-  LINK_CATEGORIES.forEach(c => c.items.forEach(i => { if(i.tag) allTags.add(i.tag); }));
-  const tagBar = document.getElementById('linkTagBar');
-  if(tagBar){
-    const tags = ['ALL', ...Array.from(allTags)];
-    tagBar.innerHTML = tags.map(t => `<button class="tag-chip${t==='ALL'?' active':''}" data-tag="${t}" onclick="filterLinksByTag('${t}')">${t}</button>`).join('');
-  }
-  document.getElementById('linkCats').innerHTML = LINK_CATEGORIES.map(cat=>{
-    total += cat.items.length;
-    return `<div class="link-cat" data-cat="${cat.title}">
-      <h3>${cat.title}</h3>
-      <ul>${cat.items.map(i=>`<li><a href="${i.url}" target="_blank" data-name="${i.name}" data-tag="${i.tag||''}"><span class="lk-name">${i.name}</span>${i.tag?`<span class="lk-tag lk-tag-${(i.tag||'').replace(/\s+/g,'-').toLowerCase()}">${i.tag}</span>`:''}</a></li>`).join('')}</ul>
-    </div>`;
-  }).join('');
-  document.getElementById('linkCount').textContent = total;
+var ACTIVE_LINK_TAG = 'ALL';
+var ACTIVE_LINK_CATEGORY = 'ALL';
+var LINK_QUERY = '';
+const LINK_CATEGORY_ICONS = ['▦','▶','◆','●','★','◇','▣'];
+function safeText(value){
+  return String(value == null ? '' : value).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 }
-function filterLinksByTag(tag){
-  document.querySelectorAll('#linkTagBar .tag-chip').forEach(b => b.classList.toggle('active', b.dataset.tag===tag));
+function linkDomain(url){
+  try { return new URL(url).hostname.replace(/^www\./,''); } catch(e) { return 'リンク先を開く'; }
+}
+function linkInitial(name){
+  const clean = String(name || '').replace(/[㋔🅝🅔🅦!+]/g,'').trim();
+  return (clean.charAt(0) || '↗').toUpperCase();
+}
+function renderLinks(){
+  const allTags = Array.from(new Set(LINK_CATEGORIES.flatMap(c => c.items.map(i => i.tag).filter(Boolean))));
+  const total = LINK_CATEGORIES.reduce((n,c)=>n+c.items.length,0);
+  const tagBar = document.getElementById('linkTagBar');
+  if(tagBar) tagBar.innerHTML = ['ALL',...allTags].map(t => `<button type="button" class="tag-chip${t===ACTIVE_LINK_TAG?' active':''}" data-tag="${safeText(t)}" onclick="filterLinksByTag('${String(t).replace(/'/g,"\\'")}')">${t==='ALL'?'すべて':safeText(t)}</button>`).join('');
+  const nav = document.getElementById('linkCategoryNav');
+  if(nav) nav.innerHTML = [`<button type="button" class="link-category-btn${ACTIVE_LINK_CATEGORY==='ALL'?' active':''}" onclick="filterLinksByCategory('ALL')"><span class="link-category-icon">⌘</span><span>すべて</span><span class="link-category-count">${total}</span></button>`, ...LINK_CATEGORIES.map((cat,index)=>`<button type="button" class="link-category-btn${ACTIVE_LINK_CATEGORY===cat.title?' active':''}" onclick="filterLinksByCategory('${cat.title.replace(/'/g,"\\'")}')"><span class="link-category-icon">${LINK_CATEGORY_ICONS[index%LINK_CATEGORY_ICONS.length]}</span><span>${safeText(cat.title.replace(/リンク集|🅝🅔🅦/g,'').trim())}</span><span class="link-category-count">${cat.items.length}</span></button>`)].join('');
+  const cats = document.getElementById('linkCats');
+  if(cats) cats.innerHTML = LINK_CATEGORIES.map((cat,index)=>`<section class="link-cat" data-cat="${safeText(cat.title)}"><div class="link-cat-head"><span class="link-cat-mark">${LINK_CATEGORY_ICONS[index%LINK_CATEGORY_ICONS.length]}</span><div class="link-cat-title"><h2>${safeText(cat.title)}</h2><div class="link-cat-sub">${cat.items.length} links</div></div></div><ul>${cat.items.map(i=>`<li><a href="${safeText(i.url)}" target="_blank" rel="noopener noreferrer" data-name="${safeText(i.name)}" data-tag="${safeText(i.tag||'')}" data-url="${safeText(i.url)}" data-initial="${safeText(linkInitial(i.name))}"><span class="link-info"><span class="lk-name">${safeText(i.name)}</span><span class="lk-domain">${safeText(linkDomain(i.url))}</span></span><span class="link-trailing">${i.tag?`<span class="lk-tag lk-tag-${String(i.tag).replace(/\s+/g,'-').toLowerCase()}">${safeText(i.tag)}</span>`:''}<svg class="link-open-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8"/><path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></span></a></li>`).join('')}</ul></section>`).join('');
+  const count = document.getElementById('linkCount'); if(count) count.textContent = total;
+  applyLinkFilters();
+}
+function filterLinksByTag(tag){ ACTIVE_LINK_TAG=tag; applyLinkFilters(); }
+function filterLinksByCategory(cat){ ACTIVE_LINK_CATEGORY=cat; applyLinkFilters(); }
+function filterLinks(q){
+  LINK_QUERY=String(q||'').trim().toLowerCase();
+  const local=document.getElementById('linkSearchInput');
+  if(local && local.value!==q) local.value=q;
+  if(LINK_QUERY && !document.getElementById('links-page').classList.contains('active')) showPage('links');
+  applyLinkFilters();
+}
+function clearLinkSearch(){
+  const input=document.getElementById('linkSearchInput'); if(input){input.value='';input.focus();}
+  const global=document.getElementById('searchInput'); if(global) global.value='';
+  LINK_QUERY=''; applyLinkFilters();
+}
+function applyLinkFilters(){
+  let shown=0;
+  document.querySelectorAll('#linkTagBar .tag-chip').forEach(b=>b.classList.toggle('active',b.dataset.tag===ACTIVE_LINK_TAG));
+  document.querySelectorAll('#linkCategoryNav .link-category-btn').forEach((b,i)=>b.classList.toggle('active',i===0?ACTIVE_LINK_CATEGORY==='ALL':b.textContent.includes(ACTIVE_LINK_CATEGORY.replace(/リンク集|🅝🅔🅦/g,'').trim())));
   document.querySelectorAll('#linkCats .link-cat').forEach(cat=>{
-    let visible = 0;
+    const catOK=ACTIVE_LINK_CATEGORY==='ALL'||cat.dataset.cat===ACTIVE_LINK_CATEGORY;
+    let visible=0;
     cat.querySelectorAll('li').forEach(li=>{
-      const a = li.querySelector('a');
-      const ok = tag==='ALL' || a.dataset.tag===tag;
-      li.style.display = ok ? '' : 'none';
-      if(ok) visible++;
+      const a=li.querySelector('a');
+      const hay=[a.dataset.name,a.dataset.tag,a.dataset.url].join(' ').toLowerCase();
+      const ok=catOK&&(ACTIVE_LINK_TAG==='ALL'||a.dataset.tag===ACTIVE_LINK_TAG)&&(!LINK_QUERY||hay.includes(LINK_QUERY));
+      li.style.display=ok?'':'none'; if(ok){visible++;shown++;}
     });
-    cat.style.display = visible ? '' : 'none';
+    cat.style.display=visible?'':'none';
   });
+  const host=document.getElementById('linkCats');
+  let empty=document.getElementById('linkEmpty');
+  if(shown===0&&host){if(!empty){empty=document.createElement('div');empty.id='linkEmpty';empty.className='link-empty';empty.innerHTML='<div class="link-empty-icon">⌕</div><strong>リンクが見つかりません</strong><span>検索語や絞り込みを変えてみてください。</span>';host.appendChild(empty);}empty.style.display='block';}else if(empty) empty.style.display='none';
+  const result=document.getElementById('linkResultCount'); if(result) result.innerHTML=`<strong>${shown}</strong> 件を表示`;
+  const clear=document.getElementById('linkSearchClear'); if(clear) clear.classList.toggle('visible',!!LINK_QUERY);
 }
 
 // ゲーム描画 (CrazyGames風)
@@ -3900,22 +4010,6 @@ function renderGames(){
 function filterGamesByTag(tag){
   CG_ACTIVE_TAG = tag;
   renderGames();
-}
-
-// 検索（リンクのみ簡易フィルタ）
-function filterLinks(q){
-  q = q.trim().toLowerCase();
-  if(q) showPage('links');
-  document.querySelectorAll('#linkCats .link-cat').forEach(cat=>{
-    let visible = 0;
-    cat.querySelectorAll('li').forEach(li=>{
-      const name = li.querySelector('a').dataset.name.toLowerCase();
-      const ok = !q || name.includes(q);
-      li.style.display = ok ? '' : 'none';
-      if(ok) visible++;
-    });
-    cat.style.display = visible ? '' : 'none';
-  });
 }
 
 // ページ切替
