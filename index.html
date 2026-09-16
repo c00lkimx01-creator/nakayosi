@@ -624,6 +624,37 @@ body.gaming main,body.gaming footer,body.gaming .site-header{content-visibility:
 .wx-day .t .lo{color:#2563eb;font-weight:700;margin-left:6px}
 .wx-day .p{font-size:.7rem;color:#0284c7;margin-top:2px}
 .wx-empty{padding:24px;text-align:center;color:var(--text-muted)}
+/* ===== 気象警報（警戒レベル） ===== */
+.wx-alert{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--surface-2);margin-bottom:16px}
+.wx-alert .lv{flex:0 0 auto;min-width:74px;text-align:center;border-radius:10px;padding:8px 6px;color:#fff;font-weight:800;line-height:1.15}
+.wx-alert .lv small{display:block;font-size:.6rem;font-weight:700;opacity:.9}
+.wx-alert .lv b{font-size:1.5rem;display:block}
+.wx-alert.lv1 .lv{background:#3f8f5e}
+.wx-alert.lv2 .lv{background:#f2c53d;color:#2b2000}
+.wx-alert.lv3 .lv{background:#ef7d1a}
+.wx-alert.lv4 .lv{background:#d7182a}
+.wx-alert.lv5 .lv{background:#0f0f14;box-shadow:0 0 0 2px #b0179c inset}
+.wx-alert.lv4,.wx-alert.lv5{border-color:#d7182a;animation:wxAlertPulse 1.8s ease-in-out infinite}
+@keyframes wxAlertPulse{0%,100%{box-shadow:0 0 0 0 rgba(215,24,42,.35)}50%{box-shadow:0 0 0 7px rgba(215,24,42,0)}}
+.wx-alert .txt{min-width:0}
+.wx-alert .txt h3{margin:0 0 4px;font-size:1rem}
+.wx-alert .txt p{margin:0;color:var(--text-muted);font-size:.84rem;line-height:1.6}
+.wx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.wx-chip{font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid var(--border);background:var(--surface)}
+.wx-chip.warn{background:#fde68a;color:#7c2d12;border-color:#f59e0b}
+.wx-chip.emg{background:#0f0f14;color:#ffb3f0;border-color:#b0179c}
+.wx-chip.note{background:#e0f2fe;color:#075985;border-color:#38bdf8}
+/* ===== 位置情報の許可ダイアログ ===== */
+.geo-ov{position:fixed;inset:0;background:rgba(8,12,20,.62);backdrop-filter:blur(3px);z-index:9999;display:none;align-items:center;justify-content:center;padding:18px}
+.geo-ov.show{display:flex}
+.geo-card{max-width:400px;width:100%;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:0 24px 60px -24px rgba(0,0,0,.7);text-align:center}
+.geo-card h3{margin:0 0 8px;font-size:1.1rem}
+.geo-card p{margin:0 0 16px;font-size:.86rem;color:var(--text-muted);line-height:1.7}
+.geo-card .geo-ic{font-size:2.4rem;line-height:1}
+.geo-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.geo-btns button{padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-weight:700;cursor:pointer}
+.geo-btns button.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.geo-note{margin-top:12px;font-size:.72rem;color:var(--text-muted)}
 
 /* LIVEインジケーター */
 .live-badge{display:inline-flex;align-items:center;gap:5px;background:#dc2626;color:#fff;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:4px;margin-left:8px;vertical-align:middle}
@@ -1134,7 +1165,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
             <a href="javascript:void(0)" onclick="showPage('links')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>リンク集</a>
             <a href="javascript:void(0)" onclick="showPage('search')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>検索</a>
             <a href="javascript:void(0)" onclick="showPage('games')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/></svg>ゲーム</a>
-            <a href="javascript:void(0)" onclick="showPage('tools')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5.2 5.2l-8 8a3 3 0 0 1-4.2-4.2l8-8Z"/><circle cx="6.5" cy="17.5" r="1"/></svg>ミニ機能</a>
           </div>
         </div>
       </div>
@@ -1282,6 +1312,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
               <button onclick="fetchWeather(true)">🔄 更新</button>
             </div>
           </div>
+          <div id="wxAlert"></div>
           <div id="wxToday"></div>
           <div class="wx-map-wrap">
             <h3 style="margin:18px 0 10px;font-size:1rem">🗺️ 雨雲レーダー（マップ）</h3>
@@ -3182,6 +3213,19 @@ window.sxSaveSettings = sxSaveSettings;
             <div class="desc">より詳しい予報のため、地域内のエリアを選びます。</div>
             <select id="wxCity" onchange="onWxCityChange(this.value)"><option value="">▼ 地域を選択</option></select>
           </div>
+
+          <div class="setting-row">
+            <label>🏘️ 天気の地域（市区町村・詳細）</label>
+            <div class="desc">例：大阪府 → 東大阪市。警報・注意報はこの市区町村の情報を表示します。</div>
+            <select id="wxTown" onchange="onWxTownChange(this.value)"><option value="">▼ 市区町村を選択</option></select>
+          </div>
+
+          <div class="setting-row">
+            <label>📡 位置情報から自動設定</label>
+            <div class="desc">端末の位置情報を使って、お住まいの地域を自動で選びます。</div>
+            <button type="button" class="btn" onclick="requestGeoLocation(true)">現在地から設定する</button>
+            <span id="geoStatus" class="muted" style="margin-left:10px;font-size:.78rem"></span>
+          </div>
         </div>
       </div>
     </section>
@@ -4213,12 +4257,21 @@ async function onWxPrefChange(v){
   if(citySel){
     citySel.innerHTML = '<option value="">▼ 地域を選択（代表地点）</option>' +
       WX_AREAS.map(a => `<option value="${a.code}">${a.name}</option>`).join('');
+    if(WX_AREAS.length){
+      WX_CITY = WX_AREAS[0].code;
+      citySel.value = WX_CITY;
+      saveSettings({ wxCity: WX_CITY });
+      fetchWxTowns(WX_CITY).then(towns => { WX_TOWNS = towns; buildWxTownOptions(towns, ''); });
+    }
   }
   fetchWeather(true);
 }
-function onWxCityChange(v){
+async function onWxCityChange(v){
   WX_CITY = v;
-  saveSettings({ wxCity: v });
+  WX_TOWN = '';
+  saveSettings({ wxCity: v, wxTown: '' });
+  WX_TOWNS = v ? await fetchWxTowns(v) : [];
+  buildWxTownOptions(WX_TOWNS, '');
   fetchWeather(true);
 }
 async function fetchWeather(force){
@@ -4226,6 +4279,7 @@ async function fetchWeather(force){
   const todayEl = document.getElementById('wxToday');
   const weekEl = document.getElementById('wxWeek');
   const yahoo = document.getElementById('wxYahooLink');
+  if(typeof fetchWxWarnings === 'function') fetchWxWarnings();
   if(!WX_PREF){
     if(locEl) locEl.innerHTML = '地域が未設定です <small>「設定」から都道府県を選んでください</small>';
     if(todayEl) todayEl.innerHTML = '<div class="wx-empty">「設定」ページの「📍天気の地域」で都道府県を選ぶと、ここに天気が表示されます。</div>';
@@ -4369,10 +4423,199 @@ applySavedSettings = function(){
           areas.map(a => `<option value="${a.code}">${a.name}</option>`).join('');
         if(s.wxCity){ WX_CITY = s.wxCity; c.value = s.wxCity; }
       }
+      if(s.wxCity){
+        fetchWxTowns(s.wxCity).then(towns => {
+          WX_TOWNS = towns;
+          if(s.wxTown) WX_TOWN = s.wxTown;
+          buildWxTownOptions(towns, s.wxTown || '');
+          fetchWeather();
+        });
+      }
       fetchWeather();
     });
   }
 };
+
+// ================= 気象警報（大雨警報 Lv.1-5） =================
+var WX_TOWN = '';
+var WX_TOWNS = [];
+var WX_AREA_DATA = null;
+
+async function loadJmaAreaData(){
+  if(WX_AREA_DATA) return WX_AREA_DATA;
+  try{
+    const res = await fetch('https://www.jma.go.jp/bosai/common/const/area.json');
+    WX_AREA_DATA = await res.json();
+  }catch(e){ WX_AREA_DATA = null; }
+  return WX_AREA_DATA;
+}
+
+// class10（地域）配下の市区町村（class20）一覧
+async function fetchWxTowns(class10){
+  const data = await loadJmaAreaData();
+  if(!data || !class10) return [];
+  const class15s = data.class15s || {};
+  const class20s = data.class20s || {};
+  const mid = Object.keys(class15s).filter(c => class15s[c].parent === class10);
+  const towns = [];
+  Object.keys(class20s).forEach(code => {
+    if(mid.includes(class20s[code].parent)) towns.push({ code, name: class20s[code].name });
+  });
+  return towns;
+}
+
+function buildWxTownOptions(towns, selected){
+  const sel = document.getElementById('wxTown');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">▼ 市区町村を選択</option>' +
+    towns.map(t => `<option value="${t.code}">${t.name}</option>`).join('');
+  if(selected) sel.value = selected;
+}
+
+async function onWxTownChange(v){
+  WX_TOWN = v;
+  saveSettings({ wxTown: v });
+  fetchWeather(true);
+}
+
+// 気象庁の警報コード
+const JMA_WARN_NAMES = {
+  '02':'暴風雪警報','03':'大雨警報','04':'洪水警報','05':'暴風警報','06':'大雪警報','07':'波浪警報','08':'高潮警報',
+  '10':'大雨注意報','12':'大雪注意報','13':'風雪注意報','14':'雷注意報','15':'強風注意報','16':'波浪注意報','17':'融雪注意報',
+  '18':'洪水注意報','19':'高潮注意報','20':'濃霧注意報','21':'乾燥注意報','22':'なだれ注意報','23':'低温注意報',
+  '24':'霜注意報','25':'着氷注意報','26':'着雪注意報','27':'その他警報等','32':'暴風雪特別警報','33':'大雨特別警報',
+  '35':'暴風特別警報','36':'大雪特別警報','37':'波浪特別警報','38':'高潮特別警報'
+};
+const WX_LEVEL_TEXT = {
+  1:{ t:'平常', d:'大雨に関する警報・注意報は発表されていません。最新情報の確認を心がけましょう。' },
+  2:{ t:'注意報', d:'大雨注意報が発表されています。ハザードマップで避難経路を確認してください。' },
+  3:{ t:'警報', d:'大雨警報が発表されています。高齢者等は避難を開始してください（警戒レベル3相当）。' },
+  4:{ t:'危険', d:'土砂災害警戒情報・記録的短時間大雨など、災害発生のおそれが非常に高い状況です。危険な場所から全員避難してください（警戒レベル4相当）。' },
+  5:{ t:'特別警報', d:'大雨特別警報が発表されています。命の危険がある状況です。直ちに命を守る行動をとってください（警戒レベル5相当）。' }
+};
+
+function wxRainLevelFromWarnings(warnings){
+  let lv = 1;
+  (warnings||[]).forEach(w => {
+    if(w.status === '解除' || w.status === '発表警報・注意報はなし') return;
+    const c = String(w.code||'');
+    const cond = String(w.condition||'');
+    if(c === '33') lv = Math.max(lv, 5);
+    else if(c === '03'){
+      lv = Math.max(lv, (/土砂|浸水/.test(cond) && /土砂/.test(cond)) ? 4 : 3);
+    }
+    else if(c === '04') lv = Math.max(lv, 3);
+    else if(c === '10' || c === '18') lv = Math.max(lv, 2);
+  });
+  return lv;
+}
+
+function wxChipClass(code){
+  if(['32','33','35','36','37','38'].includes(code)) return 'emg';
+  if(['02','03','04','05','06','07','08'].includes(code)) return 'warn';
+  return 'note';
+}
+
+async function fetchWxWarnings(){
+  const el = document.getElementById('wxAlert');
+  if(!el) return;
+  const office = JMA_OFFICES[WX_PREF];
+  if(!office){ el.innerHTML = ''; return; }
+  try{
+    const res = await fetch(`https://www.jma.go.jp/bosai/warning/data/warning/${office}.json?_=${Date.now()}`, { cache:'no-store' });
+    if(!res.ok) throw new Error('warning api');
+    const data = await res.json();
+    const areaTypes = data.areaTypes || [];
+    let target = null, matchedName = '';
+    const wanted = [WX_TOWN, WX_CITY].filter(Boolean);
+    for(const at of areaTypes){
+      for(const a of (at.areas||[])){
+        if(wanted.includes(String(a.code))){ target = a; break; }
+      }
+      if(target) break;
+    }
+    // 見つからない場合は都道府県内のすべてを集約（最も高いレベルを採用）
+    let allWarnings = [];
+    if(target){
+      allWarnings = target.warnings || [];
+      const ad = await loadJmaAreaData();
+      const dict = ad ? Object.assign({}, ad.class20s||{}, ad.class15s||{}, ad.class10s||{}) : {};
+      matchedName = dict[String(target.code)] ? dict[String(target.code)].name : '選択地域';
+    }else{
+      (areaTypes[0]?.areas||[]).forEach(a => { allWarnings = allWarnings.concat(a.warnings||[]); });
+      matchedName = WX_PREF + '全域';
+    }
+    const active = allWarnings.filter(w => w.status !== '解除' && w.status !== '発表警報・注意報はなし' && JMA_WARN_NAMES[String(w.code)]);
+    const lv = wxRainLevelFromWarnings(allWarnings);
+    const info = WX_LEVEL_TEXT[lv];
+    const uniq = [];
+    active.forEach(w => { const n = JMA_WARN_NAMES[String(w.code)]; if(n && !uniq.some(u=>u.n===n)) uniq.push({n, c:String(w.code)}); });
+    el.innerHTML = `<div class="wx-alert lv${lv}">
+      <div class="lv"><small>大雨警報</small><b>Lv.${lv}</b><small>${info.t}</small></div>
+      <div class="txt">
+        <h3>${matchedName} の気象警報</h3>
+        <p>${info.d}</p>
+        <div class="wx-chips">${uniq.length ? uniq.map(u=>`<span class="wx-chip ${wxChipClass(u.c)}">${u.n}</span>`).join('') : '<span class="wx-chip">発表中の警報・注意報なし</span>'}</div>
+      </div>
+    </div>`;
+  }catch(e){
+    el.innerHTML = '<div class="wx-alert lv1"><div class="lv"><small>大雨警報</small><b>Lv.—</b><small>取得失敗</small></div><div class="txt"><h3>気象警報</h3><p>警報情報を取得できませんでした。時間をおいて再度お試しください。</p></div></div>';
+  }
+}
+
+// ================= 位置情報の許可 =================
+const GEO_PREF_COORDS_FALLBACK = {};
+function geoNearestPref(lat, lon){
+  const table = (typeof WX_PREF_COORDS !== 'undefined' && WX_PREF_COORDS) ? WX_PREF_COORDS
+              : (typeof PREF_COORDS !== 'undefined' ? PREF_COORDS : GEO_PREF_COORDS_FALLBACK);
+  let best = null, bestD = Infinity;
+  Object.keys(table).forEach(p => {
+    const c = table[p];
+    const d = Math.pow(c[0]-lat,2) + Math.pow((c[1]-lon)*0.82,2);
+    if(d < bestD){ bestD = d; best = p; }
+  });
+  return best;
+}
+function geoSetStatus(msg){
+  const el = document.getElementById('geoStatus');
+  if(el) el.textContent = msg || '';
+}
+function requestGeoLocation(manual){
+  if(!navigator.geolocation){ geoSetStatus('この端末では位置情報を利用できません'); return; }
+  geoSetStatus('現在地を取得中…');
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const pref = geoNearestPref(pos.coords.latitude, pos.coords.longitude);
+    saveSettings({ geoPermission: 'granted' });
+    if(pref){
+      const sel = document.getElementById('wxPref');
+      if(sel){ buildWxPrefOptions(); sel.value = pref; }
+      await onWxPrefChange(pref);
+      geoSetStatus('現在地から「' + pref + '」を設定しました');
+    }else{
+      geoSetStatus('地域を判定できませんでした');
+    }
+  }, err => {
+    saveSettings({ geoPermission: 'denied' });
+    geoSetStatus(manual ? '位置情報が許可されませんでした' : '');
+  }, { enableHighAccuracy:false, timeout:10000, maximumAge:600000 });
+}
+function geoAllow(){
+  document.getElementById('geoOverlay')?.classList.remove('show');
+  saveSettings({ geoAsked: true });
+  requestGeoLocation(false);
+}
+function geoDeny(){
+  document.getElementById('geoOverlay')?.classList.remove('show');
+  saveSettings({ geoAsked: true, geoPermission: 'denied' });
+}
+function maybeAskGeoPermission(){
+  const s = loadSettings();
+  if(s.geoAsked){
+    if(s.geoPermission === 'granted' && !s.wxPref) requestGeoLocation(false);
+    return;
+  }
+  setTimeout(() => document.getElementById('geoOverlay')?.classList.add('show'), 600);
+}
 
 // ================= 天気マップ（雨雲レーダー） =================
 const PREF_COORDS = {
@@ -4515,7 +4758,7 @@ function onWxPrefMapClick(pref){
 const _origShowPage = showPage;
 showPage = function(id){
   _origShowPage(id);
-  if(id === 'weather'){ buildWxPrefOptions(); fetchWeather(); setTimeout(initWxMap, 100); }
+  if(id === 'weather'){ buildWxPrefOptions(); fetchWeather(); fetchWxWarnings(); setTimeout(initWxMap, 100); }
 };
 
 // 初期化
@@ -4527,14 +4770,16 @@ renderTicker();
 showPage('home');
 applySavedSettings();
 fetchQuakes();
+maybeAskGeoPermission();
 // 定期更新（地震は速報性重視で頻度高め）
 setInterval(() => { if(!document.hidden) fetchQuakes(); }, 60*1000);
 setInterval(() => { if(WX_PREF && !document.hidden) fetchWeather(); }, 5*60*1000);
+setInterval(() => { if(WX_PREF && !document.hidden) fetchWxWarnings(); }, 3*60*1000);
 
 // タブ復帰／オンライン復帰で即時更新
 function refreshAllLive(){
   fetchQuakes();
-  if(WX_PREF) fetchWeather();
+  if(WX_PREF){ fetchWeather(); fetchWxWarnings(); }
 }
 document.addEventListener('visibilitychange', ()=>{
   if(document.hidden) return;
@@ -6800,6 +7045,18 @@ body.dark-mode .earthquake-monitor-map .leaflet-tile{filter:brightness(.74) satu
   };
 })();
 </script>
+<div class="geo-ov" id="geoOverlay" role="dialog" aria-modal="true" aria-labelledby="geoTitle">
+  <div class="geo-card">
+    <div class="geo-ic">📍</div>
+    <h3 id="geoTitle">位置情報の使用を許可しますか？</h3>
+    <p>現在地を使うと、お住まいの地域の天気と<b>気象警報（警戒レベル）</b>を自動で表示できます。位置情報は端末内で処理され、送信・保存はされません。</p>
+    <div class="geo-btns">
+      <button type="button" class="primary" onclick="geoAllow()">許可する</button>
+      <button type="button" onclick="geoDeny()">あとで</button>
+    </div>
+    <div class="geo-note">設定ページからいつでも変更できます。</div>
+  </div>
+</div>
 </body>
 
 </html>
