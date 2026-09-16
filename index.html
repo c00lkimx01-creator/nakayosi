@@ -1035,7 +1035,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
   <div class="ticker-inner">
     <span class="ticker-label eq">地震速報</span>
     <span class="ticker-label warn" style="background:#f59e0b">気象警報</span>
-    <span class="ticker-label news">News</span>
+    <span class="ticker-label news">お知らせ</span>
     <div class="ticker-track"><div class="ticker-move" id="tickerMove"></div></div>
   </div>
 </div>
@@ -1090,13 +1090,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       <a href="javascript:void(0)" onclick="showPage('home')" class="nav-link" data-page="home"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>ホーム</a>
       <a href="javascript:void(0)" onclick="showPage('news')" class="nav-link" data-page="news"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a8 8 0 0 1 16 0v5l2 3H1l2-3v-5Z"/><path d="M10 21h4"/></svg>お知らせ</a>
       <a href="javascript:void(0)" onclick="showPage('weather')" class="nav-link" data-page="weather"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8.5" cy="8" r="3.2"/><path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/></svg>天気</a>
-      <a href="javascript:void(0)" onclick="showPage('newsfeed')" class="nav-link" data-page="newsfeed"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h6M7 12h10M7 16h10"/></svg>ニュース</a>
       <a href="javascript:void(0)" onclick="showPage('quake')" class="nav-link" data-page="quake"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h3l2.5-6 3.5 13 3.5-10L17 12h5"/></svg>地震速報</a>
       <a href="javascript:void(0)" onclick="showPage('links')" class="nav-link" data-page="links"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>リンク集</a>
       <a href="javascript:void(0)" onclick="showPage('games')" class="nav-link" data-page="games"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/></svg>ゲーム</a>
       <a href="javascript:void(0)" onclick="showPage('tv')" class="nav-link" data-page="tv"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="7" width="19" height="13" rx="2"/><path d="m8 3 4 4 4-4"/></svg>TV</a>
       <a href="javascript:void(0)" onclick="showPage('search')" class="nav-link" data-page="search"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>検索</a>
       <a href="javascript:void(0)" onclick="showPage('settings')" class="nav-link" data-page="settings"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/></svg>設定</a>
+      <a href="javascript:void(0)" onclick="showPage('tools')" class="nav-link" data-page="tools"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5.2 5.2l-8 8a3 3 0 0 1-4.2-4.2l8-8Z"/><circle cx="6.5" cy="17.5" r="1"/></svg>ミニ機能</a>
       <a href="javascript:void(0)" onclick="showPage('terms')" class="nav-link" data-page="terms"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>利用規約</a>
       <a href="javascript:void(0)" onclick="openChatModal()"><svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z"/></svg>CHAT</a>
     </div>
@@ -1127,14 +1127,82 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
         <div class="section-head"><h2>⚡ クイックアクセス</h2></div>
         <div class="section-body">
           <div class="home-quick">
-            <a href="javascript:void(0)" onclick="showPage('newsfeed')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h6M7 12h10M7 16h10"/></svg>ニュース</a>
+            <a href="javascript:void(0)" onclick="showPage('news')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a8 8 0 0 1 16 0v5l2 3H1l2-3v-5Z"/><path d="M10 21h4"/></svg>お知らせ</a>
             <a href="javascript:void(0)" onclick="showPage('quake')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h3l2.5-6 3.5 13 3.5-10L17 12h5"/></svg>地震速報</a>
             <a href="javascript:void(0)" onclick="showPage('weather')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8.5" cy="8" r="3.2"/><path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/></svg>天気</a>
             <a href="javascript:void(0)" onclick="showPage('tv')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="7" width="19" height="13" rx="2"/><path d="m8 3 4 4 4-4"/></svg>TV</a>
             <a href="javascript:void(0)" onclick="showPage('links')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>リンク集</a>
             <a href="javascript:void(0)" onclick="showPage('search')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>検索</a>
             <a href="javascript:void(0)" onclick="showPage('games')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/></svg>ゲーム</a>
+            <a href="javascript:void(0)" onclick="showPage('tools')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5.2 5.2l-8 8a3 3 0 0 1-4.2-4.2l8-8Z"/><circle cx="6.5" cy="17.5" r="1"/></svg>ミニ機能</a>
           </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head"><h2>🧰 ちょっと便利なミニ機能</h2><a class="more" href="javascript:void(0)" onclick="showPage('tools')">大きく使う ›</a></div>
+        <div class="section-body">
+          <div id="miniToolsHomeSlot"><div class="mini-tools" id="miniTools">
+            <div class="mini-tool-card">
+              <h3>📝 クイックメモ</h3>
+              <textarea id="quickMemo" rows="4" placeholder="ちょっとしたメモをどうぞ。自動で保存されます。"></textarea>
+              <div class="mini-tool-foot"><span class="muted" id="quickMemoStatus">自動保存オン</span><button type="button" onclick="clearQuickMemo()">消去</button></div>
+            </div>
+            <div class="mini-tool-card">
+              <h3>🎲 今日のおみくじ</h3>
+              <p class="omikuji-result" id="omikujiResult">ボタンを押して今日の運勢をチェック！</p>
+              <div class="mini-tool-foot"><span class="muted" id="omikujiNote">1日1回だけ引けます</span><button type="button" class="mini-tool-primary" id="omikujiBtn" onclick="drawOmikuji()">おみくじを引く</button></div>
+            </div>
+            <div class="mini-tool-card">
+              <h3>⏱️ ストップウォッチ</h3>
+              <p class="sw-display" id="swDisplay">00:00.0</p>
+              <div class="mini-tool-foot">
+                <button type="button" class="mini-tool-primary" id="swToggle" onclick="swToggleRun()">スタート</button>
+                <button type="button" onclick="swReset()">リセット</button>
+              </div>
+            </div>
+            <div class="mini-tool-card">
+              <h3>⏲️ カウントダウンタイマー</h3>
+              <p class="sw-display" id="tmDisplay">05:00</p>
+              <div class="mini-row">
+                <button type="button" onclick="tmAdd(60)">+1分</button>
+                <button type="button" onclick="tmAdd(300)">+5分</button>
+                <button type="button" onclick="tmReset()">リセット</button>
+              </div>
+              <div class="mini-tool-foot"><span class="muted" id="tmNote">時間になるとお知らせします</span><button type="button" class="mini-tool-primary" id="tmToggle" onclick="tmToggleRun()">スタート</button></div>
+            </div>
+            <div class="mini-tool-card">
+              <h3>🧮 割り勘計算</h3>
+              <div class="mini-row">
+                <input id="wariAmount" type="number" inputmode="numeric" placeholder="合計金額" min="0">
+                <input id="wariPeople" type="number" inputmode="numeric" placeholder="人数" min="1" value="2">
+              </div>
+              <p class="mini-strong" id="wariResult">1人あたり —</p>
+              <div class="mini-tool-foot"><span class="muted">100円単位で切り上げ表示つき</span><button type="button" class="mini-tool-primary" onclick="calcWarikan()">計算</button></div>
+            </div>
+            <div class="mini-tool-card">
+              <h3>🎯 ランダム選択ルーレット</h3>
+              <input id="rouletteItems" type="text" placeholder="候補をカンマ区切りで（例：ラーメン,カレー,寿司）">
+              <p class="mini-strong" id="rouletteResult">候補を入れて回してね</p>
+              <div class="mini-tool-foot"><span class="muted">迷ったときに</span><button type="button" class="mini-tool-primary" onclick="spinRoulette()">回す</button></div>
+            </div>
+            <div class="mini-tool-card">
+              <h3>🔐 パスワード生成</h3>
+              <div class="mini-row">
+                <label class="muted" for="pwLen">長さ</label>
+                <input id="pwLen" type="number" min="6" max="40" value="14">
+                <label class="muted"><input id="pwSym" type="checkbox" checked> 記号</label>
+              </div>
+              <p class="mini-strong mini-mono" id="pwResult">押すと生成します</p>
+              <div class="mini-tool-foot"><button type="button" onclick="copyPassword()">コピー</button><button type="button" class="mini-tool-primary" onclick="genPassword()">生成</button></div>
+            </div>
+            <div class="mini-tool-card">
+              <h3>📅 記念日カウント</h3>
+              <input id="dayTarget" type="date">
+              <p class="mini-strong" id="dayResult">日付を選ぶと残り日数を表示</p>
+              <div class="mini-tool-foot"><span class="muted" id="dayNote">保存されます</span><button type="button" class="mini-tool-primary" onclick="calcDays()">計算</button></div>
+            </div>
+          </div></div>
         </div>
       </div>
 
@@ -1156,14 +1224,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
             <ul class="news-list" id="newsListHome"></ul>
           </div>
         </div>
-      </div>
-
-      <div class="section">
-        <div class="section-head">
-          <h2>📰 最新ニュース</h2>
-          <a class="more" href="javascript:void(0)" onclick="showPage('newsfeed')">もっと見る ›</a>
-        </div>
-        <div class="section-body"><div class="news-cards" id="newsCardsHome"></div></div>
       </div>
 
       <div class="section">
@@ -1206,14 +1266,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           <div class="cg-chips" id="cgChips"></div>
           <div class="game-grid cg-grid" id="gameGridAll"></div>
         </div>
-      </div>
-    </section>
-
-    <!-- ニュース（API・画像付き） -->
-    <section id="newsfeed-page" class="page">
-      <div class="section">
-        <div class="section-head"><h2>📰 最新ニュース</h2><span class="muted" style="font-size:.8rem">提供: NHK・Yahoo!・BBC・朝日新聞ほか</span></div>
-        <div class="section-body"><div class="news-cards" id="newsCardsAll"></div></div>
       </div>
     </section>
 
@@ -3017,6 +3069,15 @@ window.sxSaveSettings = sxSaveSettings;
         </script>
       </div>
     </section>
+    <section id="tools-page" class="page">
+      <div class="section">
+        <div class="section-head"><h2>🧰 ミニ機能</h2><a class="more" href="javascript:void(0)" onclick="showPage('home')">‹ ホームに戻る</a></div>
+        <div class="section-body">
+          <p class="muted" style="margin:0 0 14px">メモ・おみくじ・タイマーなどを大きな画面でゆったり使えます。</p>
+          <div id="miniToolsPageSlot"></div>
+        </div>
+      </div>
+    </section>
     <section id="settings-page" class="page">
       <div class="section">
         <div class="section-head"><h2>⚙️ 詳細設定</h2></div>
@@ -3169,7 +3230,6 @@ window.sxSaveSettings = sxSaveSettings;
       <li><a href="javascript:void(0)" onclick="showPage('home')">ホーム</a></li>
       <li><a href="javascript:void(0)" onclick="showPage('news')">お知らせ</a></li>
       <li><a href="javascript:void(0)" onclick="showPage('weather')">天気</a></li>
-      <li><a href="javascript:void(0)" onclick="showPage('newsfeed')">ニュース</a></li>
       <li><a href="javascript:void(0)" onclick="showPage('quake')">地震速報</a></li>
       <li><a href="javascript:void(0)" onclick="showPage('links')">リンク集</a></li>
       <li><a href="javascript:void(0)" onclick="showPage('games')">ゲーム</a></li>
@@ -3187,14 +3247,6 @@ window.sxSaveSettings = sxSaveSettings;
 </footer>
 
 <!-- ───── ゲームモーダル ───── -->
-<!-- ───── ニュースモーダル ───── -->
-<div id="news-modal" onclick="if(event.target===this)closeNewsModal()">
-  <div class="nm-panel">
-    <button class="nm-close" onclick="closeNewsModal()" aria-label="閉じる">✗</button>
-    <div id="news-modal-body"></div>
-  </div>
-</div>
-
 <div id="game-modal" role="dialog" aria-modal="true" aria-label="ゲームプレイヤー">
   <div class="gm-shell">
     <div class="gm-bar">
@@ -3417,7 +3469,9 @@ async function fetchQuakes(force){
         tsunami: eq.domesticTsunami || 'Unknown',
         points: Array.isArray(d.points) ? d.points : [],
       };
-    }).filter(q => q.time);
+    }).filter(q => q.time)
+      // 日本国内の地震だけに限定（座標があるものは日本の範囲内のみ）
+      .filter(q => (q.lat == null || q.lng == null) || (q.lat >= 24 && q.lat <= 46 && q.lng >= 122 && q.lng <= 146));
     // APIの返却順に依存せず、発生時刻が新しい順になるよう必ず並び替える
     QUAKES.sort((a,b) => new Date(b.time) - new Date(a.time));
 
@@ -3596,13 +3650,6 @@ function renderQuakeMap(){
   setTimeout(() => QUAKE_MAP.invalidateSize(), 100);
 }
 
-// ニュース取得：複数の取得経路を「競争」させ、一番速く返ってきたものを採用（最速化）
-// ＋ YouTubeニュースチャンネルのフィードから動画付きニュースを合流させる
-let NEWS_FEED = [];
-function newsImg(url){
-  return 'https://api.microlink.io/?url=' + encodeURIComponent(url) + '&embed=image.url';
-}
-function stripHtml(s){ return (s||'').replace(/<[^>]*>/g,'').trim(); }
 // タイムアウト付きfetch（応答のない経路でいつまでも待たされないようにする）
 async function fetchTimeout(url, ms, opts){
   const ctrl = new AbortController();
@@ -3613,186 +3660,6 @@ async function fetchTimeout(url, ms, opts){
     clearTimeout(id);
   }
 }
-const NEWS_SOURCES = [
-  { src:'NHK', rss:'https://www3.nhk.or.jp/rss/news/cat0.xml' },
-  { src:'NHK社会', rss:'https://www3.nhk.or.jp/rss/news/cat1.xml' },
-  { src:'Yahoo!ニュース', rss:'https://news.yahoo.co.jp/rss/topics/top-picks.xml' },
-  { src:'BBC News Japan', rss:'https://feeds.bbci.co.uk/japanese/rss.xml' },
-  { src:'朝日新聞', rss:'https://www.asahi.com/rss/asahi/newsheadlines.rdf' },
-  { src:'Japan Times', rss:'https://www.japantimes.co.jp/feed/' }
-];
-// テキスト系ニュース：3つの取得経路を同時に投げ、最初に成功した結果を採用する
-async function fetchRss(rss){
-  const bust = Date.now();
-  const attempts = [
-    (async () => {
-      const r = await fetchTimeout('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rss) + '&_=' + bust, 3500, { cache:'no-store' });
-      if(!r.ok) throw new Error('rss2json error');
-      const j = await r.json();
-      if(!j.items || !j.items.length) throw new Error('empty');
-      return j.items;
-    })(),
-    ...['https://api.allorigins.win/raw?url=', 'https://corsproxy.io/?url='].map(proxy => (async () => {
-      const r = await fetchTimeout(proxy + encodeURIComponent(rss + (rss.includes('?')?'&':'?') + '_=' + bust), 3500, { cache:'no-store' });
-      if(!r.ok) throw new Error('proxy error');
-      const xml = new DOMParser().parseFromString(await r.text(), 'text/xml');
-      const items = [...xml.querySelectorAll('item')].map(it => {
-        const g = (t)=> it.querySelector(t)?.textContent || '';
-        const encEl = it.querySelector('enclosure');
-        const media = encEl?.getAttribute('url') || it.getElementsByTagNameNS('*','thumbnail')[0]?.getAttribute('url') || '';
-        const encType = encEl?.getAttribute('type') || '';
-        return { title:g('title'), description:g('description'), content:g('description'),
-                 pubDate:g('pubDate'), link:g('link'), thumbnail:media, enclosure: media?{link:media,type:encType||'image/jpeg'}:null };
-      });
-      if(!items.length) throw new Error('empty');
-      return items;
-    })())
-  ];
-  try{
-    return await Promise.any(attempts);
-  }catch(_){
-    return [];
-  }
-}
-// 動画ニュース：主要ニュースチャンネルのYouTubeフィードを利用（実際に再生できる動画付きニュース）
-const VIDEO_NEWS_CHANNELS = [
-  { src:'NHKニュース(動画)', handle:'NHKNEWS' },
-  { src:'ANNニュース(動画)', handle:'ANNnewsCH' },
-  { src:'TBS NEWS DIG(動画)', handle:'tbsnewsdig' }
-];
-const YT_CID_CACHE_KEY = 'nakayosi_yt_cid_v1';
-function loadYtCidCache(){
-  try{ return JSON.parse(localStorage.getItem(YT_CID_CACHE_KEY) || '{}'); }catch(_){ return {}; }
-}
-function saveYtCidCache(c){
-  try{ localStorage.setItem(YT_CID_CACHE_KEY, JSON.stringify(c)); }catch(_){}
-}
-// チャンネルハンドル→チャンネルIDの変換結果をローカルに保存し、2回目以降は即座に使えるようにする（高速化）
-async function resolveYtChannelId(handle){
-  const cache = loadYtCidCache();
-  const hit = cache[handle];
-  if(hit && hit.id && (Date.now() - hit.t) < 30*24*60*60*1000) return hit.id;
-  try{
-    const url = 'https://www.youtube.com/@' + handle;
-    const r = await fetchTimeout('https://api.allorigins.win/raw?url=' + encodeURIComponent(url), 7000);
-    if(!r.ok) throw new Error('resolve failed');
-    const html = await r.text();
-    const m = html.match(/"channelId":"(UC[0-9A-Za-z_-]{22})"/);
-    if(!m) throw new Error('not found');
-    cache[handle] = { id:m[1], t:Date.now() };
-    saveYtCidCache(cache);
-    return m[1];
-  }catch(e){
-    return (hit && hit.id) || null;
-  }
-}
-async function fetchYtChannelFeed(channelId){
-  const feedUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + channelId;
-  const r = await fetchTimeout('https://api.allorigins.win/raw?url=' + encodeURIComponent(feedUrl + '&_=' + Date.now()), 7000, { cache:'no-store' });
-  if(!r.ok) throw new Error('yt feed error');
-  const xml = new DOMParser().parseFromString(await r.text(), 'text/xml');
-  return [...xml.getElementsByTagNameNS('*','entry')].map(e => {
-    const g = (t)=> e.getElementsByTagNameNS('*',t)[0]?.textContent || '';
-    const videoId = g('videoId');
-    const group = e.getElementsByTagNameNS('*','group')[0];
-    const desc = group ? (group.getElementsByTagNameNS('*','description')[0]?.textContent || '') : '';
-    return {
-      title: g('title'),
-      description: desc,
-      pubDate: g('published'),
-      link: videoId ? ('https://www.youtube.com/watch?v=' + videoId) : g('link'),
-      thumbnail: videoId ? ('https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg') : '',
-      videoId
-    };
-  }).filter(v => v.videoId);
-}
-async function fetchVideoNews(){
-  try{
-    const c = JSON.parse(localStorage.getItem('nakayosi_video_news_v1') || 'null');
-    if(c && Array.isArray(c.v) && (Date.now() - c.t) < 30*60*1000) return c.v;
-  }catch(_){}
-  const results = await Promise.allSettled(VIDEO_NEWS_CHANNELS.map(async c => {
-    const cid = await resolveYtChannelId(c.handle);
-    if(!cid) return [];
-    const items = await fetchYtChannelFeed(cid);
-    return items.map(i => ({...i, __src:c.src}));
-  }));
-  const out = results.filter(r => r.status === 'fulfilled').flatMap(r => r.value);
-  if(out.length){ try{ localStorage.setItem('nakayosi_video_news_v1', JSON.stringify({t:Date.now(), v:out.slice(0,30)})); }catch(_){} }
-  return out;
-}
-async function fetchNews(){
-  if(window.__newsBusy) return; window.__newsBusy = true;
-  try{ await fetchNewsInner(); } finally { window.__newsBusy = false; }
-}
-async function fetchNewsInner(){
-  const requestId = (window.__newsRequestId = (window.__newsRequestId||0)+1);
-  const results = await Promise.allSettled(NEWS_SOURCES.map(async s => (await fetchRss(s.rss)).map(i => ({...i,__src:s.src}))));
-  if(requestId !== window.__newsRequestId) return;
-  let items = results.filter(r=>r.status==='fulfilled').flatMap(r=>r.value||[]);
-  try{ if(items.length) localStorage.setItem('nakayosi_news_cache_v2',JSON.stringify(items.slice(0,80))); else items=JSON.parse(localStorage.getItem('nakayosi_news_cache_v2')||'[]'); }catch(_){ }
-  items.sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0));
-  const seen = new Set(); items = items.filter(i=>{const k=(i.title||'').trim();if(!k||seen.has(k))return false;seen.add(k);return true;});
-  const toFeed = arr => arr.slice(0,40).map(i=>({title:i.title,desc:stripHtml(i.description).slice(0,120),fullDesc:stripHtml(i.description),content:stripHtml(i.content||i.description||''),date:(i.pubDate||'').replace('T',' ').slice(0,16).replace(/-/g,'/'),link:i.link,img:i.thumbnail||newsImg(i.link),video:null,videoType:null,videoId:null,src:i.__src||'News'}));
-  NEWS_FEED = toFeed(items); NEWS_ITEMS = items.slice(0,10).map(i=>'📰 '+i.title); renderTicker(); renderNewsFeed();
-  fetchVideoNews().then(v=>{if(requestId===window.__newsRequestId&&v.length){NEWS_FEED=toFeed(items.concat(v).sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0)));renderTicker();renderNewsFeed();}}).catch(()=>{});
-}
-function newsCardHtml(n, idx){
-  const fb = "this.onerror=null;this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,var(--primary),var(--accent))';";
-  const hasVideo = !!(n.video || n.videoId);
-  const playBadge = hasVideo ? '<span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);pointer-events:none">▶</span>' : '';
-  return `<a class="news-card" href="javascript:void(0)" onclick="openNewsModal(${idx})">
-    <div class="nc-thumb"><span class="nc-src">${n.src}${hasVideo?' 🎬':''}</span><img src="${n.img}" alt="" loading="lazy" decoding="async" fetchpriority="low" onerror="${fb}">${playBadge}</div>
-    <div class="nc-body">
-      <p class="nc-title">${n.title}</p>
-      ${n.desc?`<p class="nc-desc">${n.desc}</p>`:''}
-      <span class="nc-date">🕒 ${n.date}</span>
-    </div>
-  </a>`;
-}
-function openNewsModal(idx){
-  const n = NEWS_FEED[idx];
-  if(!n) return;
-  const modal = document.getElementById('news-modal');
-  const body = document.getElementById('news-modal-body');
-  const fb = "this.onerror=null;this.style.display='none';";
-  const hasVideo = !!(n.video || n.videoId);
-  const mediaHtml = n.videoId
-    ? `<div class="nm-yt-wrap"><iframe src="https://www.youtube.com/embed/${n.videoId}?autoplay=1&rel=0" title="${n.title.replace(/"/g,'&quot;')}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`
-    : n.video
-      ? `<video class="nm-video" controls playsinline preload="metadata" ${n.img?`poster="${n.img}"`:''}><source src="${n.video}" type="${n.videoType||'video/mp4'}">お使いのブラウザは動画に対応していません。</video>`
-      : `<div class="nm-thumb"><img src="${n.img}" alt="" onerror="${fb}"></div>`;
-  body.innerHTML = `
-    ${mediaHtml}
-    <span class="nm-src">${n.src}${hasVideo?' 🎬':''}</span>
-    <h2 class="nm-title">${n.title}</h2>
-    <div class="nm-date">🕒 ${n.date}</div>
-    <p class="nm-desc">${(n.content||n.fullDesc||n.desc||'本文はありません。').replace(/\n/g,'<br>')}</p>
-    <a class="nm-link" href="${n.link}" target="_blank" rel="noopener">元記事を新しいタブで開く（続きを読む）↗</a>
-  `;
-  body.scrollTop = 0;
-  modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeNewsModal(){
-  document.getElementById('news-modal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function renderNewsFeed(){
-  const sig = NEWS_FEED.length + '|' + (NEWS_FEED[0] ? NEWS_FEED[0].title + NEWS_FEED[0].date : '');
-  if(NEWS_FEED.length && sig === window.__newsFeedSig) return;
-  window.__newsFeedSig = NEWS_FEED.length ? sig : '';
-  const all = document.getElementById('newsCardsAll');
-  const home = document.getElementById('newsCardsHome');
-  if(!NEWS_FEED.length){
-    if(all) all.innerHTML = '<div class="eq-empty">ニュースを取得できませんでした。</div>';
-    if(home) home.innerHTML = '<div class="eq-empty">ニュースを読み込み中…</div>';
-    return;
-  }
-  if(all) all.innerHTML = NEWS_FEED.map((n,i)=>newsCardHtml(n,i)).join('');
-  if(home) home.innerHTML = NEWS_FEED.slice(0,12).map((n,i)=>newsCardHtml(n,i)).join('');
-}
-
 
 /* =================================================================
    ↓ 以下、レンダリングと既存機能（基本いじらなくてOK）
@@ -4019,6 +3886,12 @@ function showPage(id){
   document.getElementById('gnav').classList.remove('open');
   window.scrollTo(0,0);
   if(id === 'quake'){ setTimeout(() => { try{ renderQuakeMap(); }catch(e){} }, 60); }
+  try{
+    const tools = document.getElementById('miniTools');
+    const host = document.getElementById(id === 'tools' ? 'miniToolsPageSlot' : 'miniToolsHomeSlot');
+    if(tools && host && tools.parentElement !== host){ host.appendChild(tools); }
+    if(tools) tools.classList.toggle('mini-tools-lg', id === 'tools');
+  }catch(e){}
 }
 
 // 設定（localStorageに保存）
@@ -4654,16 +4527,13 @@ renderTicker();
 showPage('home');
 applySavedSettings();
 fetchQuakes();
-fetchNews();
 // 定期更新（地震は速報性重視で頻度高め）
 setInterval(() => { if(!document.hidden) fetchQuakes(); }, 60*1000);
-setInterval(() => { if(!document.hidden) fetchNews(); }, 5*60*1000);
 setInterval(() => { if(WX_PREF && !document.hidden) fetchWeather(); }, 5*60*1000);
 
 // タブ復帰／オンライン復帰で即時更新
 function refreshAllLive(){
   fetchQuakes();
-  fetchNews();
   if(WX_PREF) fetchWeather();
 }
 document.addEventListener('visibilitychange', ()=>{
@@ -6115,7 +5985,6 @@ body.tv-fs-mode #tv-page .tv-player{position:fixed;inset:0;z-index:2000;max-heig
     function svg(d){return '<svg class="mi" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';}
     var items=[
       {p:'home',i:svg('<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>'),t:'ホーム'},
-      {p:'newsfeed',i:svg('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h6M7 12h10M7 16h10"/>'),t:'ニュース'},
       {p:'weather',i:svg('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/>'),t:'天気'},
       {p:'links',i:svg('<path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/>'),t:'リンク'},
       {p:'games',i:svg('<rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/>'),t:'ゲーム'}
@@ -6418,7 +6287,8 @@ body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
       <p class="earthquake-time" style="margin-top:13px">${escapeHtml(tsunami)}</p>`;
   }
   function getEvents(){
-    return (typeof QUAKES !== 'undefined' && Array.isArray(QUAKES)) ? QUAKES.filter(q => q && q.time).slice(0, 30) : [];
+    const inJapan = q => (q.lat == null || q.lng == null) || (q.lat >= 24 && q.lat <= 46 && q.lng >= 122 && q.lng <= 146);
+    return (typeof QUAKES !== 'undefined' && Array.isArray(QUAKES)) ? QUAKES.filter(q => q && q.time && inJapan(q)).slice(0, 30) : [];
   }
   function showEvent(q){
     monitorState.selected = q || null;
@@ -6427,25 +6297,39 @@ body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
     const status = document.getElementById('earthquakeDataStatus');
     if(status && q) status.textContent = '選択中: ' + displayTime(q.time) + ' 発生';
   }
+  let eqLeafMap = null, eqLeafLayer = null, eqLeafRetry = 0;
   function renderMap(events){
-    const map = document.getElementById('earthquakeMonitorMap');
-    if(!map) return;
-    map.innerHTML = mapSvg;
+    const el = document.getElementById('earthquakeMonitorMap');
+    if(!el) return;
+    if(typeof L === 'undefined'){
+      if(eqLeafRetry++ < 20) setTimeout(() => renderMap(events), 500);
+      return;
+    }
+    if(!eqLeafMap){
+      el.innerHTML = '';
+      el.classList.add('is-leaflet');
+      eqLeafMap = L.map(el, { scrollWheelZoom:false, zoomControl:true, attributionControl:true }).setView([37.6, 137.5], 4);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 13, minZoom: 3, attribution: '&copy; OpenStreetMap'
+      }).addTo(eqLeafMap);
+      eqLeafLayer = L.layerGroup().addTo(eqLeafMap);
+      setTimeout(() => { try{ eqLeafMap.invalidateSize(); }catch(_){ } }, 250);
+      window.addEventListener('resize', () => { try{ eqLeafMap.invalidateSize(); }catch(_){ } });
+    }
+    eqLeafLayer.clearLayers();
     events.forEach((q, index) => {
-      const point = projectCoordinates(q.lat, q.lng);
-      if(!point) return;
-      const marker = document.createElement('button');
-      marker.type = 'button';
-      marker.className = 'earthquake-map-marker' + (index === 0 ? ' latest' : '');
-      marker.style.left = point.x + '%';
-      marker.style.top = point.y + '%';
-      marker.style.setProperty('--marker-color', colorForScale(q.maxScale));
-      marker.style.setProperty('--marker-size', Math.min(25, 12 + (Number(q.maxScale || 10) / 8)) + 'px');
-      marker.title = `${q.place || '震源不明'} / 最大震度 ${scaleLabel(q.maxScale)}`;
-      marker.setAttribute('aria-label', marker.title + '。詳細を表示');
-      marker.addEventListener('click', () => showEvent(q));
-      map.appendChild(marker);
+      const lat = Number(q.lat), lng = Number(q.lng);
+      if(!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+      const color = colorForScale(q.maxScale);
+      const marker = L.circleMarker([lat, lng], {
+        radius: Math.min(16, 6 + (Number(q.maxScale || 10) / 10)),
+        color: '#ffffff', weight: 2, fillColor: color, fillOpacity: index === 0 ? .95 : .7
+      });
+      marker.bindTooltip(`${escapeHtml(q.place || '震源不明')} / 最大震度 ${scaleLabel(q.maxScale)}`, { direction:'top' });
+      marker.on('click', () => showEvent(q));
+      marker.addTo(eqLeafLayer);
     });
+    try{ eqLeafMap.invalidateSize(); }catch(_){ }
   }
   function renderList(events){
     const list = document.getElementById('earthquakeMonitorList');
@@ -6488,49 +6372,6 @@ body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
     else document.body.classList.toggle('dark-mode');
   };
   window.renderEarthquakeMonitor();
-})();
-</script>
-<script id="news-ui-upgrade-script">
-(function(){
-  const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const clean = value => String(value ?? '').replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<style[\s\S]*?<\/style>/gi,'').replace(/<[^>]+>/g,'').replace(/\r/g,'').trim();
-  const normalizeArticleText = value => String(value ?? '').replace(/!\[([^\]]*)\]\([^)]*\)/g,'').replace(/\[([^\]]+)\]\([^)]*\)/g,'$1').replace(/^\s{0,3}#{1,6}\s*/gm,'').replace(/^\s*[*-]\s+/gm,'').split(/\n+/).map(x=>x.trim()).filter(x=>x && !/^(URL Source|Published Time|Markdown Content|Title)\s*:/i.test(x) && !((x.match(/\]\(/g)||[]).length>2)).join('\n').replace(/\n{3,}/g,'\n\n').trim();
-  const paragraphs = value => normalizeArticleText(value).split(/\n{2,}|(?<=[。！？])\s+/).map(x=>x.trim()).filter(Boolean).map(x=>`<p>${esc(x)}</p>`).join('');
-  const fallbackImage = n => n.img || '';
-  window.newsCardHtml = function(n, idx){
-    const hasVideo=!!(n.video||n.videoId);
-    const img=fallbackImage(n);
-    const onerror="this.onerror=null;this.style.display='none';";
-    return `<a class="news-card" href="javascript:void(0)" role="button" aria-label="${esc(n.title)}の記事を読む" onclick="openNewsModal(${idx})">
-      <div class="nc-thumb"><span class="nc-src">${esc(n.src||'News')}${hasVideo?' ▶':''}</span>${img?`<img src="${esc(img)}" alt="" loading="lazy" onerror="${onerror}">`:''}</div>
-      <div class="nc-body"><span class="nc-index">${String(idx+1).padStart(2,'0')}</span><div class="nc-kicker"><span>NEWS ARTICLE</span><span>·</span><span>${hasVideo?'動画付き':'記事'}</span></div><p class="nc-title">${esc(n.title)}</p>${n.desc?`<p class="nc-desc">${esc(clean(n.desc))}</p>`:''}<span class="nc-date">🕒 ${esc(n.date||'日時不明')}</span><span class="nc-read">本文を読む →</span></div>
-    </a>`;
-  };
-  async function loadFullArticle(url){
-    if(!url)return '';
-    const ctl=new AbortController(); const timer=setTimeout(()=>ctl.abort(),7000);
-    try{const r=await fetch('https://r.jina.ai/http://'+url.replace(/^https?:\/\//,''),{cache:'no-store',signal:ctl.signal});if(!r.ok)return '';const text=await r.text();return normalizeArticleText(text).slice(0,30000);}catch(_){return '';}finally{clearTimeout(timer);}
-  }
-  window.openNewsModal = async function(idx){
-    const n=NEWS_FEED[idx];if(!n)return;
-    const modal=document.getElementById('news-modal'),body=document.getElementById('news-modal-body');if(!modal||!body)return;
-    const media=n.videoId?`<div class="nm-yt-wrap"><iframe src="https://www.youtube.com/embed/${esc(n.videoId)}?rel=0" title="${esc(n.title)}" allow="encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`:n.video?`<video class="nm-video" controls playsinline preload="metadata" ${n.img?`poster="${esc(n.img)}"`:''}><source src="${esc(n.video)}" type="${esc(n.videoType||'video/mp4')}"></video>`:(n.img?`<div class="nm-thumb"><img src="${esc(n.img)}" alt="" onerror="this.style.display='none'"></div>`:'');
-    const lead=normalizeArticleText(n.desc||n.content||'');
-    body.innerHTML=`${media}<div class="nm-article-head"><span class="nm-src">${esc(n.src||'News')}</span><h2 class="nm-title">${esc(n.title)}</h2><div class="nm-date">🕒 ${esc(n.date||'日時不明')}</div></div><div class="nm-article-content"><div class="nm-full-status loading">本文を取得しています…</div>${lead?`<div class="nm-lead">${esc(lead)}</div>`:''}<div id="nmFullText">${paragraphs(n.content||n.fullDesc||n.desc||'配信元がRSS本文を公開していない記事です。下の「元記事を開く」から、配信元の全文を確認できます。')}</div><div class="nm-article-actions"><a class="nm-link" href="${esc(n.link||'#')}" target="_blank" rel="noopener">元記事を開く ↗</a><button type="button" class="nm-close-link" onclick="closeNewsModal()">閉じる</button></div></div>`;
-    body.scrollTop=0;modal.classList.add('open');document.body.style.overflow='hidden';
-    const full=await loadFullArticle(n.link);
-    const status=body.querySelector('.nm-full-status'),target=body.querySelector('#nmFullText');
-    if(full&&target){target.innerHTML=paragraphs(full);if(status){status.classList.remove('loading');status.textContent='記事本文（取得できた全文）';}}
-    else if(status){status.classList.remove('loading');status.textContent='配信元の本文取得に対応していないため、公開されている概要を表示しています。全文は元記事から確認できます。';}
-  };
-  window.renderNewsFeed = function(){
-    const all=document.getElementById('newsCardsAll'),home=document.getElementById('newsCardsHome');
-    if(!NEWS_FEED.length){if(all)all.innerHTML='<div class="eq-empty">ニュースを取得できませんでした。</div>';if(home)home.innerHTML='<div class="eq-empty">ニュースを読み込み中…</div>';return;}
-    const toolbar=`<div class="news-ui-toolbar"><span><strong>${NEWS_FEED.length}件</strong> の記事を新しい順に表示</span><span class="news-ui-hint">カードを開くと本文を表示</span></div>`;
-    if(all)all.innerHTML=toolbar+NEWS_FEED.map((n,i)=>newsCardHtml(n,i)).join('');
-    if(home)home.innerHTML=NEWS_FEED.slice(0,6).map((n,i)=>newsCardHtml(n,i)).join('');
-  };
-  setTimeout(()=>{try{renderNewsFeed();}catch(_){}},0);
 })();
 </script>
 
@@ -6773,5 +6614,192 @@ body.glass-mode #search-app>footer{background:rgba(5,22,35,.48);backdrop-filter:
 })();
 </script>
 
+
+<style id="app-html-overrides">
+/* 地震マップ：埋め込み地図（Leaflet）表示用 */
+.earthquake-monitor-map.is-leaflet{background:var(--surface-2);}
+.earthquake-monitor-map.is-leaflet::before,.earthquake-monitor-map.is-leaflet::after{display:none}
+.earthquake-monitor-map.is-leaflet svg{position:static;width:auto;height:auto;pointer-events:auto}
+.earthquake-monitor-map .leaflet-container{width:100%;height:100%;border-radius:11px;font:inherit;z-index:0}
+body.dark-mode .earthquake-monitor-map .leaflet-tile{filter:brightness(.74) saturate(.85) contrast(1.06)}
+
+/* ゲームUI刷新 */
+.game-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px}
+.game-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:8px 8px 10px;box-shadow:0 8px 22px -18px rgba(0,0,0,.6);transition:transform .22s cubic-bezier(.2,.8,.3,1),box-shadow .22s,border-color .22s}
+.game-card:hover{transform:translateY(-6px);border-color:color-mix(in oklab,var(--primary) 55%,var(--border));box-shadow:0 18px 34px -18px color-mix(in oklab,var(--primary) 65%,transparent)}
+.game-card .thumb{aspect-ratio:4/3;border-radius:13px}
+.game-card .thumb::after{background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.55) 100%);opacity:1}
+.game-card:hover .thumb::after{background:linear-gradient(180deg,transparent 25%,rgba(0,0,0,.72) 100%)}
+.game-card .name{position:static;padding:9px 6px 2px;font-size:.86rem;font-weight:700;line-height:1.35;color:var(--text);text-shadow:none;background:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.game-card .hot-tag{border-radius:999px;letter-spacing:.06em}
+.game-card .play-badge{background:color-mix(in oklab,var(--primary) 88%,#000);box-shadow:0 8px 20px -8px rgba(0,0,0,.7)}
+@media(max-width:600px){.game-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}.game-card{border-radius:15px;padding:6px 6px 8px}.game-card .name{font-size:.78rem}}
+</style>
+
+<style id="mini-tools-style">
+.mini-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.mini-tool-card{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 24px -22px rgba(0,0,0,.6);transition:transform .18s,box-shadow .18s}
+.mini-tool-card:hover{transform:translateY(-2px);box-shadow:0 14px 28px -20px color-mix(in oklab,var(--primary) 55%,transparent)}
+.mini-tool-card h3{margin:0;font-size:.95rem}
+.mini-tool-card textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:84px;border:1px solid var(--border);border-radius:9px;background:var(--surface-2);color:var(--text);font:inherit;font-size:.86rem;padding:9px 11px}
+.mini-tool-card textarea:focus{outline:2px solid color-mix(in oklab,var(--primary) 55%,transparent);border-color:var(--primary)}
+.mini-tool-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+.mini-tool-foot button{white-space:nowrap;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text);font:inherit;font-size:.78rem;font-weight:700;padding:7px 12px;cursor:pointer;transition:border-color .16s,color .16s}
+.mini-tool-foot button:hover{border-color:var(--primary);color:var(--primary)}
+.mini-tool-foot .mini-tool-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.mini-tool-foot .mini-tool-primary:hover{filter:brightness(1.08);color:#fff}
+.omikuji-result{margin:0;font-size:1.05rem;font-weight:800;min-height:2.6em;display:flex;align-items:center}
+.omikuji-result .om-k{color:var(--primary);font-size:1.35rem;margin-right:6px}
+.sw-display{margin:0;font-size:1.9rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.mini-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mini-row button{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text);font:inherit;font-size:.76rem;font-weight:700;padding:6px 10px;cursor:pointer}
+.mini-row button:hover{border-color:var(--primary);color:var(--primary)}
+.mini-tool-card input[type=text],.mini-tool-card input[type=number],.mini-tool-card input[type=date]{flex:1 1 90px;min-width:0;box-sizing:border-box;border:1px solid var(--border);border-radius:9px;background:var(--surface-2);color:var(--text);font:inherit;font-size:.85rem;padding:8px 10px}
+.mini-tool-card input:focus{outline:2px solid color-mix(in oklab,var(--primary) 55%,transparent);border-color:var(--primary)}
+.mini-strong{margin:0;font-size:1.05rem;font-weight:800;min-height:1.6em;word-break:break-all}
+.mini-mono{font-family:'Courier New',monospace;font-size:1rem}
+.mini-tool-card button[disabled]{opacity:.55;cursor:not-allowed}
+/* ホームのミニ機能は横スクロール型 */
+#home-page #miniToolsHomeSlot .mini-tools{display:flex;flex-wrap:nowrap;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 4px 14px;scrollbar-width:thin}
+#home-page #miniToolsHomeSlot .mini-tools::-webkit-scrollbar{height:6px}
+#home-page #miniToolsHomeSlot .mini-tools::-webkit-scrollbar-track{background:transparent}
+#home-page #miniToolsHomeSlot .mini-tools::-webkit-scrollbar-thumb{background:color-mix(in oklab,var(--primary) 35%,transparent);border-radius:10px}
+#home-page #miniToolsHomeSlot .mini-tool-card{flex:0 0 260px;scroll-snap-align:start;min-height:290px}
+#home-page #miniToolsHomeSlot .mini-tool-card textarea{min-height:74px}
+.mini-tools-lg{grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:20px}
+.mini-tools-lg .mini-tool-card{padding:22px;gap:14px;border-radius:18px}
+.mini-tools-lg .mini-tool-card h3{font-size:1.15rem}
+.mini-tools-lg .mini-tool-card textarea{min-height:170px;font-size:1rem}
+.mini-tools-lg .mini-tool-card input{font-size:1rem;padding:11px 13px}
+.mini-tools-lg .sw-display{font-size:3rem}
+.mini-tools-lg .omikuji-result{font-size:1.3rem}
+.mini-tools-lg .omikuji-result .om-k{font-size:1.9rem}
+.mini-tools-lg .mini-strong{font-size:1.3rem}
+.mini-tools-lg .mini-tool-foot button{font-size:.9rem;padding:10px 16px}
+</style>
+
+<script id="mini-tools-script">
+(function(){
+  // クイックメモ（自動保存）
+  var MEMO_KEY='nakayosi_quick_memo_v1';
+  var memo=document.getElementById('quickMemo'),memoStatus=document.getElementById('quickMemoStatus');
+  if(memo){
+    try{memo.value=localStorage.getItem(MEMO_KEY)||'';}catch(_){}
+    var t=null;
+    memo.addEventListener('input',function(){
+      clearTimeout(t);
+      t=setTimeout(function(){
+        try{localStorage.setItem(MEMO_KEY,memo.value);if(memoStatus)memoStatus.textContent='保存しました '+new Date().toLocaleTimeString('ja-JP');}catch(_){ }
+      },300);
+    });
+  }
+  window.clearQuickMemo=function(){
+    if(!memo)return;
+    memo.value='';
+    try{localStorage.removeItem(MEMO_KEY);}catch(_){}
+    if(memoStatus)memoStatus.textContent='消去しました';
+  };
+  // おみくじ
+  var OMIKUJI=[['大吉','最高の一日！何をやってもうまくいく予感。'],['中吉','良い流れ。新しいことに挑戦してみて。'],['小吉','小さな幸せが見つかる日。'],['吉','安定した運気。いつも通りでOK。'],['末吉','焦らずじっくりいけば好結果。'],['凶','慎重にいこう。休憩も大事。']];
+  var OM_KEY='nakayosi_omikuji_v1';
+  function todayKey(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  function showOmikuji(i,drawnToday){
+    var el=document.getElementById('omikujiResult'),btn=document.getElementById('omikujiBtn'),note=document.getElementById('omikujiNote');
+    if(el){var r=OMIKUJI[i];el.innerHTML='<span class="om-k">'+r[0]+'</span><span>'+r[1]+'</span>';}
+    if(drawnToday){if(btn){btn.disabled=true;btn.textContent='また明日';}if(note)note.textContent='今日はもう引きました';}
+  }
+  function readOm(){try{return JSON.parse(localStorage.getItem(OM_KEY)||'null');}catch(_){return null;}}
+  window.drawOmikuji=function(){
+    var saved=readOm();
+    if(saved&&saved.day===todayKey()){showOmikuji(saved.i,true);return;}
+    var i=Math.floor(Math.random()*OMIKUJI.length);
+    try{localStorage.setItem(OM_KEY,JSON.stringify({day:todayKey(),i:i}));}catch(_){}
+    showOmikuji(i,true);
+  };
+  (function(){var saved=readOm();if(saved&&saved.day===todayKey())showOmikuji(saved.i,true);})();
+
+  // カウントダウンタイマー
+  var tmLeft=300,tmTimer=null,tmEnd=0;
+  function tmFmt(sec){sec=Math.max(0,Math.round(sec));var m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
+  function tmDraw(){var el=document.getElementById('tmDisplay');if(el)el.textContent=tmFmt(tmTimer?(tmEnd-Date.now())/1000:tmLeft);}
+  function tmStop(label){if(tmTimer){clearInterval(tmTimer);tmTimer=null;}var b=document.getElementById('tmToggle');if(b)b.textContent=label||'スタート';}
+  window.tmAdd=function(sec){if(tmTimer){tmEnd+=sec*1000;}else{tmLeft=Math.max(0,tmLeft+sec);}tmDraw();};
+  window.tmReset=function(){tmStop();tmLeft=300;tmDraw();var n=document.getElementById('tmNote');if(n)n.textContent='時間になるとお知らせします';};
+  window.tmToggleRun=function(){
+    if(tmTimer){tmLeft=Math.max(0,(tmEnd-Date.now())/1000);tmStop();tmDraw();return;}
+    if(tmLeft<=0)tmLeft=300;
+    tmEnd=Date.now()+tmLeft*1000;
+    var b=document.getElementById('tmToggle');if(b)b.textContent='一時停止';
+    tmTimer=setInterval(function(){
+      if(Date.now()>=tmEnd){tmLeft=0;tmStop();tmDraw();var n=document.getElementById('tmNote');if(n)n.textContent='⏰ 時間になりました！';try{alert('⏰ タイマー終了！');}catch(_){}return;}
+      tmDraw();
+    },200);
+    tmDraw();
+  };
+  tmDraw();
+
+  // 割り勘
+  window.calcWarikan=function(){
+    var a=parseFloat((document.getElementById('wariAmount')||{}).value),p=parseInt((document.getElementById('wariPeople')||{}).value,10),el=document.getElementById('wariResult');
+    if(!el)return;
+    if(!(a>0)||!(p>0)){el.textContent='金額と人数を入れてね';return;}
+    var each=a/p,round=Math.ceil(each/100)*100;
+    el.textContent='1人あたり '+Math.round(each).toLocaleString('ja-JP')+'円（切り上げ '+round.toLocaleString('ja-JP')+'円）';
+  };
+
+  // ルーレット
+  window.spinRoulette=function(){
+    var inp=document.getElementById('rouletteItems'),el=document.getElementById('rouletteResult');if(!el)return;
+    var items=((inp&&inp.value)||'').split(/[,、\n]/).map(function(x){return x.trim();}).filter(Boolean);
+    if(!items.length){el.textContent='候補を2つ以上入れてね';return;}
+    var n=0,iv=setInterval(function(){
+      el.textContent=items[Math.floor(Math.random()*items.length)];
+      if(++n>12){clearInterval(iv);el.textContent='👉 '+items[Math.floor(Math.random()*items.length)];}
+    },70);
+  };
+
+  // パスワード生成
+  window.genPassword=function(){
+    var len=Math.min(40,Math.max(6,parseInt((document.getElementById('pwLen')||{}).value,10)||14));
+    var sym=(document.getElementById('pwSym')||{}).checked;
+    var chars='abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'+(sym?'!@#$%&*?-_=+':'');
+    var out='',arr=null;
+    try{arr=new Uint32Array(len);crypto.getRandomValues(arr);}catch(_){}
+    for(var i=0;i<len;i++){var r=arr?arr[i]:Math.floor(Math.random()*4294967296);out+=chars[r%chars.length];}
+    var el=document.getElementById('pwResult');if(el)el.textContent=out;
+  };
+  window.copyPassword=function(){
+    var el=document.getElementById('pwResult');if(!el)return;
+    try{navigator.clipboard.writeText(el.textContent);el.textContent=el.textContent;}catch(_){}
+  };
+
+  // 記念日カウント
+  var DAY_KEY='nakayosi_dayto_v1';
+  window.calcDays=function(){
+    var inp=document.getElementById('dayTarget'),el=document.getElementById('dayResult');if(!inp||!el)return;
+    if(!inp.value){el.textContent='日付を選んでね';return;}
+    try{localStorage.setItem(DAY_KEY,inp.value);}catch(_){}
+    var t=new Date(inp.value+'T00:00:00'),n=new Date();n.setHours(0,0,0,0);
+    var diff=Math.round((t-n)/86400000);
+    el.textContent=diff>0?('あと '+diff+' 日'):(diff===0?'今日です！🎉':(Math.abs(diff)+' 日前でした'));
+  };
+  (function(){var inp=document.getElementById('dayTarget');if(!inp)return;try{var v=localStorage.getItem(DAY_KEY);if(v){inp.value=v;window.calcDays();}}catch(_){}})();
+  // ストップウォッチ
+  var swStart=0,swAcc=0,swTimer=null;
+  function fmt(ms){var m=Math.floor(ms/60000),s=Math.floor(ms%60000/1000),d=Math.floor(ms%1000/100);return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'.'+d;}
+  function draw(){var el=document.getElementById('swDisplay');if(el)el.textContent=fmt(swAcc+(swTimer?Date.now()-swStart:0));}
+  window.swToggleRun=function(){
+    var btn=document.getElementById('swToggle');
+    if(swTimer){clearInterval(swTimer);swTimer=null;swAcc+=Date.now()-swStart;if(btn)btn.textContent='スタート';}
+    else{swStart=Date.now();swTimer=setInterval(draw,100);if(btn)btn.textContent='ストップ';}
+    draw();
+  };
+  window.swReset=function(){
+    if(swTimer){clearInterval(swTimer);swTimer=null;}
+    swAcc=0;var btn=document.getElementById('swToggle');if(btn)btn.textContent='スタート';draw();
+  };
+})();
+</script>
 </body>
+
 </html>
