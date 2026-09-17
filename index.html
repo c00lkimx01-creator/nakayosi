@@ -14,7 +14,7 @@
      データ配列を書き換えるだけでOKです。
    - カラーは :root のCSS変数を編集してください。
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&family=Press+Start+2P&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Kosugi+Maru&family=Zen+Maru+Gothic:wght@400;500;700&family=Shippori+Mincho:wght@500;700&family=Kaisei+Decol:wght@400;700&family=DotGothic16&family=Yusei+Magic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&family=Press+Start+2P&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Kosugi+Maru&family=Zen+Maru+Gothic:wght@400;500;700&family=Shippori+Mincho:wght@500;700&family=Kaisei+Decol:wght@400;700&family=DotGothic16&family=Yusei+Magic&family=Noto+Color+Emoji&display=swap');
 
 /* リアルタイム時計（ピクセルフォント） */
 .pixel-clock{
@@ -173,7 +173,7 @@ body.dark-mode{
 *{box-sizing:border-box}
 body{
   margin:0;
-  font-family:'Noto Sans JP',sans-serif;
+  font-family:'Noto Sans JP','Noto Color Emoji',sans-serif;
   background:var(--bg);
   color:var(--text);
   font-size:15px;
@@ -182,7 +182,7 @@ body{
 }
 a{color:var(--primary);text-decoration:none}
 a:hover{text-decoration:underline}
-h1,h2,h3{font-family:'Noto Serif JP',serif;line-height:1.35;margin:0 0 .5em}
+h1,h2,h3{font-family:'Noto Serif JP','Noto Color Emoji',serif;line-height:1.35;margin:0 0 .5em}
 
 /* ───── トップバー（青い細い帯） ───── */
 .topbar{
@@ -480,6 +480,22 @@ body.dark-mode .link-cat li a:hover{background:color-mix(in oklab, var(--primary
 .widget-body li{padding:6px 0;border-bottom:1px dashed var(--border)}
 .widget-body li:last-child{border-bottom:none}
 .stat-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border);font-size:.88rem}
+/* 今日の日付 ＋ おみくじ（サイト情報ウィジェット） */
+.site-today{font-weight:700;font-size:.92rem;color:var(--primary);padding:6px 0;margin-bottom:4px;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}
+.site-omikuji-box{margin-top:12px;padding-top:10px;border-top:1px dashed var(--border);text-align:center}
+.site-omikuji-btn{display:inline-block;font:inherit;font-weight:700;font-size:.85rem;color:var(--primary);background:var(--surface-2);border:1px solid var(--primary);border-radius:999px;padding:7px 18px;cursor:pointer;transition:transform .15s,box-shadow .15s,background .2s,color .2s}
+.site-omikuji-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px color-mix(in oklab, var(--primary) 35%, transparent);background:var(--primary);color:#fff}
+.site-omikuji-btn:disabled{opacity:.55;cursor:default;transform:none;box-shadow:none;background:var(--surface-2);color:var(--muted-foreground,#6b7280);border-color:var(--border)}
+.site-omikuji-result{margin-top:10px;min-height:1em;opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
+.site-omikuji-result.show{opacity:1;transform:translateY(0)}
+.site-omikuji-rank{display:block;font-size:1.5rem;font-weight:700;letter-spacing:.2em;text-indent:.2em;color:var(--primary)}
+.site-omikuji-rank.daikichi{color:#c8a514}
+.site-omikuji-rank.kyo{color:#b3261e}
+.site-omikuji-msg{display:block;margin-top:4px;font-size:.8rem;color:var(--muted-foreground,#6b7280)}
+/* World Monitor 地震マップ（地震速報ページ） */
+.wm-embed-section{margin-top:18px}
+.wm-embed-wrap{position:relative;width:100%;aspect-ratio:16/10;max-height:520px;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:#0a0f0a}
+.wm-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 .stat-row:last-child{border-bottom:none}
 .stat-row span:last-child{color:var(--primary);font-weight:700;font-variant-numeric:tabular-nums}
 
@@ -508,7 +524,7 @@ input[type=color]{padding:2px;width:46px;height:36px;cursor:pointer}
 /* フッター */
 footer{background:var(--surface);border-top:1px solid var(--border);margin-top:40px}
 .footer-inner{max-width:1180px;margin:0 auto;padding:30px 20px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px}
-.footer-inner h4{font-size:.85rem;margin:0 0 10px;color:var(--text);font-family:'Noto Sans JP',sans-serif}
+.footer-inner h4{font-size:.85rem;margin:0 0 10px;color:var(--text);font-family:'Noto Sans JP','Noto Color Emoji',sans-serif}
 .footer-inner ul{list-style:none;margin:0;padding:0;font-size:.82rem}
 .footer-inner li{padding:3px 0}
 .footer-inner a{color:var(--text-muted)}
@@ -1450,6 +1466,19 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
               <button type="button" class="earthquake-refresh-button" onclick="refreshEarthquakeMonitor()">更新</button>
             </div>
             <div id="earthquakeMonitorList" class="earthquake-recent-list" aria-live="polite"></div>
+          </div>
+          <div class="section wm-embed-section">
+            <div class="earthquake-card-heading">
+              <div>
+                <span class="earthquake-kicker">WORLD MONITOR · JAPAN</span>
+                <h3>🌍 世界の地震マップ（日本）</h3>
+              </div>
+              <span class="earthquake-map-note">地震＋海底ケーブル</span>
+            </div>
+            <div class="wm-embed-wrap">
+              <iframe src="https://tech.worldmonitor.app/embed?layers=earthquakes%2Ccables&amp;theme=dark&amp;variant=tech&amp;center=37.0,138.0&amp;zoom=6" title="World Monitor 地震マップ（日本周辺）" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <p class="earthquake-map-caption">World Monitor のダッシュボードを埋め込み、日本周辺のみ表示しています。</p>
           </div>
         </div>
       </div>
@@ -3303,21 +3332,26 @@ window.sxSaveSettings = sxSaveSettings;
     <div class="widget">
       <div class="widget-head">📊 サイト情報</div>
       <div class="widget-body">
+        <div class="site-today" id="siteToday">今日の日付を読み込み中…</div>
         <div class="stat-row"><span>累計訪問者</span><span id="count">12,348</span></div>
         <div class="stat-row"><span>登録リンク数</span><span id="linkCount">—</span></div>
         <div class="stat-row"><span>登録ゲーム数</span><span id="gameStat">—</span></div>
         <div class="stat-row"><span>運営者</span><span>2a_exe</span></div>
+        <div class="site-omikuji-box">
+          <button type="button" class="site-omikuji-btn" id="siteOmikujiBtn" onclick="drawSiteOmikuji()">🎋 おみくじを引く</button>
+          <div class="site-omikuji-result" id="siteOmikujiResult" aria-live="polite"></div>
+        </div>
       </div>
     </div>
 
     <div class="widget">
-      <div class="widget-head">🔥 人気リンク</div>
+      <div class="widget-head">⚡ 地震速報</div>
       <div class="widget-body">
         <ul>
-          <li><a href="javascript:void(0)" onclick="openChatModal()">💬 仲良しCHAT</a></li>
-          <li><a href="https://ono-tube.duckdns.org" target="_blank">▶️斧Tube / AXETube 🅝🅔🅦</a></li>
-          <li><a href="https://appetize.io/embed/xc1w6f1krd589zhp22a0mgftyw?autoplay=false&debutrue&&device=galaxytabs7&osVersion=26.0&orientation=landscape" target="_blank">💻Galaxy Tabs7</a></li>
-          <li><a href="https://rammer.nana.3d-mart.ru/" target="_blank">🌐Rammer Head</a></li>
+          <li><a href="javascript:void(0)" onclick="showPage('quake')">🌋 地震マップを見る（サイト内）</a></li>
+          <li><a href="https://www.jma.go.jp/bosai/#lang=ja&amp;data_type=earthquake" target="_blank" rel="noopener">🏛 気象庁 地震情報</a></li>
+          <li><a href="https://tenki.jp/earthquake/" target="_blank" rel="noopener">🌤 tenki.jp 地震情報</a></li>
+          <li><a href="https://weather.news.yahoo.co.jp/weather/earthquake/" target="_blank" rel="noopener">📣 Yahoo!天気 地震情報</a></li>
         </ul>
       </div>
     </div>
@@ -7118,6 +7152,48 @@ body.dark-mode .earthquake-monitor-map .leaflet-tile{filter:brightness(.74) satu
     if(swTimer){clearInterval(swTimer);swTimer=null;}
     swAcc=0;var btn=document.getElementById('swToggle');if(btn)btn.textContent='スタート';draw();
   };
+  // サイト情報ウィジェット：今日の日付
+  (function(){
+    var el=document.getElementById('siteToday');if(!el)return;
+    var d=new Date(),w=['日','月','火','水','木','金','土'][d.getDay()];
+    el.textContent='📅 '+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+w+'）';
+  })();
+  // サイト情報ウィジェット：おみくじ（1日1回）
+  var SITE_OMIKUJI=[
+    {r:'大吉',c:'daikichi',m:'最高の運気！やりたいことがあるなら今日がその日。'},
+    {r:'中吉',c:'',m:'良い流れが来ています。新しいことを始めるのにピッタリ。'},
+    {r:'吉',c:'',m:'穏やかな一日。いつも通りできっと良い結果に。'},
+    {r:'小吉',c:'',m:'小さな幸せが潜んでいます。周りをよく見てみて。'},
+    {r:'末吉',c:'',m:'今は我慢の時。じっくり準備すれば運は上向きます。'},
+    {r:'凶',c:'kyo',m:'急がば回れ。落ち着いて一歩ずつ進めば大丈夫。'},
+    {r:'大凶',c:'kyo',m:'今日は無理せず休もう。明日への大きなチャージに。'}
+  ];
+  var SITE_OMK_KEY='nakayosi_site_omikuji_v1';
+  function siteTodayStr(){var d=new Date();return d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate();}
+  function loadSiteOmikujiState(){
+    var box=document.getElementById('siteOmikujiResult'),btn=document.getElementById('siteOmikujiBtn');
+    if(!box||!btn)return;
+    var saved=null;try{saved=JSON.parse(localStorage.getItem(SITE_OMK_KEY)||'null');}catch(e){}
+    if(saved&&saved.date===siteTodayStr()&&SITE_OMIKUJI[saved.idx]){
+      var f=SITE_OMIKUJI[saved.idx];
+      box.innerHTML='<span class="site-omikuji-rank '+f.c+'">'+f.r+'</span><span class="site-omikuji-msg">'+f.m+'</span>';
+      box.className='site-omikuji-result show';
+      btn.disabled=true;btn.textContent='本日は引き終わりました 🌙';
+    }
+  }
+  window.drawSiteOmikuji=function(){
+    var box=document.getElementById('siteOmikujiResult'),btn=document.getElementById('siteOmikujiBtn');
+    if(!box||!btn||btn.disabled)return;
+    var saved=null;try{saved=JSON.parse(localStorage.getItem(SITE_OMK_KEY)||'null');}catch(e){}
+    if(saved&&saved.date===siteTodayStr()){loadSiteOmikujiState();return;}
+    var i=Math.floor(Math.random()*SITE_OMIKUJI.length),f=SITE_OMIKUJI[i];
+    try{localStorage.setItem(SITE_OMK_KEY,JSON.stringify({date:siteTodayStr(),idx:i}));}catch(e){}
+    box.className='site-omikuji-result';
+    box.innerHTML='<span class="site-omikuji-rank '+f.c+'">'+f.r+'</span><span class="site-omikuji-msg">'+f.m+'</span>';
+    requestAnimationFrame(function(){requestAnimationFrame(function(){box.className='site-omikuji-result show';});});
+    btn.disabled=true;btn.textContent='本日は引き終わりました 🌙';
+  };
+  loadSiteOmikujiState();
 })();
 </script>
 <div class="geo-ov" id="geoOverlay" role="dialog" aria-modal="true" aria-labelledby="geoTitle">
