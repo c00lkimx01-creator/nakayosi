@@ -7213,18 +7213,56 @@ body.dark-mode .earthquake-monitor-map .leaflet-tile{filter:brightness(.74) satu
 <style id="google-cookie-gate-style">
   #googleCookieGate{position:fixed;inset:0;z-index:2147483647;background:#fff}
   #googleCookieFrame{display:block;width:100%;height:100%;border:0;background:#fff}
-  #googleCookieConsent{position:absolute;right:24px;bottom:24px;width:min(390px,calc(100vw - 32px));box-sizing:border-box;padding:20px 22px;background:#fff;color:#202124;border:1px solid #dadce0;border-radius:12px;box-shadow:0 4px 24px rgba(60,64,67,.28);font-family:Arial,'Noto Sans JP',sans-serif}
-  #googleCookieConsent p{margin:0 0 16px;font-size:15px;line-height:1.6}
-  #googleCookieAccept{display:block;margin-left:auto;border:0;border-radius:4px;padding:10px 22px;background:#1a73e8;color:#fff;font:700 14px Arial,'Noto Sans JP',sans-serif;cursor:pointer}
-  #googleCookieAccept:hover{background:#1765cc}
-  #googleCookieAccept:focus-visible{outline:3px solid #aecbfa;outline-offset:2px}
-  @media(max-width:600px){#googleCookieConsent{right:16px;bottom:16px;padding:18px}}
+  #googleCookieConsent{
+    position:absolute;right:24px;bottom:24px;width:min(420px,calc(100vw - 32px));
+    box-sizing:border-box;padding:22px 24px 20px;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(12px) saturate(1.4);
+    color:#202124;border:1px solid rgba(218,220,224,.7);border-radius:20px;
+    box-shadow:0 8px 32px rgba(60,64,67,.18),0 2px 6px rgba(60,64,67,.08);
+    font-family:'Google Sans',Arial,'Noto Sans JP','Helvetica Neue',sans-serif;
+    animation:cookieSlideIn .45s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes cookieSlideIn{0%{opacity:0;transform:translateY(28px) scale(.97)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  #googleCookieConsent .cc-row{display:flex;align-items:flex-start;gap:14px}
+  #googleCookieConsent .cc-icon{flex-shrink:0;width:42px;height:42px;border-radius:50%;
+    background:linear-gradient(135deg,#4285f4,#1a73e8);display:flex;align-items:center;justify-content:center;
+    box-shadow:0 3px 8px rgba(26,115,232,.35)}
+  #googleCookieConsent .cc-icon svg{width:24px;height:24px}
+  #googleCookieConsent p{margin:0;font-size:15px;line-height:1.6;color:#3c4043}
+  #googleCookieConsent p b{font-weight:600;color:#202124}
+  #googleCookieConsent .cc-foot{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:18px}
+  #googleCookieAccept{
+    position:relative;overflow:hidden;border:0;border-radius:24px;
+    padding:11px 26px;color:#fff;cursor:pointer;
+    background:linear-gradient(135deg,#1a73e8,#4285f4);
+    font:700 14px/1 'Google Sans',Arial,'Noto Sans JP',sans-serif;letter-spacing:.2px;
+    box-shadow:0 4px 14px rgba(26,115,232,.42),inset 0 1px 0 rgba(255,255,255,.25);
+    transition:transform .18s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,filter .2s ease;
+  }
+  #googleCookieAccept:hover{transform:translateY(-2px) scale(1.03);
+    box-shadow:0 8px 22px rgba(26,115,232,.5),inset 0 1px 0 rgba(255,255,255,.3);filter:brightness(1.05)}
+  #googleCookieAccept:active{transform:translateY(0) scale(.98);box-shadow:0 2px 8px rgba(26,115,232,.4)}
+  #googleCookieAccept::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+    transform:translateX(-100%);transition:transform .6s ease}
+  #googleCookieAccept:hover::after{transform:translateX(100%)}
+  #googleCookieAccept:focus-visible{outline:3px solid #aecbfa;outline-offset:3px}
+  @media(max-width:600px){#googleCookieConsent{right:16px;bottom:16px;padding:18px 18px 16px}.cc-foot{justify-content:stretch}#googleCookieAccept{width:100%;text-align:center}}
 </style>
 <div id="googleCookieGate" role="dialog" aria-modal="true" aria-labelledby="googleCookieMessage">
   <iframe id="googleCookieFrame" src="/google-cookie-gate.html" title="Google 検索画面"></iframe>
   <div id="googleCookieConsent">
-    <p id="googleCookieMessage">Cookieを承諾しますか？</p>
-    <button id="googleCookieAccept" type="button">承諾する</button>
+    <div class="cc-row">
+      <span class="cc-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.6 11.5a4.2 4.2 0 0 0-5.3-3.9 4.6 4.6 0 0 0-8.3-1.1A4.9 4.9 0 0 0 3 11.4a4.6 4.6 0 0 0 .2 7.8 4.3 4.3 0 0 0 4.3 2.3 4.5 4.5 0 0 0 3.8-.7 4.4 4.4 0 0 0 6.2-.6 4.4 4.4 0 0 0 3.8-1.8 4.2 4.2 0 0 0 .3-5.9z"/>
+          <circle cx="9" cy="10.5" r=".6" fill="#fff"/><circle cx="13" cy="9" r=".6" fill="#fff"/><circle cx="15.5" cy="12.5" r=".6" fill="#fff"/><circle cx="11" cy="14" r=".6" fill="#fff"/>
+        </svg>
+      </span>
+      <p id="googleCookieMessage"><b>Cookieを承諾しますか？</b><br>このサイトでは利便性向上のためCookieを使用します。「承諾する」を押すと、仲良しインスタンスの画面を表示します。</p>
+    </div>
+    <div class="cc-foot">
+      <button id="googleCookieAccept" type="button">承諾する</button>
+    </div>
   </div>
 </div>
 <script>
