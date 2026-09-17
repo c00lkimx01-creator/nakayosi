@@ -1,3 +1,34 @@
+// ── 遅延ライブラリローダー（Leaflet / hls.js は必要なページを開いた時だけ読み込む） ──
+function __loadJsOnce(src){
+  return new Promise((resolve) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = () => resolve(true); s.onerror = () => resolve(false);
+    document.head.appendChild(s);
+  });
+}
+let __leafletPromise = null, __hlsPromise = null;
+function isMapPageActive(){
+  const q = document.getElementById('quake-page');
+  const w = document.getElementById('weather-page');
+  return !!((q && q.classList.contains('active')) || (w && w.classList.contains('active')));
+}
+function ensureLeaflet(){
+  if (typeof L !== 'undefined') return Promise.resolve(true);
+  if (!__leafletPromise){
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(css);
+    __leafletPromise = __loadJsOnce('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
+  }
+  return __leafletPromise;
+}
+function ensureHls(){
+  if (window.Hls) return Promise.resolve(true);
+  if (!__hlsPromise) __hlsPromise = __loadJsOnce('https://cdn.jsdelivr.net/npm/hls.js@1');
+  return __hlsPromise;
+}
+
 
 (function(){
 
@@ -1115,7 +1146,7 @@ async function fetchQuakes(force){
   buildPrefOptions();
   renderQuakeHome();
   renderQuakeList();
-  renderQuakeMap();
+  if(isMapPageActive()) ensureLeaflet().then(() => { try{ renderQuakeMap(); }catch(e){} });
   if(typeof renderEarthquakeMonitor === 'function') renderEarthquakeMonitor();
   window.__quakeBusy = false;
   const up = document.getElementById('eqUpdated');
@@ -1207,7 +1238,7 @@ function renderQuakeList(){
     }
     return quakeItemHtml(q, hit);
   }).join('');
-  renderQuakeMap();
+  if(isMapPageActive()) ensureLeaflet().then(() => { try{ renderQuakeMap(); }catch(e){} });
 }
 
 
@@ -1512,7 +1543,7 @@ function showPage(id){
   });
   document.getElementById('gnav').classList.remove('open');
   window.scrollTo(0,0);
-  if(id === 'quake'){ setTimeout(() => { try{ renderQuakeMap(); }catch(e){} }, 60); }
+  if(id === 'quake'){ ensureLeaflet().then(() => setTimeout(() => { try{ renderQuakeMap(); }catch(e){} if(typeof renderEarthquakeMonitor === 'function') renderEarthquakeMonitor(); }, 60)); }
   try{
     const tools = document.getElementById('miniTools');
     const host = document.getElementById(id === 'tools' ? 'miniToolsPageSlot' : 'miniToolsHomeSlot');
@@ -2336,12 +2367,12 @@ function onWxPrefMapClick(pref){
   const select = document.getElementById('wxPref');
   if(select){ select.value = pref; onWxPrefChange(pref); }
   else { WX_PREF = pref; fetchWeather(true); }
-  setTimeout(initWxMap, 80);
+  setTimeout(() => ensureLeaflet().then(initWxMap), 80);
 }
 const _origShowPage = showPage;
 showPage = function(id){
   _origShowPage(id);
-  if(id === 'weather'){ buildWxPrefOptions(); fetchWeather(); fetchWxWarnings(); setTimeout(initWxMap, 100); }
+  if(id === 'weather'){ buildWxPrefOptions(); fetchWeather(); fetchWxWarnings(); setTimeout(() => ensureLeaflet().then(initWxMap), 100); }
 };
 
 // 初期化
@@ -2476,6 +2507,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChatModal();});
     if (useHls){
       playerContainer.innerHTML = '<video id="tv-hls-video" controls autoplay playsinline></video>';
       const video = document.getElementById('tv-hls-video');
+      await ensureHls();
       if (window.Hls && Hls.isSupported()){
         currentHls = new Hls();
         currentHls.loadSource(hlsUrl);
@@ -3437,7 +3469,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChatModal();});
     const el = document.getElementById('earthquakeMonitorMap');
     if(!el) return;
     if(typeof L === 'undefined'){
-      if(eqLeafRetry++ < 20) setTimeout(() => renderMap(events), 500);
+      if(isMapPageActive()) ensureLeaflet().then(() => renderMap(events));
       return;
     }
     if(!eqLeafMap){
