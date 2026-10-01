@@ -268,9 +268,15 @@
       alpha: Math.random() * 0.5 + 0.2
     }));
 
+    let particleFrame = 0;
+    const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
     function animateParticles() {
+      if (document.hidden || document.body.classList.contains('instance-active')) {
+        particleFrame = 0;
+        return;
+      }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = darkModeQuery.matches;
 
       particles.forEach(p => {
         p.x += p.vx;
@@ -287,9 +293,12 @@
         ctx.fill();
       });
 
-      requestAnimationFrame(animateParticles);
+      particleFrame = requestAnimationFrame(animateParticles);
     }
     animateParticles();
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && !particleFrame && !document.body.classList.contains('instance-active')) animateParticles();
+    });
 
     // ==========================================================
     // 2. アニメーション完了後のボタン表示制御
@@ -304,6 +313,8 @@
       frame.addEventListener('load', () => {
         frame.hidden = false;
         document.body.classList.add('instance-active');
+        cancelAnimationFrame(particleFrame);
+        particleFrame = 0;
         document.title = '仲良し *インスタンス* 2 — 情報ポータル';
       }, { once: true });
       frame.srcdoc = source.content.textContent;
@@ -1120,8 +1131,6 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
 @media(prefers-reduced-motion:reduce){#links-page *{scroll-behavior:auto!important;transition:none!important}}
 
 &lt;/style&gt;
-&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/&gt;
-&lt;script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" onload="if(typeof renderQuakeMap==='function')renderQuakeMap();if(typeof initWxMap==='function'&amp;&amp;document.getElementById('wxMap'))try{initWxMap()}catch(e){}"&gt;&lt;/script&gt;
 &lt;style&gt;
 #quakeMap{height:360px;border-radius:10px;border:1px solid var(--border);margin:14px 0;z-index:0}
 .eq-map-popup b{color:var(--primary)}
@@ -4360,13 +4369,38 @@ function showPage(id){
   });
   document.getElementById('gnav').classList.remove('open');
   window.scrollTo(0,0);
-  if(id === 'quake'){ setTimeout(() =&gt; { try{ renderQuakeMap(); }catch(e){} }, 60); }
+  if(id === 'quake'){
+    loadLeaflet().then(() =&gt; setTimeout(() =&gt; renderQuakeMap(), 60)).catch(() =&gt; {});
+  }
   try{
     const tools = document.getElementById('miniTools');
     const host = document.getElementById(id === 'tools' ? 'miniToolsPageSlot' : 'miniToolsHomeSlot');
     if(tools &amp;&amp; host &amp;&amp; tools.parentElement !== host){ host.appendChild(tools); }
     if(tools) tools.classList.toggle('mini-tools-lg', id === 'tools');
   }catch(e){}
+}
+
+// 地図ライブラリは地図のある画面を開くまで読み込まない。
+let leafletLoading;
+function loadLeaflet(){
+  if(typeof L !== 'undefined') return Promise.resolve();
+  if(leafletLoading) return leafletLoading;
+  leafletLoading = new Promise((resolve, reject) =&gt; {
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    css.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+    css.crossOrigin = 'anonymous';
+    document.head.appendChild(css);
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+    script.crossOrigin = 'anonymous';
+    script.onload = resolve;
+    script.onerror = () =&gt; { leafletLoading = null; script.remove(); reject(new Error('Map loading failed')); };
+    document.head.appendChild(script);
+  });
+  return leafletLoading;
 }
 
 // 設定（localStorageに保存）
@@ -5182,7 +5216,10 @@ function onWxPrefMapClick(pref){
 const _origShowPage = showPage;
 showPage = function(id){
   _origShowPage(id);
-  if(id === 'weather'){ buildWxPrefOptions(); fetchWeather(); fetchWxWarnings(); setTimeout(initWxMap, 100); }
+  if(id === 'weather'){
+    buildWxPrefOptions(); fetchWeather(); fetchWxWarnings();
+    loadLeaflet().then(() =&gt; setTimeout(initWxMap, 100)).catch(() =&gt; {});
+  }
 };
 
 // 初期化
