@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -212,6 +213,11 @@
     }
     #instanceFrame { position: fixed; inset: 0; z-index: 100; width: 100%; height: 100%; border: 0; background: var(--bg-base); }
     #instanceFrame[hidden] { display: none; }
+    #instanceFrame { opacity: 0; transition: opacity .6s ease; }
+    #instanceFrame.is-shown { opacity: 1; }
+    .welcome-container, .ambient-glow, #particleCanvas { transition: opacity .9s ease, filter .9s ease; }
+    body.welcome-fade .welcome-container { opacity: 0; filter: blur(6px); }
+    body.welcome-fade .ambient-glow, body.welcome-fade #particleCanvas { opacity: 0; }
     body.instance-active { overflow: hidden; }
     body.instance-active .ambient-glow,
     body.instance-active .bg-overlay,
@@ -270,14 +276,7 @@
       <span>w</span><span>e</span><span>l</span><span>c</span><span>o</span><span>m</span><span>e</span>
     </div>
 
-    <!-- アニメーション後にフェードインする「次へ」ボタン -->
-    <button class="btn-next" id="nextBtn" type="button" onclick="showInstance()">
-      <span>次へ</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-        <polyline points="12 5 19 12 12 19"></polyline>
-      </svg>
-    </button>
+
   </main>
 
   <iframe id="instanceFrame" title="仲良しインスタンス2 — 情報ポータル" hidden></iframe>
@@ -296,7 +295,7 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const particles = Array.from({ length: 55 }, () => ({
+    const particles = Array.from({ length: 30 }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
       radius: Math.random() * 2.5 + 1,
@@ -324,8 +323,9 @@
         ctx.fill();
       });
 
-      requestAnimationFrame(animateParticles);
+      if (!window.__welcomeDone) particleRaf = requestAnimationFrame(animateParticles);
     }
+    let particleRaf = 0;
     animateParticles();
 
     // 軽量なカーソルの光と短い軌跡。ポータルの srcdoc にも同じ演出を適用する。
@@ -360,32 +360,47 @@
     // ==========================================================
     // 2. アニメーション完了後のボタン表示制御
     // ==========================================================
-    const nextBtn = document.getElementById('nextBtn');
-
+    // welcome アニメーション後、自動でフェードアウトしてポータルを表示
     function showInstance() {
       const frame = document.getElementById('instanceFrame');
       const source = document.getElementById('instanceSource');
       if (!frame || !source) return;
-      nextBtn.disabled = true;
+      let loaded = false, faded = false;
+      const reveal = () => {
+        if (!loaded || !faded) return;
+        window.__welcomeDone = true;
+        cancelAnimationFrame(particleRaf);
+        frame.hidden = false;
+        requestAnimationFrame(() => frame.classList.add('is-shown'));
+        document.body.classList.add('instance-active');
+        document.title = '仲良し *インスタンス* 2 — 情報ポータル';
+      };
       frame.addEventListener('load', () => {
         const innerDocument = frame.contentDocument;
         if (innerDocument) {
           innerDocument.head.appendChild(document.getElementById('cursorEffectsStyle').cloneNode(true));
           installCursorEffects(innerDocument);
         }
-        frame.hidden = false;
-        document.body.classList.add('instance-active');
-        document.title = '仲良し *インスタンス* 2 — 情報ポータル';
+        loaded = true; reveal();
       }, { once: true });
+      document.body.classList.add('welcome-fade');
+      setTimeout(() => { faded = true; reveal(); }, 900);
       frame.srcdoc = source.content.textContent;
     }
-
-    // 「welcome」の手書きアニメーション完了（約2.2秒）に合わせて「次へ」ボタンを表示
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        nextBtn.classList.add('visible');
-      }, 2200);
-    });
+    // 手書きアニメーションが本当に終わってから（最後の文字の animationend）少し余韻を置いて自動で消える
+    (function waitForWelcomeEnd() {
+      const spans = document.querySelectorAll('.glass-welcome span');
+      const last = spans[spans.length - 1];
+      let done = false;
+      const finish = () => { if (done) return; done = true; setTimeout(showInstance, 700); };
+      if (last) {
+        last.addEventListener('animationend', finish, { once: true });
+        // 万が一 animationend が発火しない環境向けの保険（最終ディレイ1.3s+0.4s+余韻）
+        setTimeout(finish, 3000);
+      } else {
+        setTimeout(showInstance, 2300);
+      }
+    })();
   </script>
   <template id="instanceSource">
 
@@ -1556,6 +1571,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;a href="javascript:void(0)" onclick="showPage('news')" class="nav-link" data-page="news"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M3 11a8 8 0 0 1 16 0v5l2 3H1l2-3v-5Z"/&gt;&lt;path d="M10 21h4"/&gt;&lt;/svg&gt;お知らせ&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('weather')" class="nav-link" data-page="weather"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="8.5" cy="8" r="3.2"/&gt;&lt;path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/&gt;&lt;/svg&gt;天気&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('quake')" class="nav-link" data-page="quake"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M2 12h3l2.5-6 3.5 13 3.5-10L17 12h5"/&gt;&lt;/svg&gt;地震速報&lt;/a&gt;
+      &lt;a href="javascript:void(0)" onclick="showPage('events')" class="nav-link" data-page="events"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7Z"/&gt;&lt;/svg&gt;イベント&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('links')" class="nav-link" data-page="links"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/&gt;&lt;path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/&gt;&lt;/svg&gt;リンク集&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('games')" class="nav-link" data-page="games"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2" y="7" width="20" height="11" rx="4"/&gt;&lt;path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/&gt;&lt;/svg&gt;ゲーム&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('tv')" class="nav-link" data-page="tv"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2.5" y="7" width="19" height="13" rx="2"/&gt;&lt;path d="m8 3 4 4 4-4"/&gt;&lt;/svg&gt;TV&lt;/a&gt;
@@ -1573,7 +1589,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
     &lt;!-- ホーム --&gt;
     &lt;section id="home-page" class="page active"&gt;
-      &lt;div class="ao-banner"&gt;&lt;div class="ao-banner-media"&gt;&lt;img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIADAAXAMBEQACEQEDEQH/xAAbAAACAgMBAAAAAAAAAAAAAAAABgUHAQMEAv/EADIQAAIBAwIEAwcCBwAAAAAAAAECAwAEEQUSBhMhMQcUQSJRU2FxkqGBwSMkMjNCcpH/xAAaAQEAAwEBAQAAAAAAAAAAAAAAAgMEAQUG/8QAMBEAAQMCAwYEBgMBAAAAAAAAAQACEQMhBBIxIkFRYXHwEzKh4RQzgZHB0SNi8QX/2gAMAwEAAhEDEQA/AKQoiKIp3RHneNY7fduyBgVoZncIYr6JpgbQ4e+8fn6Keaz1GzUS3FzHbRt2eWYAfmpGhixcuAHfJbhUwgHkPfOVst7nULoMtlfT3jIfaFshZV+r4x+akDXynbkqt1XDFwhpi/d/Za5tXvIZceaCOD1Bu4M/Q+3UX1MROy71CMq4UDbaZ7/t+luh4w1K0f8AhajJHknJO2RD+q7qF9QgS6/fBQL8M4mxAUjZ8f61FJHJLeySxr2dFUhuuevQfSueC4wTfvouOOHMw2OHc/7yU+niNcyHbFqCnJyN9ttYfnFd+GnRyohh3evsq88TtXk1riC3uZm3MtmkecAdmY/vVVWn4ZhVuEFKNVKKKIiiIoi6ba8ntv7EhTrnIqxlRzPKugkL1Lez3EoeZ2uHxheb7WPoKOqucZN0JJWbq5vVXys88gRR1iBwo+WBUS9xEEpK46iuLIOO1EW6G5libIYke7PSptqOauypmzkS6RcMFc9wfSt1NweFMXXFxAjR3sYdtx5QOf1NZ8UCHjoov1UZWZRRREURFEWQMnA70RNVlo9xo/D769cWziXcFh3dAASBk/mpuYWxKJWZizFmJLE5JPqagixREURe4ZDFKkgAJVgcH1roMFEwXlmNM1OO4jjK2k6Kc+gJGT+a3+H4Tw7cVMCDK5uLomh1GFW9bdSD7xubFQxwioOiVNVCViUEURFERRF0WSq1xHu6e0MVbSALrroVl63cT3nh95BtuVZJOY3TIBH7VvxGGe8AhdcDMqM4e8L7/VdAvtRv5JtImt9piF/By4ZFPrvJyMf6+7vnpBuFpgNY6S90+UgxwsNZ6hQkpDnj5M8kW9H2MV3ocq2D3HyrFVZ4byzguhSnC+gXXEWrQ2duGSIsOfcYG2BM9XYkgf8ASMnp3NXYbD+KSXeUep3Acz0Ma6Lkpj4o8NtR0XU4xZLcXWlvKkYvZITEFZjjBBOQPTPY1d8IKhBpfUSCR+/xvXRcwu3W7RpLaPSYU5twmCM+gFb6zJYKY1Wgi0Je8Qbd7XVLGGU5kWwjDEe/c1edj/mNHIKupqlisKrRREURFETTwtpXnIH3oQpIYPj5V6OEo52mVbTZITFo9rc215NFqd7LFp0cJZGjtWuC7bh7AUHoSM9T06V6VGm9s5rgc4+u/TgL3RwcFZPCt2IeHrSCzHlrK6ARDdDmTAMxVC5V48A+iruOD6CqsWGuruc+7m3tYWAJiQ643kxdUqsOLra41pPIaTwVHFNbXDKuoafA6rcICR/Sc9D0PUkiqce8bTTJmNYtodRHTggaUz+Eukyaba3Gna5ay2F5NdxzRGdjC5jCOGMbYyWHUHGCA3cdarouezDZm6CZtIvlid0dZuNF2ExcS3EWraTfJY3drAW1lPNMkDQuqAhBnI9uTJVsnHTHuGd+EaaVVoqAn+MxcHUTbgIkb1wGDIWjhryGmWO5LfnakxKTySDdsZSQwz9QajXw7i+xhmo4kHRaA0uVW+LRB4mgI7mzUn673ry8d8wdFCqIKSqxKtFEXvlS/Df7TREcqX4b/aaIre4TsVGiWbbSC1unb16V9HhgBSaeQW6mBlU15Jgrcs7SQR1rQ17WmVIwlaVeILLT4rgRk8hlQQRqrsFXABB7+npSvRY6nUybTzmOpAuTzAkA79bjgVldSIEqf4fHFFjZxvZ2yRSPl/4k3bJJ6g/XtWbFGm45TBsJ6wJ9VIDZgrTd6fxfq+o3E1/y4nAAWUuNrLkHYoB6A4GaspOw9NrROzGg43lx5iYb91DJJUTLBxbBI0PlpDCS2VV02NuOSc/M+tMjXN2QwutDszhoIGzB+wMLnhOTLoyzWlm7X4XzczmRgrZC5qWXZYwGcoAnor2NIEKtfE4PJxDEyqzfyq9hn/Jq8f8A6Xzh0/aqreZKXKl+G/2mvPVKOVL8N/tNEX//2Q==" alt="青鬼イベント"&gt;&lt;/div&gt;&lt;div class="ao-content"&gt;&lt;span class="tag"&gt;EVENT 開催中&lt;/span&gt;&lt;p class="ao-kicker"&gt;LIMITED HORROR MISSION&lt;/p&gt;&lt;h2&gt;👹 青鬼イベント&lt;/h2&gt;&lt;p&gt;恐怖の館を探索し、青鬼から逃げ切ろう。期間限定の脱出ミッションに今すぐ挑戦！&lt;/p&gt;&lt;ul class="ao-meta" aria-label="イベント情報"&gt;&lt;li&gt;無料で参加&lt;/li&gt;&lt;li&gt;ブラウザで遊べる&lt;/li&gt;&lt;li&gt;期間限定&lt;/li&gt;&lt;/ul&gt;&lt;a class="ao-btn" href="https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbyTGZlPFMZZGWT4E9t5ydlwjUUwChyLy7zeSK0P8TCvLfnhOSUzXdl8oo60kL-r4m3QOA/exec" target="_blank" rel="noopener"&gt;&lt;span&gt;イベントに参加&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;div id="eventBannerHome"&gt;&lt;/div&gt;
       &lt;div class="hero home-hero"&gt;
         &lt;div class="home-hero-inner"&gt;
           &lt;span class="tag"&gt;WELCOME&lt;/span&gt;
@@ -1704,6 +1720,18 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;/div&gt;
     &lt;/section&gt;
 
+    &lt;!-- イベント --&gt;
+    &lt;section id="events-page" class="page"&gt;
+      &lt;div class="section"&gt;
+        &lt;div class="section-head"&gt;&lt;h2&gt;🎯 開催中のイベント&lt;/h2&gt;&lt;/div&gt;
+        &lt;div class="section-body"&gt;&lt;div class="ev-list" id="eventsLive"&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="section"&gt;
+        &lt;div class="section-head"&gt;&lt;h2&gt;🗂 終了したイベント&lt;/h2&gt;&lt;/div&gt;
+        &lt;div class="section-body"&gt;&lt;div class="ev-list" id="eventsPast"&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
     &lt;!-- リンク集 --&gt;
     &lt;section id="links-page" class="page"&gt;
       &lt;div class="link-hub"&gt;
@@ -1721,6 +1749,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
             &lt;/label&gt;
             &lt;div class="link-result-count" id="linkResultCount" aria-live="polite"&gt;&lt;/div&gt;
           &lt;/div&gt;
+          &lt;div id="eventBannerLinks"&gt;&lt;/div&gt;
           &lt;div class="link-tag-bar" id="linkTagBar" aria-label="タグで絞り込む"&gt;&lt;/div&gt;
           &lt;div class="link-cats" id="linkCats"&gt;&lt;/div&gt;
         &lt;/div&gt;
@@ -3771,8 +3800,21 @@ const NEWS = [
   { date:"2026/04/13", cat:"お知らせ", title:'サイトを "Duckdns.org" のPageに移行しました！' },
 ];
 
+// イベント一覧（status:"live"=開催中 / "ended"=終了）上から新しい順
+const EVENTS = [
+  { name:"BuckShot", icon:"🔫", status:"live", kicker:"LIMITED SHOTGUN MISSION",
+    desc:"運命のショットガン・ルーレット。ディーラーとの心理戦を制して生き残ろう。期間限定イベントに今すぐ挑戦！",
+    meta:["無料で参加","ブラウザで遊べる","期間限定"],
+    img:"https://cdn.jsdelivr.net/gh/freebuisness/covers@main/205.png", url:"https://duckshot-nkys.f5.si/" },
+  { name:"青鬼イベント", icon:"👹", status:"ended", kicker:"LIMITED HORROR MISSION",
+    desc:"恐怖の館を探索し、青鬼から逃げ切ろう。期間限定の脱出ミッション。",
+    meta:["無料で参加","ブラウザで遊べる","終了"],
+    img:"data:image/jpeg;base64,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", url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbyTGZlPFMZZGWT4E9t5ydlwjUUwChyLy7zeSK0P8TCvLfnhOSUzXdl8oo60kL-r4m3QOA/exec" },
+];
+
 // リンク集（カテゴリごと）
 const LINK_CATEGORIES = [
+  { title:"イベント ゲーム(LINK)", items: EVENTS.map(e =&gt; ({ name:e.name+(e.status==='live'?' 【開催中】':' 【終了】'), tag:"EVENT", url:e.url })) },
   { title:"YouTubeサイトリンク集 🅝🅔🅦", items:[
     { name:"NKYS Tube Pro ㋔㋜㋜㋱", tag:"YouTube",     url:"https://xn--tubew-443d7a6ad4j3ic50brdt1f.plgsync.com/" },
     { name:"くかぁ ㋔㋜㋜㋱",         tag:"YouTube",     url:"https://xn--ww-563asauh1a9259de13d.plgsync.com/" },
@@ -4248,13 +4290,16 @@ window.TAG_ICONS = {
 var CG_ACTIVE_TAG = 'ALL';
 function renderGames(){
   const playSvg = '&lt;span class="play-badge" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M8 5v14l11-7z"/&gt;&lt;/svg&gt;&lt;/span&gt;';
+  const esc = s =&gt; String(s||'').replace(/'/g,"\\'");
   const cardHtml = (g, i) =&gt; `
-    &lt;div class="game-card" onclick="openGame('${g.url.replace(/'/g,"\\'")}','${g.name.replace(/'/g,"\\'")}')" role="button" tabindex="0" aria-label="${g.name}" data-tag="${g.tag||''}"&gt;
-      &lt;div class="thumb"&gt;
-        ${i &lt; 3 ? '&lt;span class="hot-tag"&gt;HOT&lt;/span&gt;' : ''}
-        &lt;img src="${g.img}" alt="${g.name}" loading="lazy"&gt;
-        ${playSvg}
-        &lt;div class="name"&gt;${g.name}&lt;/div&gt;
+    &lt;div class="game-card gc-wide" onclick="openGame('${esc(g.url)}','${esc(g.name)}')" role="button" tabindex="0" aria-label="${g.name}" data-tag="${g.tag||''}"&gt;
+      &lt;div class="gc-media"&gt;&lt;img src="${g.img}" alt="${g.name}" loading="lazy" decoding="async"&gt;&lt;/div&gt;
+      &lt;div class="gc-body"&gt;
+        ${i &lt; 3 ? '&lt;span class="gc-tag"&gt;HOT&lt;/span&gt;' : '&lt;span class="gc-tag gc-tag-plain"&gt;GAME&lt;/span&gt;'}
+        &lt;p class="gc-kicker"&gt;${safeText(g.tag||'GAMES').toUpperCase()}&lt;/p&gt;
+        &lt;h3 class="gc-title"&gt;${safeText(g.name)}&lt;/h3&gt;
+        &lt;ul class="gc-meta"&gt;&lt;li&gt;無料&lt;/li&gt;&lt;li&gt;ブラウザで遊べる&lt;/li&gt;&lt;/ul&gt;
+        &lt;span class="gc-btn"&gt;&lt;span&gt;プレイ&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/span&gt;
       &lt;/div&gt;
     &lt;/div&gt;`;
 
@@ -4298,6 +4343,26 @@ function renderGames(){
 function filterGamesByTag(tag){
   CG_ACTIVE_TAG = tag;
   renderGames();
+}
+
+// イベント描画
+function eventBannerHtml(e){
+  const live = e.status==='live';
+  return `&lt;div class="ao-banner${live?'':' ev-ended'}"&gt;&lt;div class="ao-banner-media"&gt;&lt;img src="${e.img}" alt="${safeText(e.name)}" loading="lazy" decoding="async"&gt;&lt;/div&gt;&lt;div class="ao-content"&gt;&lt;span class="tag"&gt;${live?'EVENT 開催中':'EVENT 終了'}&lt;/span&gt;&lt;p class="ao-kicker"&gt;${safeText(e.kicker)}&lt;/p&gt;&lt;h2&gt;${e.icon} ${safeText(e.name)}&lt;/h2&gt;&lt;p&gt;${safeText(e.desc)}&lt;/p&gt;&lt;ul class="ao-meta"&gt;${e.meta.map(m=&gt;`&lt;li&gt;${safeText(m)}&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;a class="ao-btn" href="${e.url}" target="_blank" rel="noopener"&gt;&lt;span&gt;${live?'イベントに参加':'もう一度遊ぶ'}&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;`;
+}
+function renderEvents(){
+  const live = EVENTS.filter(e=&gt;e.status==='live'), past = EVENTS.filter(e=&gt;e.status!=='live');
+  const more = `&lt;a class="more ev-more" href="javascript:void(0)" onclick="showPage('events')"&gt;終了したイベントも見る（${past.length}件） ›&lt;/a&gt;`;
+  const top = live[0] ? eventBannerHtml(live[0]) : '';
+  ['eventBannerHome','eventBannerLinks'].forEach(id=&gt;{ const el=document.getElementById(id); if(el) el.innerHTML = top + more; });
+  const l=document.getElementById('eventsLive'); if(l) l.innerHTML = live.map(eventBannerHtml).join('') || '&lt;div class="muted" style="padding:16px"&gt;現在開催中のイベントはありません&lt;/div&gt;';
+  const p=document.getElementById('eventsPast'); if(p) p.innerHTML = past.map(eventBannerHtml).join('') || '&lt;div class="muted" style="padding:16px"&gt;終了したイベントはまだありません&lt;/div&gt;';
+  const slot=document.getElementById('aoModalSlot');
+  if(slot &amp;&amp; live[0] &amp;&amp; !sessionStorage.getItem('ev_modal_seen')){
+    const e=live[0];
+    slot.innerHTML = `&lt;div class="ao-modal" id="aoModal" onclick="if(event.target===this)this.remove()"&gt;&lt;div class="ao-card"&gt;&lt;button class="ao-close" onclick="document.getElementById('aoModal').remove()" aria-label="閉じる"&gt;×&lt;/button&gt;&lt;span class="tag"&gt;EVENT 開催中&lt;/span&gt;&lt;p class="ao-kicker"&gt;${safeText(e.kicker)}&lt;/p&gt;&lt;h2&gt;${e.icon} ${safeText(e.name)}&lt;/h2&gt;&lt;img src="${e.img}" alt="${safeText(e.name)}" decoding="async"&gt;&lt;p&gt;${safeText(e.desc)}&lt;/p&gt;&lt;a class="ao-btn" href="${e.url}" target="_blank" rel="noopener"&gt;&lt;span&gt;イベントに参加&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;button class="ao-skip" onclick="document.getElementById('aoModal').remove()"&gt;あとで&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;`;
+    try{ sessionStorage.setItem('ev_modal_seen','1'); }catch(err){}
+  }
 }
 
 // ページ切替
@@ -5017,6 +5082,7 @@ renderNews();
 renderNotif();
 renderLinks();
 renderGames();
+renderEvents();
 renderTicker();
 showPage('home');
 applySavedSettings();
@@ -7300,7 +7366,31 @@ body.dark-mode .earthquake-monitor-map .leaflet-tile{filter:brightness(.74) satu
   &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div class="ao-modal" id="aoModal" onclick="if(event.target===this)this.remove()"&gt;&lt;div class="ao-card"&gt;&lt;button class="ao-close" onclick="document.getElementById('aoModal').remove()" aria-label="閉じる"&gt;×&lt;/button&gt;&lt;span class="tag"&gt;EVENT 開催中&lt;/span&gt;&lt;p class="ao-kicker"&gt;LIMITED HORROR MISSION&lt;/p&gt;&lt;h2&gt;👹 青鬼イベント&lt;/h2&gt;&lt;img src="data:image/jpeg;base64,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" alt="青鬼イベント"&gt;&lt;p&gt;恐怖の館から脱出せよ！青鬼に見つからないように、期間限定ミッションをクリアしよう。&lt;/p&gt;&lt;a class="ao-btn" href="https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbyTGZlPFMZZGWT4E9t5ydlwjUUwChyLy7zeSK0P8TCvLfnhOSUzXdl8oo60kL-r4m3QOA/exec" target="_blank" rel="noopener" onclick="document.getElementById('aoModal').remove()"&gt;&lt;span&gt;イベントに参加&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;button class="ao-skip" onclick="document.getElementById('aoModal').remove()"&gt;あとで見る&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div id="aoModalSlot"&gt;&lt;/div&gt;
+&lt;style id="event-and-game-cards"&gt;
+.ev-more{display:block;text-align:right;margin:-14px 2px 22px;font-size:.82rem}
+.ev-list .ao-banner{margin-bottom:16px}
+.ao-banner.ev-ended img{filter:grayscale(.75)}
+.ao-banner.ev-ended .tag{background:rgba(100,116,139,.2);color:#cbd5e1;border-color:rgba(148,163,184,.45)}
+.ao-banner.ev-ended .tag::before{background:#94a3b8;animation:none;box-shadow:none}
+.game-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr))!important;gap:16px!important}
+.game-grid .game-card.gc-wide{display:grid;grid-template-columns:42% 1fr;padding:0!important;overflow:hidden;border-radius:14px!important;cursor:pointer;color:#f8fafc;background:linear-gradient(115deg,#101b4b,#0b1430 60%,#0a3038);border:1px solid rgba(103,232,249,.3);height:170px;min-height:0;transform:none;transition:transform .18s ease,border-color .18s ease;contain:content}
+.game-grid .game-card.gc-wide:hover{transform:translateY(-3px);border-color:rgba(103,232,249,.6)}
+.gc-media{position:relative;overflow:hidden;background:#0b0f17}
+.gc-media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 45%,#101b4b 100%)}
+.gc-media img{width:100%;height:100%;object-fit:cover;display:block}
+.gc-body{padding:16px 16px 16px 12px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-width:0}
+.gc-tag{display:inline-flex;align-items:center;gap:6px;font-size:.62rem;font-weight:800;letter-spacing:.12em;background:rgba(225,29,72,.18);color:#fecdd3;border:1px solid rgba(251,113,133,.5);padding:3px 9px;border-radius:99px}
+.gc-tag::before{content:"";width:6px;height:6px;border-radius:50%;background:#fb7185}
+.gc-tag-plain{background:rgba(34,211,238,.12);color:#a5f3fc;border-color:rgba(103,232,249,.4)}
+.gc-tag-plain::before{background:#22d3ee}
+.gc-kicker{margin:7px 0 2px;color:#67e8f9;font-size:.64rem;font-weight:800;letter-spacing:.14em}
+.gc-title{margin:0 0 8px;font-size:1.08rem;line-height:1.35;color:#f8fafc;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gc-meta{display:flex;gap:5px;flex-wrap:wrap;margin:0 0 11px;padding:0;list-style:none}
+.gc-meta li{padding:3px 7px;border:1px solid rgba(148,163,184,.24);border-radius:6px;background:rgba(15,23,42,.48);color:#dbeafe;font-size:.64rem;font-weight:700}
+.gc-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(90deg,#22d3ee,#34d399);color:#06232b;font-weight:900;font-size:.8rem;padding:7px 14px;border-radius:8px}
+@media(max-width:420px){.game-grid .game-card.gc-wide{grid-template-columns:38% 1fr;height:150px}.gc-title{font-size:.95rem}}
+&lt;/style&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
