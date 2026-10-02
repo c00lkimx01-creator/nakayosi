@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -224,42 +225,6 @@
     body.instance-active #particleCanvas,
     body.instance-active .welcome-container { display: none; }
   </style>
-  <style id="cursorEffectsStyle">
-    .cursor-halo, .cursor-spark {
-      position: fixed;
-      pointer-events: none;
-      z-index: 2147483647;
-      border-radius: 50%;
-    }
-    .cursor-halo {
-      width: 32px;
-      height: 32px;
-      left: 0;
-      top: 0;
-      border: 1px solid var(--primary, var(--btn-primary-bg));
-      background: color-mix(in oklab, var(--primary, var(--btn-primary-bg)) 10%, transparent);
-      box-shadow: 0 0 18px color-mix(in oklab, var(--primary, var(--btn-primary-bg)) 30%, transparent);
-      transform: translate(-50%, -50%) scale(.7);
-      opacity: 0;
-      transition: left .12s ease-out, top .12s ease-out, opacity .18s, transform .18s;
-    }
-    .cursor-halo.is-visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    .cursor-halo.is-interactive { transform: translate(-50%, -50%) scale(1.35); }
-    .cursor-spark {
-      width: 4px;
-      height: 4px;
-      background: var(--primary, var(--btn-primary-bg));
-      box-shadow: 0 0 8px var(--primary, var(--btn-primary-bg));
-      animation: cursorSpark .6s ease-out forwards;
-    }
-    @keyframes cursorSpark {
-      from { opacity: .7; transform: translate(-50%, -50%) scale(1); }
-      to { opacity: 0; transform: translate(-50%, -130%) scale(.2); }
-    }
-    @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
-      .cursor-halo, .cursor-spark { display: none; }
-    }
-  </style>
 </head>
 <body>
 
@@ -328,34 +293,6 @@
     let particleRaf = 0;
     animateParticles();
 
-    // 軽量なカーソルの光と短い軌跡。ポータルの srcdoc にも同じ演出を適用する。
-    function installCursorEffects(doc) {
-      if (!doc || !window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) return;
-      const halo = doc.createElement('div');
-      halo.className = 'cursor-halo';
-      halo.setAttribute('aria-hidden', 'true');
-      doc.body.appendChild(halo);
-      let lastSpark = 0;
-      doc.addEventListener('pointermove', (event) => {
-        if (event.pointerType !== 'mouse') return;
-        halo.style.left = event.clientX + 'px';
-        halo.style.top = event.clientY + 'px';
-        halo.classList.add('is-visible');
-        halo.classList.toggle('is-interactive', !!event.target.closest('a, button, input, select, textarea, [role="button"]'));
-        const now = performance.now();
-        if (now - lastSpark < 55) return;
-        lastSpark = now;
-        const spark = doc.createElement('span');
-        spark.className = 'cursor-spark';
-        spark.setAttribute('aria-hidden', 'true');
-        spark.style.left = event.clientX + 'px';
-        spark.style.top = event.clientY + 'px';
-        doc.body.appendChild(spark);
-        spark.addEventListener('animationend', () => spark.remove(), { once: true });
-      }, { passive: true });
-      doc.addEventListener('pointerleave', () => halo.classList.remove('is-visible'));
-    }
-    installCursorEffects(document);
 
     // ==========================================================
     // 2. アニメーション完了後のボタン表示制御
@@ -377,10 +314,6 @@
       };
       frame.addEventListener('load', () => {
         const innerDocument = frame.contentDocument;
-        if (innerDocument) {
-          innerDocument.head.appendChild(document.getElementById('cursorEffectsStyle').cloneNode(true));
-          installCursorEffects(innerDocument);
-        }
         loaded = true; reveal();
       }, { once: true });
       document.body.classList.add('welcome-fade');
