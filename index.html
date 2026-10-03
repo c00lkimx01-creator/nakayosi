@@ -7044,7 +7044,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
     document.body.classList.toggle('dark-mode',theme==='dark');
     document.body.dataset.theme=theme;
     let glass2Background=document.querySelector('.glass2-background');
-    if(theme==='glass2'&&!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';glass2Background.src='/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif';document.body.prepend(glass2Background)}
+    if(theme==='glass2'&&!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';var g2src=['https://id-preview--e6de3a45-d60d-46b1-a964-c76c73131600.lovable.app/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif','https://www.benib.jp/images/til-2022-09-09-yuyake.gif'],g2i=0;glass2Background.onerror=function(){g2i++;if(g2src[g2i])this.src=g2src[g2i]};glass2Background.src=g2src[0];document.body.prepend(glass2Background)}
     const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':theme);
     const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(theme)+1)%ORDER.length];btn.title=`表示: ${label(theme)}（次: ${label(next)}）`;btn.setAttribute('aria-label',btn.title)}
     document.querySelectorAll('#smTheme button[data-theme]').forEach(b=&gt;b.classList.toggle('active',b.dataset.theme===theme));
