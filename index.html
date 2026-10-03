@@ -6951,6 +6951,21 @@ body.glass-mode{
   background-image:linear-gradient(rgba(2,17,28,.30),rgba(2,17,28,.42)),url("https://www.videosoftdev.com/images/video_editor/how-to/raindrops/raindrops-effect.gif")!important;
   background-size:cover!important;background-position:center!important;background-attachment:fixed!important;background-repeat:no-repeat!important;
 }
+/* Glass 2 keeps the same translucent surfaces with a locally hosted, optimized sunset animation. */
+body.glass-mode-2{
+  --bg:rgba(35,18,31,.22);--surface:rgba(40,24,39,.55);--surface-2:rgba(60,35,49,.46);
+  --text:#fff7f2;--text-muted:#e4c9c1;--border:rgba(255,226,207,.28);
+  --primary:#ffbd7a;--primary-hover:#ffd5a7;--accent:#ff8b9d;
+  --header-bg:rgba(44,25,39,.48);--topbar-bg:rgba(34,17,31,.64);--topbar-text:#fff8f3;
+  --tag-bg:rgba(255,186,120,.17);
+  background-image:linear-gradient(rgba(34,13,28,.18),rgba(38,14,28,.34))!important;
+  isolation:isolate;
+}
+.glass2-background{position:fixed;inset:0;z-index:-1;width:100%;height:100%;object-fit:cover;object-position:center;display:none;pointer-events:none}
+body.glass-mode-2 .glass2-background{display:block}
+body.glass-mode-2 .ticker{background:rgba(36,16,31,.68)}
+body.glass-mode-2 .theme-toggle-btn::before{content:"▣"}
+
 body.glass-mode .site-header,body.glass-mode .gnav,body.glass-mode .section,body.glass-mode .hero,body.glass-mode .link-cat,body.glass-mode .game-card,body.glass-mode .news-card,body.glass-mode .notif-panel,body.glass-mode .settings-menu{
   background:var(--surface);backdrop-filter:blur(18px) saturate(135%);border-color:var(--border);
   box-shadow:0 16px 38px -26px rgba(0,0,0,.72),inset 0 1px rgba(255,255,255,.12);
@@ -7018,16 +7033,20 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
 &lt;/style&gt;
 &lt;script id="glass-theme-mobile-menu-fix-script"&gt;
 (function(){
-  const ORDER=['glass','dark','light'];
+  const ORDER=['glass','glass2','dark','light'];
   const KEY='nakayosi_theme_v2';
-  function current(){return document.body.classList.contains('glass-mode')?'glass':document.body.classList.contains('dark-mode')?'dark':'light'}
+  const label=theme=>theme==='glass'?'グラス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':'ライト';
+  function current(){return document.body.classList.contains('glass-mode-2')?'glass2':document.body.classList.contains('glass-mode')?'glass':document.body.classList.contains('dark-mode')?'dark':'light'}
   function apply(theme,save){
     if(!ORDER.includes(theme))theme='glass';
-    document.body.classList.toggle('glass-mode',theme==='glass');
+    document.body.classList.toggle('glass-mode',theme==='glass'||theme==='glass2');
+    document.body.classList.toggle('glass-mode-2',theme==='glass2');
     document.body.classList.toggle('dark-mode',theme==='dark');
     document.body.dataset.theme=theme;
-    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme);
-    const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(theme)+1)%ORDER.length];btn.title=`表示: ${theme==='glass'?'グラス':theme==='dark'?'ダーク':'ライト'}（次: ${next==='glass'?'グラス':next==='dark'?'ダーク':'ライト'}）`;btn.setAttribute('aria-label',btn.title)}
+    let glass2Background=document.querySelector('.glass2-background');
+    if(theme==='glass2'&&!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';glass2Background.src='/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif';document.body.prepend(glass2Background)}
+    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':theme);
+    const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(theme)+1)%ORDER.length];btn.title=`表示: ${label(theme)}（次: ${label(next)}）`;btn.setAttribute('aria-label',btn.title)}
     document.querySelectorAll('#smTheme button[data-theme]').forEach(b=&gt;b.classList.toggle('active',b.dataset.theme===theme));
     if(save){try{localStorage.setItem(KEY,theme);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',theme==='dark'?'dark':'light')}catch(_){}}
   }
@@ -7042,7 +7061,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
       document.addEventListener('keydown',e=&gt;{if(e.key==='Escape'&amp;&amp;nav.classList.contains('open')){close();menu.focus()}});
       window.addEventListener('resize',()=&gt;{if(innerWidth&gt;1024)close()},{passive:true});
     }
-    const sm=document.getElementById('smTheme');if(sm&amp;&amp;!sm.querySelector('[data-theme="glass"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass';b.textContent='グラス';sm.prepend(b)}
+    const sm=document.getElementById('smTheme');if(sm){if(!sm.querySelector('[data-theme="glass"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass';b.textContent='グラス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="glass"]');glass?glass.after(b):sm.prepend(b)}}
     if(sm)sm.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-theme]');if(b){e.stopImmediatePropagation();apply(b.dataset.theme,true)}},true);
     const header=document.querySelector('#search-app .search-header');
     if(header&amp;&amp;!header.querySelector('.nkys-quick-actions')){const actions=document.createElement('div');actions.className='nkys-quick-actions';actions.setAttribute('aria-label','クイックアクセス');actions.innerHTML='&lt;button type="button" class="nkys-quick-action" data-action="web" title="Web検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-web"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;Web検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="news" title="ニュース検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-news"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;ニュース検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="images" title="画像検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-image"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;画像検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="videos" title="動画検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-video"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;動画検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="settings" title="検索設定"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-settings"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;検索設定&lt;/span&gt;&lt;/button&gt;';actions.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-action]');if(!b)return;if(b.dataset.action==='settings'){if(typeof window.openSettings==='function')window.openSettings();return}const input=document.getElementById('sxSearchInput');if(input)input.focus();const tab=document.querySelector(`#search-app .tab[data-cat="${b.dataset.action}"]`);if(tab&amp;&amp;document.getElementById('mainContainer')?.classList.contains('results-mode'))tab.click()});header.appendChild(actions)}
