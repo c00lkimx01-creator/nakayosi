@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Welcome - 仲良しIN</title>
-  
+
   <!-- 手書き風フォント（Caveat）の読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -175,7 +176,7 @@
       box-shadow: 0 8px 24px var(--glow-color);
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
                   transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
                   background-color 0.25s ease,
                   box-shadow 0.25s ease;
@@ -238,7 +239,6 @@
       <span>w</span><span>e</span><span>l</span><span>c</span><span>o</span><span>m</span><span>e</span>
     </div>
 
-
   </main>
 
   <iframe id="instanceFrame" title="仲良しインスタンス2 — 情報ポータル" hidden></iframe>
@@ -290,7 +290,6 @@
     let particleRaf = 0;
     animateParticles();
 
-
     // ==========================================================
     // 2. アニメーション完了後のボタン表示制御
     // ==========================================================
@@ -333,7 +332,6 @@
     })();
   </script>
   <template id="instanceSource">
-
 
 &lt;!DOCTYPE html&gt;
 &lt;html lang="ja"&gt;
@@ -450,7 +448,6 @@ body.dark-mode .pixel-clock{background:#0a1220}
 }
 .ticker-item{display:inline-flex;align-items:center;gap:6px}
 body.dark-mode .ticker{background:#05070a;border-color:#2a2f37}
-
 
 :root{
   --bg:#f5f6f8;
@@ -920,7 +917,6 @@ body.gaming main,body.gaming footer,body.gaming .site-header{content-visibility:
 .news-card .nc-desc{font-size:.8rem;color:var(--text-muted);margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .news-card .nc-date{font-size:.72rem;color:var(--text-muted);margin-top:auto;font-variant-numeric:tabular-nums}
 
-
 /* ───── 天気ページ ───── */
 .wx-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
 .wx-loc{font-weight:700;font-size:1.15rem}
@@ -985,7 +981,6 @@ body.gaming main,body.gaming footer,body.gaming .site-header{content-visibility:
 .live-badge{display:inline-flex;align-items:center;gap:5px;background:#dc2626;color:#fff;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:4px;margin-left:8px;vertical-align:middle}
 .live-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:#fff;animation:livepulse 1.2s ease-in-out infinite}
 @keyframes livepulse{0%,100%{opacity:1}50%{opacity:.35}}
-
 
 .theme-toggle-btn{display:inline-flex;align-items:center;justify-content:center;gap:0;color:var(--text)}
 .theme-toggle-btn .theme-icon{display:none;width:20px;height:20px}
@@ -1052,7 +1047,6 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
 .cg-chip:hover{border-color:var(--primary);color:var(--primary)}
 .cg-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 .cg-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
-
 
 /* ───── リンク集 2026 リデザイン ───── */
 #links-page .link-hub{display:block;width:100%}
@@ -1353,9 +1347,15 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 .external-map{display:block;width:100%;height:380px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}
 @media(max-width:600px){.external-map{height:320px}}
 &lt;/style&gt;
+&lt;style&gt;
+/* Calendar */
+.calendar-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,.8fr);gap:20px;align-items:start}
+.calendar-main{padding:18px}.calendar-toolbar{display:grid;grid-template-columns:42px 1fr 42px auto;gap:8px;align-items:center;margin-bottom:16px}.calendar-toolbar h2{margin:0;text-align:center;font-size:1.25rem}.calendar-toolbar button,.calendar-form button{min-height:42px;border:1px solid var(--border);border-radius:9px;background:var(--surface-2);color:var(--text);font:inherit;font-weight:700;cursor:pointer}.calendar-toolbar .calendar-today,.calendar-form button{padding:0 16px;background:var(--primary);color:#fff;border-color:var(--primary)}
+.calendar-week,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.calendar-week span{text-align:center;padding:7px;color:var(--text-muted);font-size:.78rem;font-weight:700}.calendar-week span:first-child{color:#ef4444}.calendar-week span:last-child{color:#3b82f6}.calendar-day{position:relative;min-height:82px;padding:8px;border:1px solid var(--border);margin:-1px 0 0 -1px;background:var(--surface);color:var(--text);font:inherit;text-align:left;cursor:pointer}.calendar-day:hover{z-index:1;border-color:var(--primary)}.calendar-day.outside{color:var(--text-muted);background:var(--surface-2)}.calendar-day.selected{z-index:2;box-shadow:inset 0 0 0 2px var(--primary)}.calendar-day.today .calendar-num{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--primary);color:#fff}.calendar-num{font-weight:700}.calendar-marks{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:4px}.calendar-mark{width:7px;height:7px;border-radius:50%;background:var(--primary)}.calendar-mark.news{background:#f59e0b}.calendar-form{display:flex;gap:8px}.calendar-form input{min-width:0;flex:1;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text)}.calendar-items{display:grid;gap:8px;margin-top:14px}.calendar-item{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--surface-2)}.calendar-item.news{border-left:4px solid #f59e0b}.calendar-item button{border:0;background:transparent;color:var(--text-muted);font-size:1.1rem;cursor:pointer}.calendar-empty{padding:20px 4px;color:var(--text-muted);text-align:center}
+@media(max-width:760px){.calendar-layout{grid-template-columns:1fr}.calendar-main{padding:10px}.calendar-toolbar{grid-template-columns:40px 1fr 40px}.calendar-toolbar .calendar-today{grid-column:1/-1}.calendar-day{min-height:62px;padding:6px}.calendar-marks{left:6px;bottom:6px}}
+&lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-
 
 &lt;!-- ───── 速報／ニュースティッカー ───── --&gt;
 &lt;div class="ticker" id="ticker"&gt;
@@ -1370,13 +1370,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 &lt;div class="topbar"&gt;
   &lt;div class="topbar-inner"&gt;
     &lt;div class="crumbs"&gt;&lt;span&gt;運営：&lt;/span&gt;2a_exe　&lt;span&gt;｜&lt;/span&gt;　&lt;span&gt;更新：&lt;/span&gt;&lt;span id="today"&gt;&lt;/span&gt;&lt;/div&gt;
-    &lt;div&gt;　|　
-      &lt;a href="https://sites.google.com/view/nakayosi-instance/" target="_blank"&gt;公式サイト&lt;/a&gt;　|　
+    &lt;div&gt;　|
+      &lt;a href="https://sites.google.com/view/nakayosi-instance/" target="_blank"&gt;公式サイト&lt;/a&gt;　|
       &lt;a href="javascript:void(0)" onclick="toggleTheme()"&gt;🌓 表示切替&lt;/a&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
-
 
 &lt;!-- ───── サイトヘッダー ───── --&gt;
 &lt;header class="site-header"&gt;
@@ -1417,6 +1416,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;a href="javascript:void(0)" onclick="showPage('news')" class="nav-link" data-page="news"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M3 11a8 8 0 0 1 16 0v5l2 3H1l2-3v-5Z"/&gt;&lt;path d="M10 21h4"/&gt;&lt;/svg&gt;お知らせ&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('weather')" class="nav-link" data-page="weather"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="8.5" cy="8" r="3.2"/&gt;&lt;path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/&gt;&lt;/svg&gt;天気&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('events')" class="nav-link" data-page="events"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7Z"/&gt;&lt;/svg&gt;イベント&lt;/a&gt;
+      &lt;a href="javascript:void(0)" onclick="showPage('calendar')" class="nav-link" data-page="calendar"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="3" y="5" width="18" height="16" rx="2"/&gt;&lt;path d="M16 3v4M8 3v4M3 10h18"/&gt;&lt;/svg&gt;カレンダー&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('links')" class="nav-link" data-page="links"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/&gt;&lt;path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/&gt;&lt;/svg&gt;リンク集&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('games')" class="nav-link" data-page="games"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2" y="7" width="20" height="11" rx="4"/&gt;&lt;path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/&gt;&lt;/svg&gt;ゲーム&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('tv')" class="nav-link" data-page="tv"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2.5" y="7" width="19" height="13" rx="2"/&gt;&lt;path d="m8 3 4 4 4-4"/&gt;&lt;/svg&gt;TV&lt;/a&gt;
@@ -1455,6 +1455,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;div class="home-quick"&gt;
             &lt;a href="javascript:void(0)" onclick="showPage('news')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M3 11a8 8 0 0 1 16 0v5l2 3H1l2-3v-5Z"/&gt;&lt;path d="M10 21h4"/&gt;&lt;/svg&gt;お知らせ&lt;/a&gt;
             &lt;a href="javascript:void(0)" onclick="showPage('weather')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="8.5" cy="8" r="3.2"/&gt;&lt;path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/&gt;&lt;/svg&gt;天気&lt;/a&gt;
+            &lt;a href="javascript:void(0)" onclick="showPage('calendar')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="3" y="5" width="18" height="16" rx="2"/&gt;&lt;path d="M16 3v4M8 3v4M3 10h18"/&gt;&lt;/svg&gt;カレンダー&lt;/a&gt;
             &lt;a href="javascript:void(0)" onclick="showPage('tv')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2.5" y="7" width="19" height="13" rx="2"/&gt;&lt;path d="m8 3 4 4 4-4"/&gt;&lt;/svg&gt;TV&lt;/a&gt;
             &lt;a href="javascript:void(0)" onclick="showPage('links')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/&gt;&lt;path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/&gt;&lt;/svg&gt;リンク集&lt;/a&gt;
             &lt;a href="javascript:void(0)" onclick="showPage('search')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="11" cy="11" r="7"/&gt;&lt;path d="m20 20-3.8-3.8"/&gt;&lt;/svg&gt;検索&lt;/a&gt;
@@ -1570,6 +1571,32 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;/div&gt;
     &lt;/section&gt;
 
+    &lt;!-- カレンダー --&gt;
+    &lt;section id="calendar-page" class="page"&gt;
+      &lt;div class="calendar-layout"&gt;
+        &lt;div class="section calendar-main"&gt;
+          &lt;div class="calendar-toolbar"&gt;
+            &lt;button type="button" onclick="moveCalendar(-1)" aria-label="前の月"&gt;‹&lt;/button&gt;
+            &lt;h2 id="calendarTitle"&gt;&lt;/h2&gt;
+            &lt;button type="button" onclick="moveCalendar(1)" aria-label="次の月"&gt;›&lt;/button&gt;
+            &lt;button type="button" class="calendar-today" onclick="calendarToday()"&gt;今日&lt;/button&gt;
+          &lt;/div&gt;
+          &lt;div class="calendar-week" aria-hidden="true"&gt;&lt;span&gt;日&lt;/span&gt;&lt;span&gt;月&lt;/span&gt;&lt;span&gt;火&lt;/span&gt;&lt;span&gt;水&lt;/span&gt;&lt;span&gt;木&lt;/span&gt;&lt;span&gt;金&lt;/span&gt;&lt;span&gt;土&lt;/span&gt;&lt;/div&gt;
+          &lt;div class="calendar-grid" id="calendarGrid"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="section calendar-agenda"&gt;
+          &lt;div class="section-head"&gt;&lt;h2 id="calendarSelectedTitle"&gt;予定&lt;/h2&gt;&lt;/div&gt;
+          &lt;div class="section-body"&gt;
+            &lt;form class="calendar-form" onsubmit="addCalendarMemo(event)"&gt;
+              &lt;input id="calendarMemo" maxlength="80" autocomplete="off" placeholder="予定を入力" aria-label="予定を入力"&gt;
+              &lt;button type="submit"&gt;追加&lt;/button&gt;
+            &lt;/form&gt;
+            &lt;div class="calendar-items" id="calendarItems" aria-live="polite"&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+
     &lt;!-- リンク集 --&gt;
     &lt;section id="links-page" class="page"&gt;
       &lt;div class="link-hub"&gt;
@@ -1638,7 +1665,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/section&gt;
-
 
     &lt;!-- 📺 TV（世界のニュースチャンネル） --&gt;
     &lt;section id="tv-page" class="page"&gt;
@@ -2294,10 +2320,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
             max-height: 85vh;
             overflow-y: auto;
         }#search-app .modal-header{ display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: bold; margin-bottom: 15px; }#search-app .close-modal{ background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 4px; }#search-app .close-modal:hover{ color: var(--text-color); }#search-app .setting-group{ margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px; }#search-app .setting-group label{ font-size: 13px; color: var(--text-muted); }#search-app .setting-input{ padding: 8px 12px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 6px; font-size: 14px; width: 100%; }#search-app .setting-section-title{ font-size: 14px; font-weight: bold; color: var(--accent-blue); margin: 15px 0 8px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }#search-app .save-btn{ background: var(--accent-blue); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 14px; font-weight: bold; margin-top: 10px; }
-    
+
         &lt;/style&gt;
         &lt;div id="search-app"&gt;
-
 
     &lt;!-- 統合SVG定義マップ --&gt;
     &lt;svg style="display:none;"&gt;
@@ -2333,7 +2358,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
                 &lt;div class="logo"&gt;NKYSɪɴ&lt;/div&gt;
                 &lt;span class="privacy-badge"&gt;プライバシー重視&lt;/span&gt;
             &lt;/div&gt;
-            
+
             &lt;div class="search-box-container"&gt;
                 &lt;form class="search-box" id="searchForm" onsubmit="handleSearch(event)"&gt;
                     &lt;span class="search-icon-wrap"&gt;&lt;svg class="svg-icon"&gt;&lt;use href="#icon-search"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/span&gt;
@@ -2412,7 +2437,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     &lt;div class="modal" id="settingsModal"&gt;
         &lt;div class="modal-content"&gt;
             &lt;div class="modal-header"&gt;&lt;span&gt;詳細設定&lt;/span&gt;&lt;button class="close-modal" onclick="closeSettings()"&gt;&lt;svg class="svg-icon"&gt;&lt;use href="#icon-close"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/button&gt;&lt;/div&gt;
-            
+
             &lt;div class="setting-section-title"&gt;基本設定&lt;/div&gt;
             &lt;div class="setting-group"&gt;
                 &lt;label&gt;テーマ設定:&lt;/label&gt;
@@ -2455,7 +2480,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
         &lt;/div&gt;
     &lt;/div&gt;
 
-    
         &lt;/div&gt;
         &lt;script&gt;
 (function(){
@@ -2652,7 +2676,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
             document.getElementById('autocompleteDropdown').style.display = 'none';
             document.getElementById('mainContainer').classList.add('results-mode');
-            
+
             showGhostScreen(currentCategory);
             executeSearch();
 
@@ -2684,7 +2708,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
         async function executeSearch(isNextPage = false) {
             const cacheKey = `${currentCategory}:${currentQuery}:${currentPage}`;
-            
+
             if (searchCache.has(cacheKey)) {
                 const cachedData = searchCache.get(cacheKey);
                 renderResults(deduplicateResults(cachedData), isNextPage, currentCategory);
@@ -2984,7 +3008,7 @@ async function fetchWikipediaImageFallback(query) {
                 const res = await fetch(`${omadaApi}/api/v1/search?q=${encodeURIComponent(query + ' #shorts')}&amp;type=video`);
                 if (!res.ok) return;
                 const data = await res.json();
-                
+
                 const shorts = (Array.isArray(data) ? data : []).filter(v =&gt; {
                     const duration = v.lengthSeconds || 0;
                     const isShortTitle = v.title ? v.title.toLowerCase().includes('#shorts') || v.title.toLowerCase().includes('short') : false;
@@ -3022,9 +3046,9 @@ async function fetchWikipediaImageFallback(query) {
 
         function renderNocookieEmbed(container, videoId) {
             container.innerHTML = `
-                &lt;iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1" 
-                    style="width:100%; height:220px; border:none; border-radius:8px; background:#000;" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                &lt;iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1"
+                    style="width:100%; height:220px; border:none; border-radius:8px; background:#000;"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen&gt;
                 &lt;/iframe&gt;
             `;
@@ -3037,7 +3061,7 @@ async function fetchWikipediaImageFallback(query) {
                 if (!res.ok) throw new Error();
                 const data = await res.json();
                 const comments = data.comments || [];
-                
+
                 if (comments.length === 0) {
                     targetContainer.innerHTML = `&lt;div style="color:var(--text-muted); font-size:12px;"&gt;コメントはありません&lt;/div&gt;`;
                     return;
@@ -3155,7 +3179,7 @@ async function fetchITunesMusicAPI(query) {
 
             const relatedContainer = document.getElementById('viewerRelatedGrid');
             relatedContainer.innerHTML = '';
-            
+
             const relatedImages = currentImagesData.filter((_, i) =&gt; i !== index).slice(0, 8);
             let relatedHtml = '';
             relatedImages.forEach((relItem) =&gt; {
@@ -3247,9 +3271,9 @@ async function fetchITunesMusicAPI(query) {
                     const card = document.createElement('div');
                     card.className = 'video-card';
                     card.onclick = () =&gt; openVideoDetails(item.videoId);
-                    
-                    const badgeHtml = item.isLive 
-                        ? `&lt;div class="live-badge"&gt;&lt;span class="live-dot"&gt;&lt;/span&gt; ライブ&lt;/div&gt;` 
+
+                    const badgeHtml = item.isLive
+                        ? `&lt;div class="live-badge"&gt;&lt;span class="live-dot"&gt;&lt;/span&gt; ライブ&lt;/div&gt;`
                         : '';
 
                     card.innerHTML = `
@@ -3331,7 +3355,7 @@ async function fetchITunesMusicAPI(query) {
                 executeSearch(true);
             }
         }
-    
+
 window.changeCategory = changeCategory;
 window.clearSearch = clearSearch;
 window.closeAbout = closeAbout;
@@ -3452,7 +3476,6 @@ window.sxSaveSettings = sxSaveSettings;
             &lt;div id="bg-image-preview" style="margin-top:10px"&gt;&lt;/div&gt;
           &lt;/div&gt;
 
-
           &lt;div class="setting-row"&gt;
             &lt;label&gt;📍 天気の地域（都道府県）&lt;/label&gt;
             &lt;div class="desc"&gt;天気予報に使用する地域を選択します。Yahoo!天気リンクにも反映されます。&lt;/div&gt;
@@ -3500,7 +3523,6 @@ window.sxSaveSettings = sxSaveSettings;
       &lt;/div&gt;
     &lt;/div&gt;
 
-    
 
     &lt;div class="widget"&gt;
       &lt;div class="widget-head"&gt;📅 最近の更新&lt;/div&gt;
@@ -3724,7 +3746,6 @@ function renderTicker(){
 }
 
 
-
 // タイムアウト付きfetch（応答のない経路でいつまでも待たされないようにする）
 async function fetchTimeout(url, ms, opts){
   const ctrl = new AbortController();
@@ -3834,7 +3855,6 @@ document.addEventListener('click', (e)=&gt;{
   if(wrap &amp;&amp; !wrap.contains(e.target)) closeNotif();
 });
 
-
 // リンク描画
 var ACTIVE_LINK_TAG = 'ALL';
 var LINK_QUERY = '';
@@ -3903,7 +3923,7 @@ window.TAG_ICONS = {
   'Clicker': '&lt;svg class="category-icon" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M8 4v8l2-2V5a1 1 0 0 1 2 0v5l1-1a1 1 0 0 1 2 1v1l1-1a1 1 0 0 1 2 1v4c0 4-2 6-6 6h-1c-3 0-5-2-5-5V9a1 1 0 0 1 2 0Z"/&gt;&lt;/svg&gt;'
 };
 var CG_ACTIVE_TAG = 'ALL';
-function renderGames(){
+function renderGames(homeOnly){
   const playSvg = '&lt;span class="play-badge" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M8 5v14l11-7z"/&gt;&lt;/svg&gt;&lt;/span&gt;';
   const esc = s =&gt; String(s||'').replace(/'/g,"\\'");
   const cardHtml = (g, i) =&gt; `
@@ -3921,6 +3941,8 @@ function renderGames(){
   // Home grid: top 8 with HOT badges
   const homeEl = document.getElementById('gameGridHome');
   if(homeEl) homeEl.innerHTML = GAMES.slice(0,8).map((g,i)=&gt;cardHtml(g,i)).join('');
+
+  if(homeOnly){ const stat=document.getElementById('gameStat');if(stat) stat.textContent=GAMES.length;return; }
 
   // Tag chips
   const tags = ['ALL', ...Array.from(new Set(GAMES.map(g =&gt; g.tag).filter(Boolean)))];
@@ -3980,8 +4002,34 @@ function renderEvents(){
   }
 }
 
+// カレンダー
+const CALENDAR_KEY='nakayosi_calendar_v1';
+let calendarCursor=new Date(),calendarSelected=new Date();
+function calendarKey(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
+function loadCalendarMemos(){try{return JSON.parse(localStorage.getItem(CALENDAR_KEY)||'{}')||{}}catch(e){return {}}}
+function renderCalendar(){
+  const grid=document.getElementById('calendarGrid');if(!grid)return;
+  const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),today=calendarKey(new Date()),selected=calendarKey(calendarSelected),memos=loadCalendarMemos();
+  document.getElementById('calendarTitle').textContent=y+'年 '+(m+1)+'月';
+  grid.innerHTML=Array.from({length:42},(_,i)=>{const d=new Date(start);d.setDate(start.getDate()+i);const key=calendarKey(d),news=NEWS.some(n=>n.date.replaceAll('/','-')===key);return `&lt;button type="button" class="calendar-day${d.getMonth()!==m?' outside':''}${key===today?' today':''}${key===selected?' selected':''}" onclick="selectCalendarDate('${key}')" aria-label="${d.getMonth()+1}月${d.getDate()}日"&gt;&lt;span class="calendar-num"&gt;${d.getDate()}&lt;/span&gt;&lt;span class="calendar-marks"&gt;${news?'&lt;i class="calendar-mark news" title="お知らせ"&gt;&lt;/i&gt;':''}${memos[key]?.length?'&lt;i class="calendar-mark" title="予定"&gt;&lt;/i&gt;':''}&lt;/span&gt;&lt;/button&gt;`}).join('');
+  renderCalendarItems();
+}
+function renderCalendarItems(){
+  const key=calendarKey(calendarSelected),items=loadCalendarMemos()[key]||[],news=NEWS.filter(n=>n.date.replaceAll('/','-')===key),d=calendarSelected;
+  document.getElementById('calendarSelectedTitle').textContent=`${d.getMonth()+1}月${d.getDate()}日の予定`;
+  document.getElementById('calendarItems').innerHTML=[...news.map(n=>`&lt;div class="calendar-item news"&gt;&lt;span&gt;📢 ${safeText(n.title)}&lt;/span&gt;&lt;/div&gt;`),...items.map((x,i)=>`&lt;div class="calendar-item"&gt;&lt;span&gt;${safeText(x)}&lt;/span&gt;&lt;button type="button" onclick="removeCalendarMemo(${i})" aria-label="予定を削除"&gt;×&lt;/button&gt;&lt;/div&gt;`)].join('')||'&lt;div class="calendar-empty"&gt;この日の予定はありません&lt;/div&gt;';
+}
+function selectCalendarDate(key){calendarSelected=new Date(key+'T00:00:00');calendarCursor=new Date(calendarSelected);renderCalendar()}
+function moveCalendar(step){calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+step,1);renderCalendar()}
+function calendarToday(){calendarSelected=new Date();calendarCursor=new Date();renderCalendar()}
+function addCalendarMemo(e){e.preventDefault();const input=document.getElementById('calendarMemo'),value=input.value.trim();if(!value)return;const all=loadCalendarMemos(),key=calendarKey(calendarSelected);(all[key]||(all[key]=[])).push(value);localStorage.setItem(CALENDAR_KEY,JSON.stringify(all));input.value='';renderCalendar()}
+function removeCalendarMemo(i){const all=loadCalendarMemos(),key=calendarKey(calendarSelected);if(!all[key])return;all[key].splice(i,1);if(!all[key].length)delete all[key];localStorage.setItem(CALENDAR_KEY,JSON.stringify(all));renderCalendar()}
+
 // ページ切替
 function showPage(id){
+  if(id==='calendar') renderCalendar();
+  if(id==='links' &amp;&amp; !document.getElementById('linkCats').children.length) renderLinks();
+  if(id==='games') renderGames();
   document.body.classList.toggle('search-page', id === 'search');
   document.querySelectorAll('.page').forEach(p=&gt;p.classList.remove('active'));
   const el = document.getElementById(id+'-page');
@@ -4076,7 +4124,6 @@ function applySavedSettings(){
     applyDisguise(s.disguise);
   }
 }
-
 
 // ================= 偽装モード =================
 const DISGUISE_PRESETS = {
@@ -4245,7 +4292,6 @@ document.addEventListener('keydown',(e)=&gt;{
 document.addEventListener('keydown',(e)=&gt;{
   if(e.key==='Escape' &amp;&amp; !document.fullscreenElement &amp;&amp; document.getElementById('game-modal').style.display==='flex') closeGame();
 });
-
 
 // ================= 天気（気象庁公式API） =================
 // 気象庁 forecast API: https://www.jma.go.jp/bosai/forecast/data/forecast/{officeCode}.json
@@ -4695,8 +4741,8 @@ showPage = function(id){
 // 初期化
 renderNews();
 renderNotif();
-renderLinks();
-renderGames();
+document.getElementById('linkCount').textContent=LINK_CATEGORIES.reduce((n,c)=&gt;n+c.items.length,0);
+renderGames(true);
 renderEvents();
 renderTicker();
 showPage('home');
@@ -4838,7 +4884,7 @@ window.addEventListener('online', refreshAllLive);
       &lt;div class="chat-modal__actions"&gt;
         &lt;button class="chat-iconbtn" id="chatExpandBtn" onclick="toggleChatExpand()" title="拡大／縮小" aria-label="拡大／縮小"&gt;⛶&lt;/button&gt;
         &lt;button class="chat-iconbtn" onclick="reloadChat()" title="再読み込み" aria-label="再読み込み"&gt;↻&lt;/button&gt;
-        &lt;a class="chat-iconbtn" href="https://zoomies-connect.lovable.app/room/nakayosi-instace-2-mc" target="_blank" rel="noopener" title="新しいタブで開く" aria-label="新しいタブで開く"&gt;↗&lt;/a&gt;
+        &lt;a class="chat-iconbtn" href="https://snowchat-connect.lovable.app/" target="_blank" rel="noopener" title="新しいタブで開く" aria-label="新しいタブで開く"&gt;↗&lt;/a&gt;
         &lt;button class="chat-iconbtn danger" onclick="closeChatModal()" title="閉じる (Esc)" aria-label="閉じる"&gt;✕&lt;/button&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -4852,13 +4898,13 @@ window.addEventListener('online', refreshAllLive);
               onload="document.getElementById('chat-loading').classList.add('hidden')"&gt;&lt;/iframe&gt;
     &lt;/div&gt;
     &lt;div class="chat-modal__footer"&gt;
-      &lt;span class="chat-url"&gt;zoomies-connect.lovable.app/room/nakayosi-instace-2-mc&lt;/span&gt;
+      &lt;span class="chat-url"&gt;snowchat-connect.lovable.app&lt;/span&gt;
       &lt;span&gt;Esc で閉じる&lt;/span&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;script&gt;
-const CHAT_URL='https://jolly-jots-journal.lovable.app/';
+const CHAT_URL='https://snowchat-connect.lovable.app/';
 function openChatModal(){
   const m=document.getElementById('chat-modal');
   const f=document.getElementById('chat-iframe');
@@ -5955,7 +6001,7 @@ body.tv-fs-mode #tv-page .tv-player{position:fixed;inset:0;z-index:2000;max-heig
     if(!document.getElementById('chat-fallback')){
       var fb=document.createElement('div');
       fb.id='chat-fallback'; fb.className='chat-fallback';
-      fb.innerHTML='&lt;div&gt;チャットの読み込みに時間がかかっています。&lt;/div&gt;&lt;a href="https://zoomies-connect.lovable.app/room/nakayosi-instace-2-mc" target="_blank" rel="noopener"&gt;新しいタブで開く&lt;/a&gt;';
+      fb.innerHTML='&lt;div&gt;チャットの読み込みに時間がかかっています。&lt;/div&gt;&lt;a href="https://snowchat-connect.lovable.app/" target="_blank" rel="noopener"&gt;新しいタブで開く&lt;/a&gt;';
       wrap.appendChild(fb);
     }
     var fbTimer=null;
@@ -6178,7 +6224,6 @@ body.tv-fs-mode #tv-page .tv-player{position:fixed;inset:0;z-index:2000;max-heig
 })();
 &lt;/script&gt;
 
-
 &lt;style&gt;
 /* --- 検索イースターエッグ（パーティクル演出） --- */
 #egg-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99998}
@@ -6382,7 +6427,6 @@ body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
   else bind();
 })();
 &lt;/script&gt;
-
 
 &lt;style id="final-ui-fixes"&gt;
   .news-card{color:var(--text)!important;text-decoration:none!important}
@@ -6640,7 +6684,6 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 &lt;/script&gt;
-
 
 &lt;style id="app-html-overrides"&gt;
 
@@ -6901,88 +6944,6 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
 .gc-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(90deg,#22d3ee,#34d399);color:#06232b;font-weight:900;font-size:.8rem;padding:7px 14px;border-radius:8px}
 @media(max-width:420px){.game-grid .game-card.gc-wide{grid-template-columns:38% 1fr;height:150px}.gc-title{font-size:.95rem}}
 &lt;/style&gt;
-&lt;style id="mobile-ui-upgrade-style"&gt;
-&lt;style id="mobile-ui-upgrade-style"&gt;
-    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 14px 16px;
-  }
-  .gnav-inner.open &gt; .gnav-links a{
-    width:auto;border-bottom:none;border-radius:14px;
-    flex-direction:column;justify-content:center;gap:6px;
-    padding:14px 4px;min-height:82px;font-size:.72rem;font-weight:700;text-align:center;
-    background:var(--surface-2);color:var(--text);
-  }
-  .gnav-inner.open &gt; .gnav-links a .nav-ic{width:24px;height:24px;opacity:.9}
-  .gnav-inner.open &gt; .gnav-links a:hover{border-bottom-color:transparent;background:color-mix(in oklab,var(--primary) 10%,var(--surface-2));color:var(--primary);text-decoration:none}
-  .gnav-inner.open &gt; .gnav-links a.active{background:var(--primary);color:#fff;border-bottom-color:transparent}
-}
-
-/* ==== スマホUI改善（820px以下） ==== */
-@media (max-width:820px){
-  body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
-  .topbar{display:none}
-  .wrap{padding:14px 12px 40px;gap:16px}
-  .section,.widget,#home-page .home-hero{border-radius:12px}
-  .header-inner{padding:12px 12px;gap:10px}
-  .header-search{flex:1;min-width:0;padding:4px 4px 4px 10px}
-  .header-search input{width:100%!important;font-size:16px;min-height:38px}
-  input,select,textarea{font-size:16px}
-  .gnav{top:0}
-  .gnav-inner{padding:0 6px}
-  .gnav .menu-toggle{padding:14px 16px;font-size:1.35rem;min-width:48px;min-height:48px}
-  .brand{gap:10px}
-  .brand-title{font-size:1.05rem}
-  .brand-logo{width:38px;height:38px}
-  .pixel-clock{font-size:1rem;padding:8px 10px}
-  .news-list li{padding:14px 0}
-  .btn,.site-omikuji-btn{min-height:44px}
-  footer .footer-inner{padding:18px 12px;gap:14px}
-  .section-head{padding:12px 14px}
-  .section-body{padding:14px}
-}
-/* ==== 下部タブバー（スマホ専用） ==== */
-#mobileTabbar{display:none}
-@media (max-width:820px){
-  #mobileTabbar{
-    display:grid;grid-template-columns:repeat(5,1fr);gap:4px;
-    position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:900;
-    background:color-mix(in srgb, var(--header-bg) 86%, transparent);
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border:1px solid var(--border);border-radius:20px;
-    padding:6px;box-shadow:0 14px 34px -12px rgba(0,0,0,.4);
-  }
-  #mobileTabbar a{
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-    min-height:54px;padding:4px 2px;border-radius:14px;
-    color:var(--text-muted);font-size:.66rem;font-weight:700;text-decoration:none;
-    transition:background .18s,color .18s,transform .18s;
-  }
-  #mobileTabbar a:active{transform:scale(.94)}
-  #mobileTabbar a svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-  #mobileTabbar a.active{color:var(--primary);background:color-mix(in oklab,var(--primary) 14%,transparent)}
-}
-&lt;/style&gt;
-&lt;nav id="mobileTabbar" aria-label="スマホ用ナビ"&gt;
-  &lt;a href="javascript:void(0)" data-tab="home" onclick="showPage('home')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M3 10.5 12 3l9 7.5"/&gt;&lt;path d="M5 9.5V21h14V9.5"/&gt;&lt;/svg&gt;ホーム&lt;/a&gt;
-  &lt;a href="javascript:void(0)" data-tab="settings" onclick="showPage('settings')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="3"/&gt;&lt;path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/&gt;&lt;/svg&gt;設定&lt;/a&gt;
-  &lt;a href="javascript:void(0)" data-tab="weather" onclick="showPage('weather')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="8.5" cy="8" r="3.2"/&gt;&lt;path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/&gt;&lt;/svg&gt;天気&lt;/a&gt;
-  &lt;a href="javascript:void(0)" data-tab="games" onclick="showPage('games')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2" y="7" width="20" height="11" rx="4"/&gt;&lt;path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/&gt;&lt;/svg&gt;ゲーム&lt;/a&gt;
-  &lt;a href="javascript:void(0)" data-tab="links" onclick="showPage('links')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/&gt;&lt;path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/&gt;&lt;/svg&gt;リンク&lt;/a&gt;
-&lt;/nav&gt;
-&lt;script&gt;
-(function(){
-  function syncTab(id){
-    document.querySelectorAll('#mobileTabbar a').forEach(function(a){
-      a.classList.toggle('active', a.dataset.tab === id);
-    });
-  }
-  var orig = window.showPage;
-  if(typeof orig === 'function'){
-    window.showPage = function(id){ orig(id); try{ syncTab(id); }catch(e){} };
-  }
-  var cur = document.querySelector('.page.active');
-  syncTab(cur ? cur.id.replace('-page','') : 'home');
-})();
-&lt;/script&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
