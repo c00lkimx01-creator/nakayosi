@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Welcome - 仲良しIN</title>
+  <title>WELCOME - 仲良し*Instance* 2</title>
 
   <!-- 手書き風フォント（Caveat）の読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1348,11 +1348,68 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 @media(max-width:600px){.external-map{height:320px}}
 &lt;/style&gt;
 &lt;style&gt;
-/* Calendar */
-.calendar-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,.8fr);gap:20px;align-items:start}
-.calendar-main{padding:18px}.calendar-toolbar{display:grid;grid-template-columns:42px 1fr 42px auto;gap:8px;align-items:center;margin-bottom:16px}.calendar-toolbar h2{margin:0;text-align:center;font-size:1.25rem}.calendar-toolbar button,.calendar-form button{min-height:42px;border:1px solid var(--border);border-radius:9px;background:var(--surface-2);color:var(--text);font:inherit;font-weight:700;cursor:pointer}.calendar-toolbar .calendar-today,.calendar-form button{padding:0 16px;background:var(--primary);color:#fff;border-color:var(--primary)}
-.calendar-week,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.calendar-week span{text-align:center;padding:7px;color:var(--text-muted);font-size:.78rem;font-weight:700}.calendar-week span:first-child{color:#ef4444}.calendar-week span:last-child{color:#3b82f6}.calendar-day{position:relative;min-height:82px;padding:8px;border:1px solid var(--border);margin:-1px 0 0 -1px;background:var(--surface);color:var(--text);font:inherit;text-align:left;cursor:pointer}.calendar-day:hover{z-index:1;border-color:var(--primary)}.calendar-day.outside{color:var(--text-muted);background:var(--surface-2)}.calendar-day.selected{z-index:2;box-shadow:inset 0 0 0 2px var(--primary)}.calendar-day.today .calendar-num{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--primary);color:#fff}.calendar-num{font-weight:700}.calendar-marks{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:4px}.calendar-mark{width:7px;height:7px;border-radius:50%;background:var(--primary)}.calendar-mark.news{background:#f59e0b}.calendar-form{display:flex;gap:8px}.calendar-form input{min-width:0;flex:1;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text)}.calendar-items{display:grid;gap:8px;margin-top:14px}.calendar-item{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--surface-2)}.calendar-item.news{border-left:4px solid #f59e0b}.calendar-item button{border:0;background:transparent;color:var(--text-muted);font-size:1.1rem;cursor:pointer}.calendar-empty{padding:20px 4px;color:var(--text-muted);text-align:center}
-@media(max-width:760px){.calendar-layout{grid-template-columns:1fr}.calendar-main{padding:10px}.calendar-toolbar{grid-template-columns:40px 1fr 40px}.calendar-toolbar .calendar-today{grid-column:1/-1}.calendar-day{min-height:62px;padding:6px}.calendar-marks{left:6px;bottom:6px}}
+/* Calendar refresh — isolated to the calendar page */
+#calendar-page { --cal-soft:color-mix(in oklab,var(--primary) 7%,var(--surface)); --cal-line:color-mix(in oklab,var(--primary) 16%,var(--border)); --cal-warm:#dd8b3b; }
+#calendar-page .calendar-intro { margin:0 0 20px; padding:22px 26px; border:1px solid var(--cal-line); border-radius:8px; background:linear-gradient(120deg,var(--cal-soft),var(--surface)); }
+#calendar-page .calendar-intro .calendar-eyebrow { margin:0 0 3px; color:var(--primary);font-weight:800;font-size:.74rem; }
+#calendar-page .calendar-intro h1 { margin:0;font-size:1.7rem; }
+#calendar-page .calendar-intro p:last-child { margin:5px 0 0;color:var(--text-muted);font-size:.87rem; }
+#calendar-page .calendar-layout {display:grid;grid-template-columns:minmax(0,1.7fr) minmax(280px,.82fr);gap:18px;align-items:start}
+#calendar-page .calendar-main {padding:20px;min-width:0}
+#calendar-page .calendar-toolbar {display:flex;align-items:center;gap:8px;margin-bottom:16px}
+#calendar-page .calendar-toolbar h2 {margin:0 auto 0 0;font-family:'Noto Serif JP',serif;font-size:1.35rem;white-space:nowrap}
+#calendar-page .calendar-toolbar button,#calendar-page .calendar-form button,#calendar-page .calendar-actions button {display:inline-flex;align-items:center;justify-content:center;min-height:38px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font:inherit;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+#calendar-page button:hover {border-color:var(--primary)}
+#calendar-page button:focus-visible,#calendar-page input:focus-visible,#calendar-page select:focus-visible {outline:2px solid var(--primary);outline-offset:2px}
+#calendar-page .calendar-toolbar button {min-width:38px;padding:0 10px}
+#calendar-page .calendar-toolbar .calendar-today,#calendar-page .calendar-form button[type=submit] {background:var(--primary);border-color:var(--primary);color:var(--surface)}
+#calendar-page .calendar-summary {font-size:.78rem;color:var(--text-muted);margin:-5px 0 14px}
+#calendar-page .calendar-week,#calendar-page .calendar-grid {display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+#calendar-page .calendar-week span {text-align:center;padding:8px 0;color:var(--text-muted);font-size:.78rem;font-weight:700}
+#calendar-page .calendar-week span:first-child,#calendar-page .calendar-day:nth-child(7n+1) .calendar-num {color:var(--accent)}
+#calendar-page .calendar-week span:last-child,#calendar-page .calendar-day:nth-child(7n) .calendar-num {color:var(--primary)}
+#calendar-page .calendar-day {position:relative;display:flex;flex-direction:column;gap:4px;min-height:91px;min-width:0;padding:8px;border:1px solid var(--border);margin:-1px 0 0 -1px;background:var(--surface);color:var(--text);font:inherit;text-align:left;cursor:pointer;overflow:hidden}
+#calendar-page .calendar-day:hover {z-index:1;background:var(--cal-soft)}
+#calendar-page .calendar-day.outside {color:var(--text-muted);background:var(--surface-2);opacity:.62}
+#calendar-page .calendar-day.selected {z-index:2;border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary);background:var(--cal-soft)}
+#calendar-page .calendar-day.today .calendar-num {display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--primary);color:var(--surface)}
+#calendar-page .calendar-num {display:grid;place-items:center;width:27px;height:27px;font-weight:800;font-size:.85rem}
+#calendar-page .calendar-preview {display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;padding:2px 5px;border-radius:3px;background:var(--cal-soft);color:var(--primary);font-size:.7rem;line-height:1.45}
+#calendar-page .calendar-preview.personal {background:color-mix(in oklab,var(--cal-warm) 15%,var(--surface));color:var(--text)}
+#calendar-page .calendar-more {font-size:.66rem;color:var(--text-muted)}
+#calendar-page .calendar-agenda .section-head {display:flex;align-items:center;justify-content:space-between;gap:8px}
+#calendar-page .calendar-agenda .section-head h2 {font-size:1rem}
+#calendar-page .calendar-agenda .section-body {padding:18px}
+#calendar-page .calendar-form {display:grid;grid-template-columns:minmax(0,1fr) 100px;gap:9px}
+#calendar-page .calendar-form input,#calendar-page .calendar-form select,#calendar-page .calendar-search {min-width:0;width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font:inherit;font-size:.85rem}
+#calendar-page .calendar-form #calendarMemo {grid-column:1/-1}
+#calendar-page .calendar-form .calendar-form-actions {grid-column:1/-1;display:flex;gap:8px}
+#calendar-page .calendar-form .calendar-form-actions button {padding:0 14px}
+#calendar-page .calendar-form #calendarCancelEdit[hidden] {display:none}
+#calendar-page .calendar-items {display:grid;gap:8px;margin-top:16px}
+#calendar-page .calendar-item {display:flex;align-items:center;gap:9px;min-width:0;padding:10px 11px;border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:5px;background:var(--surface-2)}
+#calendar-page .calendar-item.news {border-left-color:var(--cal-warm)}
+#calendar-page .calendar-item.done {opacity:.58}
+#calendar-page .calendar-item.done .calendar-item-title {text-decoration:line-through}
+#calendar-page .calendar-item-content {min-width:0;flex:1;overflow-wrap:anywhere}
+#calendar-page .calendar-item-title {font-weight:700;font-size:.84rem;line-height:1.5}
+#calendar-page .calendar-item-meta {display:block;color:var(--text-muted);font-size:.7rem}
+#calendar-page .calendar-item button {flex:0 0 auto;display:grid;place-items:center;width:29px;height:29px;border:1px solid transparent;border-radius:5px;background:transparent;color:var(--text-muted);font-size:.92rem;cursor:pointer}
+#calendar-page .calendar-item button:hover {background:var(--cal-soft);color:var(--primary)}
+#calendar-page .calendar-empty {padding:22px 4px;color:var(--text-muted);text-align:center;font-size:.85rem}
+#calendar-page .calendar-side {min-width:0}
+#calendar-page .calendar-actions {display:flex;gap:7px;flex-wrap:wrap}
+#calendar-page .calendar-actions button {padding:0 10px;font-size:.74rem}
+#calendar-page .calendar-upcoming {display:grid;gap:0;margin-top:12px}
+#calendar-page .calendar-upcoming button {display:flex;align-items:center;gap:12px;width:100%;padding:10px 2px;border:0;border-bottom:1px solid var(--border);background:transparent;color:var(--text);text-align:left;cursor:pointer;font:inherit}
+#calendar-page .calendar-upcoming button:hover {color:var(--primary)}
+#calendar-page .upcoming-date {flex:0 0 44px;text-align:center;color:var(--primary);font-size:.7rem;font-weight:800;line-height:1.3}
+#calendar-page .upcoming-date strong {display:block;font-size:1.25rem}
+#calendar-page .upcoming-title {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.82rem;font-weight:700}
+#calendar-page .calendar-search {margin-top:12px}
+@media(max-width:850px){#calendar-page .calendar-layout {grid-template-columns:1fr}#calendar-page .calendar-side {display:contents}}
+@media(max-width:550px){#calendar-page .calendar-intro {padding:17px}#calendar-page .calendar-main {padding:12px}#calendar-page .calendar-toolbar {flex-wrap:wrap}#calendar-page .calendar-toolbar h2 {width:100%;font-size:1.2rem}#calendar-page .calendar-day {min-height:67px;padding:4px;gap:2px}#calendar-page .calendar-num {width:25px;height:25px}#calendar-page .calendar-preview {font-size:.61rem;padding:1px 2px}#calendar-page .calendar-more {font-size:.6rem}}
+@media(prefers-reduced-motion:reduce){#calendar-page button {transition:none}}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -1571,33 +1628,47 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;/div&gt;
     &lt;/section&gt;
 
-    &lt;!-- カレンダー --&gt;
+&lt;!-- カレンダー --&gt;
     &lt;section id="calendar-page" class="page"&gt;
+      &lt;div class="calendar-intro"&gt;&lt;p class="calendar-eyebrow"&gt;MY SCHEDULE&lt;/p&gt;&lt;h1&gt;カレンダー&lt;/h1&gt;&lt;p&gt;大切な日も、ふだんの予定も。&lt;/p&gt;&lt;/div&gt;
       &lt;div class="calendar-layout"&gt;
         &lt;div class="section calendar-main"&gt;
           &lt;div class="calendar-toolbar"&gt;
-            &lt;button type="button" onclick="moveCalendar(-1)" aria-label="前の月"&gt;‹&lt;/button&gt;
             &lt;h2 id="calendarTitle"&gt;&lt;/h2&gt;
-            &lt;button type="button" onclick="moveCalendar(1)" aria-label="次の月"&gt;›&lt;/button&gt;
-            &lt;button type="button" class="calendar-today" onclick="calendarToday()"&gt;今日&lt;/button&gt;
+            &lt;button type="button" onclick="moveCalendar(-1)" aria-label="前の月" title="前の月"&gt;‹&lt;/button&gt;
+            &lt;button type="button" onclick="calendarToday()" class="calendar-today"&gt;今日&lt;/button&gt;
+            &lt;button type="button" onclick="moveCalendar(1)" aria-label="次の月" title="次の月"&gt;›&lt;/button&gt;
           &lt;/div&gt;
+          &lt;p id="calendarSummary" class="calendar-summary" aria-live="polite"&gt;&lt;/p&gt;
           &lt;div class="calendar-week" aria-hidden="true"&gt;&lt;span&gt;日&lt;/span&gt;&lt;span&gt;月&lt;/span&gt;&lt;span&gt;火&lt;/span&gt;&lt;span&gt;水&lt;/span&gt;&lt;span&gt;木&lt;/span&gt;&lt;span&gt;金&lt;/span&gt;&lt;span&gt;土&lt;/span&gt;&lt;/div&gt;
           &lt;div class="calendar-grid" id="calendarGrid"&gt;&lt;/div&gt;
         &lt;/div&gt;
-        &lt;div class="section calendar-agenda"&gt;
-          &lt;div class="section-head"&gt;&lt;h2 id="calendarSelectedTitle"&gt;予定&lt;/h2&gt;&lt;/div&gt;
-          &lt;div class="section-body"&gt;
-            &lt;form class="calendar-form" onsubmit="addCalendarMemo(event)"&gt;
-              &lt;input id="calendarMemo" maxlength="80" autocomplete="off" placeholder="予定を入力" aria-label="予定を入力"&gt;
-              &lt;button type="submit"&gt;追加&lt;/button&gt;
-            &lt;/form&gt;
-            &lt;div class="calendar-items" id="calendarItems" aria-live="polite"&gt;&lt;/div&gt;
+        &lt;div class="calendar-side"&gt;
+          &lt;div class="section calendar-agenda"&gt;
+            &lt;div class="section-head"&gt;&lt;h2 id="calendarSelectedTitle"&gt;予定&lt;/h2&gt;&lt;/div&gt;
+            &lt;div class="section-body"&gt;
+              &lt;form class="calendar-form" onsubmit="addCalendarMemo(event)"&gt;
+                &lt;input id="calendarMemo" maxlength="80" autocomplete="off" placeholder="予定のタイトル" aria-label="予定のタイトル" required&gt;
+                &lt;input id="calendarTime" type="time" aria-label="予定の時刻"&gt;
+                &lt;select id="calendarCategory" aria-label="予定の種類"&gt;&lt;option value="予定"&gt;予定&lt;/option&gt;&lt;option value="仕事"&gt;仕事&lt;/option&gt;&lt;option value="プライベート"&gt;プライベート&lt;/option&gt;&lt;option value="記念日"&gt;記念日&lt;/option&gt;&lt;/select&gt;
+                &lt;div class="calendar-form-actions"&gt;&lt;button type="submit" id="calendarSubmit"&gt;追加する&lt;/button&gt;&lt;button type="button" id="calendarCancelEdit" onclick="cancelCalendarEdit()" hidden&gt;キャンセル&lt;/button&gt;&lt;/div&gt;
+              &lt;/form&gt;
+              &lt;div class="calendar-items" id="calendarItems" aria-live="polite"&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="section"&gt;
+            &lt;div class="section-head"&gt;&lt;h2&gt;これからの予定&lt;/h2&gt;&lt;/div&gt;
+            &lt;div class="section-body"&gt;
+              &lt;div class="calendar-actions"&gt;&lt;button type="button" onclick="exportCalendarIcs()" title="予定をカレンダーアプリに取り込む"&gt;予定を書き出す&lt;/button&gt;&lt;/div&gt;
+              &lt;input type="search" id="calendarSearch" class="calendar-search" placeholder="予定を探す" aria-label="予定を検索" oninput="renderCalendarUpcoming()"&gt;
+              &lt;div id="calendarUpcoming" class="calendar-upcoming" aria-live="polite"&gt;&lt;/div&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/section&gt;
 
-    &lt;!-- リンク集 --&gt;
+        &lt;!-- リンク集 --&gt;
     &lt;section id="links-page" class="page"&gt;
       &lt;div class="link-hub"&gt;
         &lt;div class="links-main"&gt;
@@ -4002,28 +4073,51 @@ function renderEvents(){
   }
 }
 
-// カレンダー
+// カレンダー（従来の保存済みメモもそのまま読み込む）
 const CALENDAR_KEY='nakayosi_calendar_v1';
-let calendarCursor=new Date(),calendarSelected=new Date();
+let calendarCursor=new Date(),calendarSelected=new Date(),calendarEditing=-1;
 function calendarKey(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
-function loadCalendarMemos(){try{return JSON.parse(localStorage.getItem(CALENDAR_KEY)||'{}')||{}}catch(e){return {}}}
+function loadCalendarMemos(){try{const data=JSON.parse(localStorage.getItem(CALENDAR_KEY)||'{}');return data &amp;&amp; typeof data==='object' &amp;&amp; !Array.isArray(data)?data:{}}catch(e){return {}}}
+function calendarEntry(x){return typeof x==='string'?{title:x,time:'',category:'予定',done:false}:x &amp;&amp; typeof x==='object'?{title:String(x.title||''),time:String(x.time||''),category:String(x.category||'予定'),done:!!x.done}:{title:'',time:'',category:'予定',done:false}}
+function saveCalendarMemos(all){try{localStorage.setItem(CALENDAR_KEY,JSON.stringify(all));return true}catch(e){alert('予定を保存できませんでした。ブラウザの保存設定を確認してください。');return false}}
+function calendarNews(key){return NEWS.filter(n=&gt;n.date.replaceAll('/','-')===key)}
 function renderCalendar(){
   const grid=document.getElementById('calendarGrid');if(!grid)return;
   const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),today=calendarKey(new Date()),selected=calendarKey(calendarSelected),memos=loadCalendarMemos();
   document.getElementById('calendarTitle').textContent=y+'年 '+(m+1)+'月';
-  grid.innerHTML=Array.from({length:42},(_,i)=>{const d=new Date(start);d.setDate(start.getDate()+i);const key=calendarKey(d),news=NEWS.some(n=>n.date.replaceAll('/','-')===key);return `&lt;button type="button" class="calendar-day${d.getMonth()!==m?' outside':''}${key===today?' today':''}${key===selected?' selected':''}" onclick="selectCalendarDate('${key}')" aria-label="${d.getMonth()+1}月${d.getDate()}日"&gt;&lt;span class="calendar-num"&gt;${d.getDate()}&lt;/span&gt;&lt;span class="calendar-marks"&gt;${news?'&lt;i class="calendar-mark news" title="お知らせ"&gt;&lt;/i&gt;':''}${memos[key]?.length?'&lt;i class="calendar-mark" title="予定"&gt;&lt;/i&gt;':''}&lt;/span&gt;&lt;/button&gt;`}).join('');
-  renderCalendarItems();
+  const monthCount=Object.entries(memos).filter(([key])=&gt;key.startsWith(y+'-'+String(m+1).padStart(2,'0')+'-')).reduce((sum,[,items])=&gt;sum+(Array.isArray(items)?items.length:0),0);
+  document.getElementById('calendarSummary').textContent='今月の予定 '+monthCount+'件';
+  grid.innerHTML=Array.from({length:42},(_,i)=&gt;{const d=new Date(start);d.setDate(start.getDate()+i);const key=calendarKey(d),news=calendarNews(key),items=Array.isArray(memos[key])?memos[key].map(calendarEntry):[];
+    const preview=[...items.map(x=&gt;({title:x.title,personal:true})),...news.map(n=&gt;({title:n.title,personal:false}))];
+    const labels=preview.slice(0,2).map(x=&gt;'&lt;span class="calendar-preview'+(x.personal?' personal':'')+'"&gt;'+safeText(x.title)+'&lt;/span&gt;').join('');
+    return `&lt;button type="button" class="calendar-day${d.getMonth()!==m?' outside':''}${key===today?' today':''}${key===selected?' selected':''}" onclick="selectCalendarDate('${key}')" aria-label="${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日、予定${items.length}件、お知らせ${news.length}件" aria-pressed="${key===selected}"&gt;&lt;span class="calendar-num"&gt;${d.getDate()}&lt;/span&gt;${labels}${preview.length&gt;2?'&lt;span class="calendar-more"&gt;ほか '+(preview.length-2)+' 件&lt;/span&gt;':''}&lt;/button&gt;`}).join('');
+  renderCalendarItems();renderCalendarUpcoming();
 }
 function renderCalendarItems(){
-  const key=calendarKey(calendarSelected),items=loadCalendarMemos()[key]||[],news=NEWS.filter(n=>n.date.replaceAll('/','-')===key),d=calendarSelected;
-  document.getElementById('calendarSelectedTitle').textContent=`${d.getMonth()+1}月${d.getDate()}日の予定`;
-  document.getElementById('calendarItems').innerHTML=[...news.map(n=>`&lt;div class="calendar-item news"&gt;&lt;span&gt;📢 ${safeText(n.title)}&lt;/span&gt;&lt;/div&gt;`),...items.map((x,i)=>`&lt;div class="calendar-item"&gt;&lt;span&gt;${safeText(x)}&lt;/span&gt;&lt;button type="button" onclick="removeCalendarMemo(${i})" aria-label="予定を削除"&gt;×&lt;/button&gt;&lt;/div&gt;`)].join('')||'&lt;div class="calendar-empty"&gt;この日の予定はありません&lt;/div&gt;';
+  const key=calendarKey(calendarSelected),all=loadCalendarMemos(),items=Array.isArray(all[key])?all[key].map(calendarEntry):[],news=calendarNews(key),d=calendarSelected;
+  document.getElementById('calendarSelectedTitle').textContent=`${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）の予定`;
+  document.getElementById('calendarItems').innerHTML=[...news.map(n=&gt;`&lt;div class="calendar-item news"&gt;&lt;div class="calendar-item-content"&gt;&lt;span class="calendar-item-title"&gt;${safeText(n.title)}&lt;/span&gt;&lt;small class="calendar-item-meta"&gt;お知らせ&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;`),...items.map((x,i)=&gt;`&lt;div class="calendar-item${x.done?' done':''}"&gt;&lt;div class="calendar-item-content"&gt;&lt;span class="calendar-item-title"&gt;${safeText(x.title)}&lt;/span&gt;&lt;small class="calendar-item-meta"&gt;${x.time?safeText(x.time)+' · ':''}${safeText(x.category)}&lt;/small&gt;&lt;/div&gt;&lt;button type="button" onclick="toggleCalendarMemo(${i})" aria-label="${x.done?'未完了に戻す':'完了にする'}" title="${x.done?'未完了に戻す':'完了にする'}"&gt;${x.done?'↶':'✓'}&lt;/button&gt;&lt;button type="button" onclick="editCalendarMemo(${i})" aria-label="予定を編集" title="編集"&gt;✎&lt;/button&gt;&lt;button type="button" onclick="removeCalendarMemo(${i})" aria-label="予定を削除" title="削除"&gt;×&lt;/button&gt;&lt;/div&gt;`)].join('')||'&lt;div class="calendar-empty"&gt;この日の予定はありません&lt;/div&gt;';
 }
-function selectCalendarDate(key){calendarSelected=new Date(key+'T00:00:00');calendarCursor=new Date(calendarSelected);renderCalendar()}
+function renderCalendarUpcoming(){
+  const box=document.getElementById('calendarUpcoming');if(!box)return;
+  const q=(document.getElementById('calendarSearch')?.value||'').trim().toLocaleLowerCase(),all=loadCalendarMemos(),today=calendarKey(new Date());
+  const entries=Object.entries(all).flatMap(([key,items])=&gt;Array.isArray(items)?items.map(calendarEntry).filter(x=&gt;x.title&amp;&amp;!x.done &amp;&amp; (q||key&gt;=today) &amp;&amp; (!q||x.title.toLocaleLowerCase().includes(q)||x.category.toLocaleLowerCase().includes(q))).map(x=&gt;({key,...x})):[]).sort((a,b)=&gt;a.key.localeCompare(b.key)||a.time.localeCompare(b.time)).slice(0,8);
+  box.innerHTML=entries.map(x=&gt;`&lt;button type="button" onclick="selectCalendarDate('${x.key}')"&gt;&lt;span class="upcoming-date"&gt;${Number(x.key.slice(5,7))}月&lt;strong&gt;${Number(x.key.slice(8,10))}&lt;/strong&gt;&lt;/span&gt;&lt;span class="upcoming-title"&gt;${x.time?safeText(x.time)+' · ':''}${safeText(x.title)}&lt;/span&gt;&lt;/button&gt;`).join('')||'&lt;div class="calendar-empty"&gt;'+(q?'見つかりませんでした':'これからの予定はありません')+'&lt;/div&gt;';
+}
+function selectCalendarDate(key){if(!/^\d{4}-\d{2}-\d{2}$/.test(key))return;calendarSelected=new Date(key+'T00:00:00');calendarCursor=new Date(calendarSelected.getFullYear(),calendarSelected.getMonth(),1);cancelCalendarEdit();renderCalendar()}
 function moveCalendar(step){calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+step,1);renderCalendar()}
-function calendarToday(){calendarSelected=new Date();calendarCursor=new Date();renderCalendar()}
-function addCalendarMemo(e){e.preventDefault();const input=document.getElementById('calendarMemo'),value=input.value.trim();if(!value)return;const all=loadCalendarMemos(),key=calendarKey(calendarSelected);(all[key]||(all[key]=[])).push(value);localStorage.setItem(CALENDAR_KEY,JSON.stringify(all));input.value='';renderCalendar()}
-function removeCalendarMemo(i){const all=loadCalendarMemos(),key=calendarKey(calendarSelected);if(!all[key])return;all[key].splice(i,1);if(!all[key].length)delete all[key];localStorage.setItem(CALENDAR_KEY,JSON.stringify(all));renderCalendar()}
+function calendarToday(){selectCalendarDate(calendarKey(new Date()))}
+function cancelCalendarEdit(){calendarEditing=-1;const form=document.querySelector('#calendar-page .calendar-form');if(form)form.reset();document.getElementById('calendarSubmit').textContent='追加する';document.getElementById('calendarCancelEdit').hidden=true}
+function addCalendarMemo(e){e.preventDefault();const input=document.getElementById('calendarMemo'),value=input.value.trim();if(!value)return;const all=loadCalendarMemos(),key=calendarKey(calendarSelected),items=Array.isArray(all[key])?all[key]:[];const old=calendarEditing&gt;=0?calendarEntry(items[calendarEditing]):null;const entry={title:value,time:document.getElementById('calendarTime').value,category:document.getElementById('calendarCategory').value,done:old?.done||false};if(calendarEditing&gt;=0 &amp;&amp; calendarEditing&lt;items.length)items[calendarEditing]=entry;else items.push(entry);all[key]=items;if(saveCalendarMemos(all)){cancelCalendarEdit();renderCalendar()}}
+function editCalendarMemo(i){const items=loadCalendarMemos()[calendarKey(calendarSelected)];if(!Array.isArray(items)||!items[i])return;const x=calendarEntry(items[i]);calendarEditing=i;document.getElementById('calendarMemo').value=x.title;document.getElementById('calendarTime').value=x.time;document.getElementById('calendarCategory').value=x.category;document.getElementById('calendarSubmit').textContent='保存する';document.getElementById('calendarCancelEdit').hidden=false;document.getElementById('calendarMemo').focus()}
+function toggleCalendarMemo(i){const all=loadCalendarMemos(),key=calendarKey(calendarSelected);if(!Array.isArray(all[key])||!all[key][i])return;const x=calendarEntry(all[key][i]);all[key][i]={...x,done:!x.done};if(saveCalendarMemos(all))renderCalendar()}
+function removeCalendarMemo(i){const all=loadCalendarMemos(),key=calendarKey(calendarSelected);if(!Array.isArray(all[key])||!all[key][i])return;all[key].splice(i,1);if(!all[key].length)delete all[key];if(saveCalendarMemos(all)){cancelCalendarEdit();renderCalendar()}}
+function exportCalendarIcs(){
+  const all=loadCalendarMemos(),escape=x=&gt;String(x).replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
+  const events=Object.entries(all).flatMap(([key,items])=&gt;/^\d{4}-\d{2}-\d{2}$/.test(key)&amp;&amp;Array.isArray(items)?items.map(calendarEntry).filter(x=&gt;x.title).map((x,i)=&gt;{const date=key.replaceAll('-',''),time=/^\d{2}:\d{2}$/.test(x.time)?x.time.replace(':','')+'00':'';const start=time?`DTSTART;TZID=Asia/Tokyo:${date}T${time}`:`DTSTART;VALUE=DATE:${date}`;const end=time?`DTEND;TZID=Asia/Tokyo:${Number(x.time.slice(0,2))===23?calendarKey(new Date(Number(key.slice(0,4)),Number(key.slice(5,7))-1,Number(key.slice(8,10))+1)).replaceAll('-',''):date}T${String((Number(x.time.slice(0,2))+1)%24).padStart(2,'0')}${x.time.slice(3)}00`:`DTEND;VALUE=DATE:${calendarKey(new Date(Number(key.slice(0,4)),Number(key.slice(5,7))-1,Number(key.slice(8,10))+1)).replaceAll('-','')}`;return ['BEGIN:VEVENT','UID:'+date+'-'+i+'@nakayosi-calendar','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,''),start,end,'SUMMARY:'+escape(x.title),'DESCRIPTION:'+escape(x.category),'END:VEVENT'].join('\r\n')}):[]);
+  if(!events.length){alert('書き出す予定がありません。');return}
+  const blob=new Blob([['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Nakayosi//Calendar//JA','CALSCALE:GREGORIAN',...events,'END:VCALENDAR'].join('\r\n')],{type:'text/calendar;charset=utf-8'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nakayosi-calendar.ics';document.body.appendChild(a);a.click();a.remove();setTimeout(()=&gt;URL.revokeObjectURL(url),1000)
+}
 
 // ページ切替
 function showPage(id){
