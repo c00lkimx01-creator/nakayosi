@@ -218,6 +218,30 @@
     .welcome-container, .ambient-glow, #particleCanvas { transition: opacity .9s ease, filter .9s ease; }
     body.welcome-fade .welcome-container { opacity: 0; filter: blur(6px); }
     body.welcome-fade .ambient-glow, body.welcome-fade #particleCanvas { opacity: 0; }
+
+    /* スキップボタン（右下） */
+    .btn-skip {
+      position: fixed;
+      right: calc(20px + env(safe-area-inset-right, 0px));
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      z-index: 20;
+      padding: 10px 22px;
+      border-radius: 100px;
+      border: 1px solid color-mix(in srgb, var(--text-main) 25%, transparent);
+      background: color-mix(in srgb, var(--bg-base) 55%, transparent);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      color: var(--text-main);
+      font-size: .95rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      cursor: pointer;
+      transition: opacity .9s ease, background-color .25s ease, transform .25s ease;
+    }
+    .btn-skip:hover { background: color-mix(in srgb, var(--bg-base) 85%, var(--text-main) 15%); transform: translateY(-2px); }
+    .btn-skip:focus-visible { outline: 2px solid var(--btn-primary-bg); outline-offset: 3px; }
+    body.welcome-fade .btn-skip { opacity: 0; pointer-events: none; }
+    body.instance-active .btn-skip { display: none; }
     body.instance-active { overflow: hidden; }
     body.instance-active .ambient-glow,
     body.instance-active .bg-overlay,
@@ -241,6 +265,9 @@
     </div>
 
   </main>
+
+  <!-- 右下のスキップボタン -->
+  <button type="button" class="btn-skip" id="skipBtn" aria-label="スキップしてポータルへ進む">スキップ ›</button>
 
   <iframe id="instanceFrame" title="仲良しインスタンス2 — 情報ポータル" hidden></iframe>
 
@@ -295,7 +322,10 @@
     // 2. アニメーション完了後のボタン表示制御
     // ==========================================================
     // welcome アニメーション後、自動でフェードアウトしてポータルを表示
+    let instanceStarted = false;
     function showInstance() {
+      if (instanceStarted) return;
+      instanceStarted = true;
       const frame = document.getElementById('instanceFrame');
       const source = document.getElementById('instanceSource');
       if (!frame || !source) return;
@@ -317,6 +347,9 @@
       setTimeout(() => { faded = true; reveal(); }, 900);
       frame.srcdoc = source.content.textContent;
     }
+    // スキップ：アニメーションを待たずにすぐポータルへ
+    document.getElementById('skipBtn').addEventListener('click', showInstance);
+
     // 手書きアニメーションが本当に終わってから（最後の文字の animationend）少し余韻を置いて自動で消える
     (function waitForWelcomeEnd() {
       const spans = document.querySelectorAll('.glass-welcome span');
