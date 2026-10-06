@@ -247,6 +247,56 @@
     body.instance-active .bg-overlay,
     body.instance-active #particleCanvas,
     body.instance-active .welcome-container { display: none; }
+
+    /* Glass skip control — transparent glass with a crisp reflected rim */
+    .btn-skip {
+      min-height: 48px;
+      padding: 10px 21px;
+      border: 1px solid color-mix(in srgb, white 68%, var(--text-main) 14%);
+      background:
+        linear-gradient(115deg, color-mix(in srgb, white 24%, transparent), transparent 44%),
+        color-mix(in srgb, var(--bg-base) 16%, transparent);
+      backdrop-filter: blur(24px) saturate(185%) brightness(1.06);
+      box-shadow:
+        inset 0 1px 0 color-mix(in srgb, white 84%, transparent),
+        inset 0 0 0 1px color-mix(in srgb, white 12%, transparent),
+        inset 0 -12px 24px color-mix(in srgb, var(--btn-primary-bg) 6%, transparent),
+        0 12px 30px color-mix(in srgb, var(--text-main) 13%, transparent),
+        0 2px 7px color-mix(in srgb, var(--text-main) 10%, transparent);
+      text-shadow: 0 1px 10px color-mix(in srgb, var(--bg-base) 90%, transparent);
+      overflow: hidden;
+      isolation: isolate;
+      will-change: transform;
+    }
+    .btn-skip::before {
+      content: "";
+      position: absolute;
+      left: 13%;
+      right: 38%;
+      top: 2px;
+      height: 38%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, color-mix(in srgb, white 65%, transparent), transparent);
+      filter: blur(5px);
+      opacity: .8;
+      pointer-events: none;
+    }
+    .btn-skip:hover {
+      background: linear-gradient(115deg, color-mix(in srgb, white 30%, transparent), color-mix(in srgb, var(--btn-primary-bg) 11%, transparent));
+      border-color: color-mix(in srgb, white 78%, var(--btn-primary-bg) 22%);
+      box-shadow: inset 0 1px 0 color-mix(in srgb, white 88%, transparent), 0 17px 38px color-mix(in srgb, var(--btn-primary-bg) 21%, transparent);
+    }
+    .btn-skip:active { transform: translateY(0) scale(.97); }
+    @media (max-width: 600px) {
+      .btn-skip {
+        right: calc(14px + env(safe-area-inset-right, 0px));
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        min-height: 46px;
+        padding: 9px 18px;
+        font-size: .86rem;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) { .btn-skip { transition-duration: .15s; } }
   </style>
 </head>
 <body>
@@ -7182,6 +7232,119 @@ body.dark-mode,body.glass-mode{
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 &lt;/script&gt;
+
+&lt;style id="requested-game-weather-polish"&gt;
+/* Game gallery: richer depth while preserving the existing click targets */
+#games-page{--game-glow:color-mix(in oklab,var(--primary) 52%,transparent)}
+#games-page .cg-side{border-radius:14px;background:color-mix(in oklab,var(--surface) 92%,var(--primary) 8%);box-shadow:0 18px 44px -36px var(--game-glow)}
+#games-page .cg-hero-card{min-height:300px;border:1px solid color-mix(in oklab,var(--primary) 32%,var(--border));border-radius:18px;box-shadow:0 24px 55px -28px rgba(0,0,0,.72)}
+#games-page .cg-hero-card::after{background:linear-gradient(90deg,rgba(2,6,23,.92) 0%,rgba(2,6,23,.58) 52%,rgba(2,6,23,.08) 100%),linear-gradient(0deg,rgba(2,6,23,.4),transparent 50%)}
+#games-page .cg-hero-body{max-width:66%;padding:34px}
+#games-page .cg-hero-play{border:1px solid color-mix(in oklab,var(--primary) 70%,white);box-shadow:0 12px 28px -12px var(--game-glow)}
+#games-page .cg-head{padding-bottom:10px;border-bottom:1px solid color-mix(in oklab,var(--primary) 20%,var(--border))}
+#games-page .cg-chips{flex-wrap:nowrap;scrollbar-width:none;padding:2px 1px 8px}
+#games-page .cg-chips::-webkit-scrollbar{display:none}
+#games-page .cg-chip{border-radius:8px;background:color-mix(in oklab,var(--surface) 88%,var(--primary) 12%)}
+#games-page .game-grid{gap:16px}
+#games-page .game-card{border:1px solid color-mix(in oklab,var(--border) 72%,var(--primary) 28%);border-radius:12px;background:var(--surface);box-shadow:0 13px 30px -23px rgba(0,0,0,.7)}
+#games-page .game-card.gc-wide{grid-template-columns:minmax(135px,38%) minmax(0,1fr);height:178px;border-radius:13px!important;background:linear-gradient(115deg,color-mix(in oklab,#101b4b 92%,var(--primary)),#0b1430 62%,#0a3038);box-shadow:0 15px 34px -23px rgba(0,0,0,.88);contain:layout paint}
+#games-page .game-card.gc-wide:hover{transform:translateY(-4px);border-color:color-mix(in oklab,var(--primary) 68%,white);box-shadow:0 20px 38px -23px var(--game-glow)}
+#games-page .gc-media::after{background:linear-gradient(90deg,transparent 48%,#101b4b 100%),linear-gradient(0deg,rgba(2,6,23,.34),transparent 60%)}
+#games-page .gc-body{padding:17px 18px}
+#games-page .gc-title{font-size:1.08rem;letter-spacing:.01em}
+#games-page .gc-btn{min-height:34px;border:1px solid rgba(255,255,255,.34);box-shadow:0 8px 18px -12px #22d3ee}
+#games-page .game-card .thumb,#games-page .game-card .thumb::after{border-radius:11px}
+#games-page .game-card .thumb::after{background:linear-gradient(180deg,transparent 42%,rgba(2,6,23,.88) 100%)}
+#games-page .game-card .play-badge{background:color-mix(in oklab,var(--primary) 90%,white 10%);border:1px solid rgba(255,255,255,.5);box-shadow:0 10px 28px -8px var(--game-glow),0 0 0 5px rgba(255,255,255,.14)}
+#games-page .game-card .name{left:12px;right:12px;bottom:11px;font-size:.86rem;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+
+/* Game player: glass toolbar and focused theatre framing */
+#game-modal{background:rgba(3,7,18,.78);backdrop-filter:blur(22px) saturate(130%);padding:clamp(12px,3vw,32px)}
+#game-modal .gm-shell{height:min(90dvh,920px);max-width:1240px;border:1px solid rgba(255,255,255,.16);border-radius:16px;background:#060a12;box-shadow:0 42px 110px -30px rgba(0,0,0,.94),0 0 0 1px rgba(255,255,255,.04);isolation:isolate}
+#game-modal .gm-bar{min-height:60px;padding:9px 12px 9px 16px;background:linear-gradient(180deg,rgba(31,42,63,.9),rgba(12,18,30,.91));border-bottom:1px solid rgba(255,255,255,.11);backdrop-filter:blur(20px) saturate(140%)}
+#game-modal .gm-title{font-size:.92rem;letter-spacing:.01em}
+#game-modal .gm-title::after{content:'PLAYING';font-size:.58rem;line-height:1;padding:5px 7px;border-radius:5px;background:rgba(74,222,128,.11);border:1px solid rgba(74,222,128,.25);color:#86efac;letter-spacing:.11em}
+#game-modal .gm-title .gm-logo{border-radius:9px;background:linear-gradient(145deg,color-mix(in oklab,var(--primary) 88%,white),var(--primary));box-shadow:0 8px 18px -8px var(--primary)}
+#game-modal .gm-actions{gap:8px}
+#game-modal .gm-btn{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.075);color:#e8eef8;border-radius:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+#game-modal .gm-btn:hover{background:rgba(255,255,255,.15)}
+#game-modal .gm-btn.gm-primary{background:var(--primary);box-shadow:0 8px 20px -12px var(--primary)}
+#game-modal .gm-btn.gm-close{background:rgba(244,63,94,.12);color:#fda4af;border-color:rgba(244,63,94,.25)}
+#game-modal .gm-body{background:#02050a;box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+#game-modal .gm-fps{top:auto;bottom:10px;left:10px;font-size:.52rem;line-height:1.45;padding:5px 7px;border-radius:6px;background:rgba(2,6,12,.54);backdrop-filter:blur(10px);opacity:.76}
+
+/* Weather: a clean dashboard hierarchy with scannable forecast cards */
+#weather-page .section{overflow:hidden;background:color-mix(in oklab,var(--surface) 94%,transparent);backdrop-filter:blur(18px) saturate(118%);border-color:color-mix(in oklab,var(--primary) 22%,var(--border));box-shadow:0 24px 55px -40px color-mix(in oklab,var(--primary) 55%,rgba(0,0,0,.8))}
+#weather-page .section-head{padding:18px 22px;background:linear-gradient(110deg,color-mix(in oklab,var(--primary) 11%,var(--surface)),var(--surface))}
+#weather-page .section-body{padding:22px}
+#weather-page .wx-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+#weather-page .wx-loc{min-width:0;font-size:1.28rem;line-height:1.45}
+#weather-page .wx-loc small{display:block;margin:3px 0 0;font-size:.74rem}
+#weather-page .wx-actions{justify-content:flex-end}
+#weather-page .wx-actions a,#weather-page .wx-actions button{min-height:40px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;background:color-mix(in oklab,var(--surface) 90%,var(--primary) 10%);box-shadow:0 6px 16px -14px rgba(0,0,0,.7)}
+#weather-page .wx-today{grid-template-columns:92px minmax(0,1fr);gap:20px;padding:22px;border-radius:14px;background:linear-gradient(135deg,color-mix(in oklab,var(--primary) 10%,var(--surface)),var(--surface-2));border-color:color-mix(in oklab,var(--primary) 25%,var(--border));box-shadow:0 18px 36px -32px var(--primary)}
+#weather-page .wx-tomorrow{background:var(--surface-2);border-style:solid;box-shadow:none}
+#weather-page .wx-today .icon{width:92px;height:92px;justify-content:center;border-radius:12px;background:color-mix(in oklab,var(--primary) 10%,var(--surface));border:1px solid color-mix(in oklab,var(--primary) 18%,var(--border))}
+#weather-page .wx-today .icon svg{width:4.2rem;height:4.2rem}
+#weather-page .wx-today .txt h3{font-size:1.15rem}
+#weather-page .wx-today .temps{margin-top:9px;font-size:1.06rem}
+#weather-page .wx-week{grid-template-columns:repeat(7,minmax(92px,1fr));gap:9px;overflow-x:auto;padding:2px 1px 8px;scroll-snap-type:x proximity}
+#weather-page .wx-day{min-width:92px;padding:14px 9px;border-radius:11px;background:linear-gradient(180deg,color-mix(in oklab,var(--surface) 92%,var(--primary) 8%),var(--surface));scroll-snap-align:start;transition:transform .18s,border-color .18s,box-shadow .18s}
+#weather-page .wx-day:hover{transform:translateY(-2px);border-color:color-mix(in oklab,var(--primary) 42%,var(--border));box-shadow:0 12px 24px -20px var(--primary)}
+#weather-page .wx-day .i{margin:9px 0}
+#weather-page .wx-alert{border-radius:12px;background:color-mix(in oklab,var(--surface-2) 92%,var(--primary) 8%);box-shadow:0 10px 24px -24px rgba(0,0,0,.7)}
+#weather-page .wx-empty{min-height:118px;display:grid;place-items:center;padding:24px;border:1px dashed color-mix(in oklab,var(--primary) 32%,var(--border));border-radius:12px;background:color-mix(in oklab,var(--surface-2) 92%,var(--primary) 8%);line-height:1.8}
+#weather-page .wx-map-wrap{margin:20px 0}
+#weather-page .external-map{border-radius:14px;box-shadow:0 16px 36px -30px rgba(0,0,0,.75)}
+
+@media(max-width:700px){
+  #games-page .cg-hero-card{min-height:235px;border-radius:14px}
+  #games-page .cg-hero-body{max-width:100%;padding:20px}
+  #games-page .cg-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  #games-page .game-card.gc-wide{grid-template-columns:38% minmax(0,1fr);height:154px}
+  #games-page .gc-body{padding:12px 11px}
+  #games-page .gc-kicker{font-size:.55rem}
+  #games-page .gc-title{font-size:.91rem;margin-bottom:6px}
+  #games-page .gc-meta{margin-bottom:8px}
+  #games-page .gc-meta li:nth-child(n+3){display:none}
+  #games-page .gc-btn{min-height:31px;padding:6px 11px;font-size:.72rem}
+  #games-page .game-card .play-badge{width:46px;height:46px;animation:none}
+  #game-modal{padding:0;align-items:stretch}
+  #game-modal .gm-shell{width:100%;height:100dvh;max-height:none;border:0;border-radius:0}
+  #game-modal .gm-bar{min-height:calc(54px + env(safe-area-inset-top));padding:calc(7px + env(safe-area-inset-top)) 8px 7px 12px;gap:7px}
+  #game-modal .gm-title{gap:8px;font-size:.82rem}
+  #game-modal .gm-title::after{display:none}
+  #game-modal .gm-title .gm-logo{width:34px;height:34px}
+  #game-modal .gm-actions{gap:5px}
+  #game-modal .gm-btn,#game-modal .gm-btn.gm-primary{width:40px;min-width:40px;height:40px;padding:0}
+  #game-modal .gm-body{min-height:0}
+  #weather-page .section-head{padding:15px 16px;align-items:flex-start;gap:5px;flex-direction:column}
+  #weather-page .section{background:color-mix(in oklab,var(--surface) 96%,transparent);border-radius:15px}
+  #weather-page .section-body{padding:16px 13px}
+  #weather-page .wx-head{grid-template-columns:minmax(0,1fr);gap:12px;padding-bottom:14px}
+  #weather-page .wx-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  #weather-page .wx-actions a,#weather-page .wx-actions button{min-width:0;padding:8px 5px;font-size:.7rem;text-align:center;line-height:1.25}
+  #weather-page .wx-today{grid-template-columns:68px minmax(0,1fr);gap:13px;padding:15px 13px}
+  #weather-page .wx-today .icon{width:68px;height:68px}
+  #weather-page .wx-today .icon svg{width:3.2rem;height:3.2rem}
+  #weather-page .wx-today .txt h3{font-size:1rem}
+  #weather-page .wx-today .txt p{font-size:.8rem;line-height:1.5;overflow-wrap:anywhere}
+  #weather-page .wx-alert{gap:10px;padding:12px}
+  #weather-page .wx-alert .lv{min-width:64px}
+  #weather-page .external-map{height:300px}
+  #weather-page .wx-week{margin-right:-13px;padding-right:13px}
+}
+@media(max-width:370px){
+  #games-page .cg-grid{gap:8px}
+  #games-page .game-card .name{font-size:.7rem}
+  #game-modal .gm-title .gm-logo{display:none}
+  #weather-page .wx-actions{grid-template-columns:1fr 1fr}
+  #weather-page .wx-actions a{grid-column:1/-1;grid-row:2}
+  #weather-page .wx-today{grid-template-columns:56px minmax(0,1fr)}
+  #weather-page .wx-today .icon{width:56px;height:56px}
+}
+@media(prefers-reduced-motion:reduce){#games-page .game-card,#games-page .game-card img,#weather-page .wx-day{transition:none!important}}
+&lt;/style&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
