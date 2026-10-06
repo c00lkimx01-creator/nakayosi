@@ -372,6 +372,56 @@
     // 2. アニメーション完了後のボタン表示制御
     // ==========================================================
     // welcome アニメーション後、自動でフェードアウトしてポータルを表示
+
+    // ===== URLルーティング (/welcome, /links など) =====
+    const ROUTE_PAGES = ['welcome','home','news','weather','events','calendar','links','games','tv','search','settings','terms','tools'];
+    const ROUTER = (function(){
+      const url = new URL(location.href);
+      let base, initial = '';
+      const r = url.searchParams.get('route');
+      if (r !== null) {
+        base = url.pathname.replace(/index\.html$/,'');
+        initial = r.replace(/^\/+|\/+$/g,'').split('/')[0].toLowerCase();
+        url.searchParams.delete('route');
+      } else {
+        const segs = url.pathname.split('/');
+        const i = segs.findIndex((x,k)=>k>0 && ROUTE_PAGES.includes(x.toLowerCase()));
+        if (i > 0) { base = segs.slice(0,i).join('/') + '/'; initial = segs[i].toLowerCase(); }
+        else base = url.pathname.replace(/[^\/]*$/,'');
+      }
+      if (!base.endsWith('/')) base += '/';
+      if (!ROUTE_PAGES.includes(initial) || initial === 'welcome') initial = 'home';
+      const qs = url.searchParams.toString();
+      const tail = (qs ? '?' + qs : '') + url.hash;
+      history.replaceState({page:'welcome', target:initial}, '', base + 'welcome' + tail);
+      return { base, initial, tail };
+    })();
+    function routeUrl(id){ return ROUTER.base + id; }
+    function hookInstance(frame){
+      try {
+        const w = frame.contentWindow;
+        const orig = w.showPage;
+        if (typeof orig !== 'function') return;
+        let silent = false;
+        const wrapped = function(id){
+          const res = orig.apply(this, arguments);
+          if (!silent && ROUTE_PAGES.includes(id) && history.state?.page !== id) {
+            history.pushState({page:id}, '', routeUrl(id));
+          }
+          return res;
+        };
+        w.showPage = wrapped;
+        const go = (id) => { silent = true; try { orig.call(w, id); } finally { silent = false; } };
+        go(ROUTER.initial);
+        history.replaceState({page:ROUTER.initial}, '', routeUrl(ROUTER.initial) + ROUTER.tail);
+        window.addEventListener('popstate', (e) => {
+          let id = e.state?.page;
+          if (!id || id === 'welcome') id = 'home';
+          if (ROUTE_PAGES.includes(id)) go(id);
+          if (e.state?.page === 'welcome') history.replaceState({page:'home'}, '', routeUrl('home'));
+        });
+      } catch (err) { console.error('router', err); }
+    }
     let instanceStarted = false;
     function showInstance() {
       if (instanceStarted) return;
@@ -391,6 +441,7 @@
       };
       frame.addEventListener('load', () => {
         const innerDocument = frame.contentDocument;
+        hookInstance(frame);
         loaded = true; reveal();
       }, { once: true });
       document.body.classList.add('welcome-fade');

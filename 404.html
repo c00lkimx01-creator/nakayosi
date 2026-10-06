@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><title>Redirecting...</title>
+<script>
+(function(){
+  var PAGES=['welcome','home','news','weather','events','calendar','links','games','tv','search','settings','terms','tools'];
+  var segs=location.pathname.split('/');
+  var i=-1;
+  for(var k=1;k<segs.length;k++){ if(PAGES.indexOf(segs[k].toLowerCase())>=0){ i=k; break; } }
+  var base, route='';
+  if(i>0){ base=segs.slice(0,i).join('/')+'/'; route=segs[i]; }
+  else {
+    var last=+sessionStorage.getItem('spa404')||0;
+    base=(location.hostname.slice(-10)==='.github.io' && segs.length>2 && Date.now()-last>3000)?'/'+segs[1]+'/':'/';
+  }
+  sessionStorage.setItem('spa404', Date.now());
+  var q=location.search.replace(/^\?/,'');
+  location.replace(base+'?route='+encodeURIComponent(route)+(q?'&'+q:'')+location.hash);
+})();
+</script></head><body></body></html>
