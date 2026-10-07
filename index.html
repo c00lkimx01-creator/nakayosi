@@ -85,15 +85,17 @@
       max-width: 800px;
       max-height: 800px;
       border-radius: 50%;
-      filter: blur(140px);
       opacity: 0.35;
+      will-change: transform;
       z-index: 0;
       pointer-events: none;
       animation: floatGlow 14s infinite alternate ease-in-out;
     }
 
-    .glow-1 { top: -20%; left: -10%; background: var(--g-blue); }
-    .glow-2 { bottom: -20%; right: -10%; background: var(--g-red); animation-delay: -7s; }
+    .glow-1 { top: -20%; left: -10%; background: radial-gradient(circle, var(--g-blue) 0%, transparent 68%); }
+    .glow-2 { bottom: -20%; right: -10%; background: radial-gradient(circle, var(--g-red) 0%, transparent 68%); animation-delay: -7s; }
+    body.instance-active .ambient-glow, body.instance-active #particleCanvas, body.instance-active .bg-overlay { display: none; animation: none; }
+    @media (prefers-reduced-motion: reduce) { .ambient-glow { animation: none; } }
 
     @keyframes floatGlow {
       0% { transform: translate(0, 0) scale(0.9); }
@@ -346,9 +348,12 @@
       alpha: Math.random() * 0.5 + 0.2
     }));
 
+    const darkMq = window.matchMedia('(prefers-color-scheme: dark)');
     function animateParticles() {
+      if (document.hidden) { particleRaf = requestAnimationFrame(animateParticles); return; }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = darkMq.matches;
+      ctx.fillStyle = isDark ? '#fff' : '#000';
 
       particles.forEach(p => {
         p.x += p.vx;
@@ -359,9 +364,9 @@
         if (p.y < 0) p.y = canvas.height;
         if (p.y > canvas.height) p.y = 0;
 
+        ctx.globalAlpha = isDark ? p.alpha : p.alpha * 0.35;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = isDark ? `rgba(255, 255, 255, ${p.alpha})` : `rgba(0, 0, 0, ${p.alpha * 0.35})`;
         ctx.fill();
       });
 
@@ -455,6 +460,8 @@
         if (!loaded || !faded) return;
         window.__welcomeDone = true;
         cancelAnimationFrame(particleRaf);
+        window.removeEventListener('resize', resizeCanvas);
+        canvas.width = canvas.height = 0;
         frame.hidden = false;
         requestAnimationFrame(() => frame.classList.add('is-shown'));
         document.body.classList.add('instance-active');
@@ -494,8 +501,6 @@
 &lt;html lang="ja"&gt;
 &lt;head&gt;
   &lt;script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2644176974704249"
-     crossorigin="anonymous"&gt;&lt;/script&gt;
-&lt;script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2644176974704249"
      crossorigin="anonymous"&gt;&lt;/script&gt;
 &lt;meta charset="UTF-8"&gt;
 &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
@@ -1597,7 +1602,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 &lt;header class="site-header"&gt;
   &lt;div class="header-inner"&gt;
     &lt;a class="brand" href="javascript:void(0)" onclick="showPage('home')"&gt;
-      &lt;div class="brand-logo"&gt;&lt;img src="/Site-logo.png" alt="仲良しインスタンス2 ロゴ"&gt;&lt;/div&gt;
+      &lt;div class="brand-logo"&gt;&lt;img loading="lazy" decoding="async" src="/Site-logo.png" alt="仲良しインスタンス2 ロゴ"&gt;&lt;/div&gt;
       &lt;div&gt;
         &lt;div class="brand-title"&gt;仲良し *インスタンス* 2 &lt;span class="pixel-clock brand-clock" id="clock"&gt;00:00:00&lt;/span&gt;&lt;/div&gt;
         &lt;div class="brand-sub"&gt;NAKAYOSI INSTANCE 2 ／ Information Portal&lt;/div&gt;
@@ -2578,7 +2583,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     &lt;div class="image-viewer-modal" id="imageViewerModal"&gt;
         &lt;div class="viewer-header"&gt;
             &lt;div class="viewer-site-info"&gt;
-                &lt;img src="" id="viewerSiteIcon" class="viewer-site-icon" alt="icon"&gt;
+                &lt;img loading="lazy" decoding="async" src="" id="viewerSiteIcon" class="viewer-site-icon" alt="icon"&gt;
                 &lt;span id="viewerSiteName"&gt;XBOX&lt;/span&gt;
             &lt;/div&gt;
             &lt;div class="viewer-actions"&gt;
@@ -2590,7 +2595,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
         &lt;/div&gt;
         &lt;div class="viewer-main-content"&gt;
             &lt;div class="viewer-image-container"&gt;
-                &lt;img src="" id="viewerMainImg" alt="preview"&gt;
+                &lt;img loading="lazy" decoding="async" src="" id="viewerMainImg" alt="preview"&gt;
                 &lt;button class="viewer-lens-btn" title="レンズ検索"&gt;&lt;svg class="svg-icon"&gt;&lt;use href="#icon-camera"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/button&gt;
             &lt;/div&gt;
             &lt;div class="viewer-details-bar"&gt;
@@ -3229,7 +3234,7 @@ async function fetchWikipediaImageFallback(query) {
                     const thumbUrl = `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg`;
                     shortsHtml += `
                         &lt;div class="short-item-card" onclick="openVideoDetails('${s.videoId}')"&gt;
-                            &lt;img class="short-item-thumb" src="${thumbUrl}" alt="short" loading="lazy"&gt;
+                            &lt;img loading="lazy" decoding="async" class="short-item-thumb" src="${thumbUrl}" alt="short" loading="lazy"&gt;
                             &lt;div class="short-item-title"&gt;${s.title}&lt;/div&gt;
                         &lt;/div&gt;
                     `;
@@ -3390,11 +3395,11 @@ async function fetchITunesMusicAPI(query) {
                 const origIndex = currentImagesData.indexOf(relItem);
                 relatedHtml += `
                     &lt;div class="image-card" onclick="openImageViewer(${origIndex})"&gt;
-                        &lt;img src="${relItem.img_src}" loading="lazy" alt="img" onerror="this.src='https://via.placeholder.com/200x150?text=No+Image'"&gt;
+                        &lt;img loading="lazy" decoding="async" src="${relItem.img_src}" loading="lazy" alt="img" onerror="this.src='https://via.placeholder.com/200x150?text=No+Image'"&gt;
                         &lt;div class="image-card-info"&gt;
                             &lt;div class="image-card-title"&gt;${relItem.title}&lt;/div&gt;
                             &lt;div class="image-card-source"&gt;
-                                &lt;img src="${relFavicon}" onerror="this.style.display='none'"&gt;
+                                &lt;img loading="lazy" decoding="async" src="${relFavicon}" onerror="this.style.display='none'"&gt;
                                 &lt;span&gt;${relDomain}&lt;/span&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -3454,11 +3459,11 @@ async function fetchITunesMusicAPI(query) {
                     const faviconUrl = `https://www.google.com/s2/favicons?domain=${getDomain(item.url)}&amp;sz=32`;
                     html += `
                         &lt;div class="image-card" onclick="openImageViewer(${globalIdx})"&gt;
-                            &lt;img src="${item.img_src}" loading="lazy" alt="img" onerror="this.src='https://via.placeholder.com/200x150?text=No+Image'"&gt;
+                            &lt;img loading="lazy" decoding="async" src="${item.img_src}" loading="lazy" alt="img" onerror="this.src='https://via.placeholder.com/200x150?text=No+Image'"&gt;
                             &lt;div class="image-card-info"&gt;
                                 &lt;div class="image-card-title"&gt;${item.title}&lt;/div&gt;
                                 &lt;div class="image-card-source"&gt;
-                                    &lt;img src="${faviconUrl}" onerror="this.style.display='none'"&gt;
+                                    &lt;img loading="lazy" decoding="async" src="${faviconUrl}" onerror="this.style.display='none'"&gt;
                                     &lt;span&gt;${domain}&lt;/span&gt;
                                 &lt;/div&gt;
                             &lt;/div&gt;
@@ -3480,7 +3485,7 @@ async function fetchITunesMusicAPI(query) {
 
                     card.innerHTML = `
                         &lt;div class="video-card-thumb"&gt;
-                            &lt;img src="${thumbUrl}" alt="thumb" loading="lazy"&gt;
+                            &lt;img loading="lazy" decoding="async" src="${thumbUrl}" alt="thumb" loading="lazy"&gt;
                             ${badgeHtml}
                         &lt;/div&gt;
                         &lt;div class="video-card-info"&gt;
@@ -3502,7 +3507,7 @@ async function fetchITunesMusicAPI(query) {
                 results.forEach(item =&gt; {
                     html += `
                         &lt;a href="${item.url}" class="card" target="_blank"&gt;
-                            &lt;img src="${item.img_src}" loading="lazy" alt="item" onerror="this.src='https://via.placeholder.com/200x160?text=No+Image'"&gt;
+                            &lt;img loading="lazy" decoding="async" src="${item.img_src}" loading="lazy" alt="item" onerror="this.src='https://via.placeholder.com/200x160?text=No+Image'"&gt;
                             &lt;div class="card-body"&gt;
                                 &lt;div class="card-title"&gt;${item.title}&lt;/div&gt;
                                 &lt;div class="card-price"&gt;${item.price}&lt;/div&gt;
@@ -3523,7 +3528,7 @@ async function fetchITunesMusicAPI(query) {
                 results.forEach(item =&gt; {
                     html += `
                         &lt;div class="card"&gt;
-                            &lt;img src="${item.img_src}" loading="lazy" alt="artwork"&gt;
+                            &lt;img loading="lazy" decoding="async" src="${item.img_src}" loading="lazy" alt="artwork"&gt;
                             &lt;div class="card-body"&gt;
                                 &lt;a href="${item.url}" target="_blank" class="card-title"&gt;${item.title}&lt;/a&gt;
                                 &lt;div class="card-meta"&gt;${item.artist} - ${item.album}&lt;/div&gt;
@@ -4220,7 +4225,7 @@ function renderGames(homeOnly){
   const esc = s =&gt; String(s||'').replace(/'/g,"\\'");
   const cardHtml = (g, i) =&gt; `
     &lt;div class="game-card gc-wide" onclick="openGame('${esc(g.url)}','${esc(g.name)}')" role="button" tabindex="0" aria-label="${g.name}" data-tag="${g.tag||''}"&gt;
-      &lt;div class="gc-media"&gt;&lt;img src="${g.img}" alt="${g.name}" loading="lazy" decoding="async"&gt;&lt;/div&gt;
+      &lt;div class="gc-media"&gt;&lt;img loading="lazy" decoding="async" src="${g.img}" alt="${g.name}" loading="lazy" decoding="async"&gt;&lt;/div&gt;
       &lt;div class="gc-body"&gt;
         ${i &lt; 3 ? '&lt;span class="gc-tag"&gt;HOT&lt;/span&gt;' : '&lt;span class="gc-tag gc-tag-plain"&gt;GAME&lt;/span&gt;'}
         &lt;p class="gc-kicker"&gt;${safeText(g.tag||'GAMES').toUpperCase()}&lt;/p&gt;
@@ -4253,7 +4258,7 @@ function renderGames(homeOnly){
     const h = GAMES[0];
     heroEl.innerHTML = `
       &lt;div class="cg-hero-card" onclick="openGame('${h.url.replace(/'/g,"\\'")}','${h.name.replace(/'/g,"\\'")}')" role="button" tabindex="0"&gt;
-        &lt;img src="${h.img}" alt="${h.name}" loading="lazy"&gt;
+        &lt;img loading="lazy" decoding="async" src="${h.img}" alt="${h.name}" loading="lazy"&gt;
         &lt;div class="cg-hero-body"&gt;
           &lt;span class="cg-hero-badge"&gt;FEATURED&lt;/span&gt;
           &lt;h3&gt;${h.name}&lt;/h3&gt;
@@ -4277,7 +4282,7 @@ function filterGamesByTag(tag){
 // イベント描画
 function eventBannerHtml(e){
   const live = e.status==='live';
-  return `&lt;div class="ao-banner${live?'':' ev-ended'}"&gt;&lt;div class="ao-banner-media"&gt;&lt;img src="${e.img}" alt="${safeText(e.name)}" loading="lazy" decoding="async"&gt;&lt;/div&gt;&lt;div class="ao-content"&gt;&lt;span class="tag"&gt;${live?'EVENT 開催中':'EVENT 終了'}&lt;/span&gt;&lt;p class="ao-kicker"&gt;${safeText(e.kicker)}&lt;/p&gt;&lt;h2&gt;${e.icon} ${safeText(e.name)}&lt;/h2&gt;&lt;p&gt;${safeText(e.desc)}&lt;/p&gt;&lt;ul class="ao-meta"&gt;${e.meta.map(m=&gt;`&lt;li&gt;${safeText(m)}&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;a class="ao-btn" href="${e.url}" target="_blank" rel="noopener"&gt;&lt;span&gt;${live?'イベントに参加':'もう一度遊ぶ'}&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;`;
+  return `&lt;div class="ao-banner${live?'':' ev-ended'}"&gt;&lt;div class="ao-banner-media"&gt;&lt;img loading="lazy" decoding="async" src="${e.img}" alt="${safeText(e.name)}" loading="lazy" decoding="async"&gt;&lt;/div&gt;&lt;div class="ao-content"&gt;&lt;span class="tag"&gt;${live?'EVENT 開催中':'EVENT 終了'}&lt;/span&gt;&lt;p class="ao-kicker"&gt;${safeText(e.kicker)}&lt;/p&gt;&lt;h2&gt;${e.icon} ${safeText(e.name)}&lt;/h2&gt;&lt;p&gt;${safeText(e.desc)}&lt;/p&gt;&lt;ul class="ao-meta"&gt;${e.meta.map(m=&gt;`&lt;li&gt;${safeText(m)}&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;a class="ao-btn" href="${e.url}" target="_blank" rel="noopener"&gt;&lt;span&gt;${live?'イベントに参加':'もう一度遊ぶ'}&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;`;
 }
 function renderEvents(){
   const live = EVENTS.filter(e=&gt;e.status==='live'), past = EVENTS.filter(e=&gt;e.status!=='live');
@@ -4289,7 +4294,7 @@ function renderEvents(){
   const slot=document.getElementById('aoModalSlot');
   if(slot &amp;&amp; live[0] &amp;&amp; !sessionStorage.getItem('ev_modal_seen')){
     const e=live[0];
-    slot.innerHTML = `&lt;div class="ao-modal" id="aoModal" onclick="if(event.target===this)this.remove()"&gt;&lt;div class="ao-card"&gt;&lt;button class="ao-close" onclick="document.getElementById('aoModal').remove()" aria-label="閉じる"&gt;×&lt;/button&gt;&lt;span class="tag"&gt;EVENT 開催中&lt;/span&gt;&lt;p class="ao-kicker"&gt;${safeText(e.kicker)}&lt;/p&gt;&lt;h2&gt;${e.icon} ${safeText(e.name)}&lt;/h2&gt;&lt;img src="${e.img}" alt="${safeText(e.name)}" decoding="async"&gt;&lt;p&gt;${safeText(e.desc)}&lt;/p&gt;&lt;a class="ao-btn" href="${e.url}" target="_blank" rel="noopener"&gt;&lt;span&gt;イベントに参加&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;button class="ao-skip" onclick="document.getElementById('aoModal').remove()"&gt;あとで&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;`;
+    slot.innerHTML = `&lt;div class="ao-modal" id="aoModal" onclick="if(event.target===this)this.remove()"&gt;&lt;div class="ao-card"&gt;&lt;button class="ao-close" onclick="document.getElementById('aoModal').remove()" aria-label="閉じる"&gt;×&lt;/button&gt;&lt;span class="tag"&gt;EVENT 開催中&lt;/span&gt;&lt;p class="ao-kicker"&gt;${safeText(e.kicker)}&lt;/p&gt;&lt;h2&gt;${e.icon} ${safeText(e.name)}&lt;/h2&gt;&lt;img loading="lazy" decoding="async" src="${e.img}" alt="${safeText(e.name)}" decoding="async"&gt;&lt;p&gt;${safeText(e.desc)}&lt;/p&gt;&lt;a class="ao-btn" href="${e.url}" target="_blank" rel="noopener"&gt;&lt;span&gt;イベントに参加&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;button class="ao-skip" onclick="document.getElementById('aoModal').remove()"&gt;あとで&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;`;
     try{ sessionStorage.setItem('ev_modal_seen','1'); }catch(err){}
   }
 }
@@ -4434,7 +4439,7 @@ function applySavedSettings(){
     const opv = document.getElementById('bg-image-opacity-val'); if(opv) opv.textContent = (s.bgOpacity || 100)+'%';
     const fx = document.getElementById('bg-image-fixed'); if(fx) fx.checked = s.bgFixed !== false;
     const pv = document.getElementById('bg-image-preview');
-    if(pv) pv.innerHTML = `&lt;img src="${s.bgImage}" alt="背景プレビュー" style="max-width:220px;max-height:130px;border-radius:8px;border:1px solid var(--border)"&gt;`;
+    if(pv) pv.innerHTML = `&lt;img loading="lazy" decoding="async" src="${s.bgImage}" alt="背景プレビュー" style="max-width:220px;max-height:130px;border-radius:8px;border:1px solid var(--border)"&gt;`;
   }
   if(s.disguise){
     const d = document.getElementById('disguise-select'); if(d) d.value = s.disguise;
@@ -4506,7 +4511,7 @@ function onBgImageSelected(e){
     }
     applyBgImage(dataUrl, fixed, opacity);
     const pv = document.getElementById('bg-image-preview');
-    if(pv) pv.innerHTML = `&lt;img src="${dataUrl}" alt="背景プレビュー" style="max-width:220px;max-height:130px;border-radius:8px;border:1px solid var(--border)"&gt;`;
+    if(pv) pv.innerHTML = `&lt;img loading="lazy" decoding="async" src="${dataUrl}" alt="背景プレビュー" style="max-width:220px;max-height:130px;border-radius:8px;border:1px solid var(--border)"&gt;`;
   };
   reader.readAsDataURL(file);
 }
