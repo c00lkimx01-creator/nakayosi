@@ -7692,8 +7692,155 @@ loadNews(); setInterval(loadNews, 600000);
 
 })();
 &lt;/script&gt;
-&lt;link rel="stylesheet" href="search-full.css"&gt;
-&lt;script src="music-library.js"&gt;&lt;/script&gt;
+&lt;style&gt;
+/* Full-width search surface. Other portal pages retain their existing layout. */
+body.search-page &gt; .wrap,
+body.glass-mode.search-page &gt; .wrap { max-width:none; width:100%; margin:0; padding:0!important; gap:0; }
+body.search-page &gt; .wrap &gt; .main { width:100%; min-width:0; }
+body.search-page #search-page { min-height:var(--search-available-height,100dvh); margin:0; display:flex; flex-direction:column; }
+body.search-page #search-page &gt; .card { flex:1; display:flex; flex-direction:column; border:0; border-radius:0; margin:0; }
+body.search-page #search-page &gt; .section-head { border-radius:0; }
+body.search-page #search-app { width:100%; flex:1; min-height:0; border:0; border-radius:0; box-shadow:none; }
+body.search-page #search-app .container:not(.results-mode) { min-height:0; flex:1; justify-content:center; padding:40px 20px; }
+body.search-page #search-app &gt; footer { width:100%; max-width:none; margin:auto 0 0; border-right:0; border-left:0; border-bottom:0; }
+body.search-page #search-app .container.results-mode { width:100%; max-width:none; }
+body.search-page #search-app .results-wrapper { flex:1; min-width:0; max-width:none; }
+body.search-page #search-app .results-mode .search-header { flex-wrap:wrap; }
+#search-app #musicTools[hidden] { display:none; }
+#search-app #musicTools { margin:16px 0; width:100%; }
+#search-app .music-toolbar { display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; }
+#search-app .music-sources { display:flex; gap:4px; }
+#search-app .music-sources button,#search-app .music-add,#search-app .music-remove { border:1px solid var(--border-color); background:var(--input-bg); color:var(--text-color); border-radius:6px; padding:10px 14px; font-size:14px; cursor:pointer; }
+#search-app .music-sources button[aria-pressed="true"] { border-color:var(--accent-blue); color:var(--accent-blue); }
+#search-app .music-add { font-weight:600; color:var(--accent-blue); }
+#search-app .music-note { font-size:12px; color:var(--text-muted); line-height:1.6; margin-top:8px; overflow-wrap:anywhere; }
+#search-app .music-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr)); gap:18px; width:100%; }
+#search-app .music-track { min-width:0; border-radius:8px; }
+#search-app .music-track .card-title,#search-app .music-track .card-meta { overflow-wrap:anywhere; }
+#search-app .music-track .card-body { display:flex; flex-direction:column; gap:8px; padding:16px; }
+#search-app .music-track img { height:180px; width:100%; object-fit:contain; background:var(--input-bg); }
+#search-app .music-cover { height:180px; display:grid; place-items:center; font-size:64px; color:var(--accent-blue); background:var(--input-bg); }
+#search-app .music-remove { align-self:flex-end; padding:6px 12px; }
+#search-app .music-store { color:var(--accent-blue); font-size:13px; }
+#search-app .music-empty { text-align:center; padding:48px 16px; color:var(--text-muted); }
+body.search-page #search-app .logo { letter-spacing:0; }
+@media(max-width:880px) {
+ body.search-page { padding-bottom:0!important; }
+ body.search-page &gt; .header-search { display:none!important; }
+ body.search-page #search-app { padding-bottom:100px; }
+ body.search-page #search-app .results-mode .search-header { flex-direction:column; gap:14px; }
+ body.search-page #search-app .container.results-mode { padding:16px; }
+ body.search-page #search-app .nkys-quick-actions { flex-wrap:wrap; }
+ body.search-page #search-app .logo-box { flex-wrap:wrap; justify-content:center; }
+}
+
+&lt;/style&gt;
+&lt;script&gt;
+/* NKYS music: device files remain on this device and are held for this session. */
+(function bootMusic() {
+  'use strict';
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', bootMusic, { once:true }); return; }
+  const tracks = new Map();
+  let source = 'device';
+  const app = document.getElementById('search-app');
+  if (!app) return;
+  const tools = document.createElement('div');
+  tools.id = 'musicTools';
+  tools.hidden = true;
+  tools.innerHTML = '&lt;div class="music-toolbar"&gt;&lt;div class="music-sources" role="group" aria-label="音楽の検索先"&gt;&lt;button type="button" data-source="device" aria-pressed="true"&gt;マイ音楽&lt;/button&gt;&lt;button type="button" data-source="online" aria-pressed="false"&gt;曲を探す&lt;/button&gt;&lt;/div&gt;&lt;button type="button" id="addMusicButton" class="music-add"&gt;＋ 音楽を追加&lt;/button&gt;&lt;input type="file" id="musicFiles" accept="audio/*,.mp3,.m4a,.wav,.ogg,.flac,.aac,.opus" multiple hidden&gt;&lt;/div&gt;&lt;p class="music-note"&gt;追加した音楽はこの画面を閉じるまで利用できます。オンラインの曲は試聴のみです。&lt;/p&gt;&lt;p id="musicStatus" class="music-note" role="status" aria-live="polite"&gt;&lt;/p&gt;';
+  document.getElementById('tabs').after(tools);
+  const status = document.getElementById('musicStatus');
+  const input = document.getElementById('musicFiles');
+  const button = document.getElementById('addMusicButton');
+  button.addEventListener('click', () =&gt; input.click());
+  const refresh = () =&gt; {
+    document.getElementById('mainContainer').classList.add('results-mode');
+    window.refreshMusicSearch?.();
+  };
+  tools.querySelectorAll('[data-source]').forEach(b =&gt; b.addEventListener('click', () =&gt; {
+    source = b.dataset.source;
+    tools.querySelectorAll('[data-source]').forEach(x =&gt; x.setAttribute('aria-pressed', String(x === b)));
+    status.textContent = '';
+    refresh();
+  }));
+  input.addEventListener('change', () =&gt; {
+    let added = 0, invalid = 0;
+    for (const file of input.files || []) {
+      if (!file.type.startsWith('audio/') &amp;&amp; !/\.(mp3|m4a|wav|ogg|flac|aac|opus)$/i.test(file.name)) { invalid++; continue; }
+      const key = file.name + ':' + file.size + ':' + file.lastModified;
+      if (Array.from(tracks.values()).some(t =&gt; t.key === key)) continue;
+      const id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + '-' + tracks.size;
+      const url = URL.createObjectURL(file);
+      tracks.set(id, { id, key, title: file.name.replace(/\.[^.]+$/, ''), artist: 'この端末', album: '追加した音楽', previewUrl: url, url, local: true, file });
+      added++;
+    }
+    source = 'device';
+    tools.querySelectorAll('[data-source]').forEach(x =&gt; x.setAttribute('aria-pressed', String(x.dataset.source === source)));
+    status.textContent = added + '曲を追加しました。' + (invalid ? '音楽以外のファイルは追加されませんでした。' : '');
+    input.value = '';
+    refresh();
+  });
+  app.addEventListener('play', e =&gt; {
+    if (e.target.tagName !== 'AUDIO') return;
+    app.querySelectorAll('audio').forEach(a =&gt; { if (a !== e.target) a.pause(); });
+  }, true);
+  function render(items, results) {
+    results.replaceChildren();
+    if (!items.length) {
+      const empty = document.createElement('p'); empty.className = 'music-empty';
+      empty.textContent = source === 'device' ? (tracks.size ? '一致する曲がありません。' : 'まだ音楽がありません。') : '検索する曲名・アーティスト名を入力してください。';
+      results.appendChild(empty); return;
+    }
+    const grid = document.createElement('div'); grid.className = 'music-grid';
+    for (const item of items) {
+      const card = document.createElement('article'); card.className = 'card music-track';
+      if (item.img_src) {
+        const img = document.createElement('img'); img.src = item.img_src; img.alt = item.album || item.title; img.loading = 'lazy'; card.appendChild(img);
+      } else {
+        const cover = document.createElement('div'); cover.className = 'music-cover'; cover.textContent = '♫'; cover.setAttribute('aria-hidden', 'true'); card.appendChild(cover);
+      }
+      const body = document.createElement('div'); body.className = 'card-body';
+      const title = document.createElement('h3'); title.className = 'card-title'; title.textContent = item.title || 'タイトルなし';
+      const meta = document.createElement('p'); meta.className = 'card-meta'; meta.textContent = [item.artist, item.album].filter(Boolean).join(' · ');
+      const badge = document.createElement('span'); badge.className = 'music-note'; badge.textContent = item.local ? 'フル再生' : '試聴';
+      body.append(title, meta, badge);
+      if (item.previewUrl) {
+        const audio = document.createElement('audio'); audio.controls = true; audio.preload = 'none'; audio.src = item.previewUrl; audio.setAttribute('aria-label', item.title + 'を再生');
+        audio.addEventListener('error', () =&gt; { badge.textContent = item.local ? 'この形式を再生できません。MP3やWAVをお試しください。' : '試聴を再生できません。Apple Musicで曲を開いてください。'; });
+        body.appendChild(audio);
+      } else { badge.textContent = '試聴音源なし'; }
+      if (item.local) {
+        const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'music-remove'; remove.textContent = '削除'; remove.setAttribute('aria-label', item.title + 'を削除');
+        remove.onclick = () =&gt; { card.querySelector('audio')?.pause(); URL.revokeObjectURL(item.previewUrl); tracks.delete(item.id); refresh(); status.textContent = '曲を削除しました。'; };
+        body.appendChild(remove);
+      } else if (item.url &amp;&amp; /^https:\/\//.test(item.url)) {
+        const link = document.createElement('a'); link.href = item.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Apple Musicで開く'; link.className = 'music-store'; body.appendChild(link);
+      }
+      card.appendChild(body); grid.appendChild(card);
+    }
+    results.appendChild(grid);
+  }
+  window.nkysMusic = {
+    show(active) { tools.hidden = !active; },
+    get source() { return source; },
+    search(query) { const q = query.normalize('NFKC').toLocaleLowerCase(); return Array.from(tracks.values()).filter(t =&gt; [t.title, t.artist, t.album].join(' ').normalize('NFKC').toLocaleLowerCase().includes(q)); },
+    render,
+    message(text) { status.textContent = text; }
+  };
+  const actions = app.querySelector('.nkys-quick-actions');
+  if (actions) {
+    const music = document.createElement('button'); music.type = 'button'; music.className = 'nkys-quick-action'; music.title = '音楽'; music.setAttribute('aria-label', '音楽');
+    music.innerHTML = '&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-music"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;音楽&lt;/span&gt;';
+    music.onclick = () =&gt; {
+      const tab = app.querySelector('.tab[data-cat="music"]');
+      window.changeCategory('music', { currentTarget: tab });
+    };
+    actions.insertBefore(music, actions.lastElementChild);
+  }
+  window.addEventListener('pagehide', () =&gt; tracks.forEach(t =&gt; URL.revokeObjectURL(t.previewUrl)));
+})();
+
+&lt;/script&gt;
 &lt;script&gt;
 (function(){
  function size(){const wrap=document.querySelector('body &gt; .wrap'); if(!wrap)return; const top=wrap.getBoundingClientRect().top+window.scrollY; document.documentElement.style.setProperty('--search-available-height',Math.max(0,innerHeight-top)+'px');}
