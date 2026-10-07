@@ -374,7 +374,7 @@
     // welcome アニメーション後、自動でフェードアウトしてポータルを表示
 
     // ===== URLルーティング (/welcome, /links など) =====
-    const ROUTE_PAGES = ['welcome','home','news','weather','events','calendar','links','games','tv','search','settings','terms','tools'];
+    const ROUTE_PAGES = ['welcome','home','news','weather','events','calendar','links','games','tv','search','settings','terms','tools','chats'];
     const ROUTER = (function(){
       const url = new URL(location.href);
       let base, initial = '';
@@ -393,7 +393,7 @@
       if (!ROUTE_PAGES.includes(initial) || initial === 'welcome') initial = 'home';
       const qs = url.searchParams.toString();
       const tail = (qs ? '?' + qs : '') + url.hash;
-      history.replaceState({page:'welcome', target:initial}, '', base + 'welcome' + tail);
+      if (initial !== 'chats') history.replaceState({page:'welcome', target:initial}, '', base + 'welcome' + tail);
       return { base, initial, tail };
     })();
     function routeUrl(id){ return ROUTER.base + id; }
@@ -405,13 +405,14 @@
         let silent = false;
         const wrapped = function(id){
           const res = orig.apply(this, arguments);
+          document.title = id === 'chats' ? '仲良しCHAT — 仲良しInstance 2' : '仲良し *インスタンス* 2 — 情報ポータル';
           if (!silent && ROUTE_PAGES.includes(id) && history.state?.page !== id) {
             history.pushState({page:id}, '', routeUrl(id));
           }
           return res;
         };
         w.showPage = wrapped;
-        const go = (id) => { silent = true; try { orig.call(w, id); } finally { silent = false; } };
+        const go = (id) => { silent = true; try { orig.call(w, id); document.title = id === 'chats' ? '仲良しCHAT — 仲良しInstance 2' : '仲良し *インスタンス* 2 — 情報ポータル'; } finally { silent = false; } };
         go(ROUTER.initial);
         history.replaceState({page:ROUTER.initial}, '', routeUrl(ROUTER.initial) + ROUTER.tail);
         window.addEventListener('popstate', (e) => {
@@ -437,7 +438,7 @@
         frame.hidden = false;
         requestAnimationFrame(() => frame.classList.add('is-shown'));
         document.body.classList.add('instance-active');
-        document.title = '仲良し *インスタンス* 2 — 情報ポータル';
+        document.title = ROUTER.initial === 'chats' ? '仲良しCHAT — 仲良しInstance 2' : '仲良し *インスタンス* 2 — 情報ポータル';
       };
       frame.addEventListener('load', () => {
         const innerDocument = frame.contentDocument;
@@ -457,6 +458,7 @@
       const last = spans[spans.length - 1];
       let done = false;
       const finish = () => { if (done) return; done = true; setTimeout(showInstance, 700); };
+      if (ROUTER.initial === 'chats') { document.addEventListener('DOMContentLoaded', showInstance, { once: true }); return; }
       if (last) {
         last.addEventListener('animationend', finish, { once: true });
         // 万が一 animationend が発火しない環境向けの保険（最終ディレイ1.3s+0.4s+余韻）
@@ -1615,7 +1617,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;a href="javascript:void(0)" onclick="showPage('search')" class="nav-link" data-page="search"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="11" cy="11" r="7"/&gt;&lt;path d="m20 20-3.8-3.8"/&gt;&lt;/svg&gt;検索&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('settings')" class="nav-link" data-page="settings"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="3"/&gt;&lt;path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/&gt;&lt;/svg&gt;設定&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('terms')" class="nav-link" data-page="terms"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/&gt;&lt;path d="M14 3v5h5M9 13h6M9 17h4"/&gt;&lt;/svg&gt;利用規約&lt;/a&gt;
-      &lt;a href="javascript:void(0)" onclick="openChatModal()"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M21 12a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z"/&gt;&lt;/svg&gt;CHAT&lt;/a&gt;
+      &lt;a href="javascript:void(0)" onclick="showPage('chats')" class="nav-link" data-page="chats"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M21 12a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8Z"/&gt;&lt;/svg&gt;CHAT&lt;/a&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/nav&gt;
@@ -3716,6 +3718,89 @@ window.sxSaveSettings = sxSaveSettings;
       &lt;/div&gt;
     &lt;/section&gt;
 
+  &lt;section id="chats-page" class="page"&gt;
+&lt;div class="nkchat-heading"&gt;
+  &lt;div&gt;&lt;span class="nkchat-eyebrow"&gt;COMMUNITY&lt;/span&gt;&lt;h1&gt;仲良しCHAT&lt;/h1&gt;&lt;/div&gt;
+  &lt;div id="nkchat-userbar"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 認証 --&gt;
+&lt;div id="nkchat-auth-panel"&gt;
+  &lt;h2&gt;ログイン / 新規登録&lt;/h2&gt;
+  &lt;div class="row"&gt;
+    &lt;input id="nkchat-username" type="text" placeholder="ユーザー名" aria-label="ユーザー名" required autocomplete="username"&gt;
+    &lt;input id="nkchat-password" type="password" placeholder="パスワード" aria-label="パスワード" required autocomplete="current-password"&gt;
+  &lt;/div&gt;
+  &lt;div class="row"&gt;
+    &lt;button id="nkchat-btn-login" class="btn-dark"&gt;ログイン&lt;/button&gt;
+    &lt;button id="nkchat-btn-register"&gt;新規登録&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div id="nkchat-auth-error" role="alert" class="error"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div id="nkchat-wrap" class="hidden"&gt;
+  &lt;div id="nkchat-content"&gt;
+    &lt;!-- 設定(インライン) --&gt;
+    &lt;div id="nkchat-settings-panel" class="hidden"&gt;
+      &lt;h2&gt;設定&lt;/h2&gt;
+      &lt;div class="row"&gt;
+        &lt;span&gt;名前の色:&lt;/span&gt;
+        &lt;div class="color-choices" id="nkchat-color-choices"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="row"&gt;
+        &lt;span&gt;プレビュー:&lt;/span&gt;
+        &lt;b id="nkchat-name-preview"&gt;名前&lt;/b&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- スレ一覧 --&gt;
+    &lt;div id="nkchat-list-view"&gt;
+      &lt;div id="nkchat-thread-create"&gt;
+        &lt;input id="nkchat-new-room-name" type="text" placeholder="新しいスレッドのタイトル" aria-label="新しいスレッドのタイトル" maxlength="120"&gt;
+        &lt;button id="nkchat-btn-create-room" class="btn-dark"&gt;スレを立てる&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div id="nkchat-room-error" role="alert" class="error"&gt;&lt;/div&gt;
+      &lt;div id="nkchat-room-list"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- スレ表示 --&gt;
+    &lt;div id="nkchat-thread-view" class="hidden"&gt;
+      &lt;div id="nkchat-thread-head"&gt;
+        &lt;button id="nkchat-btn-back"&gt;← 一覧&lt;/button&gt;
+        &lt;h2 id="nkchat-current-room-title"&gt;&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;div id="nkchat-msg-error" role="alert" class="error"&gt;&lt;/div&gt;
+      &lt;div id="nkchat-messages"&gt;&lt;/div&gt;
+      &lt;div id="nkchat-post-area"&gt;
+        &lt;textarea id="nkchat-msg-input" aria-label="メッセージ" placeholder="メッセージを書き込む…"&gt;&lt;/textarea&gt;
+        &lt;button id="nkchat-btn-post" class="btn-dark"&gt;送信&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- 右サイドバー --&gt;
+  &lt;div id="nkchat-sidebar"&gt;
+    &lt;div class="side-box"&gt;
+      &lt;h2&gt;時刻&lt;/h2&gt;
+      &lt;div class="body"&gt;&lt;div id="nkchat-clock"&gt;--:--:--&lt;/div&gt;&lt;div id="nkchat-date"&gt;&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="side-box"&gt;
+      &lt;h2&gt;天気 &lt;span id="nkchat-w-loc" &gt;（東京）&lt;/span&gt;&lt;/h2&gt;
+      &lt;div class="body" id="nkchat-weather"&gt;読み込み中...&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="side-box"&gt;
+      &lt;h2&gt;地震情報&lt;/h2&gt;
+      &lt;div class="body" id="nkchat-quakes"&gt;読み込み中...&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="side-box"&gt;
+      &lt;h2&gt;ニュース（NHK）&lt;/h2&gt;
+      &lt;div class="body" id="nkchat-news"&gt;読み込み中...&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/section&gt;
+
   &lt;/main&gt;
 
   &lt;!-- ───── サイドバー ───── --&gt;
@@ -3763,7 +3848,7 @@ window.sxSaveSettings = sxSaveSettings;
     &lt;/ul&gt;&lt;/div&gt;
     &lt;div&gt;&lt;h4&gt;外部&lt;/h4&gt;&lt;ul&gt;
       &lt;li&gt;&lt;a href="https://sites.google.com/view/nakayosi-instance/" target="_blank"&gt;公式サイト ↗&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href="javascript:void(0)" onclick="openChatModal()"&gt;仲良しCHAT ↗&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="javascript:void(0)" onclick="showPage('chats')"&gt;仲良しCHAT&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;&lt;/div&gt;
   &lt;/div&gt;
   &lt;div class="footer-copy"&gt;© 2026 2a_exe. All Rights Reserved.&lt;/div&gt;
@@ -4260,6 +4345,7 @@ function exportCalendarIcs(){
 
 // ページ切替
 function showPage(id){
+  document.body.classList.toggle('chats-active', id === 'chats');
   if(id==='calendar') renderCalendar();
   if(id==='links' &amp;&amp; !document.getElementById('linkCats').children.length) renderLinks();
   if(id==='games') renderGames();
@@ -4997,166 +5083,6 @@ document.addEventListener('visibilitychange', ()=&gt;{
 });
 window.addEventListener('online', refreshAllLive);
 
-&lt;/script&gt;
-
-&lt;!-- ───── CHATモーダル（サイトデザイン統一版） ───── --&gt;
-&lt;style&gt;
-  .chat-modal-backdrop{
-    display:none;position:fixed;inset:0;z-index:1200;
-    background:radial-gradient(ellipse at top, color-mix(in oklab, var(--primary) 20%, transparent) 0%, rgba(0,0,0,.78) 60%);
-    backdrop-filter:blur(6px) saturate(120%);
-    -webkit-backdrop-filter:blur(6px) saturate(120%);
-    justify-content:center;align-items:center;padding:20px;
-    animation:chatFade .18s ease-out;
-  }
-  @keyframes chatFade{from{opacity:0}to{opacity:1}}
-  @keyframes chatPop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
-
-  .chat-modal{
-    background:var(--surface);
-    width:100%;max-width:1100px;height:90vh;
-    border-radius:16px;position:relative;
-    box-shadow:0 30px 80px -20px rgba(0,0,0,.55), 0 0 0 1px var(--border), inset 0 0 0 1px color-mix(in oklab, var(--primary) 8%, transparent);
-    overflow:hidden;display:flex;flex-direction:column;
-    animation:chatPop .22s cubic-bezier(.2,.9,.3,1);
-    font-family:'Zen Maru Gothic','M PLUS Rounded 1c','Noto Sans JP',system-ui,sans-serif;
-  }
-
-  .chat-modal__header{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:12px 16px;
-    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-    color:#fff;
-    border-bottom:1px solid color-mix(in oklab, var(--primary) 40%, transparent);
-    box-shadow:0 2px 12px -4px color-mix(in oklab, var(--primary) 55%, transparent);
-  }
-  .chat-modal__title{
-    display:flex;align-items:center;gap:10px;
-    font-weight:700;font-size:1rem;letter-spacing:.3px;
-  }
-  .chat-modal__title .chat-badge{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:3px 10px;border-radius:999px;
-    background:rgba(255,255,255,.18);
-    border:1px solid rgba(255,255,255,.35);
-    font-size:.75rem;font-weight:700;letter-spacing:.5px;
-  }
-  .chat-modal__title .chat-status{
-    display:inline-block;width:8px;height:8px;border-radius:50%;
-    background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.28), 0 0 10px rgba(34,197,94,.55);
-    animation:chatPulse 1.8s ease-in-out infinite;
-  }
-  @keyframes chatPulse{0%,100%{opacity:1}50%{opacity:.55}}
-
-  .chat-modal__actions{display:flex;align-items:center;gap:4px}
-  .chat-iconbtn{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:34px;height:34px;border-radius:8px;
-    background:rgba(255,255,255,.10);
-    border:1px solid rgba(255,255,255,.20);
-    color:#fff;cursor:pointer;font-size:1rem;line-height:1;
-    transition:background .15s, transform .15s, border-color .15s;
-    text-decoration:none;
-  }
-  .chat-iconbtn:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.45);transform:translateY(-1px);color:#fff;text-decoration:none}
-  .chat-iconbtn:active{transform:translateY(0)}
-  .chat-iconbtn.danger:hover{background:rgba(255,90,90,.35);border-color:rgba(255,180,180,.6)}
-
-  .chat-modal__frame-wrap{
-    position:relative;flex:1;background:var(--surface-2);
-  }
-  .chat-modal__frame{
-    position:absolute;inset:0;width:100%;height:100%;
-    border:0;background:#fff;
-  }
-  .chat-modal__loading{
-    position:absolute;inset:0;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:12px;
-    background:var(--surface-2);color:var(--text-muted);
-    font-size:.9rem;pointer-events:none;transition:opacity .25s;
-  }
-  .chat-modal__loading.hidden{opacity:0}
-  .chat-spinner{
-    width:36px;height:36px;border-radius:50%;
-    border:3px solid color-mix(in oklab, var(--primary) 20%, transparent);
-    border-top-color:var(--primary);
-    animation:chatSpin .8s linear infinite;
-  }
-  @keyframes chatSpin{to{transform:rotate(360deg)}}
-
-  .chat-modal__footer{
-    display:flex;align-items:center;justify-content:space-between;gap:10px;
-    padding:8px 14px;
-    background:var(--surface-2);
-    border-top:1px solid var(--border);
-    color:var(--text-muted);font-size:.78rem;
-  }
-  .chat-modal__footer .chat-url{
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-    max-width:60%;font-family:'Courier New',monospace;
-  }
-
-  @media(max-width:640px){
-    .chat-modal-backdrop{padding:0}
-    .chat-modal{height:100vh;max-height:100vh;width:100vw;max-width:100vw;border-radius:0}
-    .chat-modal__title{font-size:.9rem}
-    .chat-modal__title .chat-badge{display:none}
-    .chat-iconbtn{width:38px;height:38px}
-    .chat-modal__footer{display:none}
-  }
-&lt;/style&gt;
-
-&lt;div id="chat-modal" class="chat-modal-backdrop" onclick="if(event.target===this)closeChatModal()"&gt;
-  &lt;div class="chat-modal" role="dialog" aria-modal="true" aria-labelledby="chat-modal-title"&gt;
-    &lt;div class="chat-modal__header"&gt;
-      &lt;div class="chat-modal__title" id="chat-modal-title"&gt;
-        &lt;span class="chat-status" aria-hidden="true"&gt;&lt;/span&gt;
-        &lt;span&gt;💬 仲良しCHAT&lt;/span&gt;
-        &lt;span class="chat-badge"&gt;LIVE&lt;/span&gt;
-      &lt;/div&gt;
-      &lt;div class="chat-modal__actions"&gt;
-        &lt;button class="chat-iconbtn" id="chatExpandBtn" onclick="toggleChatExpand()" title="拡大／縮小" aria-label="拡大／縮小"&gt;⛶&lt;/button&gt;
-        &lt;button class="chat-iconbtn" onclick="reloadChat()" title="再読み込み" aria-label="再読み込み"&gt;↻&lt;/button&gt;
-        &lt;a class="chat-iconbtn" href="https://snowchat-connect.lovable.app/" target="_blank" rel="noopener" title="新しいタブで開く" aria-label="新しいタブで開く"&gt;↗&lt;/a&gt;
-        &lt;button class="chat-iconbtn danger" onclick="closeChatModal()" title="閉じる (Esc)" aria-label="閉じる"&gt;✕&lt;/button&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class="chat-modal__frame-wrap"&gt;
-      &lt;div id="chat-loading" class="chat-modal__loading"&gt;
-        &lt;div class="chat-spinner" aria-hidden="true"&gt;&lt;/div&gt;
-        &lt;div&gt;CHATを読み込み中...&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;iframe id="chat-iframe" class="chat-modal__frame" src="about:blank"
-              allow="clipboard-read; clipboard-write; microphone; camera"
-              onload="document.getElementById('chat-loading').classList.add('hidden')"&gt;&lt;/iframe&gt;
-    &lt;/div&gt;
-    &lt;div class="chat-modal__footer"&gt;
-      &lt;span class="chat-url"&gt;snowchat-connect.lovable.app&lt;/span&gt;
-      &lt;span&gt;Esc で閉じる&lt;/span&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;script&gt;
-const CHAT_URL='https://snowchat-connect.lovable.app/';
-function openChatModal(){
-  const m=document.getElementById('chat-modal');
-  const f=document.getElementById('chat-iframe');
-  const l=document.getElementById('chat-loading');
-  if(f.src!==CHAT_URL){ l.classList.remove('hidden'); f.src=CHAT_URL; }
-  m.style.display='flex';
-  document.body.style.overflow='hidden';
-}
-function closeChatModal(){
-  document.getElementById('chat-modal').style.display='none';
-  document.body.style.overflow='';
-}
-function reloadChat(){
-  const f=document.getElementById('chat-iframe');
-  const l=document.getElementById('chat-loading');
-  l.classList.remove('hidden');
-  f.src=CHAT_URL+'?t='+Date.now();
-}
-document.addEventListener('keydown',e=&gt;{if(e.key==='Escape')closeChatModal();});
 &lt;/script&gt;
 
 &lt;!-- 📺 TV feature (HLS + region list) --&gt;
@@ -6225,47 +6151,7 @@ body.tv-fs-mode #tv-page .tv-player{position:fixed;inset:0;z-index:2000;max-heig
   }
   bindTv();
 
-  /* ================= 6. CHAT 改善 ================= */
-  function bindChat(){
-    var modal=document.getElementById('chat-modal');
-    var frame=document.getElementById('chat-iframe');
-    if(!modal||!frame){ setTimeout(bindChat,200); return; }
-    var wrap=frame.parentElement;
-    if(!document.getElementById('chat-fallback')){
-      var fb=document.createElement('div');
-      fb.id='chat-fallback'; fb.className='chat-fallback';
-      fb.innerHTML='&lt;div&gt;チャットの読み込みに時間がかかっています。&lt;/div&gt;&lt;a href="https://snowchat-connect.lovable.app/" target="_blank" rel="noopener"&gt;新しいタブで開く&lt;/a&gt;';
-      wrap.appendChild(fb);
-    }
-    var fbTimer=null;
-    frame.addEventListener('load',function(){
-      clearTimeout(fbTimer);
-      document.getElementById('chat-fallback').classList.remove('show');
-      var l=document.getElementById('chat-loading'); if(l) l.classList.add('hidden');
-    });
-    var origOpen=window.openChatModal;
-    window.openChatModal=function(){
-      if(typeof origOpen==='function') origOpen();
-      modal.classList.toggle('expanded', prefs.chatExpanded===true);
-      clearTimeout(fbTimer);
-      fbTimer=setTimeout(function(){
-        var l=document.getElementById('chat-loading');
-        if(l &amp;&amp; !l.classList.contains('hidden')) document.getElementById('chat-fallback').classList.add('show');
-      },9000);
-      scheduleI18n();
-    };
-    var origClose=window.closeChatModal;
-    window.closeChatModal=function(){
-      if(typeof origClose==='function') origClose();
-      clearTimeout(fbTimer);
-    };
-    window.toggleChatExpand=function(){
-      var on=!modal.classList.contains('expanded');
-      modal.classList.toggle('expanded',on);
-      setPref('chatExpanded',on);
-    };
-  }
-  bindChat();
+
 
   /* ================= 起動処理 ================= */
   function boot(){
@@ -6883,7 +6769,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
 (function(){
   const ORDER=['glass','glass2','dark','light'];
   const KEY='nakayosi_theme_v2';
-  const label=theme=>theme==='glass'?'グラス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':'ライト';
+  const label=theme=&gt;theme==='glass'?'グラス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':'ライト';
   function current(){return document.body.classList.contains('glass-mode-2')?'glass2':document.body.classList.contains('glass-mode')?'glass':document.body.classList.contains('dark-mode')?'dark':'light'}
   function apply(theme,save){
     if(!ORDER.includes(theme))theme='glass';
@@ -6893,7 +6779,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
     document.body.dataset.theme=theme;
     const appearanceSelect=document.getElementById('site-theme-select');if(appearanceSelect)appearanceSelect.value=theme;
     let glass2Background=document.querySelector('.glass2-background');
-    if(theme==='glass2'&&!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';var g2src=['https://id-preview--e6de3a45-d60d-46b1-a964-c76c73131600.lovable.app/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif','https://www.benib.jp/images/til-2022-09-09-yuyake.gif'],g2i=0;glass2Background.onerror=function(){g2i++;if(g2src[g2i])this.src=g2src[g2i]};glass2Background.src=g2src[0];document.body.prepend(glass2Background)}
+    if(theme==='glass2'&amp;&amp;!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';var g2src=['https://id-preview--e6de3a45-d60d-46b1-a964-c76c73131600.lovable.app/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif','https://www.benib.jp/images/til-2022-09-09-yuyake.gif'],g2i=0;glass2Background.onerror=function(){g2i++;if(g2src[g2i])this.src=g2src[g2i]};glass2Background.src=g2src[0];document.body.prepend(glass2Background)}
     const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':theme);
     const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(theme)+1)%ORDER.length];btn.title=`表示: ${label(theme)}（次: ${label(next)}）`;btn.setAttribute('aria-label',btn.title)}
     document.querySelectorAll('#smTheme button[data-theme]').forEach(b=&gt;b.classList.toggle('active',b.dataset.theme===theme));
@@ -7273,12 +7159,12 @@ body.dark-mode,body.glass-mode{
     menu.onclick=function(e){e.stopPropagation();if(typeof window.closeNotif==='function')window.closeNotif();nav.classList.toggle('open');document.body.style.overflow='';menu.setAttribute('aria-expanded',String(nav.classList.contains('open')))};
     search.appendChild(menu);
     const input=document.getElementById('searchInput');
-    if(input){input.setAttribute('aria-label','サイト内を検索');input.addEventListener('input',function(){if(matchMedia('(max-width:880px)').matches&&this.value.trim()){if(typeof window.showPage==='function')window.showPage('links');if(typeof window.filterLinks==='function')window.filterLinks(this.value)}})}
+    if(input){input.setAttribute('aria-label','サイト内を検索');input.addEventListener('input',function(){if(matchMedia('(max-width:880px)').matches&amp;&amp;this.value.trim()){if(typeof window.showPage==='function')window.showPage('links');if(typeof window.filterLinks==='function')window.filterLinks(this.value)}})}
     const media=matchMedia('(max-width:880px)');
     function place(){if(media.matches)document.body.appendChild(search);else anchor.after(search);nav.classList.remove('open');menu.setAttribute('aria-expanded','false');document.body.style.overflow=''}
     media.addEventListener('change',place);place();
     new MutationObserver(function(){menu.setAttribute('aria-expanded',String(nav.classList.contains('open')))}).observe(nav,{attributes:true,attributeFilter:['class']});
-    document.addEventListener('click',function(e){if(!nav.contains(e.target)&&!menu.contains(e.target))nav.classList.remove('open')});
+    document.addEventListener('click',function(e){if(!nav.contains(e.target)&amp;&amp;!menu.contains(e.target))nav.classList.remove('open')});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
@@ -7396,6 +7282,372 @@ body.dark-mode,body.glass-mode{
 }
 @media(prefers-reduced-motion:reduce){#games-page .game-card,#games-page .game-card img,#weather-page .wx-day{transition:none!important}}
 &lt;/style&gt;
+&lt;style id="nkchat-style"&gt;
+#chats-page{--chat-surface:color-mix(in oklab,var(--surface) 88%,transparent);--chat-soft:color-mix(in oklab,var(--surface-2) 90%,var(--primary) 10%);--chat-on-primary:var(--topbar-text);--chat-danger:var(--accent);--chat-focus:color-mix(in oklab,var(--primary) 30%,transparent);scroll-margin-top:24px}
+#chats-page *{box-sizing:border-box;letter-spacing:0}
+#chats-page h1,#chats-page h2{font-family:inherit}
+#chats-page .nkchat-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--border);padding:4px 0 22px;margin-bottom:24px}
+#chats-page h1{font-size:28px;margin:4px 0 0;font-weight:800}
+#chats-page .nkchat-eyebrow{font-size:11px;font-weight:700;color:var(--primary)}
+#chats-page #nkchat-userbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}
+#chats-page button,#chats-page input,#chats-page textarea{font:inherit;font-size:14px;border:1px solid var(--border);border-radius:6px;background:var(--chat-surface);color:var(--text);padding:10px 13px;min-height:42px}
+#chats-page input,#chats-page textarea{min-width:0;user-select:text}
+#chats-page input::placeholder,#chats-page textarea::placeholder{color:var(--text-muted)}
+#chats-page button{cursor:pointer;flex-shrink:0;font-weight:600;transition:background .18s,border-color .18s}
+#chats-page button:hover{background:var(--chat-soft);border-color:var(--primary)}
+#chats-page :is(input,textarea,button):focus-visible{outline:3px solid var(--chat-focus);outline-offset:2px;border-color:var(--primary)}
+#chats-page .btn-dark{background:var(--primary);color:var(--chat-on-primary);border-color:var(--primary)}
+#chats-page .btn-dark:hover{background:var(--primary-hover)}
+#chats-page #nkchat-auth-panel{max-width:440px;margin:48px auto 72px;padding:28px;border:1px solid var(--border);border-radius:8px;background:var(--chat-surface);backdrop-filter:blur(18px)}
+#chats-page #nkchat-auth-panel h2{font-size:18px;margin:0 0 20px}
+#chats-page .row{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+#chats-page #nkchat-auth-panel .row:first-of-type{flex-direction:column;align-items:stretch}
+#chats-page #nkchat-auth-panel .row:nth-of-type(2) button{flex:1}
+#chats-page #nkchat-wrap{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:28px;align-items:start}
+#chats-page #nkchat-content{min-width:0}
+#chats-page #nkchat-sidebar{border-left:1px solid var(--border);padding-left:22px}
+#chats-page .side-box{border-bottom:1px solid var(--border);padding:0 0 20px;margin-bottom:20px}
+#chats-page .side-box h2{font-size:12px;margin:0 0 12px;color:var(--text-muted);font-weight:600}
+#chats-page #nkchat-clock{font-size:30px;line-height:1.3;font-variant-numeric:tabular-nums}
+#chats-page #nkchat-date,#chats-page .sub{font-size:12px;color:var(--text-muted)}
+#chats-page .temp{font-size:28px}#chats-page .temp small{font-size:13px}
+#chats-page .quake-item,#chats-page #nkchat-news a{font-size:12px;padding:8px 0;display:block;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
+#chats-page #nkchat-thread-create{display:flex;gap:10px;margin-bottom:18px}
+#chats-page #nkchat-thread-create input{flex:1}
+#chats-page .thread-item{display:flex;justify-content:space-between;gap:12px;padding:18px 4px;border-bottom:1px solid var(--border);cursor:pointer}
+#chats-page .thread-item:hover{background:var(--chat-soft)}
+#chats-page .t-name{font-weight:700;font-size:17px;overflow-wrap:anywhere}
+#chats-page .t-meta,#chats-page .t-del{font-size:12px;color:var(--text-muted)}
+#chats-page #nkchat-thread-head{display:flex;align-items:center;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+#chats-page #nkchat-thread-head h2{font-size:20px;margin:0;overflow-wrap:anywhere;min-width:0}
+#chats-page #nkchat-messages{min-height:300px}
+#chats-page .msg{padding:18px 4px;border-bottom:1px solid var(--border)}
+#chats-page .msg .meta{font-size:12px;color:var(--text-muted);display:flex;gap:6px;flex-wrap:wrap}
+#chats-page .msg .meta b{color:var(--text)}
+#chats-page .body-text{margin-top:8px;white-space:pre-wrap;overflow-wrap:anywhere;user-select:text}
+#chats-page .del{margin-left:auto}
+#chats-page #nkchat-post-area{display:flex;gap:10px;position:sticky;bottom:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:20px;z-index:3}
+#chats-page #nkchat-msg-input{flex:1;height:64px;resize:vertical;max-height:180px}
+#chats-page #nkchat-btn-post{align-self:stretch;min-width:72px}
+#chats-page #nkchat-settings-panel{padding:16px 0;margin-bottom:20px;border-bottom:1px solid var(--border)}
+#chats-page #nkchat-settings-panel h2{font-size:15px}
+#chats-page .color-choices{display:flex;gap:8px;flex-wrap:wrap}
+#chats-page .color-chip{width:28px;height:28px;min-height:28px;padding:0;border-radius:50%}
+#chats-page .color-chip.selected{outline:2px solid var(--primary);outline-offset:3px}
+#chats-page .error{color:var(--chat-danger);font-size:13px;margin:8px 0;overflow-wrap:anywhere}
+#chats-page .hidden{display:none!important}
+body.chats-active .wrap{grid-template-columns:minmax(0,1fr)}
+body.chats-active .wrap&gt;.aside{display:none}
+@media(max-width:880px){#chats-page .nkchat-heading{flex-wrap:wrap;padding-bottom:18px;margin-bottom:20px}#chats-page h1{font-size:24px}#chats-page #nkchat-wrap{grid-template-columns:minmax(0,1fr)}#chats-page #nkchat-sidebar{border-left:0;padding-left:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:24px}#chats-page #nkchat-auth-panel{margin:24px auto 40px;padding:22px}#chats-page #nkchat-thread-create{flex-wrap:wrap}#chats-page #nkchat-thread-create input{flex-basis:100%}#chats-page #nkchat-post-area{bottom:calc(168px + env(safe-area-inset-bottom));padding:8px}#chats-page #nkchat-sidebar .side-box{min-width:0}}
+@media(prefers-reduced-motion:reduce){#chats-page button{transition:none}}
+&lt;/style&gt;
+&lt;script&gt;
+(function(){
+
+const API = "https://chat-api-companion.lovable.app";
+
+let token = localStorage.getItem("chat_token") || null;
+let currentUser = null;
+try { currentUser = JSON.parse(localStorage.getItem("chat_user") || "null"); } catch (_) { localStorage.removeItem("chat_user"); }
+let currentRoom = null;
+let pollTimer = null;
+let nameColor = localStorage.getItem("chat_name_color") || "#cc0000";
+
+const $ = (id) =&gt; document.getElementById("nkchat-" + id);
+
+const COLORS = ["#000000", "#cc0000", "#0000cc", "#007700", "#cc6600", "#8800cc", "#0088aa", "#cc0066"];
+
+async function api(path, opts = {}) {
+  const headers = { "Content-Type": "application/json" };
+  if (token) headers["Authorization"] = "Bearer " + token;
+  const res = await fetch(API + path, { ...opts, headers, signal: AbortSignal.timeout(15000) });
+  const data = await res.json().catch(() =&gt; ({}));
+  if (!res.ok) throw new Error(data.error || data.message || ("HTTP " + res.status));
+  return data;
+}
+
+function setSession(t, u) {
+  token = t; currentUser = u;
+  localStorage.setItem("chat_token", t);
+  localStorage.setItem("chat_user", JSON.stringify(u));
+  renderAuth();
+}
+
+function clearSession() {
+  token = null; currentUser = null; currentRoom = null;
+  localStorage.removeItem("chat_token");
+  localStorage.removeItem("chat_user");
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  $("list-view").classList.remove("hidden");
+  $("thread-view").classList.add("hidden");
+  renderAuth();
+}
+
+function renderAuth() {
+  const loggedIn = !!token;
+  $("auth-panel").classList.toggle("hidden", loggedIn);
+  $("wrap").classList.toggle("hidden", !loggedIn);
+  $("userbar").innerHTML = loggedIn
+    ? "名前: &lt;b id='nkchat-ub-name'&gt;" + esc(currentUser?.username || "") + "&lt;/b&gt;&lt;button id='nkchat-btn-settings'&gt;設定&lt;/button&gt;&lt;button id='nkchat-btn-logout'&gt;切断&lt;/button&gt;"
+    : "";
+  if (loggedIn) {
+    applyNameColor();
+    $("btn-logout").onclick = doLogout;
+    $("btn-settings").onclick = () =&gt; $("settings-panel").classList.toggle("hidden");
+    loadRooms();
+  } else {
+    $("settings-panel").classList.add("hidden");
+  }
+}
+
+function esc(s) {
+  return String(s).replace(/[&amp;&lt;&gt;"']/g, (c) =&gt; ({ "&amp;": "&amp;amp;", "&lt;": "&amp;lt;", "&gt;": "&amp;gt;", '"': "&amp;quot;", "'": "&amp;#39;" }[c]));
+}
+
+// ---- 設定: 名前の色 ----
+function applyNameColor() {
+  const ub = $("ub-name");
+  if (ub) ub.style.color = nameColor;
+  const pv = $("name-preview");
+  pv.textContent = currentUser?.username || "名前";
+  pv.style.color = nameColor;
+}
+
+function renderColorChoices() {
+  const box = $("color-choices");
+  box.innerHTML = "";
+  COLORS.forEach((c) =&gt; {
+    const b = document.createElement("button");
+    b.className = "color-chip" + (c === nameColor ? " selected" : "");
+    b.style.background = c;
+    b.title = c;
+    b.onclick = () =&gt; {
+      nameColor = c;
+      localStorage.setItem("chat_name_color", c);
+      renderColorChoices();
+      applyNameColor();
+      loadMessages();
+    };
+    box.appendChild(b);
+  });
+}
+
+async function doLogin() {
+  if (!$("username").value.trim() || !$("password").value) { $("auth-error").textContent = "ユーザー名とパスワードを入力してください"; return; }
+  $("auth-error").textContent = "";
+  try {
+    const data = await api("/api/public/chat/login", {
+      method: "POST",
+      body: JSON.stringify({ username: $("username").value.trim(), password: $("password").value }),
+    });
+    if (!data.token || !data.user) throw new Error("ログイン情報を取得できませんでした");
+    $("password").value = "";
+    setSession(data.token, data.user);
+  } catch (e) { $("auth-error").textContent = e.message; }
+}
+
+async function doRegister() {
+  if (!$("username").value.trim() || !$("password").value) { $("auth-error").textContent = "ユーザー名とパスワードを入力してください"; return; }
+  $("auth-error").textContent = "";
+  try {
+    const data = await api("/api/public/chat/register", {
+      method: "POST",
+      body: JSON.stringify({ username: $("username").value.trim(), password: $("password").value }),
+    });
+    if (!data.token || !data.user) throw new Error("ログイン情報を取得できませんでした");
+    $("password").value = "";
+    setSession(data.token, data.user);
+  } catch (e) { $("auth-error").textContent = e.message; }
+}
+
+async function doLogout() {
+  try { await api("/api/public/chat/logout", { method: "POST" }); } catch (e) {}
+  clearSession();
+}
+
+// ---- スレ一覧 ----
+async function loadRooms() {
+  $("room-error").textContent = "";
+  try {
+    const data = await api("/api/public/chat/rooms");
+    const rooms = (data.rooms || data).slice().sort((a, b) =&gt; new Date(b.created_at || b.createdAt || 0) - new Date(a.created_at || a.createdAt || 0));
+    const list = $("room-list");
+    list.innerHTML = "";
+    rooms.forEach((r) =&gt; {
+      const div = document.createElement("div");
+      div.className = "thread-item";
+      const date = r.created_at || r.createdAt;
+      const isOwner = currentUser &amp;&amp; r.created_by === currentUser.id;
+      div.innerHTML =
+        "&lt;div&gt;&lt;div class='t-name'&gt;" + esc(r.name) + "&lt;/div&gt;" +
+        "&lt;div class='t-meta'&gt;" + esc(r.username || r.user?.username || "") +
+        (date ? " ・ 最終 " + esc(new Date(date).toLocaleString("ja-JP", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" })) : "") +
+        "&lt;/div&gt;&lt;/div&gt;" +
+        (isOwner ? "&lt;span class='t-del'&gt;削除&lt;/span&gt;" : "");
+      div.onclick = () =&gt; selectRoom(r);
+      list.appendChild(div);
+    });
+    if (!rooms.length) list.innerHTML = "&lt;div style='padding:8px;color:#777'&gt;スレッドがありません&lt;/div&gt;";
+  } catch (e) { $("room-error").textContent = e.message; }
+}
+
+async function createRoom() {
+  $("room-error").textContent = "";
+  const name = $("new-room-name").value.trim();
+  if (!name) return;
+  try {
+    const data = await api("/api/public/chat/rooms", { method: "POST", body: JSON.stringify({ name }) });
+    $("new-room-name").value = "";
+    await loadRooms();
+    if (data.room) selectRoom(data.room);
+  } catch (e) { $("room-error").textContent = e.message; }
+}
+
+// ---- スレ表示 ----
+function selectRoom(room) {
+  currentRoom = room;
+  $("current-room-title").textContent = room.name;
+  $("list-view").classList.add("hidden");
+  $("thread-view").classList.remove("hidden");
+  document.getElementById("chats-page").scrollIntoView({ block: "start" });
+  loadMessages();
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(loadMessages, 5000);
+}
+
+function backToList() {
+  currentRoom = null;
+  $("thread-view").classList.add("hidden");
+  $("list-view").classList.remove("hidden");
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  loadRooms();
+  document.getElementById("chats-page").scrollIntoView({ block: "start" });
+}
+
+async function loadMessages() {
+  if (!currentRoom || !document.getElementById("chats-page").classList.contains("active")) return;
+  $("msg-error").textContent = "";
+  try {
+    const roomId = currentRoom.id;
+    const data = await api("/api/public/chat/rooms/" + encodeURIComponent(roomId) + "/messages?limit=50");
+    if (!currentRoom || currentRoom.id !== roomId) return;
+    const msgs = (data.messages || data).slice().sort((a, b) =&gt; new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
+    const box = $("messages");
+    box.innerHTML = "";
+    msgs.forEach((m, i) =&gt; {
+      const div = document.createElement("div");
+      div.className = "msg";
+      const uname = m.username || m.user?.username || "?";
+      const isMine = currentUser &amp;&amp; (m.user_id === currentUser.id || m.userId === currentUser.id);
+      const canDelete = isMine || (currentUser &amp;&amp; currentRoom.created_by === currentUser.id);
+      const nameHtml = isMine
+        ? "&lt;b style='color:" + esc(nameColor) + "'&gt;" + esc(uname) + "&lt;/b&gt;"
+        : "&lt;b&gt;" + esc(uname) + "&lt;/b&gt;";
+      div.innerHTML =
+        "&lt;div class='meta'&gt;" + (i + 1) + " 名前: " + nameHtml + " " +
+        esc(new Date(m.created_at || m.createdAt).toLocaleString("ja-JP", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" })) +
+        (canDelete ? " &lt;a href='#' class='del' data-id='nkchat-" + m.id + "'&gt;[削除]&lt;/a&gt;" : "") +
+        "&lt;/div&gt;&lt;div class='body-text'&gt;" + esc(m.content) + "&lt;/div&gt;";
+      box.appendChild(div);
+    });
+    if (!msgs.length) box.innerHTML = "&lt;div style='padding:8px;color:#777'&gt;まだ書き込みがありません&lt;/div&gt;";
+    box.querySelectorAll(".del").forEach((a) =&gt; {
+      a.onclick = (ev) =&gt; { ev.preventDefault(); deleteMessage(a.dataset.id); };
+    });
+  } catch (e) { $("msg-error").textContent = e.message; }
+}
+
+async function postMessage() {
+  const content = $("msg-input").value.trim();
+  if (content === "/clear") { $("msg-input").value = ""; return; }
+  if (!content || !currentRoom) return;
+  try {
+    await api("/api/public/chat/rooms/" + currentRoom.id + "/messages", {
+      method: "POST",
+      body: JSON.stringify({ content }),
+    });
+    $("msg-input").value = "";
+    loadMessages();
+  } catch (e) { $("msg-error").textContent = e.message; }
+}
+
+async function deleteMessage(id) {
+  if (!confirm("このメッセージを削除しますか?")) return;
+  try {
+    await api("/api/public/chat/messages/" + id, { method: "DELETE" });
+    loadMessages();
+  } catch (e) { $("msg-error").textContent = e.message; }
+}
+
+$("btn-login").onclick = doLogin;
+$("btn-register").onclick = doRegister;
+$("btn-create-room").onclick = createRoom;
+$("btn-post").onclick = postMessage;
+$("btn-back").onclick = backToList;
+$("password").addEventListener("keydown", (e) =&gt; { if (e.key === "Enter") doLogin(); });
+$("msg-input").addEventListener("keydown", (e) =&gt; {
+  if (e.key === "Enter" &amp;&amp; !e.shiftKey) {
+    e.preventDefault();
+    if ($("msg-input").value.trim() === "/clear") { $("msg-input").value = ""; return; }
+    postMessage();
+  }
+});
+
+renderColorChoices();
+renderAuth();
+setInterval(() =&gt; { if (token &amp;&amp; !currentRoom &amp;&amp; document.getElementById("chats-page").classList.contains("active")) loadRooms(); }, 10000);
+
+// 時計
+function tick() {
+  const d = new Date();
+  $("clock").textContent = d.toLocaleTimeString("ja-JP");
+  $("date").textContent = d.toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric", weekday: "short" });
+}
+tick(); setInterval(tick, 1000);
+
+// 天気 (Open-Meteo)
+const WCODE = {0:"快晴",1:"晴れ",2:"一部曇り",3:"曇り",45:"霧",48:"霧",51:"霧雨",53:"霧雨",55:"霧雨",61:"小雨",63:"雨",65:"大雨",71:"小雪",73:"雪",75:"大雪",80:"にわか雨",81:"にわか雨",82:"激しいにわか雨",95:"雷雨",96:"雷雨",99:"雷雨"};
+async function loadWeather(lat, lon, name) {
+  try {
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&amp;longitude=${lon}&amp;current=temperature_2m,weather_code,wind_speed_10m&amp;timezone=auto`);
+    const w = await r.json(); const c = w.current;
+    $("w-loc").textContent = "（" + name + "）";
+    $("weather").innerHTML = "&lt;div class='temp'&gt;" + c.temperature_2m + "℃ &lt;small&gt;" + (WCODE[c.weather_code] || "-") + "&lt;/small&gt;&lt;/div&gt;" +
+      "&lt;div class='sub'&gt;風速 " + c.wind_speed_10m + " km/h&lt;/div&gt;";
+  } catch (e) { $("weather").textContent = "取得できませんでした"; }
+}
+loadWeather(35.6895, 139.6917, "東京");
+// 東京の天気を表示。位置情報は自動要求しない。
+
+// 地震情報 (P2P地震情報)
+async function loadQuakes() {
+  try {
+    const r = await fetch("https://api.p2pquake.net/v2/history?codes=551&amp;limit=8");
+    const d = await r.json();
+    $("quakes").innerHTML = d.map((q) =&gt; {
+      const t = (q.earthquake?.time || "").slice(0, 16).replace("T", " ");
+      const hyp = q.earthquake?.hypocenter?.name || "不明";
+      const scale = q.earthquake?.maxScale;
+      const si = scale &gt; 0 ? "震度" + (scale &gt;= 10 ? Math.floor(scale / 10) + (scale % 10 === 5 ? "弱" : scale % 10 === 6 ? "強" : "") : scale) : "震度不明";
+      const m = q.earthquake?.magnitude;
+      return "&lt;div class='quake-item'&gt;" + esc(t) + " " + esc(hyp) + " " + esc(si) + (m &amp;&amp; m &gt; 0 ? " M" + m : "") + "&lt;/div&gt;";
+    }).join("") || "データがありません";
+  } catch (e) { $("quakes").textContent = "取得できませんでした"; }
+}
+loadQuakes(); setInterval(loadQuakes, 15000);
+
+// ニュース
+async function loadNews() {
+  try {
+    const r = await fetch("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent("https://www3.nhk.or.jp/rss/news/cat0.xml"));
+    const d = await r.json();
+    $("news").innerHTML = (d.items || []).slice(0, 6).map((i) =&gt; "&lt;a href='" + esc(i.link) + "' target='_blank' rel='noopener'&gt;・" + esc(i.title) + "&lt;/a&gt;").join("") || "ニュースがありません";
+  } catch (e) { $("news").textContent = "取得できませんでした"; }
+}
+loadNews(); setInterval(loadNews, 600000);
+
+})();
+&lt;/script&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
