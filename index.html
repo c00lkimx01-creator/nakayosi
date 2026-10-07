@@ -2892,7 +2892,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
         function handleSearch(e) {
             if(e) e.preventDefault();
             const q = document.getElementById('sxSearchInput').value.trim();
-            if(!q) return;
+            if(!q &amp;&amp; currentCategory !== 'music') return;
 
             currentQuery = q;
             currentPage = 1;
@@ -2913,6 +2913,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
         function changeCategory(cat, evt) {
             if(isLoading || currentCategory === cat) return;
+            window.nkysMusic?.show(cat === 'music');
+            if(cat === 'music') document.getElementById('mainContainer').classList.add('results-mode');
             document.querySelectorAll('.tab').forEach(t =&gt; t.classList.remove('active'));
             evt.currentTarget.classList.add('active');
 
@@ -2924,7 +2926,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
             showGhostScreen(currentCategory);
 
-            if(currentQuery) {
+            if(currentQuery || currentCategory === 'music') {
                 executeSearch();
                 if (currentCategory === 'news' || currentCategory === 'general') {
                     setTimeout(() =&gt; fetchWikipediaKnowledgePanel(currentQuery), 10);
@@ -2933,6 +2935,22 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
         }
 
         async function executeSearch(isNextPage = false) {
+            if (currentCategory === 'music') {
+                if (isNextPage) return;
+                isLoading = true;
+                hasMoreResults = false;
+                window.nkysMusic?.show(true);
+                try {
+                    const items = window.nkysMusic?.source === 'online'
+                        ? (currentQuery ? await fetchITunesMusicAPI(currentQuery) : [])
+                        : (window.nkysMusic?.search(currentQuery) || []);
+                    window.nkysMusic?.render(items, document.getElementById('results'));
+                    if(window.nkysMusic?.source === 'online' &amp;&amp; currentQuery &amp;&amp; !items.length)
+                        window.nkysMusic.message('一致する曲がないか、音楽検索に接続できませんでした。');
+                } catch(e) { window.nkysMusic?.message('音楽検索に接続できませんでした。'); document.getElementById('results').replaceChildren(); }
+                finally { isLoading = false; document.getElementById('infiniteLoader').style.display = 'none'; }
+                return;
+            }
             const cacheKey = `${currentCategory}:${currentQuery}:${currentPage}`;
 
             if (searchCache.has(cacheKey)) {
@@ -3363,7 +3381,7 @@ async function fetchWikipediaImageFallback(query) {
 async function fetchITunesMusicAPI(query) {
             const apiUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&amp;entity=song&amp;limit=24&amp;country=JP`;
             try {
-                const res = await fetch(apiUrl, { signal: AbortSignal.timeout(2000) });
+                const res = await fetch(apiUrl, { signal: AbortSignal.timeout(10000) });
                 if (res.ok) {
                     const data = await res.json();
                     if (data.results) {
@@ -3582,6 +3600,7 @@ async function fetchITunesMusicAPI(query) {
             }
         }
 
+window.refreshMusicSearch = function(){ if(currentCategory !== 'music') { const tab = document.querySelector('#search-app .tab[data-cat="music"]'); changeCategory('music', {currentTarget:tab}); } else { currentQuery = document.getElementById('sxSearchInput').value.trim(); executeSearch(); } };
 window.changeCategory = changeCategory;
 window.clearSearch = clearSearch;
 window.closeAbout = closeAbout;
@@ -7671,6 +7690,14 @@ async function loadNews() {
 }
 loadNews(); setInterval(loadNews, 600000);
 
+})();
+&lt;/script&gt;
+&lt;link rel="stylesheet" href="search-full.css"&gt;
+&lt;script src="music-library.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+(function(){
+ function size(){const wrap=document.querySelector('body &gt; .wrap'); if(!wrap)return; const top=wrap.getBoundingClientRect().top+window.scrollY; document.documentElement.style.setProperty('--search-available-height',Math.max(0,innerHeight-top)+'px');}
+ new ResizeObserver(size).observe(document.body); window.addEventListener('resize',size); size();
 })();
 &lt;/script&gt;
 &lt;/body&gt;
