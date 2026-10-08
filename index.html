@@ -2,8 +2,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2644176974704249"
-     crossorigin="anonymous"></script>
   <meta name="google-adsense-account" content="ca-pub-2644176974704249">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -500,8 +498,6 @@
 &lt;!DOCTYPE html&gt;
 &lt;html lang="ja"&gt;
 &lt;head&gt;
-  &lt;script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2644176974704249"
-     crossorigin="anonymous"&gt;&lt;/script&gt;
 &lt;meta charset="UTF-8"&gt;
 &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
 &lt;link rel="icon" type="image/png" href="/favicon.ico"&gt;
@@ -1574,6 +1570,25 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 @media(max-width:850px){#calendar-page .calendar-layout {grid-template-columns:1fr}#calendar-page .calendar-side {display:contents}}
 @media(max-width:550px){#calendar-page .calendar-intro {padding:17px}#calendar-page .calendar-main {padding:12px}#calendar-page .calendar-toolbar {flex-wrap:wrap}#calendar-page .calendar-toolbar h2 {width:100%;font-size:1.2rem}#calendar-page .calendar-day {min-height:67px;padding:4px;gap:2px}#calendar-page .calendar-num {width:25px;height:25px}#calendar-page .calendar-preview {font-size:.61rem;padding:1px 2px}#calendar-page .calendar-more {font-size:.6rem}}
 @media(prefers-reduced-motion:reduce){#calendar-page button {transition:none}}
+
+/* Shufoo!: inline only, no fixed/sticky placement or automatic ad scripts. */
+.shufoo-ad {
+  width:100%; margin:0 0 24px; padding:16px;
+  border:1px solid var(--border); border-radius:8px;
+  background:var(--surface-2); text-align:center;
+}
+.shufoo-ad-label {
+  display:block; margin:0 0 10px; color:var(--text-muted);
+  font-size:11px; font-weight:500; line-height:1.5; letter-spacing:0;
+}
+.shufoo-ad-link {
+  display:block; width:min(100%,300px); margin:0 auto;
+  border-radius:4px; overflow:hidden; line-height:0;
+  outline-offset:4px;
+}
+.shufoo-ad-link:focus-visible { outline:2px solid var(--primary); }
+.shufoo-ad-link img { display:block; width:100%; height:auto; aspect-ratio:300 / 113; }
+@media(max-width:600px) { .shufoo-ad { padding:12px; margin-bottom:20px; } }
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -1682,6 +1697,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
+
+      &lt;!-- 広告：ページ内の通常表示のみ。クリック時は同じタブの最上位ページへ移動。 --&gt;
+      &lt;aside class="shufoo-ad" aria-label="広告：Shufoo! チラシアプリ"&gt;
+        &lt;span class="shufoo-ad-label"&gt;広告&lt;/span&gt;
+        &lt;a class="shufoo-ad-link" href="https://www.shufoo.net/contents/about/smartphone.html" target="_top" rel="sponsored noopener" aria-label="Shufoo! チラシアプリの詳細を見る"&gt;
+          &lt;img src="images/shufoo_banner.jpg" width="300" height="113" decoding="async" alt="Shufoo! レシピも見られるチラシアプリ"&gt;
+        &lt;/a&gt;
+      &lt;/aside&gt;
 
       &lt;div class="section" hidden style="display:none"&gt;
         &lt;div class="section-head"&gt;&lt;h2&gt;&lt;/h2&gt;&lt;a class="more" href="javascript:void(0)" onclick="showPage('tools')"&gt;大きく使う ›&lt;/a&gt;&lt;/div&gt;
@@ -4291,12 +4314,7 @@ function renderEvents(){
   ['eventBannerHome','eventBannerLinks'].forEach(id=&gt;{ const el=document.getElementById(id); if(el) el.innerHTML = top + more; });
   const l=document.getElementById('eventsLive'); if(l) l.innerHTML = live.map(eventBannerHtml).join('') || '&lt;div class="muted" style="padding:16px"&gt;現在開催中のイベントはありません&lt;/div&gt;';
   const p=document.getElementById('eventsPast'); if(p) p.innerHTML = past.map(eventBannerHtml).join('') || '&lt;div class="muted" style="padding:16px"&gt;終了したイベントはまだありません&lt;/div&gt;';
-  const slot=document.getElementById('aoModalSlot');
-  if(slot &amp;&amp; live[0] &amp;&amp; !sessionStorage.getItem('ev_modal_seen')){
-    const e=live[0];
-    slot.innerHTML = `&lt;div class="ao-modal" id="aoModal" onclick="if(event.target===this)this.remove()"&gt;&lt;div class="ao-card"&gt;&lt;button class="ao-close" onclick="document.getElementById('aoModal').remove()" aria-label="閉じる"&gt;×&lt;/button&gt;&lt;span class="tag"&gt;EVENT 開催中&lt;/span&gt;&lt;p class="ao-kicker"&gt;${safeText(e.kicker)}&lt;/p&gt;&lt;h2&gt;${e.icon} ${safeText(e.name)}&lt;/h2&gt;&lt;img loading="lazy" decoding="async" src="${e.img}" alt="${safeText(e.name)}" decoding="async"&gt;&lt;p&gt;${safeText(e.desc)}&lt;/p&gt;&lt;a class="ao-btn" href="${e.url}" target="_blank" rel="noopener"&gt;&lt;span&gt;イベントに参加&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;button class="ao-skip" onclick="document.getElementById('aoModal').remove()"&gt;あとで&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;`;
-    try{ sessionStorage.setItem('ev_modal_seen','1'); }catch(err){}
-  }
+  // イベントはページ内バナーのみ。自動ポップアップは表示しない。
 }
 
 // カレンダー（従来の保存済みメモもそのまま読み込む）
@@ -5038,7 +5056,7 @@ function maybeAskGeoPermission(){
     if(s.geoPermission === 'granted' &amp;&amp; !s.wxPref) requestGeoLocation(false);
     return;
   }
-  setTimeout(() =&gt; document.getElementById('geoOverlay')?.classList.add('show'), 600);
+  // 初回の自動ポップアップは表示しない。位置情報は設定画面から任意で使用する。
 }
 
 // ================= 天気マップ（雨雲レーダー） =================
