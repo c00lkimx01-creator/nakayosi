@@ -3913,13 +3913,13 @@ window.sxSaveSettings = sxSaveSettings;
 
 // お知らせ（新しいものを上に）
 const NEWS = [
-  { date:"2026/10/06", cat:"更新",    title:"仲良Chatにアップデート!?"  },
-  { date:"2026/10/04", cat:"お知らせ", title:"サイトアップデート!!" },
-  { date:"2026/08/29", cat:"お知らせ", title:"サイトアップデート!!" },
+  { date:"2026/10/06", cat:"更新",     title:"仲良Chatにアップデート!?"  },
+  { date:"2026/10/04", cat:"お知らせ",  title:"サイトアップデート!!" },
+  { date:"2026/08/29", cat:"お知らせ",  title:"サイトアップデート!!" },
   { date:"2026/08/01", cat:"更新",     title:"LINE本家の追加!?" },
   { date:"2026/10/04", cat:"更新",     title:"GAMEのリンクを追加しましたのでみんな仲良くGameしましょう!!" },
   { date:"2026/05/15", cat:"更新",     title:"RammerHead 復活!?" },
-  { date:"2026/04/13", cat:"お知らせ", title:'サイトを "Duckdns.org" のPageに移行しました！' },
+  { date:"2026/04/13", cat:"お知らせ",  title:'サイトを "Duckdns.org" のPageに移行しました！' },
 ];
 
 // イベント一覧（status:"live"=開催中 / "ended"=終了）上から新しい順
@@ -3944,12 +3944,13 @@ const EVENTS = [
 
 // リンク集（カテゴリごと）
 const LINK_CATEGORIES = [
-  { title:"イベント ゲーム(LINK)", items: EVENTS.map(e =&gt; ({ name:e.name+(e.status==='live'?' 【開催中】':' 【終了】'), tag:"EVENT", url:e.url })) },
+  { title:"イベント リンク集", items: EVENTS.map(e =&gt; ({ name:e.name+(e.status==='live'?' 【開催中】':' 【終了】'), tag:"EVENT", url:e.url })) },
   { title:"ようつべリンク集 𝙽𝙴𝚆", items:[
-    { name:"NKYS Tube Pro ㋔㋜㋜㋱", tag:"YouTube",     url:"https://xn--tubew-443d7a6ad4j3ic50brdt1f.plgsync.com/" },
+    { name:"NKYS-Tube 𝓷𝓪𝓴𝓪𝔂𝓸𝓼𝓲",      tag:"YouTube",     url:"https://xn--tubew-443d7a6ad4j3ic50brdt1f.plgsync.com/" },
     { name:"仙人Tube+ v2 ㋔㋜㋜㋱",   tag:"YouTube",     url:"https://chxjjuvm-sen-nin-01.onrender.com/" },
     { name:"チョコTube+ ㋔㋜㋜㋱",    tag:"YouTube",     url:"https://hjduvjdkc-hjo1.onrender.com/" },
-    { name:"くかぁ",                 tag:"YouTube",     url:"https://xn--ww-563asauh1a9259de13d.plgsync.com/" },
+    { name:"わかめTube+",            tag:"YouTube",     url:"https://wakame.google.com.hospitaldelninodif.gob.mx/" },
+    { name:"わかめTube+ 予備",       tag:"YouTube",     url:"https://textbook-support.onthewifi.com/" },
     { name:"YT Premium",            tag:"YouTube",     url:"https://xn--p8j0czcvc.duckdns.org/" },
     { name:"Classroom",             tag:"YouTube",     url:"https://classroom.google.com/u/0/n/pck?" },
     { name:"Wista Pro",             tag:"YouTube",     url:"https://wista-pro.f5.si/" },
@@ -3957,28 +3958,27 @@ const LINK_CATEGORIES = [
   { title:"ゲームリンク集", items:[
     { name:"CloudMoon",   tag:"GAMES",   url:"https://3000-ig42ct4o9n1n9j2h01bd0-3c7ff1b5.sandbox.novita.ai/" },
     { name:"CloudMoon2",  tag:"GAMES",   url:"https://cdn.jsdelivr.net/gh/CloudMoonApp/web@main/260605.svg" },
+    { name:"Unpkg Games", tag:"GAMES",   url:"https://script.google.com/macros/s/AKfycbxl4Wntk5jzzwj3wq71m9v33gMqWRGpNEHWtZXXKomLy_ylOVWRPXrPWJEOwn84ONCr/exec" },
     { name:"Steam Deck",  tag:"GAMES",   url:"https://0yuki0s-deck00c.f5.si/?deck=1" },
     { name:"UBG 66",      tag:"GAMES",   url:"https://unblockedgames1024.gitlab.io/" },
     { name:"UBG+",        tag:"GAMES",   url:"https://unblockedgplus.gitlab.io/game/" },
     { name:"Gnmath",      tag:"GAMES",   url:"https://gn-m-ath-by-2a.duckdns.org/" },
     { name:"TopVAZ",      tag:"GAMES",   url:"https://1v1-lolunblocked.gitlab.io/category/popular.html" },
-    { name:"Unpkg Games", tag:"GAMES",   url:"https://script.google.com/macros/s/AKfycbxl4Wntk5jzzwj3wq71m9v33gMqWRGpNEHWtZXXKomLy_ylOVWRPXrPWJEOwn84ONCr/exec" },
     { name:"MANAGEMENT",  tag:"GAMES",   url:"https://cmug.gitlab.io/" },
   ]},
   { title:"その他リンク集 𝙽𝙴𝚆", items:[
-    { name:"LINE 本家 ㋔㋜㋜㋱",     tag:"Chat",  url:"https://linedayo.onrender.com" },
-    { name:"NKYS掲示板 ㋔㋜㋜㋱",    tag:"Chat",  url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbyCQGsRPEpFwq1sbQmXk5ABoUZ4E6gpe5A5yfNTMZtfcQb3MgJwXkkzwKrYJ7H7nth5sw/exec" },
+    { name:"LINE 本家 ㋔㋜㋜㋱",     tag:"Chat",   url:"https://linedayo.onrender.com" },
+    { name:"sushida ㋔㋜㋜㋱",      tag:"Typing", url:"https://happy-deployer-pro.lovable.app/" },
     { name:"Manga Raw ㋔㋜㋜㋱",    tag:"Manga",  url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbxVgynk7ohSy_bXC_RZl5mdhzb8tF-1F55oDap81FMtgH3m-IjI4oCNSe3-aPFIcFApvg/exec" },
-    { name:"TripleT HD",           tag:"Movie",  url:"https://triplethd.alexlan.org/" },
-    { name:"TripleT HD 予備",       tag:"Movie",  url:"https://triplethd.kiafinans.se/" },
-    { name:"モモンガ!",             tag:"R18",  url:"https://momonga-l2sw.onrender.com/" },
-    { name:"Douzin Plus",          tag:"R18",  url:"https://sennin-douzin-plus.onrender.com/" },
+    { name:"モモンガ!",             tag:"R18",    url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbwE4vyWFl3gN6ykZqB25tdbea43JRAtLWaXDM_G6C1ovvC98hAJXCzuJfD3lE_NBb1kiQ/exec" },
+    { name:"Douzin Plus",          tag:"R18",    url:"https://sennin-douzin-plus.onrender.com/" },
     { name:"PointMarket",          tag:"Search", url:"https://script.google.com/macros/s/AKfycbxNH8zPL3uoCnaB9TLXE-o7sSl3flSyILDo0Jm-J_aGn7J0Siu8Jk6MNm_LJQxod_-FmQ/exec" },
     { name:"SoundCloak",           tag:"Music",  url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycby5NSu0bqMm10LvTPyqeY_6o7QwlzlsD_Hwv3bsabN6u1udHtZdhY9P-jHu7m_aMi48/exec" },
-    { name:"Individual",           tag:"Chat",  url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbzoVIk_PLpyR2U0BREWYY5JulkfL586cMfcDcYZZOB6TxeS4lIxuZ8REH-lzpOi8vcB3w/exec" },
+    { name:"Individual",           tag:"Chat",   url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbzoVIk_PLpyR2U0BREWYY5JulkfL586cMfcDcYZZOB6TxeS4lIxuZ8REH-lzpOi8vcB3w/exec" },
     { name:"KAI-Chat",             tag:"AI",     url:"https://script.google.com/macros/s/AKfycbxfO1SQu_E3Ybd54mIO7knJBtzrrq4hoOa4YzDzNWkPWURjn2mbDiXaFaZXwygWR24A1Q/exec" },
   ]},
   { title:"ゲーム(単体) 𝙽𝙴𝚆", items:[
+    { name:"Bloxd.io",      tag:"GAME",       url:"https://dloxd-proxy-deployment--hikagemusub3.replit.app/" },
     { name:"青鬼2016 𝙽𝙴𝚆",  tag:"GAME",       url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbyTGZlPFMZZGWT4E9t5ydlwjUUwChyLy7zeSK0P8TCvLfnhOSUzXdl8oo60kL-r4m3QOA/exec" },
     { name:"GTA",           tag:"GAME",       url:"https://script.google.com/macros/s/AKfycbwVMCqNXcXs6ZZRAiRAyO1yz45PMkXNym4n7cV3MVwYwAwtM5U1S8fo9ScG7xJ0Bn5WnQ/exec" },
     { name:"geometry dash", tag:"GAME",       url:"https://script.google.com/macros/s/AKfycbx4MAnwFh0UnUKGq1loS7APoWouzuYpxQFsyGYJnA_MljyJfAlLuzvSzjhKvuXCVNjq/exec" },
@@ -4015,10 +4015,10 @@ const LINK_CATEGORIES = [
 
 // ゲーム一覧
 const GAMES = [
-  { name:"ONLY UP", tag:"GAMES",                     img:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2562240/header.jpg?t=1767686251", url:"https://script.google.com/macros/s/AKfycbwMccc783yv5Ftx2nkZ6BpHDi66OYtby8TRsYzgDufHka0zzRHHcV19NgtnFJH0ltbEvQ/exec" },
-  { name:"Roblox Barrys Prison", tag:"Horror",        img:"https://www4.minijuegosgratis.com/v3/games/thumbnails/250888_7_sq.jpg", url:"https://script.google.com/macros/s/AKfycbxRR9j9VoEVe3ftwVkqAslFNtnJ1UUWj8hLc51en9qR8fsVz2gho9geBFjasY0IV8gJBQ/exec" },
-  { name:"Roblox 99", tag:"Horror",                   img:"https://i.scdn.co/image/ab67616d0000b27354761f903652136279c6552f", url:"https://script.google.com/macros/s/AKfycbw4urIQgR3zAfmFsn3NWFC6kpsGYSWafyi6AWtyVNSyBkySH9O46LVnhej6fW7beFME/exec" },
-  { name:"Slender Man", tag:"Horror",                 img:"https://cdn1.epicgames.com/spt-assets/4f2537e2a2124cdd8fbd18b7068167d9/slender-the-arrival-4rvfj.png", url:"https://script.google.com/macros/s/AKfycbzD78lGmoq37iyrMDWZavBLxIRpQ_HmutXT9arsozaDkYaHVSfk7YliEmd3EL4nXM_4Bw/exec" },
+  { name:"Bloxd.io", tag:".io",                      img:"https://imgs.crazygames.com/bloxdhop-io_16x9/20260907141432/bloxdhop-io_16x9-cover?metadata=none&quality=60&height=7010", url:"https://dloxd-proxy-deployment--hikagemusub3.replit.app/" },
+  { name:"Roblox Barrys Prison", tag:"Horror",       img:"https://www4.minijuegosgratis.com/v3/games/thumbnails/250888_7_sq.jpg", url:"https://script.google.com/macros/s/AKfycbxRR9j9VoEVe3ftwVkqAslFNtnJ1UUWj8hLc51en9qR8fsVz2gho9geBFjasY0IV8gJBQ/exec" },
+  { name:"Roblox 99", tag:"Horror",                  img:"https://i.scdn.co/image/ab67616d0000b27354761f903652136279c6552f", url:"https://script.google.com/macros/s/AKfycbw4urIQgR3zAfmFsn3NWFC6kpsGYSWafyi6AWtyVNSyBkySH9O46LVnhej6fW7beFME/exec" },
+  { name:"Slender Man", tag:"Horror",                img:"https://cdn1.epicgames.com/spt-assets/4f2537e2a2124cdd8fbd18b7068167d9/slender-the-arrival-4rvfj.png", url:"https://script.google.com/macros/s/AKfycbzD78lGmoq37iyrMDWZavBLxIRpQ_HmutXT9arsozaDkYaHVSfk7YliEmd3EL4nXM_4Bw/exec" },
   { name:"Poly Track", tag:"GAMES",                  img:"https://lh3.googleusercontent.com/ol_bS9nAl5NvErv-9hX9-MfEMQgtKeFQBb53m5Mh_Uj9fkf5a2S2W_pA43yrnNFGb4UC_GPDTAtCOLRLBjgLHqDFkA=s1280-w1280-h800", url:"https://script.google.com/macros/s/AKfycbzuhv-wKflC3QgCI_d8xsy90ngRlqgKj-qfICMuzhimGuYwWXFI5tPWwwfjrYk-biJu/exec" },
   { name:"N00b miner", tag:"GAMES",                  img:"https://play-lh.googleusercontent.com/yU2xBCEG4x9JJNXj041T8SGRdq2Qos7cgqSOKB1nNOqlx-dDxCpQlVDCuc_YSX-YmJU", url:"https://script.google.com/macros/s/AKfycbxkvPO4mEcWEk5a9TgEuR7qyiYZs7hL80XF5pwK8QMKHqmA7qUqxvIePB3PF9c3Bqc93w/exec" },
   { name:"Fall Guys", tag:"GAMES",                   img:"https://cdn1.epicgames.com/offer/50118b7f954e450f8823df1614b24e80/FGSS04_KeyArt_OfferImagePortrait_1200x1600_1200x1600-4bd46574e78464352e1f2c55714701f7", url:"https://script.google.com/macros/s/AKfycbxzGXZ-dYcADWPNv7OSO6OdaFl8sJtBNY8J1KO5EQ33_I37NN0nQkaej4HqNCAkvxHHqA/exec" },
@@ -4027,12 +4027,12 @@ const GAMES = [
   { name:"Among Us", tag:"GAMES",                    img:"https://store-images.s-microsoft.com/image/apps.30063.13589262686196899.16e3418a-cbf2-4748-9724-1c9dc9b7a0b9.672da915-9117-4230-960d-4f59f3d7beb5", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;hqpen&amp;interpolate#717953555" },
   { name:"Splatoon", tag:"GAMES",                    img:"https://i.ytimg.com/vi/0X_iKZ9sl8w/maxresdefault.jpg", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;hqpen&amp;interpolate#815938308" },
   { name:"TETRIS", tag:"GAMES",                      img:"https://www.datocms-assets.com/145957/1744284280-tetris-mobile.png?auto=format&amp;fit=max&amp;w=1200", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;interpolate&amp;clones=Infinity&amp;offscreen&amp;hqpen#1000009994" },
-  { name:"大乱闘スマッシュブラザーズ", tag:"GAMES",    img:"https://v1.padlet.pics/1/image.webp?t=c_limit%2Cdpr_1%2Ch_360%2Cw_480&amp;url=https%3A%2F%2Fpadlet-artifacts.storage.googleapis.com%2F772a28a8d4b75d6bf5e784ae9d29c547046e54cb%2F6d587b48e304e2b6dddf1c78a196c1d8-h-eecd7c55129fe0f64ab0d624ee3724c6.png", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;offscreen&amp;hqpen&amp;interpolate#993930034" },
-  { name:"スイカゲーム", tag:"GAMES",                 img:"https://store-jp.nintendo.com/dw/image/v2/BFGJ_PRD/on/demandware.static/-/Sites-all-master-catalog/ja_JP/dw777a27be/products/D70010000043363/heroBanner/d5f672aaf8d60243399b854ffcb11671121f560715505cec327509d6144958cc.jpg?sw=1368&amp;strip=false", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;hqpen&amp;interpolate#911281961" },
+  { name:"大乱闘スマッシュブラザーズ", tag:"GAMES",      img:"https://v1.padlet.pics/1/image.webp?t=c_limit%2Cdpr_1%2Ch_360%2Cw_480&amp;url=https%3A%2F%2Fpadlet-artifacts.storage.googleapis.com%2F772a28a8d4b75d6bf5e784ae9d29c547046e54cb%2F6d587b48e304e2b6dddf1c78a196c1d8-h-eecd7c55129fe0f64ab0d624ee3724c6.png", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;offscreen&amp;hqpen&amp;interpolate#993930034" },
+  { name:"スイカゲーム", tag:"GAMES",                  img:"https://store-jp.nintendo.com/dw/image/v2/BFGJ_PRD/on/demandware.static/-/Sites-all-master-catalog/ja_JP/dw777a27be/products/D70010000043363/heroBanner/d5f672aaf8d60243399b854ffcb11671121f560715505cec327509d6144958cc.jpg?sw=1368&amp;strip=false", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;hqpen&amp;interpolate#911281961" },
   { name:"Armedforces.io", tag:".io",                img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLbGVTKPaNajuvDmMvUL1qXSBkerh7uD4jmug97B1rTyuglUegSTRwJls&amp;s=10", url:"https://cmug.gitlab.io/armedforces-io/" },
   { name:"Masked Special Forces", tag:"Shooter",     img:"https://www.onlinegames.io/media/posts/310/Masked-Special-Forces-FPS.jpg", url:"https://cmug.gitlab.io/masked-special-forces/" },
-  { name:"Pixel Gun 3D", tag:"Shooter",             img:"https://m.media-amazon.com/images/I/91tio4WA2YL.png", url:"https://unblockedgames1024.gitlab.io/pixel-gun-3d/" },
-  { name:"Masked Forces",tag:"Shooter",             img:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/555750/capsule_616x353.jpg?t=1768141032", url:"https://unblockedgames1024.gitlab.io/masked-forces/" },
+  { name:"Pixel Gun 3D", tag:"Shooter",              img:"https://m.media-amazon.com/images/I/91tio4WA2YL.png", url:"https://unblockedgames1024.gitlab.io/pixel-gun-3d/" },
+  { name:"Masked Forces",tag:"Shooter",              img:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/555750/capsule_616x353.jpg?t=1768141032", url:"https://unblockedgames1024.gitlab.io/masked-forces/" },
   { name:"ResentClinet", tag:"Minecraft",            img:"https://static.wikitide.net/questforbugswiki/thumb/7/71/Eaglercraft_logo.png/330px-Eaglercraft_logo.png", url:"https://r-e-s-e-n-t-cli-en-t.duckdns.org/game.html" },
   { name:"FRAGEM", tag:"Shooter",                    img:"https://tcf.admeen.org/game/19000/18893/400x246/fragen.jpg", url:"https://crazygames.cdn.msnfun.com/9nf0clvx79hg/v1/index.html?msstart_sdk_init=eyJwYXJlbnRPcmlnaW4iOiJodHRwczovL3d3dy5tc24uY29tIiwiY2xpZW50SWQiOiIzMEU1Njk0MDg3NTg2MzAyMDU0ODdFMDM4NkEyNjIzOCIsImxvY2FsZSI6ImVuLXVzIiwiZW50cnlQb2ludElkIjoiIiwic3dpdGNoR2FtZVBheWxvYWQiOnsic3dpdGNoZWRUbyI6IjluZjBjbHZ4NzloZyIsInZhbHVlIjp7fX19" },
   { name:"Screw Out Bolts and Nuts", tag:"Puzzle",   img:"https://play-lh.googleusercontent.com/Gmy1Fgu07RuM0gFPe_c1F8l8DCT5bEalZLB9o5Avs05L3bUTv2CQRU2OeQKGaAEEkhZeOU7B4N4Ed6BEHDVO", url:"https://crazygames.cdn.msnfun.com/9nvd4v66kdj7/v5/index.html?msstart_sdk_init=eyJwYXJlbnRPcmlnaW4iOiJodHRwczovL3d3dy5tc24uY29tIiwiY2xpZW50SWQiOiIzMEU1Njk0MDg3NTg2MzAyMDU0ODdFMDM4NkEyNjIzOCIsImxvY2FsZSI6ImVuLXVzIiwiZW50cnlQb2ludElkIjoiIiwic3dpdGNoR2FtZVBheWxvYWQiOnsic3dpdGNoZWRUbyI6IjludmQ0djY2a2RqNyIsInZhbHVlIjp7fX19" },
@@ -4051,7 +4051,7 @@ const GAMES = [
   { name:"BLOCK BLAST", tag:"Puzzle",                img:"https://cdn2.fptshop.com.vn/unsafe/1240x0/filters:format(webp):quality(75)/block_blast_6_45a3799a1b.jpg", url:"https://script.google.com/macros/s/AKfycbycxjNgTna7FyTV-LgTQD7Jq2hCCSG-1pajHuYuf1SwQWwcAbfTUEU8SrQCwTqJee4/exec" },
   { name:"GTA", tag:"GAMES",                         img:"https://i.ytimg.com/vi/axY9GOqGYgA/maxresdefault.jpg", url:"https://script.google.com/macros/s/AKfycbwLMXCMH4RQVPyEj5PM4-GePOFbCt542Yq61vjEOPSsyyr9CsPOjtDCCr3BY_Szc5Bl7g/exec" },
   { name:"Hole.io", tag:".io",                       img:"https://m.media-amazon.com/images/I/81QTJgqpy9L.png", url:"https://script.google.com/macros/s/AKfycbxaEAALDwIyOO0i5pMcGew37mv-rHB9kydmlRfjewcmCjDwMOy4E703WwEgSQKOujJS5A/exec" },
-  { name:"Magic Tiles 3", tag:"Pazzle",              img:"https://magictiles.org/game/magic-tiles-3.webp", url:"https://script.google.com/macros/s/AKfycbytKeNBxJWqOKQQmuX6-T99F1vpLYUfuo6qD9IwrqilXk4gSaGPhoY7h1rp-mdq3Rts/exec" },
+  { name:"Magic Tiles 3", tag:"Puzzle",              img:"https://magictiles.org/game/magic-tiles-3.webp", url:"https://script.google.com/macros/s/AKfycbytKeNBxJWqOKQQmuX6-T99F1vpLYUfuo6qD9IwrqilXk4gSaGPhoY7h1rp-mdq3Rts/exec" },
   { name:"Sonic EXE", tag:"Horror",                  img:"https://cdn2.steamgriddb.com/logo/31c660c9bfd19dc8145532f33b9dc187.png", url:"https://script.google.com/macros/s/AKfycbzTL1fwvNcRcdaLXcEFo6LIKe6ocPfGanvahDpfRGrg0_FytIvULo8qxZWJsgVX3geHGg/exec" },
   { name:"Rogue Ser...", tag:"Shooter",              img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuVN9CgBy5hRuTi8xPiW8iX-PLx0_WiIG3ZG_I8zbSgcdXkZrnbhk9Z0U&amp;s=10", url:"https://script.google.com/macros/s/AKfycbxoO6zDi8mk7Ef1vm0lr1_4fRRw1qbLcW3ViDjP6YIywNUXN-OFK6HXE4T_gaGMIcCcjg/exec" },
   { name:"Ragdoll Hit", tag:"GAMES",                 img:"https://media.hotgame.io/2026/01/01210043/ragdoll-hit-enhanced.webp", url:"https://script.google.com/macros/s/AKfycbwgrxZmuFfIKSLNgcOMbaP_AqIp0Cw1o3ZPd7ZeXcltvZDWu6--UY3RPoIUhv1n1MCBxQ/exec" },
