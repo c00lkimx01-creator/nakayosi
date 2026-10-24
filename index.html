@@ -10,7 +10,7 @@
   <!-- 手書き風フォント（Caveat）の読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Yomogi&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================
@@ -125,8 +125,10 @@
 
     /* 手書きアニメーション welcome テキスト */
     .glass-welcome {
-      font-family: 'Caveat', cursive;
-      font-size: clamp(4.5rem, 15vw, 8.5rem);
+      font-family: 'Yomogi', 'Caveat', cursive;
+      font-size: clamp(2.6rem, 9vw, 6.5rem);
+      flex-wrap: wrap;
+      justify-content: center;
       color: var(--text-main);
       text-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
       letter-spacing: 0.05em;
@@ -314,7 +316,7 @@
   <main class="welcome-container">
     <!-- 手書き風アニメーション welcome -->
     <div class="glass-welcome">
-      <span>n</span><span>a</span><span>k</span><span>a</span><span>y</span><span>o</span><span>s</span><span>i</span>
+      <span style="animation-delay:0.10s">な</span><span style="animation-delay:0.25s">か</span><span style="animation-delay:0.40s">よ</span><span style="animation-delay:0.55s">し</span><span style="animation-delay:0.70s">&nbsp;</span><span style="animation-delay:0.85s">イ</span><span style="animation-delay:1.00s">ン</span><span style="animation-delay:1.15s">ス</span><span style="animation-delay:1.30s">タ</span><span style="animation-delay:1.45s">ン</span><span style="animation-delay:1.60s">ス</span>
     </div>
 
   </main>
@@ -379,8 +381,8 @@
     // ==========================================================
     // welcome アニメーション後、自動でフェードアウトしてポータルを表示
 
-    // ===== URLルーティング (/welcome, /links など) =====
-    const ROUTE_PAGES = ['welcome','home','news','weather','events','calendar','links','games','search','settings','terms','tools','chats'];
+    // ===== URLルーティング (/in, /links など) =====
+    const ROUTE_PAGES = ['in','home','news','weather','events','calendar','links','games','search','settings','terms','tools','chats'];
     const ROUTER = (function(){
       const url = new URL(location.href);
       let base, initial = '';
@@ -396,14 +398,14 @@
         else base = url.pathname.replace(/[^\/]*$/,'');
       }
       if (!base.endsWith('/')) base += '/';
-      if (!ROUTE_PAGES.includes(initial) || initial === 'welcome') initial = 'home';
+      if (!ROUTE_PAGES.includes(initial) || initial === 'in') initial = 'home';
       const qs = url.searchParams.toString();
       const tail = (qs ? '?' + qs : '') + url.hash;
-      if (initial !== 'chats') history.replaceState({page:'welcome', target:initial}, '', base + 'welcome' + tail);
+      if (initial !== 'chats') history.replaceState({page:'in', target:initial}, '', base + 'in' + tail);
       return { base, initial, tail };
     })();
     const PAGE_TITLES = {
-      welcome:'ようこそ', home:'ホーム', news:'お知らせ', weather:'天気',
+      in:'ようこそ', home:'ホーム', news:'お知らせ', weather:'天気',
       events:'イベント', calendar:'カレンダー', links:'リンク集', games:'ゲーム',
       tv:'TV', search:'検索', settings:'設定', terms:'利用規約', tools:'ミニ機能', chats:'仲良しCHAT'
     };
@@ -441,9 +443,9 @@
         history.replaceState({page:ROUTER.initial}, '', routeUrl(ROUTER.initial) + ROUTER.tail);
         window.addEventListener('popstate', (e) => {
           let id = e.state?.page;
-          if (!id || id === 'welcome') id = 'home';
+          if (!id || id === 'in') id = 'home';
           if (ROUTE_PAGES.includes(id)) go(id);
-          if (e.state?.page === 'welcome') history.replaceState({page:'home'}, '', routeUrl('home'));
+          if (e.state?.page === 'in') history.replaceState({page:'home'}, '', routeUrl('home'));
         });
       } catch (err) { console.error('router', err); }
     }
@@ -473,7 +475,7 @@
       }, { once: true });
       document.body.classList.add('welcome-fade');
       setTimeout(() => { faded = true; reveal(); }, 900);
-      frame.srcdoc = source.content.textContent;
+      frame.srcdoc = source.content.textContent.replace(/tag\s*:\s*"[^"]*"(?:\s*,\s*tag\s*:\s*"[^"]*")+/g, m => 'tag:' + JSON.stringify((m.match(/"[^"]*"/g)||[]).map(x => x.slice(1,-1))));
     }
     // スキップ：アニメーションを待たずにすぐポータルへ
     document.getElementById('skipBtn').addEventListener('click', showInstance);
@@ -1150,6 +1152,15 @@ body.dark-mode .theme-toggle-btn .theme-icon-moon{display:none}
 body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
 
 /* --- Link tag chips &amp; badges --- */
+.r18-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);padding:20px}
+.r18-modal.open{display:flex}
+.r18-box{background:var(--surface,#fff);color:var(--text,#111);border:1px solid var(--border,#ddd);border-radius:16px;max-width:360px;width:100%;padding:24px 22px;text-align:center;box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
+.r18-badge{display:inline-block;background:#e11d48;color:#fff;font-weight:800;letter-spacing:.08em;padding:4px 14px;border-radius:999px;margin-bottom:12px}
+.r18-box p{margin:0 0 18px;line-height:1.7;font-weight:600}
+.r18-actions{display:flex;gap:10px;justify-content:center}
+.r18-actions button{font:inherit;font-weight:700;padding:8px 20px;border-radius:999px;cursor:pointer;border:1px solid var(--border,#ccc);background:transparent;color:inherit}
+.r18-actions .r18-go{background:#e11d48;border-color:#e11d48;color:#fff}
+.link-trailing .lk-tag + .lk-tag{margin-left:4px}
 .link-tag-bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .tag-chip{background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .18s}
 .tag-chip:hover{border-color:var(--primary);color:var(--primary)}
@@ -3642,9 +3653,9 @@ window.sxSaveSettings = sxSaveSettings;
             &lt;div class="desc"&gt;ライト／ダークを切り替えます。&lt;/div&gt;
             &lt;button class="btn" onclick="toggleTheme()"&gt;モードを切り替える&lt;/button&gt;
             &lt;select id="site-theme-select" aria-label="表示スタイル" onchange="setSiteTheme(this.value)"&gt;
+              &lt;option value="auto"&gt;デバイスに合わせる&lt;/option&gt;
               &lt;option value="light"&gt;ライト&lt;/option&gt;
               &lt;option value="dark"&gt;ダーク&lt;/option&gt;
-              &lt;option value="glass"&gt;グラスモード&lt;/option&gt;
               &lt;option value="glass2"&gt;グラスモード2&lt;/option&gt;
             &lt;/select&gt;
           &lt;/div&gt;
@@ -4207,15 +4218,28 @@ function linkInitial(name){
   return (clean.charAt(0) || '↗').toUpperCase();
 }
 function renderLinks(){
-  const allTags = Array.from(new Set(LINK_CATEGORIES.flatMap(c =&gt; c.items.map(i =&gt; i.tag).filter(Boolean))));
+  const allTags = Array.from(new Set(LINK_CATEGORIES.flatMap(c =&gt; c.items.flatMap(i =&gt; [].concat(i.tag||[])).filter(Boolean))));
   const total = LINK_CATEGORIES.reduce((n,c)=&gt;n+c.items.length,0);
   const tagBar = document.getElementById('linkTagBar');
   if(tagBar) tagBar.innerHTML = ['ALL',...allTags].map(t =&gt; `&lt;button type="button" class="tag-chip${t===ACTIVE_LINK_TAG?' active':''}" data-tag="${safeText(t)}" onclick="filterLinksByTag('${String(t).replace(/'/g,"\\'")}')"&gt;${t==='ALL'?'すべて':safeText(t)}&lt;/button&gt;`).join('');
   const cats = document.getElementById('linkCats');
-  if(cats) cats.innerHTML = LINK_CATEGORIES.map((cat,index)=&gt;`&lt;section class="link-cat" data-cat="${safeText(cat.title)}"&gt;&lt;div class="link-cat-head"&gt;&lt;span class="link-cat-mark"&gt;${LINK_CATEGORY_ICONS[index%LINK_CATEGORY_ICONS.length]}&lt;/span&gt;&lt;div class="link-cat-title"&gt;&lt;h2&gt;${safeText(cat.title)}&lt;/h2&gt;&lt;div class="link-cat-sub"&gt;${cat.items.length} links&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;ul&gt;${cat.items.map(i=&gt;`&lt;li&gt;&lt;a href="${safeText(i.url)}" target="_blank" rel="noopener noreferrer" data-name="${safeText(i.name)}" data-tag="${safeText(i.tag||'')}" data-url="${safeText(i.url)}" data-initial="${safeText(linkInitial(i.name))}"&gt;&lt;span class="link-info"&gt;&lt;span class="lk-name"&gt;${safeText(i.name)}&lt;/span&gt;&lt;span class="lk-domain"&gt;${safeText(linkDomain(i.url))}&lt;/span&gt;&lt;/span&gt;&lt;span class="link-trailing"&gt;${i.tag?`&lt;span class="lk-tag lk-tag-${String(i.tag).replace(/\s+/g,'-').toLowerCase()}"&gt;${safeText(i.tag)}&lt;/span&gt;`:''}&lt;svg class="link-open-icon" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14 5h5v5M19 5l-8 8"/&gt;&lt;path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;/section&gt;`).join('');
+  if(cats) cats.innerHTML = LINK_CATEGORIES.map((cat,index)=&gt;`&lt;section class="link-cat" data-cat="${safeText(cat.title)}"&gt;&lt;div class="link-cat-head"&gt;&lt;span class="link-cat-mark"&gt;${LINK_CATEGORY_ICONS[index%LINK_CATEGORY_ICONS.length]}&lt;/span&gt;&lt;div class="link-cat-title"&gt;&lt;h2&gt;${safeText(cat.title)}&lt;/h2&gt;&lt;div class="link-cat-sub"&gt;${cat.items.length} links&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;ul&gt;${cat.items.map(i=&gt;`&lt;li&gt;&lt;a href="${safeText(i.url)}" target="_blank" rel="noopener noreferrer" data-name="${safeText(i.name)}" data-tag="${safeText([].concat(i.tag||[]).join('|'))}"${[].concat(i.tag||[]).includes('R18')?' data-r18="1"':''} data-url="${safeText(i.url)}" data-initial="${safeText(linkInitial(i.name))}"&gt;&lt;span class="link-info"&gt;&lt;span class="lk-name"&gt;${safeText(i.name)}&lt;/span&gt;&lt;span class="lk-domain"&gt;${safeText(linkDomain(i.url))}&lt;/span&gt;&lt;/span&gt;&lt;span class="link-trailing"&gt;${[].concat(i.tag||[]).map(t=&gt;`&lt;span class="lk-tag lk-tag-${String(t).replace(/\s+/g,'-').toLowerCase()}"&gt;${safeText(t)}&lt;/span&gt;`).join('')}&lt;svg class="link-open-icon" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14 5h5v5M19 5l-8 8"/&gt;&lt;path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;/section&gt;`).join('');
   const count = document.getElementById('linkCount'); if(count) count.textContent = total;
   applyLinkFilters();
 }
+
+document.addEventListener('click',function(e){
+  const a=e.target.closest&amp;&amp;e.target.closest('a[data-r18]');
+  if(!a||a.dataset.r18ok)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  let m=document.getElementById('r18Modal');
+  if(!m){m=document.createElement('div');m.id='r18Modal';m.className='r18-modal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');
+    m.innerHTML='&lt;div class="r18-box"&gt;&lt;div class="r18-badge"&gt;R18&lt;/div&gt;&lt;p&gt;こちらのリンクはR18が含まれます。気を付けてご使用ください!!&lt;/p&gt;&lt;div class="r18-actions"&gt;&lt;button type="button" class="r18-cancel"&gt;キャンセル&lt;/button&gt;&lt;button type="button" class="r18-go"&gt;進む&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;';
+    document.body.appendChild(m);
+    m.addEventListener('click',ev=&gt;{if(ev.target===m||ev.target.closest('.r18-cancel'))m.classList.remove('open');});}
+  m.querySelector('.r18-go').onclick=function(){m.classList.remove('open');window.open(a.href,'_blank','noopener');};
+  m.classList.add('open');
+},true);
 function filterLinksByTag(tag){ ACTIVE_LINK_TAG=tag; applyLinkFilters(); }
 function filterLinks(q){
   LINK_QUERY=String(q||'').trim().toLowerCase();
@@ -4237,7 +4261,7 @@ function applyLinkFilters(){
     cat.querySelectorAll('li').forEach(li=&gt;{
       const a=li.querySelector('a');
       const hay=[a.dataset.name,a.dataset.tag,a.dataset.url].join(' ').toLowerCase();
-      const ok=(ACTIVE_LINK_TAG==='ALL'||a.dataset.tag===ACTIVE_LINK_TAG)&amp;&amp;(!LINK_QUERY||hay.includes(LINK_QUERY));
+      const ok=(ACTIVE_LINK_TAG==='ALL'||a.dataset.tag.split('|').includes(ACTIVE_LINK_TAG))&amp;&amp;(!LINK_QUERY||hay.includes(LINK_QUERY));
       li.style.display=ok?'':'none'; if(ok){visible++;shown++;}
     });
     cat.style.display=visible?'':'none';
@@ -6377,27 +6401,34 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
 &lt;/style&gt;
 &lt;script id="glass-theme-mobile-menu-fix-script"&gt;
 (function(){
-  const ORDER=['glass','glass2','dark','light'];
+  const ORDER=['auto','glass2','dark','light'];
+  const MQ=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
+  let chosen='auto';
   const KEY='nakayosi_theme_v2';
-  const label=theme=&gt;theme==='glass'?'グラス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':'ライト';
-  function current(){return document.body.classList.contains('glass-mode-2')?'glass2':document.body.classList.contains('glass-mode')?'glass':document.body.classList.contains('dark-mode')?'dark':'light'}
+  const label=theme=&gt;theme==='auto'?'デバイス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':'ライト';
+  function current(){return chosen}
   function apply(theme,save){
-    if(!ORDER.includes(theme))theme='glass';
-    document.body.classList.toggle('glass-mode',theme==='glass'||theme==='glass2');
+    if(!ORDER.includes(theme))theme='auto';
+    chosen=theme;
+    const pick=theme;
+    if(theme==='auto')theme=(MQ&amp;&amp;MQ.matches)?'dark':'light';
+    document.body.classList.toggle('glass-mode',theme==='glass2');
     document.body.classList.toggle('glass-mode-2',theme==='glass2');
     document.body.classList.toggle('dark-mode',theme==='dark');
     document.body.dataset.theme=theme;
-    const appearanceSelect=document.getElementById('site-theme-select');if(appearanceSelect)appearanceSelect.value=theme;
+    const appearanceSelect=document.getElementById('site-theme-select');if(appearanceSelect)appearanceSelect.value=pick;
     let glass2Background=document.querySelector('.glass2-background');
     if(theme==='glass2'&amp;&amp;!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';var g2src=['https://id-preview--e6de3a45-d60d-46b1-a964-c76c73131600.lovable.app/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif','https://www.benib.jp/images/til-2022-09-09-yuyake.gif'],g2i=0;glass2Background.onerror=function(){g2i++;if(g2src[g2i])this.src=g2src[g2i]};glass2Background.src=g2src[0];document.body.prepend(glass2Background)}
     const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':theme);
-    const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(theme)+1)%ORDER.length];btn.title=`表示: ${label(theme)}（次: ${label(next)}）`;btn.setAttribute('aria-label',btn.title)}
-    document.querySelectorAll('#smTheme button[data-theme]').forEach(b=&gt;b.classList.toggle('active',b.dataset.theme===theme));
-    if(save){try{localStorage.setItem(KEY,theme);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',theme==='dark'?'dark':'light')}catch(_){}}
+    const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(pick)+1)%ORDER.length];btn.title=`表示: ${label(pick)}（次: ${label(next)}）`;btn.setAttribute('aria-label',btn.title)}
+    document.querySelectorAll('#smTheme button[data-theme]').forEach(b=&gt;b.classList.toggle('active',b.dataset.theme===pick));
+    if(save){try{localStorage.setItem(KEY,pick);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',theme==='dark'?'dark':'light')}catch(_){}}
   }
   function boot(){
-    let saved='glass';try{saved=localStorage.getItem(KEY)||'glass'}catch(_){}
+    let saved='auto';try{saved=localStorage.getItem(KEY)||'auto'}catch(_){}
+    if(saved==='glass')saved='auto';
     apply(saved,false);
+    if(MQ){const onMq=()=&gt;{if(chosen==='auto')apply('auto',false)};MQ.addEventListener?MQ.addEventListener('change',onMq):MQ.addListener(onMq);}
     window.setSiteTheme=function(theme){apply(theme,true)};
     window.toggleTheme=function(){const now=current();apply(ORDER[(ORDER.indexOf(now)+1)%ORDER.length],true)};
     const menu=document.querySelector('.menu-toggle'),nav=document.getElementById('gnav'),links=document.getElementById('gnavLinks');
@@ -6407,7 +6438,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
       document.addEventListener('keydown',e=&gt;{if(e.key==='Escape'&amp;&amp;nav.classList.contains('open')){close();menu.focus()}});
       window.addEventListener('resize',()=&gt;{if(innerWidth&gt;1024)close()},{passive:true});
     }
-    const sm=document.getElementById('smTheme');if(sm){if(!sm.querySelector('[data-theme="glass"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass';b.textContent='グラス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="glass"]');glass?glass.after(b):sm.prepend(b)}}
+    const sm=document.getElementById('smTheme');if(sm){sm.querySelectorAll('[data-theme="glass"]').forEach(x=&gt;x.remove());if(!sm.querySelector('[data-theme="auto"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='auto';b.textContent='デバイス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="auto"]');glass?glass.after(b):sm.prepend(b)}}
     if(sm)sm.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-theme]');if(b){e.stopImmediatePropagation();apply(b.dataset.theme,true)}},true);
     const header=document.querySelector('#search-app .search-header');
     if(header&amp;&amp;!header.querySelector('.nkys-quick-actions')){const actions=document.createElement('div');actions.className='nkys-quick-actions';actions.setAttribute('aria-label','クイックアクセス');actions.innerHTML='&lt;button type="button" class="nkys-quick-action" data-action="web" title="Web検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-web"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;Web検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="news" title="ニュース検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-news"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;ニュース検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="images" title="画像検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-image"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;画像検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="videos" title="動画検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-video"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;動画検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="settings" title="検索設定"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-settings"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;検索設定&lt;/span&gt;&lt;/button&gt;';actions.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-action]');if(!b)return;if(b.dataset.action==='settings'){if(typeof window.openSettings==='function')window.openSettings();return}const input=document.getElementById('sxSearchInput');if(input)input.focus();const tab=document.querySelector(`#search-app .tab[data-cat="${b.dataset.action}"]`);if(tab&amp;&amp;document.getElementById('mainContainer')?.classList.contains('results-mode'))tab.click()});header.appendChild(actions)}
