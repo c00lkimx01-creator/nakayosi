@@ -10,7 +10,7 @@
   <!-- 手書き風フォント（Caveat）の読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Yomogi&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Klee+One:wght@600&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================
@@ -125,7 +125,8 @@
 
     /* 手書きアニメーション welcome テキスト */
     .glass-welcome {
-      font-family: 'Yomogi', 'Caveat', cursive;
+      font-family: 'Klee One', 'Caveat', cursive;
+      font-weight: 600;
       font-size: clamp(2.6rem, 9vw, 6.5rem);
       flex-wrap: wrap;
       justify-content: center;
@@ -1152,37 +1153,31 @@ body.dark-mode .theme-toggle-btn .theme-icon-moon{display:none}
 body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
 
 /* --- Link tag chips &amp; badges --- */
-.r18-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);padding:20px}
+:root{--warning:oklch(.52 .19 20);--warning-ink:oklch(1 0 0);--warning-overlay:oklch(.15 0 0 / .65);--warning-shadow:0 24px 80px oklch(.15 0 0 / .3)}
+.r18-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:var(--warning-overlay);backdrop-filter:blur(8px);padding:20px}
 .r18-modal.open{display:flex}
-.r18-box{background:var(--surface,#fff);color:var(--text,#111);border:1px solid var(--border,#ddd);border-radius:16px;max-width:360px;width:100%;padding:24px 22px;text-align:center;box-shadow:0 20px 50px -20px rgba(0,0,0,.6)}
-.r18-badge{display:inline-block;background:#e11d48;color:#fff;font-weight:800;letter-spacing:.08em;padding:4px 14px;border-radius:999px;margin-bottom:12px}
-.r18-box p{margin:0 0 18px;line-height:1.7;font-weight:600}
-.r18-actions{display:flex;gap:10px;justify-content:center}
-.r18-actions button{font:inherit;font-weight:700;padding:8px 20px;border-radius:999px;cursor:pointer;border:1px solid var(--border,#ccc);background:transparent;color:inherit}
-.r18-actions .r18-go{background:#e11d48;border-color:#e11d48;color:#fff}
+.r18-box{background:var(--surface);color:var(--text);border:1px solid var(--border);border-top:4px solid var(--warning);border-radius:8px;max-width:420px;width:100%;padding:32px 26px 26px;text-align:center;box-shadow:var(--warning-shadow);animation:r18Enter .2s ease-out}
+.r18-badge{font-family:'Noto Sans JP',sans-serif;display:block;color:var(--warning);font-size:4rem;line-height:1.1;font-weight:900;letter-spacing:0;margin:0 0 20px}
+.r18-box p{margin:0 0 26px;line-height:1.85;font-size:.94rem;font-weight:500;text-wrap:balance}
+.r18-actions{display:grid;grid-template-columns:1fr 1.2fr;gap:10px}
+.r18-actions button{font:inherit;font-size:.88rem;font-weight:700;min-height:46px;padding:10px 12px;border-radius:6px;cursor:pointer;border:1px solid var(--border);background:var(--surface-2);color:var(--text);transition:background .18s,transform .18s}
+.r18-actions button:hover{background:var(--tag-bg)}
+.r18-actions button:focus-visible{outline:2px solid var(--warning);outline-offset:3px}
+.r18-actions .r18-go{background:var(--warning);border-color:var(--warning);color:var(--warning-ink)}
+.r18-actions .r18-go:hover{background:color-mix(in oklab,var(--warning) 88%,var(--text))}
+@keyframes r18Enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.r18-box{animation:none}}
 .link-trailing .lk-tag + .lk-tag{margin-left:4px}
 .link-tag-bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .tag-chip{background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .18s}
 .tag-chip:hover{border-color:var(--primary);color:var(--primary)}
 .tag-chip.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 4px 14px -6px color-mix(in oklab,var(--primary) 60%,transparent)}
 .lk-tag{display:inline-block;font-size:.68rem;font-weight:800;padding:2px 7px;border-radius:6px;margin-right:8px;letter-spacing:.4px;vertical-align:middle;color:#fff;background:var(--primary)}
-.lk-tag-ai{background:linear-gradient(135deg,#8b5cf6,#ec4899)}
-.lk-tag-anime{background:linear-gradient(135deg,#ec4899,#8b5cf6)}
-.lk-tag-chat{background:linear-gradient(135deg,#14b8a6,#22c55e)}
-.lk-tag-game{background:linear-gradient(135deg,#3b82f6,#06b6d4)}
-.lk-tag-games{background:linear-gradient(135deg,#f59e0b,#ef4444)}
-.lk-tag-manga{background:linear-gradient(135deg,#f97316,#fb923c)}
-.lk-tag-music{background:linear-gradient(135deg,#a855f7,#6366f1)}
-.lk-tag-proxy{background:linear-gradient(135deg,#64748b,#475569)}
-.lk-tag-search{background:linear-gradient(135deg,#0ea5e9,#22c55e)}
-.lk-tag-search-web{background:linear-gradient(135deg,#0ea5e9,#22c55e)}
-.lk-tag-vc{background:linear-gradient(135deg,#22c55e,#10b981)}
-.lk-tag-watch{background:linear-gradient(135deg,#06b6d4,#3b82f6)}
-.lk-tag-youtube{background:linear-gradient(135deg,#ff0000,#ff4d4d)}
-.lk-tag-仮想android{background:linear-gradient(135deg,#3ddc84,#2e7d32)}
-.lk-tag-仮想android-tablet{background:linear-gradient(135deg,#34d399,#059669)}
-.lk-tag-仮想google-chrome{background:linear-gradient(135deg,#f59e0b,#3b82f6)}
-.lk-tag-仮想windows-2000{background:linear-gradient(135deg,#008080,#0ea5e9)}
+#links-page .lk-tag{background:var(--tag-color,var(--primary));color:var(--warning-ink)}
+#links-page .tag-chip[data-tag]:not([data-tag="ALL"]){color:var(--tag-color);border-color:color-mix(in oklab,var(--tag-color) 35%,var(--border));background:color-mix(in oklab,var(--tag-color) 8%,var(--surface))}
+#links-page .tag-chip[data-tag]:not([data-tag="ALL"]):hover{background:color-mix(in oklab,var(--tag-color) 16%,var(--surface))}
+#links-page .tag-chip[data-tag].active{background:var(--tag-color,var(--primary));border-color:var(--tag-color,var(--primary));color:var(--warning-ink);box-shadow:none}
+body.dark-mode #links-page .tag-chip[data-tag]:not([data-tag="ALL"]):not(.active){color:color-mix(in oklab,var(--tag-color) 55%,var(--warning-ink))}
 .lk-name{vertical-align:middle}
 
 /* --- CrazyGames-like games layout --- */
@@ -1267,7 +1262,7 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
 #links-page .link-empty{grid-column:1/-1;padding:54px 20px;text-align:center;border:1px dashed var(--border);border-radius:8px;background:var(--surface);color:var(--text-muted)}
 #links-page .link-empty-icon{font-size:2rem;margin-bottom:8px;opacity:.55}
 #links-page .link-empty strong{display:block;color:var(--text);font-size:.95rem;margin-bottom:3px}
-@media(max-width:700px){#links-page .links-hero{padding:22px 20px}#links-page .links-hero h1{font-size:1.35rem}#links-page .link-toolbar{grid-template-columns:1fr;padding:10px}#links-page .link-result-count{text-align:right}#links-page .link-cats{grid-template-columns:1fr}#links-page .link-cat ul{max-height:360px}#links-page .lk-tag{display:none}}
+@media(max-width:700px){#links-page .links-hero{padding:22px 20px}#links-page .links-hero h1{font-size:1.35rem}#links-page .link-toolbar{grid-template-columns:1fr;padding:10px}#links-page .link-result-count{text-align:right}#links-page .link-cats{grid-template-columns:1fr}#links-page .link-cat ul{max-height:360px}#links-page .link-cat li a{grid-template-columns:30px minmax(0,1fr)}#links-page .link-trailing{grid-column:2;flex-wrap:wrap;gap:4px}#links-page .lk-tag{display:inline-block;max-width:100%;font-size:.65rem}}
 @media(prefers-reduced-motion:reduce){#links-page *{scroll-behavior:auto!important;transition:none!important}}
 
 &lt;/style&gt;
@@ -4217,28 +4212,49 @@ function linkInitial(name){
   const clean = String(name || '').replace(/[㋔🅝🅔🅦!+]/g,'').trim();
   return (clean.charAt(0) || '↗').toUpperCase();
 }
+function linkTagTone(tag){
+  const tags=Array.from(new Set(LINK_CATEGORIES.flatMap(c =&gt; c.items.flatMap(i =&gt; [].concat(i.tag||[])).filter(Boolean)))).sort();
+  return 'tag-tone-'+tags.indexOf(tag);
+}
+function installLinkTagColors(tags){
+  let sheet=document.getElementById('linkTagColors');
+  if(!sheet){sheet=document.createElement('style');sheet.id='linkTagColors';document.head.appendChild(sheet);}
+  sheet.textContent=tags.slice().sort().map((tag,index)=&gt;{
+    const color=tag==='R18'?'var(--warning)':`oklch(.48 .12 ${(index*137.508+35)%360})`;
+    return `:root{--link-tag-${index}:${color}}.tag-tone-${index}{--tag-color:var(--link-tag-${index})}`;
+  }).join('');
+}
 function renderLinks(){
   const allTags = Array.from(new Set(LINK_CATEGORIES.flatMap(c =&gt; c.items.flatMap(i =&gt; [].concat(i.tag||[])).filter(Boolean))));
+  installLinkTagColors(allTags);
   const total = LINK_CATEGORIES.reduce((n,c)=&gt;n+c.items.length,0);
   const tagBar = document.getElementById('linkTagBar');
-  if(tagBar) tagBar.innerHTML = ['ALL',...allTags].map(t =&gt; `&lt;button type="button" class="tag-chip${t===ACTIVE_LINK_TAG?' active':''}" data-tag="${safeText(t)}" onclick="filterLinksByTag('${String(t).replace(/'/g,"\\'")}')"&gt;${t==='ALL'?'すべて':safeText(t)}&lt;/button&gt;`).join('');
+  if(tagBar) tagBar.innerHTML = ['ALL',...allTags].map(t =&gt; `&lt;button type="button" class="tag-chip ${linkTagTone(t)}${t===ACTIVE_LINK_TAG?' active':''}" data-tag="${safeText(t)}" onclick="filterLinksByTag('${String(t).replace(/'/g,"\\'")}')"&gt;${t==='ALL'?'すべて':safeText(t)}&lt;/button&gt;`).join('');
   const cats = document.getElementById('linkCats');
-  if(cats) cats.innerHTML = LINK_CATEGORIES.map((cat,index)=&gt;`&lt;section class="link-cat" data-cat="${safeText(cat.title)}"&gt;&lt;div class="link-cat-head"&gt;&lt;span class="link-cat-mark"&gt;${LINK_CATEGORY_ICONS[index%LINK_CATEGORY_ICONS.length]}&lt;/span&gt;&lt;div class="link-cat-title"&gt;&lt;h2&gt;${safeText(cat.title)}&lt;/h2&gt;&lt;div class="link-cat-sub"&gt;${cat.items.length} links&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;ul&gt;${cat.items.map(i=&gt;`&lt;li&gt;&lt;a href="${safeText(i.url)}" target="_blank" rel="noopener noreferrer" data-name="${safeText(i.name)}" data-tag="${safeText([].concat(i.tag||[]).join('|'))}"${[].concat(i.tag||[]).includes('R18')?' data-r18="1"':''} data-url="${safeText(i.url)}" data-initial="${safeText(linkInitial(i.name))}"&gt;&lt;span class="link-info"&gt;&lt;span class="lk-name"&gt;${safeText(i.name)}&lt;/span&gt;&lt;span class="lk-domain"&gt;${safeText(linkDomain(i.url))}&lt;/span&gt;&lt;/span&gt;&lt;span class="link-trailing"&gt;${[].concat(i.tag||[]).map(t=&gt;`&lt;span class="lk-tag lk-tag-${String(t).replace(/\s+/g,'-').toLowerCase()}"&gt;${safeText(t)}&lt;/span&gt;`).join('')}&lt;svg class="link-open-icon" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14 5h5v5M19 5l-8 8"/&gt;&lt;path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;/section&gt;`).join('');
+  if(cats) cats.innerHTML = LINK_CATEGORIES.map((cat,index)=&gt;`&lt;section class="link-cat" data-cat="${safeText(cat.title)}"&gt;&lt;div class="link-cat-head"&gt;&lt;span class="link-cat-mark"&gt;${LINK_CATEGORY_ICONS[index%LINK_CATEGORY_ICONS.length]}&lt;/span&gt;&lt;div class="link-cat-title"&gt;&lt;h2&gt;${safeText(cat.title)}&lt;/h2&gt;&lt;div class="link-cat-sub"&gt;${cat.items.length} links&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;ul&gt;${cat.items.map(i=&gt;`&lt;li&gt;&lt;a href="${safeText(i.url)}" target="_blank" rel="noopener noreferrer" data-name="${safeText(i.name)}" data-tag="${safeText([].concat(i.tag||[]).join('|'))}"${[].concat(i.tag||[]).includes('R18')?' data-r18="1"':''} data-url="${safeText(i.url)}" data-initial="${safeText(linkInitial(i.name))}"&gt;&lt;span class="link-info"&gt;&lt;span class="lk-name"&gt;${safeText(i.name)}&lt;/span&gt;&lt;span class="lk-domain"&gt;${safeText(linkDomain(i.url))}&lt;/span&gt;&lt;/span&gt;&lt;span class="link-trailing"&gt;${[].concat(i.tag||[]).map(t=&gt;`&lt;span class="lk-tag ${linkTagTone(t)}"&gt;${safeText(t)}&lt;/span&gt;`).join('')}&lt;svg class="link-open-icon" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14 5h5v5M19 5l-8 8"/&gt;&lt;path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;/section&gt;`).join('');
   const count = document.getElementById('linkCount'); if(count) count.textContent = total;
   applyLinkFilters();
 }
 
 document.addEventListener('click',function(e){
   const a=e.target.closest&amp;&amp;e.target.closest('a[data-r18]');
-  if(!a||a.dataset.r18ok)return;
+  if(!a)return;
   e.preventDefault();e.stopImmediatePropagation();
   let m=document.getElementById('r18Modal');
-  if(!m){m=document.createElement('div');m.id='r18Modal';m.className='r18-modal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');
-    m.innerHTML='&lt;div class="r18-box"&gt;&lt;div class="r18-badge"&gt;R18&lt;/div&gt;&lt;p&gt;こちらのリンクはR18が含まれます。気を付けてご使用ください!!&lt;/p&gt;&lt;div class="r18-actions"&gt;&lt;button type="button" class="r18-cancel"&gt;キャンセル&lt;/button&gt;&lt;button type="button" class="r18-go"&gt;進む&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;';
+  if(!m){m=document.createElement('div');m.id='r18Modal';m.className='r18-modal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.setAttribute('aria-labelledby','r18Title');m.setAttribute('aria-describedby','r18Description');
+    m.innerHTML='&lt;div class="r18-box"&gt;&lt;h2 class="r18-badge" id="r18Title"&gt;R18&lt;/h2&gt;&lt;p id="r18Description"&gt;こちらのリンクはR18が含まれます。気を付けてご使用ください!!&lt;/p&gt;&lt;div class="r18-actions"&gt;&lt;button type="button" class="r18-cancel"&gt;キャンセル&lt;/button&gt;&lt;button type="button" class="r18-go"&gt;それでも進む&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;';
     document.body.appendChild(m);
-    m.addEventListener('click',ev=&gt;{if(ev.target===m||ev.target.closest('.r18-cancel'))m.classList.remove('open');});}
-  m.querySelector('.r18-go').onclick=function(){m.classList.remove('open');window.open(a.href,'_blank','noopener');};
-  m.classList.add('open');
+    m.closeWarning=function(){m.classList.remove('open');if(m.returnFocus)m.returnFocus.focus();};
+    m.addEventListener('click',ev=&gt;{if(ev.target===m||ev.target.closest('.r18-cancel'))m.closeWarning();});
+    document.addEventListener('keydown',ev=&gt;{
+      if(!m.classList.contains('open'))return;
+      if(ev.key==='Escape'){ev.preventDefault();m.closeWarning();}
+      if(ev.key==='Tab'){ev.preventDefault();const cancel=m.querySelector('.r18-cancel');const go=m.querySelector('.r18-go');(document.activeElement===cancel?go:cancel).focus();}
+    });
+  }
+  m.returnFocus=a;
+  m.querySelector('.r18-go').onclick=function(){m.closeWarning();window.open(a.href,'_blank','noopener');};
+  m.classList.add('open');m.querySelector('.r18-cancel').focus();
 },true);
 function filterLinksByTag(tag){ ACTIVE_LINK_TAG=tag; applyLinkFilters(); }
 function filterLinks(q){
