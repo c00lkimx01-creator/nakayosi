@@ -10,7 +10,7 @@
   <!-- 手書き風フォント（Caveat）の読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Klee+One:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Klee+One:wght@600&family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================
@@ -125,8 +125,8 @@
 
     /* 手書きアニメーション welcome テキスト */
     .glass-welcome {
-      font-family: 'Klee One', 'Caveat', cursive;
-      font-weight: 600;
+      font-family: 'Hachi Maru Pop', 'Klee One', 'Caveat', cursive;
+      font-weight: 400;
       font-size: clamp(2.6rem, 9vw, 6.5rem);
       flex-wrap: wrap;
       justify-content: center;
@@ -317,7 +317,7 @@
   <main class="welcome-container">
     <!-- 手書き風アニメーション welcome -->
     <div class="glass-welcome">
-      <span style="animation-delay:0.10s">な</span><span style="animation-delay:0.25s">か</span><span style="animation-delay:0.40s">よ</span><span style="animation-delay:0.55s">し</span><span style="animation-delay:0.70s">&nbsp;</span><span style="animation-delay:0.85s">イ</span><span style="animation-delay:1.00s">ン</span><span style="animation-delay:1.15s">ス</span><span style="animation-delay:1.30s">タ</span><span style="animation-delay:1.45s">ン</span><span style="animation-delay:1.60s">ス</span>
+      <span style="animation-delay:0.10s">な</span><span style="animation-delay:0.25s">か</span><span style="animation-delay:0.40s">よ</span><span style="animation-delay:0.55s">し</span><span style="animation-delay:0.70s">&nbsp;</span><span style="animation-delay:0.85s">~</span><span style="animation-delay:1.00s">イ</span><span style="animation-delay:1.15s">ン</span><span style="animation-delay:1.30s">ス</span><span style="animation-delay:1.45s">タ</span><span style="animation-delay:1.60s">ン</span><span style="animation-delay:1.75s">ス</span><span style="animation-delay:1.90s">~</span><span style="animation-delay:2.05s">&nbsp;</span><span style="animation-delay:2.20s">2</span>
     </div>
 
   </main>
@@ -3933,7 +3933,11 @@ const NEWS = [
 
 // イベント一覧（status:"live"=開催中 / "ended"=終了）上から新しい順
 const EVENTS = [
-  { name:"Tetris", icon:"🟦", status:"live", kicker:"LIMITED TETRIS MISSION",
+  { name:"Fruit Ninja", icon:"🍉", status:"live", kicker:"LIMITED FRUIT SLASH MISSION",
+    desc:"飛び出すフルーツをスワイプで一刀両断！爆弾に気をつけてハイスコアを目指そう。期間限定イベント開催中！",
+    meta:["無料で参加","ブラウザで遊べる","期間限定"],
+    img:"https://www.coolmathgames.com/sites/default/files/styles/mobile_game_image/public/FruitNinja_OG-Logo.jpg.webp?itok=p9HjDBpn", url:"https://fuit-ninja-nkys.2a-exe.f5.si/" },
+  { name:"Tetris", icon:"🟦", status:"ended", kicker:"LIMITED TETRIS MISSION",
     desc:"落ちてくるブロックを積み上げてラインを消そう。誰もが知る定番パズルの期間限定イベントに挑戦！",
     meta:["無料で参加","ブラウザで遊べる","期間限定"],
     img:"https://m.media-amazon.com/images/I/81mMaFIQ5zL._AC_UF1000,1000_QL80_.jpg", url:"https://tetris-nkys.2a-exe.f5.si/" },
