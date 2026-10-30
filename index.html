@@ -5,7 +5,7 @@
   <meta name="google-adsense-account" content="ca-pub-2644176974704249">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>ようこそ -- 仲良し ~インスタンス~ 2 情報ポータル</title>
+  <title>ようこそ -- なかよしIN 2 情報ポータル</title>
 
   <!-- 手書き風フォント（Caveat）の読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +13,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
+@font-face{font-family:'HuiFont';src:url('/fonts/HuiFontP109.woff') format('woff');font-display:swap}
+body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
+
     /* ==========================================================
        1. デザインシステム & カラーパレット
        ========================================================== */
@@ -317,7 +320,7 @@
   <main class="welcome-container">
     <!-- 手書き風アニメーション welcome -->
     <div class="glass-welcome">
-      <span style="animation-delay:0.10s">な</span><span style="animation-delay:0.25s">か</span><span style="animation-delay:0.40s">よ</span><span style="animation-delay:0.55s">し</span><span style="animation-delay:0.70s">&nbsp;</span><span style="animation-delay:0.85s">~</span><span style="animation-delay:1.00s">イ</span><span style="animation-delay:1.15s">ン</span><span style="animation-delay:1.30s">ス</span><span style="animation-delay:1.45s">タ</span><span style="animation-delay:1.60s">ン</span><span style="animation-delay:1.75s">ス</span><span style="animation-delay:1.90s">~</span><span style="animation-delay:2.05s">&nbsp;</span><span style="animation-delay:2.20s">2</span>
+      <span style="animation-delay:0.10s">な</span><span style="animation-delay:0.25s">か</span><span style="animation-delay:0.40s">よ</span><span style="animation-delay:0.55s">し</span><span style="animation-delay:0.70s">&nbsp;</span><span style="animation-delay:0.85s">I</span><span style="animation-delay:1.00s">N</span><span style="animation-delay:1.15s">&nbsp;</span><span style="animation-delay:1.30s">2</span>
     </div>
 
   </main>
@@ -325,7 +328,7 @@
   <!-- 右下のスキップボタン -->
   <button type="button" class="btn-skip" id="skipBtn" aria-label="スキップしてポータルへ進む">スキップ ›</button>
 
-  <iframe id="instanceFrame" title="仲良しインスタンス2 — 情報ポータル" hidden></iframe>
+  <iframe id="instanceFrame" title="なかよしIN 2 — 情報ポータル" hidden></iframe>
 
   <script>
     // ==========================================================
@@ -410,7 +413,7 @@
       events:'イベント', calendar:'カレンダー', links:'リンク集', games:'ゲーム',
       tv:'TV', search:'検索', settings:'設定', terms:'利用規約', tools:'ミニ機能', chats:'仲良しCHAT'
     };
-    function pageTitle(id){ return (PAGE_TITLES[id] || PAGE_TITLES.home) + ' -- 仲良し *インスタンス* 2 情報ポータル'; }
+    function pageTitle(id){ return (PAGE_TITLES[id] || PAGE_TITLES.home) + ' -- なかよしIN 2 情報ポータル'; }
     function updatePageTitle(id){
       const frame = document.getElementById('instanceFrame');
       const w = frame && frame.contentWindow;
@@ -505,10 +508,10 @@
 &lt;meta charset="UTF-8"&gt;
 &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
 &lt;link rel="icon" type="image/png" href="/favicon.ico"&gt;
-&lt;title&gt;ホーム -- 仲良し *インスタンス* 2 情報ポータル&lt;/title&gt;
+&lt;title&gt;ホーム -- なかよしIN 2 情報ポータル&lt;/title&gt;
 &lt;style&gt;
 /* ============================================================
-   仲良し *インスタンス* 2  ／  情報サイト風UI
+   なかよしIN 2  ／  情報サイト風UI
    - 編集しやすいよう、リンク/ゲーム/お知らせは &lt;script&gt; 内の
      データ配列を書き換えるだけでOKです。
    - カラーは :root のCSS変数を編集してください。
@@ -613,6 +616,23 @@ body.dark-mode .pixel-clock{background:#0a1220}
 .ticker-item{display:inline-flex;align-items:center;gap:6px}
 body.dark-mode .ticker{background:#05070a;border-color:#2a2f37}
 
+@font-face{font-family:'HuiFont';src:url('/fonts/HuiFontP109.woff') format('woff');font-display:swap}
+body,body *:not(svg):not(path):not(code):not(pre):not(kbd){font-family:'HuiFont','Noto Sans JP','Noto Color Emoji',sans-serif!important}
+.brand-counter{display:inline-block;height:26px;width:auto;max-width:150px;margin-left:12px;vertical-align:middle;image-rendering:pixelated;border-radius:4px}
+@media(max-width:600px){.brand-counter{height:20px;max-width:110px;margin-left:8px}}
+body.choco-mode{
+  --bg:#2b1a12;--surface:#3d261a;--surface-2:#4a2e20;--text:#f5e6d3;--text-muted:#c9a88a;
+  --border:#5c3a28;--primary:#d9a066;--primary-hover:#e8b884;--accent:#ff8fa3;
+  --header-bg:#3d261a;--topbar-bg:#1f120c;--topbar-text:#f5e6d3;--tag-bg:#4f3122;
+  background:#2b1a12 repeating-linear-gradient(0deg,transparent 0 58px,rgba(0,0,0,.18) 58px 62px),repeating-linear-gradient(90deg,transparent 0 58px,rgba(0,0,0,.18) 58px 62px)!important;color:var(--text)
+}
+body.choco-mode .site-header{background:linear-gradient(180deg,#4a2e20,#3d261a)!important;border-bottom:4px solid #1f120c!important;box-shadow:0 3px 0 #6b4430 inset}
+body.choco-mode .card,body.choco-mode .news-card,body.choco-mode section,body.choco-mode .setting-row{border-radius:14px;box-shadow:inset 0 2px 0 rgba(255,220,180,.12),inset 0 -4px 0 rgba(0,0,0,.25),0 4px 10px rgba(0,0,0,.35)}
+body.choco-mode .btn,body.choco-mode button.btn{background:linear-gradient(180deg,#8a5a3c,#5c3a28)!important;color:#fff4e6!important;border:1px solid #2b1a12!important;border-radius:999px;box-shadow:inset 0 2px 0 rgba(255,220,180,.3),0 3px 0 #1f120c}
+body.choco-mode a{color:#e8b884}
+body.choco-mode input,body.choco-mode select,body.choco-mode textarea{background:#2b1a12;color:#f5e6d3;border-color:#6b4430}
+body.choco-mode .ticker{background:linear-gradient(90deg,#1f120c,#3d261a);border-color:#5c3a28}
+body.choco-mode .gnav,body.choco-mode footer{background:#1f120c!important;color:#f5e6d3}
 :root{
   --bg:#f5f6f8;
   --surface:#ffffff;
@@ -1624,10 +1644,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 &lt;header class="site-header"&gt;
   &lt;div class="header-inner"&gt;
     &lt;a class="brand" href="javascript:void(0)" onclick="showPage('home')"&gt;
-      &lt;div class="brand-logo"&gt;&lt;img loading="lazy" decoding="async" src="/Site-logo.png" alt="仲良しインスタンス2 ロゴ"&gt;&lt;/div&gt;
+      &lt;div class="brand-logo"&gt;&lt;img loading="lazy" decoding="async" src="/Site-logo.png" alt="なかよしIN 2 ロゴ"&gt;&lt;/div&gt;
       &lt;div&gt;
-        &lt;div class="brand-title"&gt;仲良し *インスタンス* 2 &lt;span class="pixel-clock brand-clock" id="clock"&gt;00:00:00&lt;/span&gt;&lt;/div&gt;
-        &lt;div class="brand-sub"&gt;NAKAYOSI INSTANCE 2 ／ Information Portal&lt;/div&gt;
+        &lt;div class="brand-title"&gt;なかよしIN 2 &lt;img class="brand-counter" src="https://count.getloli.com/@nkys-instance?theme=booru-helltaker&amp;amp;padding=6&amp;amp;offset=0&amp;amp;align=center&amp;amp;scale=1.5&amp;amp;pixelated=1&amp;amp;darkmode=0&amp;amp;prefix=0" alt="アクセスカウンター" loading="lazy" decoding="async"&gt;&lt;/div&gt;
+        &lt;div class="brand-sub"&gt;NAKAYOSI IN 2 ／ Information Portal&lt;/div&gt;
       &lt;/div&gt;
     &lt;/a&gt;
     &lt;div class="header-search"&gt;
@@ -1680,7 +1700,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;div class="hero home-hero"&gt;
         &lt;div class="home-hero-inner"&gt;
           &lt;span class="tag"&gt;WELCOME&lt;/span&gt;
-          &lt;h1&gt;仲良し &lt;em&gt;インスタンス&lt;/em&gt; 2 へようこそ&lt;/h1&gt;
+          &lt;h1&gt;なかよしIN 2 へようこそ&lt;/h1&gt;
           &lt;p&gt;2a_exe が運営する総合ポータル。チャット・動画・ゲーム・プロキシなど、便利なリンクをまとめています。&lt;/p&gt;
           &lt;div class="home-hero-actions"&gt;
             &lt;a class="btn" href="https://sites.google.com/view/nakayosi-instance/%E3%83%9B%E3%83%BC%E3%83%A0" target="_blank"&gt;公式サイトへ ↗&lt;/a&gt;
@@ -3651,6 +3671,7 @@ window.sxSaveSettings = sxSaveSettings;
               &lt;option value="auto"&gt;デバイスに合わせる&lt;/option&gt;
               &lt;option value="light"&gt;ライト&lt;/option&gt;
               &lt;option value="dark"&gt;ダーク&lt;/option&gt;
+              &lt;option value="choco"&gt;ダークチョコ&lt;/option&gt;
               &lt;option value="glass2"&gt;グラスモード2&lt;/option&gt;
             &lt;/select&gt;
           &lt;/div&gt;
@@ -3862,7 +3883,7 @@ window.sxSaveSettings = sxSaveSettings;
 &lt;footer&gt;
   &lt;div class="footer-inner"&gt;
     &lt;div&gt;
-      &lt;h4&gt;仲良し *インスタンス* 2&lt;/h4&gt;
+      &lt;h4&gt;なかよしIN 2&lt;/h4&gt;
       &lt;p class="muted" style="font-size:.82rem;margin:0"&gt;2a_exe が運営する情報ポータル。チャット・動画・ゲーム・プロキシなどへの導線を提供します。&lt;/p&gt;
     &lt;/div&gt;
     &lt;div&gt;&lt;h4&gt;メニュー&lt;/h4&gt;&lt;ul&gt;
@@ -6158,7 +6179,7 @@ body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
     { keys:['回転','くるくる','barrel roll','do a barrel roll','spin','ロール'], run:function(){ bodyFx('egg-spin',1500); toast('🌀 ぐるぐる！'); } },
     { keys:['地震','じしん','earthquake','ゆれ','揺れ'], run:function(){ bodyFx('egg-shake',1400); toast('🫨 ぐらぐら…'); } },
     { keys:['傾く','askew','tilt','ななめ','斜め'], run:function(){ bodyFx('egg-tilt',3000); toast('📐 ちょっと斜め'); } },
-    { keys:['仲良し','なかよし','nakayosi','インスタンス'], run:function(){ confetti(); setTimeout(fireworks,250); toast('✨ 仲良し *インスタンス* 2 へようこそ！'); } }
+    { keys:['仲良し','なかよし','nakayosi','インスタンス'], run:function(){ confetti(); setTimeout(fireworks,250); toast('✨ なかよしIN 2 へようこそ！'); } }
   ];
 
   var lastEgg = '', timer = null;
@@ -6418,11 +6439,11 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
 &lt;/style&gt;
 &lt;script id="glass-theme-mobile-menu-fix-script"&gt;
 (function(){
-  const ORDER=['auto','glass2','dark','light'];
+  const ORDER=['auto','glass2','dark','choco','light'];
   const MQ=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
   let chosen='auto';
   const KEY='nakayosi_theme_v2';
-  const label=theme=&gt;theme==='auto'?'デバイス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':'ライト';
+  const label=theme=&gt;theme==='auto'?'デバイス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':theme==='choco'?'ダークチョコ':'ライト';
   function current(){return chosen}
   function apply(theme,save){
     if(!ORDER.includes(theme))theme='auto';
@@ -6431,15 +6452,15 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
     if(theme==='auto')theme=(MQ&amp;&amp;MQ.matches)?'dark':'light';
     document.body.classList.toggle('glass-mode',theme==='glass2');
     document.body.classList.toggle('glass-mode-2',theme==='glass2');
-    document.body.classList.toggle('dark-mode',theme==='dark');
+    document.body.classList.toggle('dark-mode',theme==='dark'||theme==='choco');document.body.classList.toggle('choco-mode',theme==='choco');
     document.body.dataset.theme=theme;
     const appearanceSelect=document.getElementById('site-theme-select');if(appearanceSelect)appearanceSelect.value=pick;
     let glass2Background=document.querySelector('.glass2-background');
     if(theme==='glass2'&amp;&amp;!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';var g2src=['https://id-preview--e6de3a45-d60d-46b1-a964-c76c73131600.lovable.app/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif','https://www.benib.jp/images/til-2022-09-09-yuyake.gif'],g2i=0;glass2Background.onerror=function(){g2i++;if(g2src[g2i])this.src=g2src[g2i]};glass2Background.src=g2src[0];document.body.prepend(glass2Background)}
-    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':theme);
+    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':theme==='choco'?'dark':theme);
     const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(pick)+1)%ORDER.length];btn.title=`表示: ${label(pick)}（次: ${label(next)}）`;btn.setAttribute('aria-label',btn.title)}
     document.querySelectorAll('#smTheme button[data-theme]').forEach(b=&gt;b.classList.toggle('active',b.dataset.theme===pick));
-    if(save){try{localStorage.setItem(KEY,pick);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',theme==='dark'?'dark':'light')}catch(_){}}
+    if(save){try{localStorage.setItem(KEY,pick);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',(theme==='dark'||theme==='choco')?'dark':'light')}catch(_){}}
   }
   function boot(){
     let saved='auto';try{saved=localStorage.getItem(KEY)||'auto'}catch(_){}
@@ -6455,7 +6476,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
       document.addEventListener('keydown',e=&gt;{if(e.key==='Escape'&amp;&amp;nav.classList.contains('open')){close();menu.focus()}});
       window.addEventListener('resize',()=&gt;{if(innerWidth&gt;1024)close()},{passive:true});
     }
-    const sm=document.getElementById('smTheme');if(sm){sm.querySelectorAll('[data-theme="glass"]').forEach(x=&gt;x.remove());if(!sm.querySelector('[data-theme="auto"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='auto';b.textContent='デバイス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="auto"]');glass?glass.after(b):sm.prepend(b)}}
+    const sm=document.getElementById('smTheme');if(sm){sm.querySelectorAll('[data-theme="glass"]').forEach(x=&gt;x.remove());if(!sm.querySelector('[data-theme="auto"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='auto';b.textContent='デバイス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="auto"]');glass?glass.after(b):sm.prepend(b)}if(!sm.querySelector('[data-theme="choco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='choco';c.textContent='チョコ';sm.append(c)}}
     if(sm)sm.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-theme]');if(b){e.stopImmediatePropagation();apply(b.dataset.theme,true)}},true);
     const header=document.querySelector('#search-app .search-header');
     if(header&amp;&amp;!header.querySelector('.nkys-quick-actions')){const actions=document.createElement('div');actions.className='nkys-quick-actions';actions.setAttribute('aria-label','クイックアクセス');actions.innerHTML='&lt;button type="button" class="nkys-quick-action" data-action="web" title="Web検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-web"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;Web検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="news" title="ニュース検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-news"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;ニュース検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="images" title="画像検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-image"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;画像検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="videos" title="動画検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-video"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;動画検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="settings" title="検索設定"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-settings"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;検索設定&lt;/span&gt;&lt;/button&gt;';actions.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-action]');if(!b)return;if(b.dataset.action==='settings'){if(typeof window.openSettings==='function')window.openSettings();return}const input=document.getElementById('sxSearchInput');if(input)input.focus();const tab=document.querySelector(`#search-app .tab[data-cat="${b.dataset.action}"]`);if(tab&amp;&amp;document.getElementById('mainContainer')?.classList.contains('results-mode'))tab.click()});header.appendChild(actions)}
