@@ -1617,6 +1617,16 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 .shufoo-ad-link img { display:block; width:100%; height:auto; aspect-ratio:300 / 113; }
 @media(max-width:600px) { .shufoo-ad { padding:12px; margin-bottom:20px; } }
 &lt;/style&gt;
+&lt;style&gt;
+:root{--favorite:oklch(.57 .14 75);--favorite-ink:oklch(.24 .03 65)}
+#links-page .link-cat li{position:relative;padding-right:42px}
+#links-page .link-favorite{position:absolute;right:3px;top:7px;width:36px;height:36px;display:grid;place-items:center;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--text-muted);font-size:1.45rem;line-height:1;cursor:pointer;z-index:1}
+#links-page .link-favorite:hover{background:var(--surface-2);color:var(--favorite)}
+#links-page .link-favorite.is-favorite{color:var(--favorite)}
+#links-page .link-favorite:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+#links-page .tag-chip[data-tag="MY_FAVORITES"]{--tag-color:var(--favorite)}
+#links-page .tag-chip[data-tag="MY_FAVORITES"].active{background:var(--favorite)!important;color:var(--warning-ink)!important}
+&lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
@@ -1935,10 +1945,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;div id="wxAlert"&gt;&lt;/div&gt;
           &lt;div id="wxToday"&gt;&lt;/div&gt;
-          &lt;div class="wx-map-wrap"&gt;
-            &lt;h3 style="margin:18px 0 10px;font-size:1rem"&gt;🗺️ 雨雲レーダー（マップ）&lt;/h3&gt;
-            &lt;iframe class="external-map" src="https://tenki.2a-exe.f5.si/" title="天気マップ" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"&gt;&lt;/iframe&gt;
-          &lt;/div&gt;
           &lt;h3 style="margin:18px 0 10px;font-size:1rem"&gt;週間予報&lt;/h3&gt;
           &lt;div class="wx-week" id="wxWeek"&gt;&lt;div class="wx-empty"&gt;読み込み中…&lt;/div&gt;&lt;/div&gt;
           &lt;p class="muted" style="font-size:.75rem;margin-top:14px"&gt;※ 「設定」ページで都道府県・地域を選ぶと、その地域の予報が表示されます。&lt;/p&gt;
@@ -2295,7 +2301,7 @@ const LINK_CATEGORIES = [
 
 // ゲーム一覧
 const GAMES = [
-  { name:"Bloxd.io", tag:".io",                      img:"https://imgs.crazygames.com/bloxdhop-io_16x9/20260907141432/bloxdhop-io_16x9-cover?metadata=none&quality=60&height=7010", url:"https://dloxd-proxy-deployment--hikagemusub3.replit.app/" },
+  { name:"Bloxd.io", tag:".io",                      img:"https://imgs.crazygames.com/bloxdhop-io_16x9/20260907141432/bloxdhop-io_16x9-cover?metadata=none&amp;quality=60&amp;height=7010", url:"https://dloxd-proxy-deployment--hikagemusub3.replit.app/" },
   { name:"Roblox Barrys Prison", tag:"Horror",       img:"https://www4.minijuegosgratis.com/v3/games/thumbnails/250888_7_sq.jpg", url:"https://script.google.com/macros/s/AKfycbxRR9j9VoEVe3ftwVkqAslFNtnJ1UUWj8hLc51en9qR8fsVz2gho9geBFjasY0IV8gJBQ/exec" },
   { name:"Roblox 99", tag:"Horror",                  img:"https://i.scdn.co/image/ab67616d0000b27354761f903652136279c6552f", url:"https://script.google.com/macros/s/AKfycbw4urIQgR3zAfmFsn3NWFC6kpsGYSWafyi6AWtyVNSyBkySH9O46LVnhej6fW7beFME/exec" },
   { name:"Slender Man", tag:"Horror",                img:"https://cdn1.epicgames.com/spt-assets/4f2537e2a2124cdd8fbd18b7068167d9/slender-the-arrival-4rvfj.png", url:"https://script.google.com/macros/s/AKfycbzD78lGmoq37iyrMDWZavBLxIRpQ_HmutXT9arsozaDkYaHVSfk7YliEmd3EL4nXM_4Bw/exec" },
@@ -2462,6 +2468,29 @@ document.addEventListener('click', (e)=&gt;{
 // リンク描画
 var ACTIVE_LINK_TAG = 'ALL';
 var LINK_QUERY = '';
+const LINK_FAVORITES_KEY = 'nakayosi_link_favorites_v1';
+function loadLinkFavorites(){
+  try{const value=JSON.parse(localStorage.getItem(LINK_FAVORITES_KEY)||'[]');return new Set(Array.isArray(value)?value.filter(v=&gt;typeof v==='string'):[]);}catch(e){return new Set();}
+}
+var LINK_FAVORITES = loadLinkFavorites();
+function syncLinkFavoriteButtons(){
+  document.querySelectorAll('.link-favorite').forEach(button=&gt;{
+    const saved=LINK_FAVORITES.has(button.dataset.url);
+    const label=button.dataset.name+(saved?'をお気に入りから外す':'をお気に入りに追加');
+    button.textContent=saved?'★':'☆';button.classList.toggle('is-favorite',saved);
+    button.setAttribute('aria-pressed',String(saved));button.setAttribute('aria-label',label);button.title=label;
+  });
+}
+document.addEventListener('click',function(event){
+  const button=event.target.closest?.('.link-favorite');if(!button)return;
+  const next=new Set(LINK_FAVORITES);
+  if(next.has(button.dataset.url))next.delete(button.dataset.url);else next.add(button.dataset.url);
+  try{localStorage.setItem(LINK_FAVORITES_KEY,JSON.stringify(Array.from(next)));}
+  catch(e){alert('お気に入りを保存できませんでした。ブラウザの保存設定を確認してください。');return;}
+  LINK_FAVORITES=next;syncLinkFavoriteButtons();applyLinkFilters();
+});
+window.addEventListener('storage',function(event){if(event.key===LINK_FAVORITES_KEY||event.key===null){LINK_FAVORITES=loadLinkFavorites();syncLinkFavoriteButtons();applyLinkFilters();}});
+
 const LINK_CATEGORY_ICONS = ['▦','▶','◆','●','★','◇','▣'];
 function safeText(value){
   return String(value == null ? '' : value).replace(/[&amp;&lt;&gt;"]/g, c =&gt; ({'&amp;':'&amp;amp;','&lt;':'&amp;lt;','&gt;':'&amp;gt;','"':'&amp;quot;'}[c]));
@@ -2490,10 +2519,11 @@ function renderLinks(){
   installLinkTagColors(allTags);
   const total = LINK_CATEGORIES.reduce((n,c)=&gt;n+c.items.length,0);
   const tagBar = document.getElementById('linkTagBar');
-  if(tagBar) tagBar.innerHTML = ['ALL',...allTags].map(t =&gt; `&lt;button type="button" class="tag-chip ${linkTagTone(t)}${t===ACTIVE_LINK_TAG?' active':''}" data-tag="${safeText(t)}" onclick="filterLinksByTag('${String(t).replace(/'/g,"\\'")}')"&gt;${t==='ALL'?'すべて':safeText(t)}&lt;/button&gt;`).join('');
+  if(tagBar) tagBar.innerHTML = ['ALL','MY_FAVORITES',...allTags].map(t =&gt; `&lt;button type="button" class="tag-chip ${linkTagTone(t)}${t===ACTIVE_LINK_TAG?' active':''}" data-tag="${safeText(t)}" onclick="filterLinksByTag('${String(t).replace(/'/g,"\\'")}')"&gt;${t==='ALL'?'すべて':t==='MY_FAVORITES'?'★ 自分のお気に入り':safeText(t)}&lt;/button&gt;`).join('');
   const cats = document.getElementById('linkCats');
-  if(cats) cats.innerHTML = LINK_CATEGORIES.map((cat,index)=&gt;`&lt;section class="link-cat" data-cat="${safeText(cat.title)}"&gt;&lt;div class="link-cat-head"&gt;&lt;span class="link-cat-mark"&gt;${LINK_CATEGORY_ICONS[index%LINK_CATEGORY_ICONS.length]}&lt;/span&gt;&lt;div class="link-cat-title"&gt;&lt;h2&gt;${safeText(cat.title)}&lt;/h2&gt;&lt;div class="link-cat-sub"&gt;${cat.items.length} links&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;ul&gt;${cat.items.map(i=&gt;`&lt;li&gt;&lt;a href="${safeText(i.url)}" target="_blank" rel="noopener noreferrer" data-name="${safeText(i.name)}" data-tag="${safeText([].concat(i.tag||[]).join('|'))}"${[].concat(i.tag||[]).includes('R18')?' data-r18="1"':''} data-url="${safeText(i.url)}" data-initial="${safeText(linkInitial(i.name))}"&gt;&lt;span class="link-info"&gt;&lt;span class="lk-name"&gt;${safeText(i.name)}&lt;/span&gt;&lt;span class="lk-domain"&gt;${safeText(linkDomain(i.url))}&lt;/span&gt;&lt;/span&gt;&lt;span class="link-trailing"&gt;${[].concat(i.tag||[]).map(t=&gt;`&lt;span class="lk-tag ${linkTagTone(t)}"&gt;${safeText(t)}&lt;/span&gt;`).join('')}&lt;svg class="link-open-icon" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14 5h5v5M19 5l-8 8"/&gt;&lt;path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;/section&gt;`).join('');
+  if(cats) cats.innerHTML = LINK_CATEGORIES.map((cat,index)=&gt;`&lt;section class="link-cat" data-cat="${safeText(cat.title)}"&gt;&lt;div class="link-cat-head"&gt;&lt;span class="link-cat-mark"&gt;${LINK_CATEGORY_ICONS[index%LINK_CATEGORY_ICONS.length]}&lt;/span&gt;&lt;div class="link-cat-title"&gt;&lt;h2&gt;${safeText(cat.title)}&lt;/h2&gt;&lt;div class="link-cat-sub"&gt;${cat.items.length} links&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;ul&gt;${cat.items.map(i=&gt;`&lt;li&gt;&lt;button type="button" class="link-favorite" data-url="${safeText(i.url)}" data-name="${safeText(i.name)}" aria-pressed="false" aria-label="${safeText(i.name)}をお気に入りに追加"&gt;☆&lt;/button&gt;&lt;a href="${safeText(i.url)}" target="_blank" rel="noopener noreferrer" data-name="${safeText(i.name)}" data-tag="${safeText([].concat(i.tag||[]).join('|'))}"${[].concat(i.tag||[]).includes('R18')?' data-r18="1"':''} data-url="${safeText(i.url)}" data-initial="${safeText(linkInitial(i.name))}"&gt;&lt;span class="link-info"&gt;&lt;span class="lk-name"&gt;${safeText(i.name)}&lt;/span&gt;&lt;span class="lk-domain"&gt;${safeText(linkDomain(i.url))}&lt;/span&gt;&lt;/span&gt;&lt;span class="link-trailing"&gt;${[].concat(i.tag||[]).map(t=&gt;`&lt;span class="lk-tag ${linkTagTone(t)}"&gt;${safeText(t)}&lt;/span&gt;`).join('')}&lt;svg class="link-open-icon" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14 5h5v5M19 5l-8 8"/&gt;&lt;path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;/section&gt;`).join('');
   const count = document.getElementById('linkCount'); if(count) count.textContent = total;
+  syncLinkFavoriteButtons();
   applyLinkFilters();
 }
 
@@ -2538,7 +2568,7 @@ function applyLinkFilters(){
     cat.querySelectorAll('li').forEach(li=&gt;{
       const a=li.querySelector('a');
       const hay=[a.dataset.name,a.dataset.tag,a.dataset.url].join(' ').toLowerCase();
-      const ok=(ACTIVE_LINK_TAG==='ALL'||a.dataset.tag.split('|').includes(ACTIVE_LINK_TAG))&amp;&amp;(!LINK_QUERY||hay.includes(LINK_QUERY));
+      const ok=(ACTIVE_LINK_TAG==='ALL'||(ACTIVE_LINK_TAG==='MY_FAVORITES'?LINK_FAVORITES.has(a.dataset.url):a.dataset.tag.split('|').includes(ACTIVE_LINK_TAG)))&amp;&amp;(!LINK_QUERY||hay.includes(LINK_QUERY));
       li.style.display=ok?'':'none'; if(ok){visible++;shown++;}
     });
     cat.style.display=visible?'':'none';
@@ -2991,8 +3021,9 @@ function wxIcon(code){
   else if(/^5|^6|^7/.test(c)) k='storm';
   return wxSvg(WX_SVG[k]);
 }
-var WX_PREF = '';
-var WX_CITY = '';
+const WX_DEFAULT = { wxPref: '大阪府', wxCity: '270000', wxTown: '2722700' };
+var WX_PREF = WX_DEFAULT.wxPref;
+var WX_CITY = WX_DEFAULT.wxCity;
 var WX_AREAS = []; // 都道府県内エリアリスト
 async function fetchWxAreas(pref){
   // 気象庁エリアAPIから該当officeの子エリア取得
@@ -3018,8 +3049,9 @@ function buildWxPrefOptions(){
   if(WX_PREF) sel.value = WX_PREF;
 }
 async function onWxPrefChange(v){
-  WX_PREF = v; WX_CITY = '';
-  saveSettings({ wxPref: v, wxCity: '' });
+  WX_PREF = v; WX_CITY = ''; WX_TOWN = '';
+  buildWxTownOptions([], '');
+  saveSettings({ wxPref: v, wxCity: '', wxTown: '' });
   const citySel = document.getElementById('wxCity');
   WX_AREAS = v ? await fetchWxAreas(v) : [];
   if(citySel){
@@ -3057,7 +3089,7 @@ async function fetchWeather(force){
   }
   if(yahoo){
     // Yahoo!天気のトップから該当都道府県ページへ
-    yahoo.href = 'https://weather.yahoo.co.jp/weather/search/?p=' + encodeURIComponent(WX_PREF);
+    yahoo.href = 'https://weather.yahoo.co.jp/weather/search/?p=' + encodeURIComponent(WX_TOWNS.find(t =&gt; t.code === WX_TOWN)?.name || (WX_TOWN === WX_DEFAULT.wxTown ? '東大阪市' : WX_PREF));
   }
   const office = JMA_OFFICES[WX_PREF];
   try{
@@ -3089,7 +3121,8 @@ async function fetchWeather(force){
       hi = temps[1]!=='' ? temps[1] : null;
     }
     if(locEl){
-      locEl.innerHTML = `${WX_PREF} &lt;small&gt;${areaName}&lt;/small&gt;`;
+      const townName = WX_TOWNS.find(t =&gt; t.code === WX_TOWN)?.name || (WX_TOWN === WX_DEFAULT.wxTown ? '東大阪市' : '');
+      locEl.innerHTML = `${safeText(WX_PREF)} ${safeText(townName)} &lt;small&gt;${safeText(areaName)}の予報&lt;/small&gt;`;
     }
     if(todayEl){
       const today = weathers[0] || '—';
@@ -3171,7 +3204,9 @@ async function fetchWeather(force){
 const _origApplySavedSettings = applySavedSettings;
 applySavedSettings = function(){
   _origApplySavedSettings();
-  const s = loadSettings();
+  const saved = loadSettings();
+  const s = saved.wxPref ? saved : Object.assign({}, saved, WX_DEFAULT);
+  WX_PREF = s.wxPref || ''; WX_CITY = s.wxCity || ''; WX_TOWN = s.wxTown || '';
   buildWxPrefOptions();
   if(s.wxPref){
     WX_PREF = s.wxPref;
@@ -3198,7 +3233,7 @@ applySavedSettings = function(){
 };
 
 // ================= 気象警報（大雨警報 Lv.1-5） =================
-var WX_TOWN = '';
+var WX_TOWN = WX_DEFAULT.wxTown;
 var WX_TOWNS = [];
 var WX_AREA_DATA = null;
 
@@ -3378,21 +3413,6 @@ function maybeAskGeoPermission(){
   // 初回の自動ポップアップは表示しない。位置情報は設定画面から任意で使用する。
 }
 
-// ================= 天気マップ（雨雲レーダー） =================
-const PREF_COORDS = {
-  '北海道':[43.06,141.35,7],'青森県':[40.82,140.74,8],'岩手県':[39.70,141.15,8],'宮城県':[38.27,140.87,8],
-  '秋田県':[39.72,140.10,8],'山形県':[38.24,140.36,8],'福島県':[37.75,140.47,8],'茨城県':[36.34,140.45,8],
-  '栃木県':[36.57,139.88,8],'群馬県':[36.39,139.06,8],'埼玉県':[35.86,139.65,9],'千葉県':[35.60,140.12,8],
-  '東京都':[35.69,139.69,10],'神奈川県':[35.45,139.64,9],'新潟県':[37.90,139.02,8],'富山県':[36.70,137.21,9],
-  '石川県':[36.59,136.63,9],'福井県':[36.07,136.22,9],'山梨県':[35.66,138.57,9],'長野県':[36.65,138.18,8],
-  '岐阜県':[35.39,136.72,8],'静岡県':[34.98,138.38,8],'愛知県':[35.18,136.91,9],'三重県':[34.73,136.51,8],
-  '滋賀県':[35.00,135.87,9],'京都府':[35.02,135.76,9],'大阪府':[34.69,135.52,10],'兵庫県':[34.69,135.18,8],
-  '奈良県':[34.69,135.83,9],'和歌山県':[34.23,135.17,9],'鳥取県':[35.50,134.24,9],'島根県':[35.47,133.05,8],
-  '岡山県':[34.66,133.93,9],'広島県':[34.40,132.46,8],'山口県':[34.19,131.47,8],'徳島県':[34.07,134.56,9],
-  '香川県':[34.34,134.04,9],'愛媛県':[33.84,132.77,8],'高知県':[33.56,133.53,8],'福岡県':[33.61,130.42,9],
-  '佐賀県':[33.25,130.30,9],'長崎県':[32.75,129.88,8],'熊本県':[32.79,130.74,8],'大分県':[33.24,131.61,8],
-  '宮崎県':[31.91,131.42,8],'鹿児島県':[31.56,130.56,7],'沖縄県':[26.21,127.68,8]
-};
 const _origShowPage = showPage;
 showPage = function(id){
   _origShowPage(id);
