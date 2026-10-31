@@ -4507,7 +4507,11 @@ body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
     '↗':'&lt;path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/&gt;',
     '▶':'&lt;path d="m8 5 11 7-11 7z" fill="currentColor"/&gt;',
     '✖':'&lt;path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/&gt;',
-    '›':'&lt;path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/&gt;'
+    '›':'&lt;path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/&gt;',
+    '★':'&lt;path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.2 6L12 16.9 6.5 19.6l1.2-6L3.2 9.4l6.1-.8z" fill="currentColor"/&gt;',
+    '☆':'&lt;path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.2 6L12 16.9 6.5 19.6l1.2-6L3.2 9.4l6.1-.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/&gt;',
+    '⭐':'&lt;path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.2 6L12 16.9 6.5 19.6l1.2-6L3.2 9.4l6.1-.8z" fill="currentColor"/&gt;',
+    '🎬':'&lt;rect x="3" y="9" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/&gt;&lt;path d="M3 9l1.6-4.5L21 6.5 20 9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/&gt;&lt;path d="M8 5l2 3.5M13 5.5l2 3.5M18 6l1.5 3" stroke="currentColor" stroke-width="1.4"/&gt;'
   };
   const known=Object.keys(iconPaths).map(x=&gt;x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&amp;')).join('|'); const re=new RegExp('(?:'+known+'|[\\p{Extended_Pictographic}\\uFE0F\\u{1F000}-\\u{1FAFF}\\u{1FC00}-\\u{1FFFF}\\u{2300}-\\u{23FF}\\u{2600}-\\u{27BF}](?:\\uFE0F|\\u200D[\\p{Extended_Pictographic}\\uFE0F])*)','gu');
   function svgEmoji(ch){return '&lt;span class="svg-emoji" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;'+iconPaths[ch]+'&lt;/svg&gt;&lt;/span&gt;';}
@@ -4515,7 +4519,7 @@ body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
     if(!root||root.nodeType!==1) return;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){const p=n.parentElement;if(!p||['SCRIPT','STYLE','TEXTAREA','INPUT','OPTION'].includes(p.tagName)||p.closest('.svg-emoji'))return NodeFilter.FILTER_REJECT;re.lastIndex=0; return re.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
     const nodes=[];let n;while(n=walker.nextNode())nodes.push(n);
-    nodes.forEach(node=&gt;{const frag=document.createDocumentFragment();let last=0;node.nodeValue.replace(re,(m,offset)=&gt;{frag.append(document.createTextNode(node.nodeValue.slice(last,offset)));const span=document.createElement('span');span.className='svg-emoji';span.setAttribute('aria-hidden','true');span.innerHTML='&lt;svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;'+(iconPaths[m] || '&lt;circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/&gt;&lt;path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/&gt;')+'&lt;/svg&gt;';frag.append(span);last=offset+m.length;return m;});frag.append(document.createTextNode(node.nodeValue.slice(last)));node.parentNode.replaceChild(frag,node);});
+    nodes.forEach(node=&gt;{const frag=document.createDocumentFragment();let last=0;node.nodeValue.replace(re,(m,offset)=&gt;{frag.append(document.createTextNode(node.nodeValue.slice(last,offset)));const path=iconPaths[m];if(!path){frag.append(document.createTextNode(m));last=offset+m.length;return m;}const span=document.createElement('span');span.className='svg-emoji';span.setAttribute('aria-hidden','true');span.innerHTML='&lt;svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;'+path+'&lt;/svg&gt;';frag.append(span);last=offset+m.length;return m;});frag.append(document.createTextNode(node.nodeValue.slice(last)));node.parentNode.replaceChild(frag,node);});
   }
   function removeTerms(){
     document.querySelectorAll('#terms-page').forEach(x=&gt;x.remove());
