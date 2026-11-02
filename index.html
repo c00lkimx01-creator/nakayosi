@@ -306,27 +306,43 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
       }
     }
     @media (prefers-reduced-motion: reduce) { .btn-skip { transition-duration: .15s; } }
+
+    .cf-verify{position:fixed;inset:0;z-index:5;background:#000;color:#d9d9d9;font-family:Roboto,system-ui,-apple-system,"Segoe UI",sans-serif!important;display:flex;flex-direction:column;padding:clamp(60px,18vh,140px) max(20px,calc((100vw - 900px)/2)) 20px;transition:opacity .6s ease}
+    .cf-verify *{font-family:inherit!important}
+    .cf-head{display:flex;align-items:center;gap:20px;margin-bottom:22px}
+    .cf-logo{width:34px;height:34px;object-fit:contain;border-radius:6px}
+    .cf-domain{margin:0;font-size:clamp(1.6rem,5vw,2.6rem);font-weight:700;color:#f1f1f1;word-break:break-all}
+    .cf-title{margin:0 0 10px;font-size:clamp(1.15rem,3.4vw,1.5rem);font-weight:700;color:#f1f1f1}
+    .cf-desc{margin:0;line-height:1.6;color:#b5b5b5;font-size:clamp(.9rem,2.4vw,1rem)}
+    .cf-status{margin-top:34px;height:32px}
+    .cf-spinner{display:block;width:28px;height:28px;border-radius:50%;border:3px solid #333;border-top-color:#9a9a9a;animation:cfspin 1s linear infinite}
+    .cf-ok{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#2a9d4b;color:#fff;font-weight:700}
+    @keyframes cfspin{to{transform:rotate(360deg)}}
+    .cf-foot{margin-top:auto;border-top:1px solid #d9d9d9;padding-top:16px;text-align:center;font-size:.78rem;line-height:1.8;color:#e5e5e5}
+    .cf-foot code{font-family:ui-monospace,monospace!important}
+    .cf-foot a{color:#7aa7ff}
+    .cf-sep{margin:0 6px;font-weight:700}
+    .cf-verify [hidden]{display:none!important}
+    body.welcome-fade .cf-verify{opacity:0}
+    body.instance-active .cf-verify{display:none}
   </style>
 </head>
 <body>
 
-  <!-- 背景オーロラ & パーティクル -->
-  <div class="ambient-glow glow-1"></div>
-  <div class="ambient-glow glow-2"></div>
-  <div class="bg-overlay"></div>
-  <canvas id="particleCanvas"></canvas>
-
-  <!-- 中央コンテンツ -->
-  <main class="welcome-container">
-    <!-- 手書き風アニメーション welcome -->
-    <div class="glass-welcome">
-      <span style="animation-delay:0.10s">仲</span><span style="animation-delay:0.25s">良</span><span style="animation-delay:0.40s">し</span><span style="animation-delay:0.70s">&nbsp;</span><span style="animation-delay:0.85s">I</span><span style="animation-delay:1.00s">N</span><span style="animation-delay:1.15s">&nbsp;</span><span style="animation-delay:1.30s">2</span>
+  <canvas id="particleCanvas" hidden></canvas>
+  <main class="cf-verify" id="cfVerify">
+    <div class="cf-head">
+      <img class="cf-logo" src="/favicon.png" alt="">
+      <h1 class="cf-domain" id="cfDomain">nakayosi</h1>
     </div>
-
+    <h2 class="cf-title" id="cfTitle">Performing security verification</h2>
+    <p class="cf-desc" id="cfDesc">This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.</p>
+    <div class="cf-status"><span class="cf-spinner" id="cfSpinner" aria-label="確認中"></span><span class="cf-ok" id="cfOk" hidden>&#10003;</span></div>
+    <footer class="cf-foot">
+      <div>Ray ID: <code id="cfRay"></code></div>
+      <div>Performance and Security by <a href="javascript:void(0)">Nakayosi</a> <span class="cf-sep">|</span> <a href="javascript:void(0)">Privacy</a></div>
+    </footer>
   </main>
-
-  <!-- 右下のスキップボタン -->
-  <button type="button" class="btn-skip" id="skipBtn" aria-label="スキップしてポータルへ進む">スキップ ›</button>
 
   <iframe id="instanceFrame" title="仲良しインスタンス 2 — 情報ポータル" hidden></iframe>
 
@@ -485,22 +501,19 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
       frame.srcdoc = source.content.textContent.replace(/tag\s*:\s*"[^"]*"(?:\s*,\s*tag\s*:\s*"[^"]*")+/g, m => 'tag:' + JSON.stringify((m.match(/"[^"]*"/g)||[]).map(x => x.slice(1,-1))));
     }
     // スキップ：アニメーションを待たずにすぐポータルへ
-    document.getElementById('skipBtn').addEventListener('click', showInstance);
 
     // 手書きアニメーションが本当に終わってから（最後の文字の animationend）少し余韻を置いて自動で消える
-    (function waitForWelcomeEnd() {
-      const spans = document.querySelectorAll('.glass-welcome span');
-      const last = spans[spans.length - 1];
-      let done = false;
-      const finish = () => { if (done) return; done = true; setTimeout(showInstance, 700); };
+    (function runVerification() {
+      document.getElementById('cfDomain').textContent = location.hostname || 'nakayosi';
+      document.getElementById('cfRay').textContent = Array.from(crypto.getRandomValues(new Uint8Array(8)), b => b.toString(16).padStart(2,'0')).join('');
       if (ROUTER.initial === 'chats') { document.addEventListener('DOMContentLoaded', showInstance, { once: true }); return; }
-      if (last) {
-        last.addEventListener('animationend', finish, { once: true });
-        // 万が一 animationend が発火しない環境向けの保険（最終ディレイ1.3s+0.4s+余韻）
-        setTimeout(finish, 3000);
-      } else {
-        setTimeout(showInstance, 2300);
-      }
+      setTimeout(() => {
+        document.getElementById('cfSpinner').hidden = true;
+        document.getElementById('cfOk').hidden = false;
+        document.getElementById('cfTitle').textContent = 'Verification successful';
+        document.getElementById('cfDesc').textContent = 'Waiting for ' + (location.hostname || 'the site') + ' to respond...';
+        setTimeout(showInstance, 700);
+      }, 2200);
     })();
   </script>
   <template id="instanceSource">
@@ -1989,13 +2002,15 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
           &lt;div class="setting-row"&gt;
             &lt;label&gt;🌓 表示モード&lt;/label&gt;
-            &lt;div class="desc"&gt;ライト／ダークを切り替えます。&lt;/div&gt;
+            &lt;div class="desc"&gt;ライト／ダーク／チョコ／ハロウィンなどを切り替えます。10月31日は自動でハロウィンになります。&lt;/div&gt;
             &lt;button class="btn" onclick="toggleTheme()"&gt;モードを切り替える&lt;/button&gt;
             &lt;select id="site-theme-select" aria-label="表示スタイル" onchange="setSiteTheme(this.value)"&gt;
               &lt;option value="auto"&gt;デバイスに合わせる&lt;/option&gt;
               &lt;option value="light"&gt;ライト&lt;/option&gt;
               &lt;option value="dark"&gt;ダーク&lt;/option&gt;
               &lt;option value="choco"&gt;ダークチョコ&lt;/option&gt;
+              &lt;option value="whitechoco"&gt;ホワイトチョコ&lt;/option&gt;
+              &lt;option value="halloween"&gt;ハロウィン 🎃&lt;/option&gt;
               &lt;option value="glass2"&gt;グラスモード2&lt;/option&gt;
             &lt;/select&gt;
           &lt;/div&gt;
@@ -4709,11 +4724,11 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
 &lt;/style&gt;
 &lt;script id="glass-theme-mobile-menu-fix-script"&gt;
 (function(){
-  const ORDER=['auto','glass2','dark','choco','light'];
+  const ORDER=['auto','glass2','dark','choco','whitechoco','halloween','light'];
   const MQ=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
   let chosen='auto';
   const KEY='nakayosi_theme_v2';
-  const label=theme=&gt;theme==='auto'?'デバイス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':theme==='choco'?'ダークチョコ':'ライト';
+  const label=theme=&gt;theme==='auto'?'デバイス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':theme==='choco'?'ダークチョコ':theme==='whitechoco'?'ホワイトチョコ':theme==='halloween'?'ハロウィン':'ライト';
   function current(){return chosen}
   function apply(theme,save){
     if(!ORDER.includes(theme))theme='auto';
@@ -4722,20 +4737,23 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
     if(theme==='auto')theme=(MQ&amp;&amp;MQ.matches)?'dark':'light';
     document.body.classList.toggle('glass-mode',theme==='glass2');
     document.body.classList.toggle('glass-mode-2',theme==='glass2');
-    document.body.classList.toggle('dark-mode',theme==='dark'||theme==='choco');document.body.classList.toggle('choco-mode',theme==='choco');
+    document.body.classList.toggle('dark-mode',theme==='dark'||theme==='choco'||theme==='halloween');document.body.classList.toggle('choco-mode',theme==='choco');document.body.classList.toggle('whitechoco-mode',theme==='whitechoco');document.body.classList.toggle('halloween-mode',theme==='halloween');
     document.body.dataset.theme=theme;
     const appearanceSelect=document.getElementById('site-theme-select');if(appearanceSelect)appearanceSelect.value=pick;
     let glass2Background=document.querySelector('.glass2-background');
     if(theme==='glass2'&amp;&amp;!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';var g2src=['https://id-preview--e6de3a45-d60d-46b1-a964-c76c73131600.lovable.app/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif','https://www.benib.jp/images/til-2022-09-09-yuyake.gif'],g2i=0;glass2Background.onerror=function(){g2i++;if(g2src[g2i])this.src=g2src[g2i]};glass2Background.src=g2src[0];document.body.prepend(glass2Background)}
-    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':theme==='choco'?'dark':theme);
+    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':(theme==='choco'||theme==='halloween')?'dark':theme==='whitechoco'?'light':theme);
     const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(pick)+1)%ORDER.length];btn.title=`表示: ${label(pick)}（次: ${label(next)}）`;btn.setAttribute('aria-label',btn.title)}
     document.querySelectorAll('#smTheme button[data-theme]').forEach(b=&gt;b.classList.toggle('active',b.dataset.theme===pick));
-    if(save){try{localStorage.setItem(KEY,pick);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',(theme==='dark'||theme==='choco')?'dark':'light')}catch(_){}}
+    if(save){try{localStorage.setItem(KEY,pick);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',(theme==='dark'||theme==='choco'||theme==='halloween')?'dark':'light')}catch(_){}}
   }
   function boot(){
     let saved='auto';try{saved=localStorage.getItem(KEY)||'auto'}catch(_){}
     if(saved==='glass')saved='auto';
-    apply(saved,false);
+    const isHalloween=()=&gt;{const d=new Date();return d.getMonth()===9&amp;&amp;d.getDate()===31};
+    let halloweenAuto=isHalloween();
+    apply(halloweenAuto?'halloween':saved,false);
+    setInterval(()=&gt;{const h=isHalloween();if(h===halloweenAuto)return;halloweenAuto=h;let sv='auto';try{sv=localStorage.getItem(KEY)||'auto'}catch(_){}apply(h?'halloween':sv,false)},60000);
     if(MQ){const onMq=()=&gt;{if(chosen==='auto')apply('auto',false)};MQ.addEventListener?MQ.addEventListener('change',onMq):MQ.addListener(onMq);}
     window.setSiteTheme=function(theme){apply(theme,true)};
     window.toggleTheme=function(){const now=current();apply(ORDER[(ORDER.indexOf(now)+1)%ORDER.length],true)};
@@ -4746,7 +4764,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
       document.addEventListener('keydown',e=&gt;{if(e.key==='Escape'&amp;&amp;nav.classList.contains('open')){close();menu.focus()}});
       window.addEventListener('resize',()=&gt;{if(innerWidth&gt;1024)close()},{passive:true});
     }
-    const sm=document.getElementById('smTheme');if(sm){sm.querySelectorAll('[data-theme="glass"]').forEach(x=&gt;x.remove());if(!sm.querySelector('[data-theme="auto"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='auto';b.textContent='デバイス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="auto"]');glass?glass.after(b):sm.prepend(b)}if(!sm.querySelector('[data-theme="choco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='choco';c.textContent='チョコ';sm.append(c)}}
+    const sm=document.getElementById('smTheme');if(sm){sm.querySelectorAll('[data-theme="glass"]').forEach(x=&gt;x.remove());if(!sm.querySelector('[data-theme="auto"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='auto';b.textContent='デバイス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="auto"]');glass?glass.after(b):sm.prepend(b)}if(!sm.querySelector('[data-theme="choco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='choco';c.textContent='チョコ';sm.append(c)}if(!sm.querySelector('[data-theme="whitechoco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='whitechoco';c.textContent='ホワイトチョコ';sm.append(c)}if(!sm.querySelector('[data-theme="halloween"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='halloween';c.textContent='ハロウィン';sm.append(c)}}
     if(sm)sm.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-theme]');if(b){e.stopImmediatePropagation();apply(b.dataset.theme,true)}},true);
     const header=document.querySelector('#search-app .search-header');
     if(header&amp;&amp;!header.querySelector('.nkys-quick-actions')){const actions=document.createElement('div');actions.className='nkys-quick-actions';actions.setAttribute('aria-label','クイックアクセス');actions.innerHTML='&lt;button type="button" class="nkys-quick-action" data-action="web" title="Web検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-web"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;Web検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="news" title="ニュース検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-news"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;ニュース検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="images" title="画像検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-image"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;画像検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="videos" title="動画検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-video"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;動画検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="settings" title="検索設定"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-settings"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;検索設定&lt;/span&gt;&lt;/button&gt;';actions.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-action]');if(!b)return;if(b.dataset.action==='settings'){if(typeof window.openSettings==='function')window.openSettings();return}const input=document.getElementById('sxSearchInput');if(input)input.focus();const tab=document.querySelector(`#search-app .tab[data-cat="${b.dataset.action}"]`);if(tab&amp;&amp;document.getElementById('mainContainer')?.classList.contains('results-mode'))tab.click()});header.appendChild(actions)}
@@ -5431,6 +5449,72 @@ html body.choco-mode .ticker-label.news{background:#8a4f2a!important;color:#fff4
  new ResizeObserver(size).observe(document.body); window.addEventListener('resize',size); size();
 })();
 &lt;/script&gt;
+
+&lt;style id="whitechoco-halloween-themes"&gt;
+/* ===== WHITE CHOCO : ライト版チョコUI ===== */
+html body.whitechoco-mode{
+  --bg:#fbf4ea;--surface:#fffaf3;--surface-2:#f6ebdc;--text:#4a2e20;--text-muted:#8a6a52;
+  --border:#e6d3bd;--primary:#a8693a;--primary-hover:#8a5430;--accent:#d9667c;
+  --header-bg:#fffaf3;--topbar-bg:#a8693a;--topbar-text:#fffaf3;--tag-bg:#f3e3cf;
+  --bg-color:#fbf4ea;--card-bg:#fffaf3;--border-color:#e6d3bd;--text-color:#4a2e20;--accent-blue:#a8693a;
+  --mobile-glass:rgba(255,250,243,.9);--mobile-rim:rgba(168,105,58,.18);--mobile-card:rgba(168,105,58,.06);--mobile-ink:#4a2e20;--mobile-muted:#8a6a52;
+  color-scheme:light;
+  background:radial-gradient(ellipse at 10% -10%,rgba(240,189,128,.28),transparent 55%),radial-gradient(ellipse at 100% 110%,rgba(242,137,155,.14),transparent 50%),#fbf4ea!important;
+  background-attachment:fixed!important;color:var(--text)
+}
+html body.whitechoco-mode .site-header{background:linear-gradient(180deg,#fffaf3,#f6ebdc)!important;border-bottom:1px solid #e6d3bd!important;box-shadow:0 10px 30px -22px rgba(74,46,32,.5)!important}
+html body.whitechoco-mode .gnav,html body.whitechoco-mode footer{background:#f3e3cf!important;color:#4a2e20;border-color:#e6d3bd!important}
+html body.whitechoco-mode .nav-link{color:#7a5238}
+html body.whitechoco-mode .nav-link:hover{color:#4a2e20;background:rgba(168,105,58,.10)}
+html body.whitechoco-mode .nav-link.active{color:#fffaf3!important;background:linear-gradient(180deg,#c2844f,#a8693a)!important;border-radius:999px;box-shadow:0 2px 0 #7a4a2a}
+html body.whitechoco-mode :is(.card,.news-card,.section,.widget,.setting-row,.hero){background:#fffaf3!important;border:1px solid #e6d3bd!important;border-radius:16px!important;box-shadow:inset 0 2px 0 #fff,inset 0 -3px 0 rgba(168,105,58,.08),0 6px 18px -10px rgba(74,46,32,.35)!important}
+html body.whitechoco-mode :is(.section-head,.widget-head){border-color:#e6d3bd!important;color:#4a2e20}
+html body.whitechoco-mode .tag{background:#f3e3cf!important;color:#8a5430!important;border:1px solid #e0c6a6!important}
+html body.whitechoco-mode :is(.btn,button.btn,.ao-btn){background:linear-gradient(180deg,#fff3e2,#f0d6b4)!important;color:#5c3a28!important;border:1px solid #d9b48c!important;border-radius:999px!important;box-shadow:inset 0 1px 0 #fff,0 3px 0 #d0a77a!important;font-weight:700}
+html body.whitechoco-mode .btn-ghost{background:transparent!important;box-shadow:none!important}
+html body.whitechoco-mode a{color:#a8693a}
+html body.whitechoco-mode a:hover{color:#7a4a2a}
+html body.whitechoco-mode :is(input,select,textarea){background:#fff!important;color:#4a2e20!important;border-color:#e0c6a6!important}
+html body.whitechoco-mode :is(input,select,textarea,button,a):focus-visible{outline:2px solid #c2844f!important;outline-offset:2px}
+html body.whitechoco-mode .ticker{background:linear-gradient(90deg,#f3e3cf,#fff3e2,#f3e3cf)!important;border-color:#e6d3bd!important;color:#4a2e20}
+html body.whitechoco-mode .muted{color:#8a6a52!important}
+html body.whitechoco-mode ::selection{background:#f0bd80;color:#4a2e20}
+
+/* ===== HALLOWEEN ===== */
+html body.halloween-mode,html body.halloween-mode.dark-mode{
+  --bg:#0d0814;--surface:rgba(24,14,32,.82);--surface-2:rgba(36,20,46,.85);--text:#fbeedd;--text-muted:#c9a9d6;
+  --border:#4a2a5c;--primary:#ff7a1a;--primary-hover:#ff9a45;--accent:#9be15d;
+  --header-bg:rgba(20,10,28,.85);--topbar-bg:#14081c;--topbar-text:#ffb066;--tag-bg:#2a1636;
+  --bg-color:#0d0814;--card-bg:rgba(24,14,32,.82);--border-color:#4a2a5c;--text-color:#fbeedd;--accent-blue:#ff7a1a;
+  --mobile-glass:rgba(20,10,28,.9);--mobile-rim:rgba(255,122,26,.2);--mobile-card:rgba(255,122,26,.07);--mobile-ink:#fbeedd;--mobile-muted:#c9a9d6;
+  color-scheme:dark;
+  background:linear-gradient(180deg,rgba(13,8,20,.55),rgba(13,8,20,.85)),url('/images/halloween-bg.jpg') center/cover no-repeat fixed,#0d0814!important;
+  color:var(--text)
+}
+html body.halloween-mode .site-header{background:linear-gradient(180deg,rgba(28,12,38,.92),rgba(18,8,26,.88))!important;border-bottom:2px solid #ff7a1a!important;box-shadow:0 0 24px -6px rgba(255,122,26,.6)!important;backdrop-filter:blur(8px)}
+html body.halloween-mode .gnav,html body.halloween-mode footer{background:rgba(12,6,18,.92)!important;color:#fbeedd;border-color:#4a2a5c!important}
+html body.halloween-mode .nav-link{color:#e2c6ee}
+html body.halloween-mode .nav-link:hover{color:#ffb066;background:rgba(255,122,26,.12)}
+html body.halloween-mode .nav-link.active{color:#1a0b05!important;background:linear-gradient(180deg,#ffa04d,#e85d04)!important;border-radius:999px;box-shadow:0 0 14px rgba(255,122,26,.6)}
+html body.halloween-mode :is(.card,.news-card,.section,.widget,.setting-row,.hero){background:rgba(24,14,32,.8)!important;border:1px solid #4a2a5c!important;border-radius:16px!important;backdrop-filter:blur(6px);box-shadow:0 0 0 1px rgba(255,122,26,.08) inset,0 10px 30px -14px rgba(0,0,0,.9),0 0 22px -12px rgba(155,225,93,.35)!important}
+html body.halloween-mode :is(.section-head,.widget-head){border-color:#4a2a5c!important;color:#ffb066}
+html body.halloween-mode .section-head h2{color:#ffb066;text-shadow:0 0 10px rgba(255,122,26,.55)}
+html body.halloween-mode .tag{background:rgba(155,225,93,.12)!important;color:#b9f07f!important;border:1px solid rgba(155,225,93,.35)!important}
+html body.halloween-mode :is(.btn,button.btn,.ao-btn){background:linear-gradient(180deg,#ffa04d,#e85d04)!important;color:#1a0b05!important;border:1px solid #8a3300!important;border-radius:999px!important;box-shadow:inset 0 1px 0 rgba(255,230,200,.6),0 3px 0 #6b2600,0 0 16px -4px rgba(255,122,26,.7)!important;font-weight:700}
+html body.halloween-mode .btn-ghost{background:transparent!important;color:#ffb066!important;box-shadow:none!important}
+html body.halloween-mode a{color:#ffb066}
+html body.halloween-mode a:hover{color:#b9f07f}
+html body.halloween-mode :is(input,select,textarea){background:rgba(10,4,16,.85)!important;color:#fbeedd!important;border-color:#5c3470!important}
+html body.halloween-mode :is(input,select,textarea,button,a):focus-visible{outline:2px solid #ff7a1a!important;outline-offset:2px}
+html body.halloween-mode .ticker{background:linear-gradient(90deg,#14081c,#2a1236,#14081c)!important;border-color:#ff7a1a!important;color:#ffb066}
+html body.halloween-mode .muted{color:#c9a9d6!important}
+html body.halloween-mode ::selection{background:#ff7a1a;color:#1a0b05}
+html body.halloween-mode::after{content:"🦇";position:fixed;top:18%;left:-40px;font-size:28px;pointer-events:none;z-index:9999;animation:hw-bat 14s linear infinite;opacity:.85}
+html body.halloween-mode::before{content:"👻";position:fixed;bottom:26%;right:5%;font-size:30px;pointer-events:none;z-index:9999;animation:hw-ghost 5s ease-in-out infinite;opacity:.7}
+@keyframes hw-bat{0%{transform:translate(0,0)}25%{transform:translate(30vw,-6vh)}50%{transform:translate(60vw,4vh)}75%{transform:translate(90vw,-4vh)}100%{transform:translate(110vw,0)}}
+@keyframes hw-ghost{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@media (prefers-reduced-motion:reduce){html body.halloween-mode::after,html body.halloween-mode::before{animation:none}}
+&lt;/style&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
