@@ -2006,7 +2006,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
           &lt;div class="setting-row"&gt;
             &lt;label&gt;🌓 表示モード&lt;/label&gt;
-            &lt;div class="desc"&gt;ライト／ダーク／チョコ／ハロウィンなどを切り替えます。10月31日は自動でハロウィンになります。&lt;/div&gt;
+            &lt;div class="desc"&gt;ライト／ダーク／チョコ／ハロウィンなどを切り替えます。10月31日はハロウィン、3月9日はミク、2月14日はチョコ、3月14日はホワイトチョコに自動で切り替わり、翌日には元に戻ります。&lt;/div&gt;
             &lt;button class="btn" onclick="toggleTheme()"&gt;モードを切り替える&lt;/button&gt;
             &lt;select id="site-theme-select" aria-label="表示スタイル" onchange="setSiteTheme(this.value)"&gt;
               &lt;option value="auto"&gt;デバイスに合わせる&lt;/option&gt;
@@ -2015,6 +2015,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
               &lt;option value="choco"&gt;ダークチョコ&lt;/option&gt;
               &lt;option value="whitechoco"&gt;ホワイトチョコ&lt;/option&gt;
               &lt;option value="halloween"&gt;ハロウィン 🎃&lt;/option&gt;
+              &lt;option value="miku"&gt;ミク 🎵&lt;/option&gt;
               &lt;option value="glass2"&gt;グラスモード2&lt;/option&gt;
             &lt;/select&gt;
           &lt;/div&gt;
@@ -4728,11 +4729,11 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
 &lt;/style&gt;
 &lt;script id="glass-theme-mobile-menu-fix-script"&gt;
 (function(){
-  const ORDER=['auto','glass2','dark','choco','whitechoco','halloween','light'];
+  const ORDER=['auto','glass2','dark','choco','whitechoco','halloween','miku','light'];
   const MQ=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
   let chosen='auto';
   const KEY='nakayosi_theme_v2';
-  const label=theme=&gt;theme==='auto'?'デバイス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':theme==='choco'?'ダークチョコ':theme==='whitechoco'?'ホワイトチョコ':theme==='halloween'?'ハロウィン':'ライト';
+  const label=theme=&gt;theme==='auto'?'デバイス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':theme==='choco'?'ダークチョコ':theme==='whitechoco'?'ホワイトチョコ':theme==='halloween'?'ハロウィン':theme==='miku'?'ミク':'ライト';
   function current(){return chosen}
   function apply(theme,save){
     if(!ORDER.includes(theme))theme='auto';
@@ -4741,12 +4742,12 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
     if(theme==='auto')theme=(MQ&amp;&amp;MQ.matches)?'dark':'light';
     document.body.classList.toggle('glass-mode',theme==='glass2');
     document.body.classList.toggle('glass-mode-2',theme==='glass2');
-    document.body.classList.toggle('dark-mode',theme==='dark'||theme==='choco'||theme==='halloween');document.body.classList.toggle('choco-mode',theme==='choco');document.body.classList.toggle('whitechoco-mode',theme==='whitechoco');document.body.classList.toggle('halloween-mode',theme==='halloween');
+    document.body.classList.toggle('dark-mode',theme==='dark'||theme==='choco'||theme==='halloween');document.body.classList.toggle('choco-mode',theme==='choco');document.body.classList.toggle('whitechoco-mode',theme==='whitechoco');document.body.classList.toggle('halloween-mode',theme==='halloween');document.body.classList.toggle('miku-mode',theme==='miku');let mikuGif=document.querySelector('.miku-corner-gif');if(theme==='miku'&amp;&amp;!mikuGif){mikuGif=document.createElement('img');mikuGif.className='miku-corner-gif';mikuGif.src='images/miku.gif';mikuGif.alt='';mikuGif.setAttribute('aria-hidden','true');mikuGif.decoding='async';document.body.appendChild(mikuGif)}else if(theme!=='miku'&amp;&amp;mikuGif){mikuGif.remove()}
     document.body.dataset.theme=theme;
     const appearanceSelect=document.getElementById('site-theme-select');if(appearanceSelect)appearanceSelect.value=pick;
     let glass2Background=document.querySelector('.glass2-background');
     if(theme==='glass2'&amp;&amp;!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';var g2src=['https://id-preview--e6de3a45-d60d-46b1-a964-c76c73131600.lovable.app/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif','https://www.benib.jp/images/til-2022-09-09-yuyake.gif'],g2i=0;glass2Background.onerror=function(){g2i++;if(g2src[g2i])this.src=g2src[g2i]};glass2Background.src=g2src[0];document.body.prepend(glass2Background)}
-    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':(theme==='choco'||theme==='halloween')?'dark':theme==='whitechoco'?'light':theme);
+    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':(theme==='choco'||theme==='halloween')?'dark':(theme==='whitechoco'||theme==='miku')?'light':theme);
     const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(pick)+1)%ORDER.length];btn.title=`表示: ${label(pick)}（次: ${label(next)}）`;btn.setAttribute('aria-label',btn.title)}
     document.querySelectorAll('#smTheme button[data-theme]').forEach(b=&gt;b.classList.toggle('active',b.dataset.theme===pick));
     if(save){try{localStorage.setItem(KEY,pick);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',(theme==='dark'||theme==='choco'||theme==='halloween')?'dark':'light')}catch(_){}}
@@ -4754,10 +4755,10 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
   function boot(){
     let saved='auto';try{saved=localStorage.getItem(KEY)||'auto'}catch(_){}
     if(saved==='glass')saved='auto';
-    const isHalloween=()=&gt;{const d=new Date();return d.getMonth()===9&amp;&amp;d.getDate()===31};
-    let halloweenAuto=isHalloween();
-    apply(halloweenAuto?'halloween':saved,false);
-    setInterval(()=&gt;{const h=isHalloween();if(h===halloweenAuto)return;halloweenAuto=h;let sv='auto';try{sv=localStorage.getItem(KEY)||'auto'}catch(_){}apply(h?'halloween':sv,false)},60000);
+    const seasonalTheme=()=&gt;{const d=new Date(),m=d.getMonth()+1,day=d.getDate();if(m===10&amp;&amp;day===31)return 'halloween';if(m===3&amp;&amp;day===9)return 'miku';if(m===2&amp;&amp;day===14)return 'choco';if(m===3&amp;&amp;day===14)return 'whitechoco';return ''};
+    let seasonAuto=seasonalTheme();
+    apply(seasonAuto||saved,false);
+    setInterval(()=&gt;{const h=seasonalTheme();if(h===seasonAuto)return;seasonAuto=h;let sv='auto';try{sv=localStorage.getItem(KEY)||'auto'}catch(_){}apply(h||sv,false)},60000);
     if(MQ){const onMq=()=&gt;{if(chosen==='auto')apply('auto',false)};MQ.addEventListener?MQ.addEventListener('change',onMq):MQ.addListener(onMq);}
     window.setSiteTheme=function(theme){apply(theme,true)};
     window.toggleTheme=function(){const now=current();apply(ORDER[(ORDER.indexOf(now)+1)%ORDER.length],true)};
@@ -4768,7 +4769,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
       document.addEventListener('keydown',e=&gt;{if(e.key==='Escape'&amp;&amp;nav.classList.contains('open')){close();menu.focus()}});
       window.addEventListener('resize',()=&gt;{if(innerWidth&gt;1024)close()},{passive:true});
     }
-    const sm=document.getElementById('smTheme');if(sm){sm.querySelectorAll('[data-theme="glass"]').forEach(x=&gt;x.remove());if(!sm.querySelector('[data-theme="auto"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='auto';b.textContent='デバイス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="auto"]');glass?glass.after(b):sm.prepend(b)}if(!sm.querySelector('[data-theme="choco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='choco';c.textContent='チョコ';sm.append(c)}if(!sm.querySelector('[data-theme="whitechoco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='whitechoco';c.textContent='ホワイトチョコ';sm.append(c)}if(!sm.querySelector('[data-theme="halloween"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='halloween';c.textContent='ハロウィン';sm.append(c)}}
+    const sm=document.getElementById('smTheme');if(sm){sm.querySelectorAll('[data-theme="glass"]').forEach(x=&gt;x.remove());if(!sm.querySelector('[data-theme="auto"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='auto';b.textContent='デバイス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="auto"]');glass?glass.after(b):sm.prepend(b)}if(!sm.querySelector('[data-theme="choco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='choco';c.textContent='チョコ';sm.append(c)}if(!sm.querySelector('[data-theme="whitechoco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='whitechoco';c.textContent='ホワイトチョコ';sm.append(c)}if(!sm.querySelector('[data-theme="halloween"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='halloween';c.textContent='ハロウィン';sm.append(c)}if(!sm.querySelector('[data-theme="miku"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='miku';c.textContent='ミク';sm.append(c)}}
     if(sm)sm.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-theme]');if(b){e.stopImmediatePropagation();apply(b.dataset.theme,true)}},true);
     const header=document.querySelector('#search-app .search-header');
     if(header&amp;&amp;!header.querySelector('.nkys-quick-actions')){const actions=document.createElement('div');actions.className='nkys-quick-actions';actions.setAttribute('aria-label','クイックアクセス');actions.innerHTML='&lt;button type="button" class="nkys-quick-action" data-action="web" title="Web検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-web"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;Web検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="news" title="ニュース検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-news"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;ニュース検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="images" title="画像検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-image"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;画像検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="videos" title="動画検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-video"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;動画検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="settings" title="検索設定"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-settings"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;検索設定&lt;/span&gt;&lt;/button&gt;';actions.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-action]');if(!b)return;if(b.dataset.action==='settings'){if(typeof window.openSettings==='function')window.openSettings();return}const input=document.getElementById('sxSearchInput');if(input)input.focus();const tab=document.querySelector(`#search-app .tab[data-cat="${b.dataset.action}"]`);if(tab&amp;&amp;document.getElementById('mainContainer')?.classList.contains('results-mode'))tab.click()});header.appendChild(actions)}
@@ -5518,6 +5519,37 @@ html body.halloween-mode::before{content:"👻";position:fixed;bottom:26%;right:
 @keyframes hw-bat{0%{transform:translate(0,0)}25%{transform:translate(30vw,-6vh)}50%{transform:translate(60vw,4vh)}75%{transform:translate(90vw,-4vh)}100%{transform:translate(110vw,0)}}
 @keyframes hw-ghost{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 @media (prefers-reduced-motion:reduce){html body.halloween-mode::after,html body.halloween-mode::before{animation:none}}
+&lt;/style&gt;
+&lt;style id="miku-theme"&gt;
+/* ===== MIKU (3/9) ===== */
+html body.miku-mode{
+  --bg:#00dede;--surface:rgba(255,255,255,.82);--surface-2:rgba(230,255,255,.88);--text:#0b3b3f;--text-muted:#3f7377;
+  --border:#7ff3f3;--primary:#00a8b0;--primary-hover:#008a91;--accent:#ff8fb1;
+  --header-bg:rgba(255,255,255,.85);--topbar-bg:#00a8b0;--topbar-text:#ffffff;--tag-bg:#d6fbfb;
+  --bg-color:#00dede;--card-bg:rgba(255,255,255,.82);--border-color:#7ff3f3;--text-color:#0b3b3f;--accent-blue:#00a8b0;
+  --mobile-glass:rgba(255,255,255,.88);--mobile-rim:rgba(0,168,176,.25);--mobile-card:rgba(0,168,176,.07);--mobile-ink:#0b3b3f;--mobile-muted:#3f7377;
+  color-scheme:light;
+  background:#00dede url('images/miku-bg.webp') center bottom/cover fixed no-repeat!important;
+}
+html body.miku-mode .site-header{background:rgba(255,255,255,.88)!important;border-bottom:3px solid #ff8fb1!important;box-shadow:0 6px 20px -10px rgba(0,120,128,.5)!important;backdrop-filter:blur(8px)}
+html body.miku-mode .gnav,html body.miku-mode footer{background:rgba(255,255,255,.9)!important;border-color:#7ff3f3!important}
+html body.miku-mode .nav-link{color:#0b3b3f}
+html body.miku-mode .nav-link:hover{color:#00a8b0;background:rgba(0,222,222,.15)}
+html body.miku-mode .nav-link.active{color:#fff!important;background:linear-gradient(180deg,#22d3d8,#00a8b0)!important;border-radius:999px;box-shadow:0 0 12px rgba(0,200,210,.55)}
+html body.miku-mode :is(.card,.news-card,.section,.widget,.setting-row,.hero){background:rgba(255,255,255,.84)!important;border:1px solid #9ff5f5!important;border-radius:16px!important;backdrop-filter:blur(6px);box-shadow:0 10px 28px -14px rgba(0,110,120,.55)!important}
+html body.miku-mode .section-head h2{color:#00a8b0}
+html body.miku-mode .tag{background:rgba(255,143,177,.15)!important;color:#d6457a!important;border:1px solid rgba(255,143,177,.45)!important}
+html body.miku-mode :is(.btn,button.btn,.ao-btn){background:linear-gradient(180deg,#22d3d8,#00a8b0)!important;color:#fff!important;border:1px solid #008a91!important;border-radius:999px!important;font-weight:700}
+html body.miku-mode .btn-ghost{background:transparent!important;color:#00a8b0!important}
+html body.miku-mode a{color:#008a91}
+html body.miku-mode a:hover{color:#e05a8a}
+html body.miku-mode :is(input,select,textarea){background:rgba(255,255,255,.95)!important;color:#0b3b3f!important;border-color:#7ff3f3!important}
+html body.miku-mode .ticker{background:linear-gradient(90deg,#00a8b0,#22d3d8,#00a8b0)!important;border-color:#ff8fb1!important;color:#fff}
+html body.miku-mode ::selection{background:#ff8fb1;color:#fff}
+.miku-corner-gif{position:fixed;right:14px;bottom:14px;width:120px;height:120px;object-fit:contain;z-index:9998;pointer-events:none;filter:drop-shadow(0 6px 12px rgba(0,90,100,.35));animation:miku-bob 3s ease-in-out infinite}
+@media (max-width:640px){.miku-corner-gif{width:84px;height:84px;right:8px;bottom:76px}}
+@keyframes miku-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){.miku-corner-gif{animation:none}}
 &lt;/style&gt;
 &lt;/body&gt;
 
