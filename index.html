@@ -5614,28 +5614,30 @@ html body.teto-mode .ticker{background:linear-gradient(90deg,#d8344c,#ef4e66,#d8
 html body.teto-mode ::selection{background:#d8344c;color:#fff}
 /* ===== POWERPUFF (manual) ===== */
 html body.ppg-mode{
-  --bg:#ffd6ec;--surface:rgba(255,255,255,.86);--surface-2:rgba(255,236,247,.9);--text:#3a0f2c;--text-muted:#7a3c66;
-  --border:#ff8ac6;--primary:#ff3ea5;--primary-hover:#d91f86;--accent:#3fb6ff;
-  --header-bg:rgba(255,255,255,.86);--topbar-bg:#ff3ea5;--topbar-text:#ffffff;--tag-bg:#ffe1f1;
-  --bg-color:#ffd6ec;--card-bg:rgba(255,255,255,.86);--border-color:#ff8ac6;--text-color:#3a0f2c;--accent-blue:#ff3ea5;
-  --mobile-glass:rgba(255,255,255,.88);--mobile-rim:rgba(255,62,165,.25);--mobile-card:rgba(255,62,165,.07);--mobile-ink:#3a0f2c;--mobile-muted:#7a3c66;
+  --bg:#fdf0f6;--surface:rgba(255,255,255,.86);--surface-2:rgba(253,240,246,.9);--text:#3d2a36;--text-muted:#7d6273;
+  --border:#f6b8d3;--primary:#e8679f;--primary-hover:#c24f86;--accent:#7cc4e8;
+  --header-bg:rgba(255,255,255,.86);--topbar-bg:#e8679f;--topbar-text:#ffffff;--tag-bg:#fbe6ef;
+  --bg-color:#fdf0f6;--card-bg:rgba(255,255,255,.86);--border-color:#f6b8d3;--text-color:#3d2a36;--accent-blue:#e8679f;
+  --mobile-glass:rgba(255,255,255,.88);--mobile-rim:rgba(232,103,159,.25);--mobile-card:rgba(232,103,159,.07);--mobile-ink:#3d2a36;--mobile-muted:#7d6273;
   color-scheme:light;
-  background:#ffd6ec url('images/ppg-bg.gif') center/cover fixed no-repeat!important;
+  background:#fdf0f6 url('images/ppg-bg.gif') center/cover fixed no-repeat!important;
   color:var(--text)
 }
-html body.ppg-mode .site-header{background:rgba(255,255,255,.88)!important;border-bottom:3px solid #ff3ea5!important;backdrop-filter:blur(8px)}
-html body.ppg-mode .gnav,html body.ppg-mode footer{background:rgba(255,255,255,.9)!important;border-color:#ff8ac6!important}
-html body.ppg-mode .nav-link{color:#3a0f2c}
-html body.ppg-mode .nav-link.active{color:#fff!important;background:linear-gradient(90deg,#ff3ea5,#3fb6ff,#7ed957)!important;border-radius:999px}
-html body.ppg-mode :is(.card,.news-card,.section,.widget,.setting-row,.hero){background:rgba(255,255,255,.86)!important;border:1px solid #ff8ac6!important;border-radius:16px!important;backdrop-filter:blur(6px)}
-html body.ppg-mode .section-head h2{color:#ff3ea5}
-html body.ppg-mode :is(.btn,button.btn,.ao-btn){background:linear-gradient(180deg,#ff6ab8,#ff3ea5)!important;color:#fff!important;border:1px solid #d91f86!important;border-radius:999px!important;font-weight:700}
-html body.ppg-mode .btn-ghost{background:transparent!important;color:#ff3ea5!important}
-html body.ppg-mode a{color:#d91f86}
-html body.ppg-mode :is(input,select,textarea){background:rgba(255,255,255,.95)!important;color:#3a0f2c!important;border-color:#ff8ac6!important}
-html body.ppg-mode .ticker{background:linear-gradient(90deg,#ff3ea5,#3fb6ff,#7ed957)!important;color:#fff}
+html body.ppg-mode .site-header{background:rgba(255,255,255,.88)!important;border-bottom:3px solid #e8679f!important;backdrop-filter:blur(8px)}
+html body.ppg-mode .gnav,html body.ppg-mode footer{background:rgba(255,255,255,.9)!important;border-color:#f6b8d3!important}
+html body.ppg-mode .nav-link{color:#3d2a36}
+html body.ppg-mode .nav-link.active{color:#fff!important;background:linear-gradient(90deg,#e8679f,#7cc4e8,#9fd8a8)!important;border-radius:999px}
+html body.ppg-mode :is(.card,.news-card,.section,.widget,.setting-row,.hero){background:rgba(255,255,255,.86)!important;border:1px solid #f6b8d3!important;border-radius:16px!important;backdrop-filter:blur(6px)}
+html body.ppg-mode .section-head h2{color:#e8679f}
+html body.ppg-mode :is(.btn,button.btn,.ao-btn){background:linear-gradient(180deg,#f08bb6,#e8679f)!important;color:#fff!important;border:1px solid #c24f86!important;border-radius:999px!important;font-weight:700}
+html body.ppg-mode .btn-ghost{background:transparent!important;color:#e8679f!important}
+html body.ppg-mode a{color:#c24f86}
+html body.ppg-mode :is(input,select,textarea){background:rgba(255,255,255,.95)!important;color:#3d2a36!important;border-color:#f6b8d3!important}
+html body.ppg-mode .ticker{background:linear-gradient(90deg,#e8679f,#7cc4e8,#9fd8a8)!important;color:#fff}
 .season-corner-img[data-season="ppg"]{width:140px;height:auto}
 @media (max-width:640px){.season-corner-img[data-season="ppg"]{width:96px;height:auto}}
+.season-corner-img[data-season="ppg"]{left:auto!important;right:14px}
+@media (max-width:640px){.season-corner-img[data-season="ppg"]{right:8px}}
 /* corner image (bottom-left) */
 .season-corner-img{position:fixed;left:14px;bottom:14px;width:120px;height:120px;object-fit:contain;z-index:9998;pointer-events:none;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35));animation:season-bob 3s ease-in-out infinite}
 .season-corner-img[data-season="christmas"]{image-rendering:pixelated}
