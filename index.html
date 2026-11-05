@@ -2006,7 +2006,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
           &lt;div class="setting-row"&gt;
             &lt;label&gt;🌓 表示モード&lt;/label&gt;
-            &lt;div class="desc"&gt;ライト／ダーク／チョコ／ハロウィンなどを切り替えます。10月31日はハロウィン、3月9日はミク、2月14日はチョコ、3月14日はホワイトチョコに自動で切り替わり、翌日には元に戻ります。&lt;/div&gt;
+            &lt;div class="desc"&gt;ライト／ダーク／チョコ／ハロウィンなどを切り替えます。10月31日はハロウィン、3月9日はミク、2月14日はチョコ、3月14日はホワイトチョコ、節分は節分、5月5日は子どもDAY、7月7日は七夕に自動で切り替わり、翌日には元に戻ります。&lt;/div&gt;
             &lt;button class="btn" onclick="toggleTheme()"&gt;モードを切り替える&lt;/button&gt;
             &lt;select id="site-theme-select" aria-label="表示スタイル" onchange="setSiteTheme(this.value)"&gt;
               &lt;option value="auto"&gt;デバイスに合わせる&lt;/option&gt;
@@ -2019,6 +2019,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
               &lt;option value="christmas"&gt;クリスマス 🎄&lt;/option&gt;
               &lt;option value="teto"&gt;テト 🥖&lt;/option&gt;
               &lt;option value="ppg"&gt;パワパフ 💥&lt;/option&gt;
+              &lt;option value="setsubun"&gt;節分 👹&lt;/option&gt;
+              &lt;option value="kodomo"&gt;子どもDAY 🎏&lt;/option&gt;
+              &lt;option value="tanabata"&gt;七夕 🎋&lt;/option&gt;
               &lt;option value="glass2"&gt;グラスモード2&lt;/option&gt;
             &lt;/select&gt;
           &lt;/div&gt;
@@ -4733,11 +4736,11 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
 &lt;/style&gt;
 &lt;script id="glass-theme-mobile-menu-fix-script"&gt;
 (function(){
-  const ORDER=['auto','glass2','dark','choco','whitechoco','halloween','miku','christmas','teto','ppg','light'];
+  const ORDER=['auto','glass2','dark','choco','whitechoco','halloween','miku','christmas','teto','ppg','setsubun','kodomo','tanabata','light'];
   const MQ=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
   let chosen='auto';
   const KEY='nakayosi_theme_v2';
-  const label=theme=&gt;theme==='auto'?'デバイス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':theme==='choco'?'ダークチョコ':theme==='whitechoco'?'ホワイトチョコ':theme==='halloween'?'ハロウィン':theme==='miku'?'ミク':theme==='christmas'?'クリスマス':theme==='teto'?'テト':theme==='ppg'?'パワパフ':'ライト';
+  const label=theme=&gt;theme==='auto'?'デバイス':theme==='glass2'?'グラス2':theme==='dark'?'ダーク':theme==='choco'?'ダークチョコ':theme==='whitechoco'?'ホワイトチョコ':theme==='halloween'?'ハロウィン':theme==='miku'?'ミク':theme==='christmas'?'クリスマス':theme==='teto'?'テト':theme==='ppg'?'パワパフ':theme==='setsubun'?'節分':theme==='kodomo'?'子どもDAY':theme==='tanabata'?'七夕':'ライト';
   function current(){return chosen}
   function apply(theme,save){
     if(!ORDER.includes(theme))theme='auto';
@@ -4746,12 +4749,12 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
     if(theme==='auto')theme=(MQ&amp;&amp;MQ.matches)?'dark':'light';
     document.body.classList.toggle('glass-mode',theme==='glass2');
     document.body.classList.toggle('glass-mode-2',theme==='glass2');
-    document.body.classList.toggle('dark-mode',theme==='dark'||theme==='choco'||theme==='halloween'||theme==='christmas');document.body.classList.toggle('christmas-mode',theme==='christmas');document.body.classList.toggle('teto-mode',theme==='teto');document.body.classList.toggle('ppg-mode',theme==='ppg');(function(){const C={christmas:'images/xmas-snowman.png',teto:'images/teto.gif',ppg:'images/ppg-navi.png',choco:'images/choco-sign.png',whitechoco:'images/choco-sign.png'};let el=document.querySelector('.season-corner-img');if(C[theme]){if(!el){el=document.createElement('img');el.className='season-corner-img';el.alt='';el.setAttribute('aria-hidden','true');el.decoding='async';document.body.appendChild(el)}if(el.getAttribute('src')!==C[theme])el.src=C[theme];el.dataset.season=theme}else if(el){el.remove()}})();document.body.classList.toggle('choco-mode',theme==='choco');document.body.classList.toggle('whitechoco-mode',theme==='whitechoco');document.body.classList.toggle('halloween-mode',theme==='halloween');document.body.classList.toggle('miku-mode',theme==='miku');let mikuGif=document.querySelector('.miku-corner-gif');if(theme==='miku'&amp;&amp;!mikuGif){mikuGif=document.createElement('img');mikuGif.className='miku-corner-gif';mikuGif.src='images/miku.gif';mikuGif.alt='';mikuGif.setAttribute('aria-hidden','true');mikuGif.decoding='async';document.body.appendChild(mikuGif)}else if(theme!=='miku'&amp;&amp;mikuGif){mikuGif.remove()}
+    document.body.classList.toggle('dark-mode',theme==='dark'||theme==='choco'||theme==='halloween'||theme==='christmas');document.body.classList.toggle('christmas-mode',theme==='christmas');document.body.classList.toggle('teto-mode',theme==='teto');document.body.classList.toggle('ppg-mode',theme==='ppg');document.body.classList.toggle('setsubun-mode',theme==='setsubun');document.body.classList.toggle('kodomo-mode',theme==='kodomo');document.body.classList.toggle('tanabata-mode',theme==='tanabata');(function(){let r=document.querySelector('.season-corner-img-right');if(theme==='setsubun'){if(!r){r=document.createElement('img');r.className='season-corner-img season-corner-img-right';r.alt='';r.setAttribute('aria-hidden','true');r.decoding='async';r.src='images/setsubun-oni.png';r.dataset.season='setsubun-oni';document.body.appendChild(r)}}else if(r){r.remove()}})();(function(){const C={christmas:'images/xmas-snowman.png',teto:'images/teto.gif',ppg:'images/ppg-navi.png',setsubun:'images/setsubun-mamemaki.png',kodomo:'images/kodomo-koinobori.png',tanabata:'images/tanabata-tanzaku.png',choco:'images/choco-sign.png',whitechoco:'images/choco-sign.png'};let el=document.querySelector('.season-corner-img:not(.season-corner-img-right)');if(C[theme]){if(!el){el=document.createElement('img');el.className='season-corner-img';el.alt='';el.setAttribute('aria-hidden','true');el.decoding='async';document.body.appendChild(el)}if(el.getAttribute('src')!==C[theme])el.src=C[theme];el.dataset.season=theme}else if(el){el.remove()}})();document.body.classList.toggle('choco-mode',theme==='choco');document.body.classList.toggle('whitechoco-mode',theme==='whitechoco');document.body.classList.toggle('halloween-mode',theme==='halloween');document.body.classList.toggle('miku-mode',theme==='miku');let mikuGif=document.querySelector('.miku-corner-gif');if(theme==='miku'&amp;&amp;!mikuGif){mikuGif=document.createElement('img');mikuGif.className='miku-corner-gif';mikuGif.src='images/miku.gif';mikuGif.alt='';mikuGif.setAttribute('aria-hidden','true');mikuGif.decoding='async';document.body.appendChild(mikuGif)}else if(theme!=='miku'&amp;&amp;mikuGif){mikuGif.remove()}
     document.body.dataset.theme=theme;
     const appearanceSelect=document.getElementById('site-theme-select');if(appearanceSelect)appearanceSelect.value=pick;
     let glass2Background=document.querySelector('.glass2-background');
     if(theme==='glass2'&amp;&amp;!glass2Background){glass2Background=document.createElement('img');glass2Background.className='glass2-background';glass2Background.alt='';glass2Background.setAttribute('aria-hidden','true');glass2Background.decoding='async';var g2src=['https://id-preview--e6de3a45-d60d-46b1-a964-c76c73131600.lovable.app/__l5e/assets-v1/1bb0cb56-063c-4f81-8d3d-f29d91c19b3f/yuyake-glass-2.gif','https://www.benib.jp/images/til-2022-09-09-yuyake.gif'],g2i=0;glass2Background.onerror=function(){g2i++;if(g2src[g2i])this.src=g2src[g2i]};glass2Background.src=g2src[0];document.body.prepend(glass2Background)}
-    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':(theme==='choco'||theme==='halloween'||theme==='christmas')?'dark':(theme==='whitechoco'||theme==='miku'||theme==='teto'||theme==='ppg')?'light':theme);
+    const app=document.getElementById('search-app');if(app)app.setAttribute('data-theme',theme==='glass2'?'glass':(theme==='choco'||theme==='halloween'||theme==='christmas')?'dark':(theme==='whitechoco'||theme==='miku'||theme==='teto'||theme==='ppg'||theme==='setsubun'||theme==='kodomo'||theme==='tanabata')?'light':theme);
     const btn=document.querySelector('.theme-toggle-btn');if(btn){const next=ORDER[(ORDER.indexOf(pick)+1)%ORDER.length];btn.title=`表示: ${label(pick)}（次: ${label(next)}）`;btn.setAttribute('aria-label',btn.title)}
     document.querySelectorAll('#smTheme button[data-theme]').forEach(b=&gt;b.classList.toggle('active',b.dataset.theme===pick));
     if(save){try{localStorage.setItem(KEY,pick);const settings=JSON.parse(localStorage.getItem('nakayosi_settings_v1')||'{}');settings.theme=theme;settings.dark=theme==='dark';localStorage.setItem('nakayosi_settings_v1',JSON.stringify(settings));localStorage.setItem('nkys_search_theme',(theme==='dark'||theme==='choco'||theme==='halloween'||theme==='christmas')?'dark':'light')}catch(_){}}
@@ -4759,7 +4762,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
   function boot(){
     let saved='auto';try{saved=localStorage.getItem(KEY)||'auto'}catch(_){}
     if(saved==='glass')saved='auto';
-    const seasonalTheme=()=&gt;{const d=new Date(),m=d.getMonth()+1,day=d.getDate();if(m===10&amp;&amp;day===31)return 'halloween';if(m===3&amp;&amp;day===9)return 'miku';if(m===2&amp;&amp;day===14)return 'choco';if(m===3&amp;&amp;day===14)return 'whitechoco';if(m===12&amp;&amp;day===25)return 'christmas';if(m===4&amp;&amp;day===1)return 'teto';return ''};
+    const seasonalTheme=()=&gt;{const d=new Date(),m=d.getMonth()+1,day=d.getDate();if(m===10&amp;&amp;day===31)return 'halloween';if(m===3&amp;&amp;day===9)return 'miku';if(m===2&amp;&amp;day===14)return 'choco';if(m===3&amp;&amp;day===14)return 'whitechoco';if(m===12&amp;&amp;day===25)return 'christmas';if(m===4&amp;&amp;day===1)return 'teto';if(m===2&amp;&amp;day===(d.getFullYear()%4===1?2:3))return 'setsubun';if(m===5&amp;&amp;day===5)return 'kodomo';if(m===7&amp;&amp;day===7)return 'tanabata';return ''};
     let seasonAuto=seasonalTheme();
     apply(seasonAuto||saved,false);
     setInterval(()=&gt;{const h=seasonalTheme();if(h===seasonAuto)return;seasonAuto=h;let sv='auto';try{sv=localStorage.getItem(KEY)||'auto'}catch(_){}apply(h||sv,false)},60000);
@@ -4773,7 +4776,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
       document.addEventListener('keydown',e=&gt;{if(e.key==='Escape'&amp;&amp;nav.classList.contains('open')){close();menu.focus()}});
       window.addEventListener('resize',()=&gt;{if(innerWidth&gt;1024)close()},{passive:true});
     }
-    const sm=document.getElementById('smTheme');if(sm){sm.querySelectorAll('[data-theme="glass"]').forEach(x=&gt;x.remove());if(!sm.querySelector('[data-theme="auto"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='auto';b.textContent='デバイス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="auto"]');glass?glass.after(b):sm.prepend(b)}if(!sm.querySelector('[data-theme="choco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='choco';c.textContent='チョコ';sm.append(c)}if(!sm.querySelector('[data-theme="whitechoco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='whitechoco';c.textContent='ホワイトチョコ';sm.append(c)}if(!sm.querySelector('[data-theme="halloween"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='halloween';c.textContent='ハロウィン';sm.append(c)}if(!sm.querySelector('[data-theme="miku"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='miku';c.textContent='ミク';sm.append(c)}if(!sm.querySelector('[data-theme="christmas"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='christmas';c.textContent='クリスマス';sm.append(c)}if(!sm.querySelector('[data-theme="teto"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='teto';c.textContent='テト';sm.append(c)}if(!sm.querySelector('[data-theme="ppg"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='ppg';c.textContent='パワパフ';sm.append(c)}}
+    const sm=document.getElementById('smTheme');if(sm){sm.querySelectorAll('[data-theme="glass"]').forEach(x=&gt;x.remove());if(!sm.querySelector('[data-theme="auto"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='auto';b.textContent='デバイス';sm.prepend(b)}if(!sm.querySelector('[data-theme="glass2"]')){const b=document.createElement('button');b.type='button';b.dataset.theme='glass2';b.textContent='グラス2';const glass=sm.querySelector('[data-theme="auto"]');glass?glass.after(b):sm.prepend(b)}if(!sm.querySelector('[data-theme="choco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='choco';c.textContent='チョコ';sm.append(c)}if(!sm.querySelector('[data-theme="whitechoco"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='whitechoco';c.textContent='ホワイトチョコ';sm.append(c)}if(!sm.querySelector('[data-theme="halloween"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='halloween';c.textContent='ハロウィン';sm.append(c)}if(!sm.querySelector('[data-theme="miku"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='miku';c.textContent='ミク';sm.append(c)}if(!sm.querySelector('[data-theme="christmas"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='christmas';c.textContent='クリスマス';sm.append(c)}if(!sm.querySelector('[data-theme="teto"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='teto';c.textContent='テト';sm.append(c)}if(!sm.querySelector('[data-theme="ppg"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='ppg';c.textContent='パワパフ';sm.append(c)}if(!sm.querySelector('[data-theme="setsubun"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='setsubun';c.textContent='節分';sm.append(c)}if(!sm.querySelector('[data-theme="kodomo"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='kodomo';c.textContent='子どもDAY';sm.append(c)}if(!sm.querySelector('[data-theme="tanabata"]')){const c=document.createElement('button');c.type='button';c.dataset.theme='tanabata';c.textContent='七夕';sm.append(c)}}
     if(sm)sm.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-theme]');if(b){e.stopImmediatePropagation();apply(b.dataset.theme,true)}},true);
     const header=document.querySelector('#search-app .search-header');
     if(header&amp;&amp;!header.querySelector('.nkys-quick-actions')){const actions=document.createElement('div');actions.className='nkys-quick-actions';actions.setAttribute('aria-label','クイックアクセス');actions.innerHTML='&lt;button type="button" class="nkys-quick-action" data-action="web" title="Web検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-web"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;Web検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="news" title="ニュース検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-news"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;ニュース検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="images" title="画像検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-image"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;画像検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="videos" title="動画検索"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-video"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;動画検索&lt;/span&gt;&lt;/button&gt;&lt;button type="button" class="nkys-quick-action" data-action="settings" title="検索設定"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;use href="#icon-settings"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span&gt;検索設定&lt;/span&gt;&lt;/button&gt;';actions.addEventListener('click',e=&gt;{const b=e.target.closest('button[data-action]');if(!b)return;if(b.dataset.action==='settings'){if(typeof window.openSettings==='function')window.openSettings();return}const input=document.getElementById('sxSearchInput');if(input)input.focus();const tab=document.querySelector(`#search-app .tab[data-cat="${b.dataset.action}"]`);if(tab&amp;&amp;document.getElementById('mainContainer')?.classList.contains('results-mode'))tab.click()});header.appendChild(actions)}
@@ -5646,6 +5649,47 @@ html body.ppg-mode .ticker{background:linear-gradient(90deg,#e8679f,#7cc4e8,#9fd
 @media (max-width:640px){.season-corner-img{width:84px;height:84px;left:8px;bottom:76px}}
 @keyframes season-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @media (prefers-reduced-motion:reduce){.season-corner-img,html body.christmas-mode::after{animation:none}}
+&lt;/style&gt;
+&lt;style id="tanabata-setsubun-kodomo-theme"&gt;
+html body.tanabata-mode{background:#1b2a5a url('images/tanabata-bg.jpg') center/cover fixed no-repeat!important;color:#1f2a44}
+html body.tanabata-mode .site-header{background:rgba(255,255,255,.88)!important;border-bottom:3px solid #3b5bb5!important;backdrop-filter:blur(8px)}
+html body.tanabata-mode .gnav,html body.tanabata-mode footer{background:rgba(255,255,255,.9)!important;border-color:#b9c6ec!important}
+html body.tanabata-mode .nav-link{color:#1f2a44}
+html body.tanabata-mode .nav-link.active{color:#fff!important;background:#3b5bb5!important;border-radius:999px}
+html body.tanabata-mode :is(.card,.news-card,.section,.widget,.setting-row,.hero){background:rgba(255,255,255,.86)!important;border:1px solid #b9c6ec!important;border-radius:16px!important;backdrop-filter:blur(6px)}
+html body.tanabata-mode .section-head h2{color:#3b5bb5}
+html body.tanabata-mode :is(.btn,button.btn,.ao-btn){background:#3b5bb5!important;color:#fff!important;border:1px solid #3b5bb5!important;border-radius:999px!important;font-weight:700}
+html body.tanabata-mode .btn-ghost{background:transparent!important;color:#3b5bb5!important}
+html body.tanabata-mode a{color:#3b5bb5}
+html body.tanabata-mode :is(input,select,textarea){background:rgba(255,255,255,.95)!important;color:#1f2a44!important;border-color:#b9c6ec!important}
+html body.tanabata-mode .ticker{background:#3b5bb5!important;color:#fff}
+html body.setsubun-mode{background:#fbeee0 url('images/setsubun-bg.png') center/cover fixed no-repeat!important;color:#3a2418}
+html body.setsubun-mode .site-header{background:rgba(255,255,255,.88)!important;border-bottom:3px solid #c0392b!important;backdrop-filter:blur(8px)}
+html body.setsubun-mode .gnav,html body.setsubun-mode footer{background:rgba(255,255,255,.9)!important;border-color:#e9c3a8!important}
+html body.setsubun-mode .nav-link{color:#3a2418}
+html body.setsubun-mode .nav-link.active{color:#fff!important;background:#c0392b!important;border-radius:999px}
+html body.setsubun-mode :is(.card,.news-card,.section,.widget,.setting-row,.hero){background:rgba(255,255,255,.86)!important;border:1px solid #e9c3a8!important;border-radius:16px!important;backdrop-filter:blur(6px)}
+html body.setsubun-mode .section-head h2{color:#c0392b}
+html body.setsubun-mode :is(.btn,button.btn,.ao-btn){background:#c0392b!important;color:#fff!important;border:1px solid #c0392b!important;border-radius:999px!important;font-weight:700}
+html body.setsubun-mode .btn-ghost{background:transparent!important;color:#c0392b!important}
+html body.setsubun-mode a{color:#c0392b}
+html body.setsubun-mode :is(input,select,textarea){background:rgba(255,255,255,.95)!important;color:#3a2418!important;border-color:#e9c3a8!important}
+html body.setsubun-mode .ticker{background:#c0392b!important;color:#fff}
+html body.kodomo-mode{background:#e8f4fb url('images/kodomo-bg.jpg') center/cover fixed no-repeat!important;color:#1f3346}
+html body.kodomo-mode .site-header{background:rgba(255,255,255,.88)!important;border-bottom:3px solid #2f7fc1!important;backdrop-filter:blur(8px)}
+html body.kodomo-mode .gnav,html body.kodomo-mode footer{background:rgba(255,255,255,.9)!important;border-color:#b7d8ef!important}
+html body.kodomo-mode .nav-link{color:#1f3346}
+html body.kodomo-mode .nav-link.active{color:#fff!important;background:#2f7fc1!important;border-radius:999px}
+html body.kodomo-mode :is(.card,.news-card,.section,.widget,.setting-row,.hero){background:rgba(255,255,255,.86)!important;border:1px solid #b7d8ef!important;border-radius:16px!important;backdrop-filter:blur(6px)}
+html body.kodomo-mode .section-head h2{color:#2f7fc1}
+html body.kodomo-mode :is(.btn,button.btn,.ao-btn){background:#2f7fc1!important;color:#fff!important;border:1px solid #2f7fc1!important;border-radius:999px!important;font-weight:700}
+html body.kodomo-mode .btn-ghost{background:transparent!important;color:#2f7fc1!important}
+html body.kodomo-mode a{color:#2f7fc1}
+html body.kodomo-mode :is(input,select,textarea){background:rgba(255,255,255,.95)!important;color:#1f3346!important;border-color:#b7d8ef!important}
+html body.kodomo-mode .ticker{background:#2f7fc1!important;color:#fff}
+.season-corner-img:is([data-season="tanabata"],[data-season="setsubun"],[data-season="setsubun-oni"],[data-season="kodomo"]){image-rendering:pixelated}
+.season-corner-img-right{left:auto!important;right:14px}
+@media (max-width:640px){.season-corner-img-right{right:8px}}
 &lt;/style&gt;
 &lt;/body&gt;
 
