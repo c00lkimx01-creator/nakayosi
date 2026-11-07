@@ -5726,6 +5726,8 @@ html body.spiderdark-mode .ticker{background:linear-gradient(90deg,#b5141b,#0a0a
 html body.spiderdark-mode .muted{color:#bfaeb2!important}
 html body.spiderdark-mode ::selection{background:#e3262e;color:#fff}
 .season-corner-img:is([data-season="spider"],[data-season="spiderdark"]){image-rendering:pixelated}
+html body:is(.spider-mode,.spiderdark-mode),html body:is(.spider-mode,.spiderdark-mode).dark-mode{background-repeat:no-repeat,no-repeat!important;background-size:cover,cover!important;background-position:center,center!important;background-attachment:fixed,fixed!important;min-height:100vh}
+@media (max-width:900px){html body:is(.spider-mode,.spiderdark-mode){background-attachment:scroll,scroll!important}html body:is(.spider-mode,.spiderdark-mode)::before{content:"";position:fixed;inset:0;z-index:-2;background:inherit;background-attachment:scroll!important}}
 &lt;/style&gt;
 &lt;script id="xmas-flakes-script"&gt;
 (function(){
