@@ -5713,6 +5713,72 @@ html body.cat-mode ::selection{background:#d4a63a;color:#1a1206}
   if(document.body)start();else document.addEventListener('DOMContentLoaded',start);
 })();
 &lt;/script&gt;
+&lt;style id="bold-redesign-99"&gt;
+#home-page .home-hero{position:relative;overflow:hidden;border-radius:28px!important;padding:56px 32px!important;background:linear-gradient(125deg,#ff3d6e 0%,#ff9a3d 45%,#ffd23d 100%)!important;color:#1a0b14!important;box-shadow:0 24px 60px -20px rgba(255,61,110,.6)!important;border:none!important}
+#home-page .home-hero h1{font-size:clamp(2rem,6vw,3.6rem)!important;font-weight:900!important;line-height:1.05!important;letter-spacing:-.03em;color:#1a0b14!important;transform:rotate(-1.5deg)}
+#home-page .home-hero p{color:#2a1220!important;font-weight:600;font-size:1.05rem}
+#home-page .home-hero .tag{background:#1a0b14!important;color:#ffd23d!important;font-weight:900;letter-spacing:.2em;border-radius:999px;padding:6px 14px}
+#home-page .home-hero .btn{background:#1a0b14!important;color:#fff!important;border-radius:999px!important;font-weight:800;box-shadow:4px 4px 0 #fff}
+#home-page .home-hero .btn-ghost{background:#fff!important;color:#1a0b14!important;box-shadow:4px 4px 0 #1a0b14}
+#home-page .home-hero::after{content:"";position:absolute;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;border:40px solid rgba(255,255,255,.35)}
+#home-page .home-quick{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px}
+#home-page .home-quick a{border-radius:22px!important;padding:22px 10px!important;font-weight:800;border:3px solid currentColor!important;transition:transform .2s}
+#home-page .home-quick a:hover{transform:translateY(-4px) rotate(-2deg)}
+#home-page .home-quick a:nth-child(1){background:#ffe1ea!important;color:#c8104a!important}
+#home-page .home-quick a:nth-child(2){background:#dff3ff!important;color:#0a6fb3!important}
+#home-page .home-quick a:nth-child(3){background:#e7ffe0!important;color:#2c8a12!important}
+#home-page .home-quick a:nth-child(4){background:#fff3d6!important;color:#b06a00!important}
+#home-page .home-quick a:nth-child(5){background:#efe4ff!important;color:#5a2bb8!important}
+#home-page .section{border-radius:24px!important}
+#news-page .section{background:transparent!important;border:none!important;box-shadow:none!important}
+#news-page .section-head{background:#111!important;color:#fff!important;border-radius:20px 20px 0 0;padding:22px 24px!important}
+#news-page .section-head h2{font-size:2rem!important;font-weight:900;color:#fff!important}
+#news-page .news-list{list-style:none;padding:0;display:grid;gap:14px}
+#news-page .news-list li{background:var(--card,#fff);border-left:10px solid #ff3d6e!important;border-radius:16px!important;padding:16px 18px!important;box-shadow:0 8px 22px -12px rgba(0,0,0,.4);transition:transform .2s}
+#news-page .news-list li:nth-child(3n+2){border-left-color:#3db4ff!important}
+#news-page .news-list li:nth-child(3n){border-left-color:#ffc23d!important}
+#news-page .news-list li:hover{transform:translateX(6px)}
+#games-page .cg-hero{border-radius:28px!important;background:radial-gradient(circle at 20% 20%,#00ffa3,transparent 50%),radial-gradient(circle at 80% 70%,#ff00e5,transparent 50%),#0b0620!important;color:#fff!important;min-height:140px}
+#games-page .cg-head h2{font-size:2.2rem!important;font-weight:900;background:linear-gradient(90deg,#00ffa3,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+#games-page .cg-side{background:#0b0620!important;color:#fff!important;border-radius:22px!important;border:2px solid #ff00e5!important}
+#games-page .cg-side *{color:#fff}
+#games-page .cg-grid&gt;*{border-radius:20px!important;border:2px solid transparent!important;transition:transform .2s,box-shadow .2s,border-color .2s}
+#games-page .cg-grid&gt;*:hover{transform:translateY(-6px) scale(1.03);border-color:#00ffa3!important;box-shadow:0 0 24px rgba(0,255,163,.55)!important}
+#games-page .cg-chips&gt;*{border-radius:999px!important;font-weight:800}
+#weather-page .section{border:none!important;border-radius:30px!important;overflow:hidden;background:linear-gradient(170deg,#1e6bff 0%,#55c3ff 60%,#bfeaff 100%)!important;color:#fff!important;box-shadow:0 24px 60px -24px rgba(30,107,255,.8)!important}
+#weather-page .section-head{background:transparent!important;border:none!important}
+#weather-page .section-head h2{font-size:2.2rem!important;font-weight:900;color:#fff!important}
+#weather-page .section-head .muted,#weather-page .muted{color:rgba(255,255,255,.85)!important}
+#weather-page .wx-loc{font-size:1.6rem;font-weight:900;color:#fff}
+#weather-page #wxToday&gt;*{background:rgba(255,255,255,.22)!important;backdrop-filter:blur(10px);border-radius:24px!important;border:1px solid rgba(255,255,255,.5)!important;color:#fff!important}
+#weather-page h3{color:#fff}
+#weather-page .wx-week&gt;*{background:rgba(255,255,255,.9)!important;color:#0a2a5a!important;border-radius:18px!important;border:none!important}
+#weather-page .wx-actions button,#weather-page .wx-actions a{background:#fff!important;color:#1e6bff!important;border-radius:999px!important;font-weight:800;border:none!important}
+#xmasCountdown{margin:0 0 18px;border-radius:24px;padding:22px 24px;background:linear-gradient(135deg,#0d5c2e,#b3122e);color:#fff;text-align:center;box-shadow:0 18px 40px -18px rgba(179,18,46,.8);position:relative;overflow:hidden}
+#xmasCountdown .xc-t{font-weight:800;letter-spacing:.1em;font-size:.95rem;opacity:.9}
+#xmasCountdown .xc-n{display:flex;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap}
+#xmasCountdown .xc-n div{background:rgba(255,255,255,.15);border-radius:14px;padding:8px 12px;min-width:64px}
+#xmasCountdown .xc-n b{display:block;font-size:2rem;font-weight:900;line-height:1}
+#xmasCountdown .xc-n small{font-size:.7rem;opacity:.85}
+#xmasCountdown .xc-big{font-size:2rem;font-weight:900;margin-top:6px}
+&lt;/style&gt;
+&lt;script id="xmas-countdown-script"&gt;
+(function(){
+  function tick(){
+    var now=new Date(),m=now.getMonth(),d=now.getDate();
+    var active=(m===10)||(m===11&amp;&amp;d&lt;=25);
+    var el=document.getElementById('xmasCountdown');
+    if(!active){if(el)el.remove();return;}
+    if(!el){var home=document.getElementById('home-page');if(!home)return;el=document.createElement('div');el.id='xmasCountdown';home.insertBefore(el,home.firstChild);}
+    if(m===11&amp;&amp;d===25){el.innerHTML='&lt;div class="xc-t"&gt;🎄 TODAY 🎄&lt;/div&gt;&lt;div class="xc-big"&gt;メリークリスマス！🎅&lt;/div&gt;';return;}
+    var target=new Date(now.getFullYear(),11,25),diff=target-now;
+    var dd=Math.floor(diff/864e5),hh=Math.floor(diff/36e5)%24,mm=Math.floor(diff/6e4)%60,ss=Math.floor(diff/1e3)%60;
+    el.innerHTML='&lt;div class="xc-t"&gt;🎄 クリスマスまであと 🎁&lt;/div&gt;&lt;div class="xc-n"&gt;&lt;div&gt;&lt;b&gt;'+dd+'&lt;/b&gt;&lt;small&gt;日&lt;/small&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;'+hh+'&lt;/b&gt;&lt;small&gt;時間&lt;/small&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;'+mm+'&lt;/b&gt;&lt;small&gt;分&lt;/small&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;'+ss+'&lt;/b&gt;&lt;small&gt;秒&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;';
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',tick);else tick();
+  setInterval(tick,1000);
+})();
+&lt;/script&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
