@@ -5713,6 +5713,59 @@ html body.cat-mode ::selection{background:#d4a63a;color:#1a1206}
   if(document.body)start();else document.addEventListener('DOMContentLoaded',start);
 })();
 &lt;/script&gt;
+&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&amp;display=swap"&gt;
+&lt;style id="redesign-2026"&gt;
+:root{--rd-ink:oklch(.25 .03 270);--rd-soft:oklch(.97 .012 85);--rd-card:oklch(1 0 0 / .9);--rd-line:oklch(.9 .02 80);--rd-acc:oklch(.62 .17 35);--rd-acc2:oklch(.55 .12 200);--rd-shadow:0 10px 30px oklch(.3 .05 60 / .12)}
+body{font-family:'Zen Maru Gothic',system-ui,sans-serif!important;letter-spacing:.01em}
+body:not([class*="-mode"]){background:radial-gradient(1200px 600px at 10% -10%,oklch(.93 .06 60),transparent 60%),radial-gradient(900px 500px at 110% 10%,oklch(.92 .05 200),transparent 60%),var(--rd-soft)!important;color:var(--rd-ink)}
+.site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:0 0 24px 24px;box-shadow:var(--rd-shadow)!important}
+body:not([class*="-mode"]) .site-header{background:oklch(1 0 0 / .72)!important;border-bottom:1px solid var(--rd-line)}
+.brand-title{font-weight:900!important;font-size:1.35rem}
+.brand-logo img{border-radius:16px}
+.header-search input{border-radius:999px!important;padding-left:18px!important}
+.gnav{background:transparent!important;border:0!important;box-shadow:none!important}
+.gnav-links{gap:6px!important;flex-wrap:wrap;padding:10px 0}
+.nav-link{border-radius:999px!important;padding:8px 16px!important;font-weight:700;transition:transform .15s,background .15s,box-shadow .15s}
+body:not([class*="-mode"]) .nav-link{background:oklch(1 0 0 / .75);border:1px solid var(--rd-line);color:var(--rd-ink)!important}
+.nav-link:hover{transform:translateY(-2px);box-shadow:var(--rd-shadow)}
+body:not([class*="-mode"]) .nav-link.active{background:var(--rd-acc)!important;color:oklch(1 0 0)!important;border-color:transparent}
+.section,.widget,.mini-tool-card,.card{border-radius:22px!important;box-shadow:var(--rd-shadow)!important;overflow:hidden;transition:transform .2s}
+body:not([class*="-mode"]) .section,body:not([class*="-mode"]) .widget,body:not([class*="-mode"]) .mini-tool-card{background:var(--rd-card)!important;border:1px solid var(--rd-line)!important}
+.section-head,.widget-head{font-weight:900!important;border-radius:22px 22px 0 0}
+.mini-tool-card:hover{transform:translateY(-3px)}
+.btn,button.btn{border-radius:999px!important;font-weight:700}
+.ticker{border-radius:0 0 16px 16px}
+#xmCount{max-width:1180px;margin:14px auto 4px;padding:0 16px}
+#xmCount .xm-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 22px;border-radius:22px;background:linear-gradient(120deg,oklch(.42 .15 25),oklch(.36 .13 20) 60%,oklch(.4 .1 150));color:oklch(.99 0 0);box-shadow:0 12px 32px oklch(.35 .12 25 / .35);font-family:'Zen Maru Gothic',sans-serif}
+#xmCount .xm-t{font-weight:900;font-size:1.05rem}
+#xmCount .xm-nums{display:flex;gap:8px}
+#xmCount .xm-n{min-width:62px;text-align:center;padding:6px 8px;border-radius:14px;background:oklch(1 0 0 / .16);border:1px solid oklch(1 0 0 / .25)}
+#xmCount .xm-n b{display:block;font-size:1.5rem;line-height:1.1;font-variant-numeric:tabular-nums}
+#xmCount .xm-n small{font-size:.68rem;opacity:.85}
+&lt;/style&gt;
+&lt;script&gt;
+(function(){
+  function target(now){return new Date(now.getFullYear(),11,25,0,0,0)}
+  function build(){
+    var now=new Date(),m=now.getMonth();
+    var old=document.getElementById('xmCount');
+    if(m&lt;10){if(old)old.remove();return}
+    var el=old;
+    if(!el){el=document.createElement('section');el.id='xmCount';el.setAttribute('aria-label','クリスマスまでのカウントダウン');
+      var nav=document.querySelector('.gnav')||document.querySelector('.site-header');
+      if(nav&amp;&amp;nav.parentNode)nav.parentNode.insertBefore(el,nav.nextSibling);else document.body.prepend(el)}
+    var t=target(now),diff=t-now,html;
+    if(m===11&amp;&amp;now.getDate()===25){html='&lt;div class="xm-box"&gt;&lt;span class="xm-t"&gt;🎄 メリークリスマス!! 今日はクリスマスです 🎅&lt;/span&gt;&lt;/div&gt;'}
+    else if(diff&lt;0){var next=new Date(now.getFullYear()+1,11,25),d=Math.ceil((next-now)/864e5);html='&lt;div class="xm-box"&gt;&lt;span class="xm-t"&gt;🎁 クリスマスは終わりました。来年のクリスマスまで あと '+d+' 日&lt;/span&gt;&lt;/div&gt;'}
+    else{var s=Math.floor(diff/1000),D=Math.floor(s/86400),H=Math.floor(s%86400/3600),M=Math.floor(s%3600/60),S=s%60;
+      function n(v,l){return '&lt;div class="xm-n"&gt;&lt;b&gt;'+String(v).padStart(2,'0')+'&lt;/b&gt;&lt;small&gt;'+l+'&lt;/small&gt;&lt;/div&gt;'}
+      html='&lt;div class="xm-box"&gt;&lt;span class="xm-t"&gt;🎄 クリスマスまで あと&lt;/span&gt;&lt;div class="xm-nums"&gt;'+n(D,'日')+n(H,'時間')+n(M,'分')+n(S,'秒')+'&lt;/div&gt;&lt;/div&gt;'}
+    el.innerHTML=html;
+  }
+  function start(){build();setInterval(build,1000)}
+  if(document.body)start();else document.addEventListener('DOMContentLoaded',start);
+})();
+&lt;/script&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
