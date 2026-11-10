@@ -2126,10 +2126,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;div class="widget-head"&gt;📊 サイト情報&lt;/div&gt;
       &lt;div class="widget-body"&gt;
         &lt;div class="site-today" id="siteToday"&gt;今日の日付を読み込み中…&lt;/div&gt;
-        &lt;div class="stat-row"&gt;&lt;span&gt;累計訪問者&lt;/span&gt;&lt;span id="count"&gt;12,348&lt;/span&gt;&lt;/div&gt;
-        &lt;div class="stat-row"&gt;&lt;span&gt;登録リンク数&lt;/span&gt;&lt;span id="linkCount"&gt;—&lt;/span&gt;&lt;/div&gt;
-        &lt;div class="stat-row"&gt;&lt;span&gt;登録ゲーム数&lt;/span&gt;&lt;span id="gameStat"&gt;—&lt;/span&gt;&lt;/div&gt;
-        &lt;div class="stat-row"&gt;&lt;span&gt;運営者&lt;/span&gt;&lt;span&gt;2a_exe&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="stat-grid"&gt;&lt;div class="stat-row stat-tile"&gt;&lt;span&gt;登録リンク数&lt;/span&gt;&lt;span id="linkCount"&gt;—&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="stat-row stat-tile"&gt;&lt;span&gt;登録ゲーム数&lt;/span&gt;&lt;span id="gameStat"&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="stat-row stat-owner"&gt;&lt;span&gt;運営者&lt;/span&gt;&lt;span&gt;2a_exe&lt;/span&gt;&lt;/div&gt;
         &lt;div class="site-omikuji-box"&gt;
           &lt;button type="button" class="site-omikuji-btn" id="siteOmikujiBtn" onclick="drawSiteOmikuji()"&gt;🎋 おみくじを引く&lt;/button&gt;
           &lt;div class="site-omikuji-result" id="siteOmikujiResult" aria-live="polite"&gt;&lt;/div&gt;
@@ -2443,7 +2442,7 @@ function renderNews(){
   document.getElementById('newsListHome').innerHTML = html;
   document.getElementById('newsListAll').innerHTML = html;
   document.getElementById('recentNews').innerHTML =
-    NEWS.slice(0,4).map(n=&gt;`&lt;li&gt;&lt;div class="muted" style="font-size:.75rem"&gt;${n.date}&lt;/div&gt;${n.title}&lt;/li&gt;`).join('');
+    NEWS.slice(0,4).map(n=&gt;`&lt;li class="rn-item"&gt;&lt;div class="rn-meta"&gt;&lt;span class="rn-date"&gt;${n.date}&lt;/span&gt;&lt;span class="rn-cat${n.cat==='更新'?' update':''}"&gt;${n.cat}&lt;/span&gt;&lt;/div&gt;&lt;div class="rn-title"&gt;${n.title}&lt;/div&gt;&lt;/li&gt;`).join('');
 }
 
 // 通知（お知らせ）
@@ -5779,6 +5778,68 @@ html body.cat-mode ::selection{background:#d4a63a;color:#1a1206}
   setInterval(tick,1000);
 })();
 &lt;/script&gt;
+&lt;style id="nkys-refresh-2026"&gt;
+/* 背景：html にもテーマ色を敷いて黒抜けを防止 */
+html{background:#f4f6f9;color-scheme:light}
+html:has(body.dark-mode){background:#0f1115;color-scheme:dark}
+body:not(.dark-mode){background-color:var(--bg)}
+/* お知らせ：ダークでも読めるカード */
+#news-page .section-head{background:linear-gradient(120deg,var(--primary),color-mix(in oklab,var(--primary) 55%,var(--accent)))!important}
+#news-page .news-list li{background:var(--surface)!important;color:var(--text);border:1px solid var(--border);border-left-width:10px!important;box-shadow:0 8px 22px -14px rgba(0,0,0,.35)}
+#news-page .news-list li .title{color:var(--text)}
+body.dark-mode #news-page .news-list li{background:var(--surface-2)!important;box-shadow:0 10px 26px -14px rgba(0,0,0,.8)}
+/* サイドバー */
+.aside .widget{border-radius:18px;overflow:hidden;border:1px solid var(--border);background:var(--surface);box-shadow:0 14px 34px -24px rgba(15,23,42,.45)}
+.aside .widget-head{padding:14px 18px;font-size:.95rem;letter-spacing:.02em;border-bottom:1px solid var(--border);background:linear-gradient(120deg,color-mix(in oklab,var(--primary) 12%,var(--surface)),var(--surface))}
+.aside .widget-head::before{width:8px;height:8px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px color-mix(in oklab,var(--primary) 20%,transparent)}
+.aside .widget-body{padding:16px 18px}
+.aside .site-today{padding:12px 14px;border-radius:12px;background:color-mix(in oklab,var(--primary) 9%,var(--surface-2));border:0!important;margin-bottom:12px;text-align:center;font-weight:700}
+.aside .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.aside .stat-tile{flex-direction:column-reverse;align-items:flex-start;gap:2px;padding:12px 14px!important;border:1px solid var(--border)!important;border-radius:12px;background:var(--surface-2)}
+.aside .stat-tile span:first-child{font-size:.72rem;color:var(--text-muted)}
+.aside .stat-tile span:last-child{font-size:1.5rem;line-height:1.1;font-weight:800}
+.aside .stat-owner{border:0!important;padding:8px 2px!important;font-size:.82rem;color:var(--text-muted)}
+.aside .site-omikuji-box{border-top:1px dashed var(--border);padding-top:12px;margin-top:4px;text-align:center}
+.aside .site-omikuji-btn{width:100%;border-radius:999px}
+#recentNews{display:grid;gap:8px}
+#recentNews .rn-item{padding:10px 12px!important;border:1px solid var(--border)!important;border-radius:12px;background:var(--surface-2);transition:transform .18s,border-color .18s}
+#recentNews .rn-item:hover{transform:translateX(3px);border-color:var(--primary)!important}
+.rn-meta{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.rn-date{font-size:.72rem;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.rn-cat{font-size:.64rem;font-weight:800;padding:1px 8px;border-radius:999px;background:var(--tag-bg);color:var(--primary)}
+.rn-cat.update{background:color-mix(in oklab,var(--accent) 15%,transparent);color:var(--accent)}
+.rn-title{font-size:.86rem;line-height:1.5;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* リンク集 */
+#links-page .links-hero{border-radius:22px;padding:34px 32px;background:radial-gradient(circle at 90% 10%,color-mix(in oklab,var(--accent) 45%,transparent),transparent 45%),linear-gradient(130deg,var(--primary),color-mix(in oklab,var(--primary) 60%,#0b1020))}
+#links-page .link-toolbar{border-radius:16px;box-shadow:0 10px 26px -22px rgba(15,23,42,.5)}
+#links-page .link-search-input{border-radius:999px}
+#links-page .tag-chip{border-radius:999px!important}
+#links-page .link-cats{gap:18px}
+#links-page .link-cat{border-radius:20px;border:1px solid var(--border);box-shadow:0 14px 32px -26px rgba(15,23,42,.55);transition:transform .2s,box-shadow .2s}
+#links-page .link-cat:hover{transform:translateY(-3px);box-shadow:0 20px 38px -24px color-mix(in oklab,var(--primary) 55%,transparent);border-color:color-mix(in oklab,var(--primary) 40%,var(--border))}
+#links-page .link-cat-head{background:linear-gradient(120deg,color-mix(in oklab,var(--primary) 14%,var(--surface)),var(--surface));padding:16px 18px}
+#links-page .link-cat-mark{border-radius:12px;background:var(--primary);color:#fff}
+#links-page .link-cat ul{padding:8px;gap:4px}
+#links-page .link-cat li a{border-radius:12px;min-height:56px}
+#links-page .link-cat li a::before{border-radius:10px;background:color-mix(in oklab,var(--primary) 10%,var(--surface));border-color:transparent;font-weight:800}
+#links-page .link-cat li a:hover{background:color-mix(in oklab,var(--primary) 9%,var(--surface))}
+/* イベント */
+#events-page .section{border-radius:22px;overflow:hidden}
+#events-page .section-head{padding:18px 22px}
+#events-page .section-head h2{font-size:1.3rem}
+#events-page .ev-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+#events-page .ev-list .ao-banner{display:flex;flex-direction:column;margin:0;border-radius:20px;min-height:0;transition:transform .22s,box-shadow .22s}
+#events-page .ev-list .ao-banner:hover{transform:translateY(-4px);box-shadow:0 22px 40px -22px rgba(15,23,42,.7)}
+#events-page .ev-list .ao-banner-media{min-height:0;height:170px;max-height:none}
+#events-page .ev-list .ao-banner-media::after{background:linear-gradient(180deg,transparent 40%,#101b4b 100%)}
+#events-page .ev-list .ao-banner img{min-height:0;height:170px}
+#events-page .ev-list .ao-content{padding:16px 20px 20px}
+#events-page .ev-list .ao-banner h2{font-size:1.35rem}
+#events-page .ev-list .ao-banner p{font-size:.84rem}
+#events-page #eventsPast .ao-banner{opacity:.82}
+#events-page #eventsPast .ao-banner:hover{opacity:1}
+body.dark-mode #links-page .links-hero,body.dark-mode #news-page .section-head{background:linear-gradient(130deg,color-mix(in oklab,var(--primary) 45%,#0b1020),color-mix(in oklab,var(--primary) 20%,#0b1020))!important}
+&lt;/style&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
