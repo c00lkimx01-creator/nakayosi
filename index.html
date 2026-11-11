@@ -2233,7 +2233,11 @@ const NEWS = [
 
 // イベント一覧（status:"live"=開催中 / "ended"=終了）上から新しい順
 const EVENTS = [
-  { name:"ABEMA", icon:"🎬", status:"live", type:"movie", kicker:"LIMITED MOVIE EVENT",
+  { name:"TVer", icon:"📺", status:"live", type:"movie", kicker:"LIMITED TV EVENT",
+    desc:"TVerでドラマ・バラエティ・アニメを楽しもう！期間限定で開催中！",
+    meta:["無料で視聴","ブラウザで観られる","期間限定"],
+    img:"https://play-lh.googleusercontent.com/m3KvFV3q3-akXdEQgOUZTeSC7JKmM5fJURaA2x8W6Le2HAQ86K5MZbppcy3Gi7ph8jqnQCrigOskWslpGbhokA", url:"https://untitled-hello-1028608754151.us-west1.run.app/tver/" },
+  { name:"ABEMA", icon:"🎬", status:"live", hideHome:true, type:"movie", kicker:"LIMITED MOVIE EVENT",
     desc:"ABEMAで映画・アニメ・ドラマを楽しもう！今回はゲームではなくムービーイベント。期間限定で開催中！",
     meta:["無料で視聴","ブラウザで観られる","期間限定"],
     img:"https://www.highlights.jp/wp/wp-content/uploads/2020/06/main_abematv_branding.jpg", url:"https://abema-cc.f5.si" },
@@ -2701,7 +2705,7 @@ function eventBannerHtml(e){
 function renderEvents(){
   const live = EVENTS.filter(e=&gt;e.status==='live'), past = EVENTS.filter(e=&gt;e.status!=='live');
   const more = `&lt;a class="more ev-more" href="javascript:void(0)" onclick="showPage('events')"&gt;終了したイベントも見る（${past.length}件） ›&lt;/a&gt;`;
-  const top = live[0] ? eventBannerHtml(live[0]) : '';
+  const homeLive = live.filter(e=&gt;!e.hideHome); const top = homeLive[0] ? eventBannerHtml(homeLive[0]) : '';
   ['eventBannerHome','eventBannerLinks'].forEach(id=&gt;{ const el=document.getElementById(id); if(el) el.innerHTML = top + more; });
   const l=document.getElementById('eventsLive'); if(l) l.innerHTML = live.map(eventBannerHtml).join('') || '&lt;div class="muted" style="padding:16px"&gt;現在開催中のイベントはありません&lt;/div&gt;';
   const p=document.getElementById('eventsPast'); if(p) p.innerHTML = past.map(eventBannerHtml).join('') || '&lt;div class="muted" style="padding:16px"&gt;終了したイベントはまだありません&lt;/div&gt;';
