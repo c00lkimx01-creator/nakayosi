@@ -2219,6 +2219,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
 // お知らせ（新しいものを上に）
 const NEWS = [
+  { date:"2026/11/17", cat:"更新",     title:"クリスマス→年明けカウントダウンを追加！お知らせのデザインも新しくなりました" },
   { date:"2026/11/10", cat:"更新",     title:"一部のUIを変更いたしました"  },
   { date:"2026/10/23", cat:"更新",     title:"最強のScholHUBを追加いたしました!! X,Instagram,Youtubeなどを楽しみましょう!!"  },
   { date:"2026/10/21", cat:"更新",     title:"R18コンテンツを削除いたしました!!"  },
@@ -2467,9 +2468,12 @@ setTimeout(()=&gt;{ if(typeof window.initVisitorCounter==='function') window.ini
 
 // ニュース描画
 function renderNews(){
-  const html = NEWS.map(n=&gt;{
-    const cls = n.cat==='更新' ? 'cat update' : 'cat';
-    return `&lt;li&gt;&lt;span class="date"&gt;${n.date}&lt;/span&gt;&lt;span class="${cls}"&gt;${n.cat}&lt;/span&gt;&lt;span class="title"&gt;${n.title}&lt;/span&gt;&lt;/li&gt;`;
+  const now=Date.now();
+  const html = NEWS.map((n,i)=&gt;{
+    const up = n.cat==='更新';
+    const parts=n.date.split('/');
+    const isNew=(now-new Date(n.date).getTime())&lt;14*864e5;
+    return `&lt;li class="nk-news${up?' is-update':''}" style="--i:${i}"&gt;&lt;div class="nk-date"&gt;&lt;b&gt;${parts[2]||''}&lt;/b&gt;&lt;small&gt;${parts[0]||''}.${parts[1]||''}&lt;/small&gt;&lt;/div&gt;&lt;div class="nk-body"&gt;&lt;div class="nk-meta"&gt;&lt;span class="nk-cat"&gt;${up?'🛠 ':'📢 '}${n.cat}&lt;/span&gt;${isNew?'&lt;span class="nk-new"&gt;NEW&lt;/span&gt;':''}&lt;/div&gt;&lt;div class="title"&gt;${n.title}&lt;/div&gt;&lt;/div&gt;&lt;/li&gt;`;
   }).join('');
   document.getElementById('newsListHome').innerHTML = html;
   document.getElementById('newsListAll').innerHTML = html;
@@ -5795,16 +5799,27 @@ html body.cat-mode ::selection{background:#d4a63a;color:#1a1206}
 &lt;/style&gt;
 &lt;script id="xmas-countdown-script"&gt;
 (function(){
-  function tick(){
-    var now=new Date(),m=now.getMonth(),d=now.getDate();
-    var active=(m===10)||(m===11&amp;&amp;d&lt;=25);
-    var el=document.getElementById('xmasCountdown');
-    if(!active){if(el)el.remove();return;}
-    if(!el){var home=document.getElementById('home-page');if(!home)return;el=document.createElement('div');el.id='xmasCountdown';home.insertBefore(el,home.firstChild);}
-    if(m===11&amp;&amp;d===25){el.innerHTML='&lt;div class="xc-t"&gt;🎄 TODAY 🎄&lt;/div&gt;&lt;div class="xc-big"&gt;メリークリスマス！🎅&lt;/div&gt;';return;}
-    var target=new Date(now.getFullYear(),11,25),diff=target-now;
+  var last='';
+  function pad(n){return (n&lt;10?'0':'')+n;}
+  function box(t,cls,title,diff,sub){
     var dd=Math.floor(diff/864e5),hh=Math.floor(diff/36e5)%24,mm=Math.floor(diff/6e4)%60,ss=Math.floor(diff/1e3)%60;
-    el.innerHTML='&lt;div class="xc-t"&gt;🎄 クリスマスまであと 🎁&lt;/div&gt;&lt;div class="xc-n"&gt;&lt;div&gt;&lt;b&gt;'+dd+'&lt;/b&gt;&lt;small&gt;日&lt;/small&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;'+hh+'&lt;/b&gt;&lt;small&gt;時間&lt;/small&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;'+mm+'&lt;/b&gt;&lt;small&gt;分&lt;/small&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;'+ss+'&lt;/b&gt;&lt;small&gt;秒&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;';
+    return '&lt;div class="xc-t"&gt;'+title+'&lt;/div&gt;&lt;div class="xc-n"&gt;'+
+      '&lt;div&gt;&lt;b&gt;'+dd+'&lt;/b&gt;&lt;small&gt;日&lt;/small&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;'+pad(hh)+'&lt;/b&gt;&lt;small&gt;時間&lt;/small&gt;&lt;/div&gt;'+
+      '&lt;div&gt;&lt;b&gt;'+pad(mm)+'&lt;/b&gt;&lt;small&gt;分&lt;/small&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;'+pad(ss)+'&lt;/b&gt;&lt;small&gt;秒&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;'+(sub?'&lt;div class="xc-sub"&gt;'+sub+'&lt;/div&gt;':'');
+  }
+  function tick(){
+    var now=new Date(),y=now.getFullYear(),m=now.getMonth(),d=now.getDate();
+    // 11/1〜12/24: クリスマス / 12/25〜12/31: 年明け / 1/1〜1/7: あけおめ / それ以外: 非表示
+    var mode=(m===10||(m===11&amp;&amp;d&lt;25))?'xmas':(m===11)?'ny':(m===0&amp;&amp;d&lt;=7)?'hny':'';
+    var el=document.getElementById('xmasCountdown');
+    if(!mode){if(el)el.remove();return;}
+    if(!el){var home=document.getElementById('home-page');if(!home)return;el=document.createElement('div');el.id='xmasCountdown';home.insertBefore(el,home.firstChild);}
+    el.className='xc-'+mode;
+    var h;
+    if(mode==='xmas'){h=box(now,'','🎄 クリスマスまであと 🎁',new Date(y,11,25)-now);}
+    else if(mode==='ny'){h=box(now,'','🎍 年明けまであと 🌅',new Date(y+1,0,1)-now,d===25?'🎅 メリークリスマス！次は '+(y+1)+' 年へカウントダウン':'');}
+    else{h='&lt;div class="xc-t"&gt;🎍 HAPPY NEW YEAR '+y+' 🎍&lt;/div&gt;&lt;div class="xc-big"&gt;あけましておめでとう!!&lt;/div&gt;&lt;div class="xc-sub"&gt;今年もなかよしをよろしくお願いします 🐉&lt;/div&gt;';}
+    if(h!==last){el.innerHTML=h;last=h;}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',tick);else tick();
   setInterval(tick,1000);
@@ -5871,6 +5886,45 @@ body.dark-mode #news-page .news-list li{background:var(--surface-2)!important;bo
 #events-page #eventsPast .ao-banner{opacity:.82}
 #events-page #eventsPast .ao-banner:hover{opacity:1}
 body.dark-mode #links-page .links-hero,body.dark-mode #news-page .section-head{background:linear-gradient(130deg,color-mix(in oklab,var(--primary) 45%,#0b1020),color-mix(in oklab,var(--primary) 20%,#0b1020))!important}
+&lt;/style&gt;
+&lt;style id="nkys-2026-winter"&gt;
+#xmasCountdown{border-radius:26px;padding:24px 22px 22px;isolation:isolate;animation:xcIn .6s cubic-bezier(.2,.8,.2,1)}
+#xmasCountdown::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 15% 20%,rgba(255,255,255,.25) 0 2px,transparent 3px),radial-gradient(circle at 70% 30%,rgba(255,255,255,.2) 0 2px,transparent 3px),radial-gradient(circle at 40% 80%,rgba(255,255,255,.18) 0 2px,transparent 3px);background-size:120px 120px;animation:xcSnow 12s linear infinite;opacity:.8}
+#xmasCountdown.xc-ny{background:linear-gradient(135deg,#1b1340,#8a1538 60%,#d4a017)}
+#xmasCountdown.xc-hny{background:linear-gradient(135deg,#b3122e,#e0602a 55%,#e8b923);box-shadow:0 18px 40px -18px rgba(224,96,42,.85)}
+#xmasCountdown .xc-n div{backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.22);min-width:68px}
+#xmasCountdown .xc-n b{font-variant-numeric:tabular-nums}
+#xmasCountdown .xc-big{font-size:clamp(1.8rem,7vw,2.8rem);letter-spacing:.04em;text-shadow:0 3px 0 rgba(0,0,0,.18);animation:xcPop 1.6s ease-in-out infinite alternate}
+#xmasCountdown .xc-sub{margin-top:12px;font-size:.82rem;font-weight:700;opacity:.92}
+@keyframes xcIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes xcSnow{to{background-position:0 120px,0 120px,0 120px}}
+@keyframes xcPop{from{transform:scale(1)}to{transform:scale(1.05)}}
+/* お知らせ 新デザイン */
+.news-list{display:flex;flex-direction:column;gap:10px}
+.news-list li.nk-news{display:flex!important;align-items:center;gap:14px;padding:12px 14px!important;margin:0;border:1px solid var(--border)!important;border-left:1px solid var(--border)!important;border-radius:16px!important;background:var(--surface)!important;box-shadow:0 6px 18px -14px rgba(15,23,42,.5)!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s;animation:nkIn .45s both;animation-delay:calc(var(--i)*40ms)}
+.news-list li.nk-news:hover{transform:translateY(-2px);padding-left:14px!important;border-color:color-mix(in oklab,var(--primary) 45%,var(--border))!important;box-shadow:0 14px 26px -16px color-mix(in oklab,var(--primary) 60%,transparent)!important;background:var(--surface)!important}
+.nk-date{flex:none;width:58px;height:58px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(145deg,var(--primary),color-mix(in oklab,var(--primary) 60%,#000));color:#fff;line-height:1;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.nk-news.is-update .nk-date{background:linear-gradient(145deg,#ff6b6b,#c0392b)}
+.nk-date b{font-size:1.35rem;font-weight:900}
+.nk-date small{font-size:.62rem;margin-top:4px;opacity:.9;font-variant-numeric:tabular-nums}
+.nk-body{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px}
+.nk-meta{display:flex;gap:6px;align-items:center}
+.nk-cat{font-size:.7rem;font-weight:800;padding:3px 9px;border-radius:999px;background:color-mix(in oklab,var(--primary) 14%,transparent);color:var(--primary)}
+.nk-news.is-update .nk-cat{background:rgba(192,57,43,.12);color:#e0533f}
+.nk-new{font-size:.62rem;font-weight:900;letter-spacing:.08em;padding:2px 7px;border-radius:6px;background:#ffcf33;color:#3a2a00;animation:nkBlink 1.4s ease-in-out infinite}
+.nk-news .title{font-weight:700;font-size:.92rem;line-height:1.45;color:var(--text)!important;word-break:break-word}
+body.dark-mode .news-list li.nk-news{background:var(--surface-2)!important}
+@keyframes nkIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes nkBlink{50%{opacity:.55}}
+/* 全体UIの仕上げ */
+html{scroll-behavior:smooth}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+#home-page .section,#news-page .section{border-radius:22px;overflow:hidden}
+.section-head h2{letter-spacing:.02em}
+:focus-visible{outline:3px solid color-mix(in oklab,var(--primary) 55%,transparent);outline-offset:2px;border-radius:8px}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:color-mix(in oklab,var(--primary) 35%,transparent);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
+@media(max-width:520px){#xmasCountdown{padding:18px 12px}#xmasCountdown .xc-n{gap:8px}#xmasCountdown .xc-n div{min-width:58px;padding:8px}#xmasCountdown .xc-n b{font-size:1.6rem}.nk-date{width:50px;height:50px}.news-list li.nk-news{gap:10px;padding:10px!important}}
+@media(prefers-reduced-motion:reduce){#xmasCountdown,#xmasCountdown::before,#xmasCountdown .xc-big,.news-list li.nk-news,.nk-new{animation:none!important}}
 &lt;/style&gt;
 &lt;/body&gt;
 
