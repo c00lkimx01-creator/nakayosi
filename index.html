@@ -5926,6 +5926,89 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 @media(max-width:520px){#xmasCountdown{padding:18px 12px}#xmasCountdown .xc-n{gap:8px}#xmasCountdown .xc-n div{min-width:58px;padding:8px}#xmasCountdown .xc-n b{font-size:1.6rem}.nk-date{width:50px;height:50px}.news-list li.nk-news{gap:10px;padding:10px!important}}
 @media(prefers-reduced-motion:reduce){#xmasCountdown,#xmasCountdown::before,#xmasCountdown .xc-big,.news-list li.nk-news,.nk-new{animation:none!important}}
 &lt;/style&gt;
+&lt;!-- ===== UI リフレッシュ v2（イベント・モード切替・全体） ===== --&gt;
+&lt;style id="ui-refresh-v2"&gt;
+:root{--ui-radius:18px;--ui-shadow:0 1px 2px rgba(15,23,42,.05),0 12px 32px -18px rgba(15,23,42,.35);--ui-shadow-hover:0 2px 4px rgba(15,23,42,.06),0 22px 44px -20px rgba(15,23,42,.45)}
+html{scroll-behavior:smooth}
+body{letter-spacing:.01em}
+/* ヘッダー・ナビ */
+.gnav{background:color-mix(in srgb,var(--surface) 82%,transparent)!important;backdrop-filter:saturate(1.6) blur(14px);-webkit-backdrop-filter:saturate(1.6) blur(14px)}
+.gnav .nav-link{border-radius:999px;transition:background .2s,color .2s,transform .2s}
+.gnav .nav-link:hover{background:color-mix(in srgb,var(--primary) 10%,transparent);transform:translateY(-1px)}
+.gnav .nav-link.active{background:color-mix(in srgb,var(--primary) 14%,transparent);color:var(--primary);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--primary) 25%,transparent)}
+/* セクションカード */
+.section{border-radius:var(--ui-radius)!important;box-shadow:var(--ui-shadow);overflow:hidden}
+.section:hover{box-shadow:var(--ui-shadow-hover)}
+.section-head{position:relative}
+.section-head h2{display:flex;align-items:center;gap:8px}
+.section-head::after{content:"";position:absolute;left:22px;bottom:-1px;width:44px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--primary),color-mix(in srgb,var(--primary) 30%,transparent))}
+button,.btn,.icon-btn{transition:transform .15s ease,box-shadow .2s,background .2s}
+button:active,.btn:active,.icon-btn:active{transform:scale(.96)}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:8px}
+.page.active,.page[style*="block"]{animation:uiPageIn .4s cubic-bezier(.2,.7,.2,1)}
+@keyframes uiPageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ===== イベント ===== */
+#events-page .ev-list{gap:22px}
+#events-page .ev-list .ao-banner,.ev-list .ao-banner{position:relative;overflow:hidden;border-radius:22px!important;box-shadow:var(--ui-shadow);isolation:isolate}
+#events-page .ev-list .ao-banner:hover{transform:translateY(-6px)!important;box-shadow:var(--ui-shadow-hover)!important}
+#events-page .ev-list .ao-banner img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+#events-page .ev-list .ao-banner:hover img{transform:scale(1.07)}
+#events-page .ev-list .ao-banner{animation:evIn .5s both cubic-bezier(.2,.7,.2,1)}
+#events-page .ev-list .ao-banner:nth-child(2){animation-delay:.07s}
+#events-page .ev-list .ao-banner:nth-child(3){animation-delay:.14s}
+#events-page .ev-list .ao-banner:nth-child(n+4){animation-delay:.2s}
+@keyframes evIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.ao-banner .tag{display:inline-flex!important;align-items:center;gap:6px;border-radius:999px!important;padding:4px 12px!important;font-weight:700;letter-spacing:.06em;font-size:.72rem}
+.ao-banner:not(.ev-ended) .tag{background:linear-gradient(135deg,#ff4d6d,#ff8a3d)!important;color:#fff!important;box-shadow:0 6px 16px -6px rgba(255,77,109,.7)}
+.ao-banner:not(.ev-ended) .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:#fff;animation:evPulse 1.4s infinite}
+@keyframes evPulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.9)}100%{box-shadow:0 0 0 8px rgba(255,255,255,0)}}
+.ao-banner.ev-ended .tag{background:rgba(100,116,139,.85)!important;color:#fff!important}
+#events-page #eventsPast .ao-banner img{filter:grayscale(.65) brightness(.9);transition:filter .3s,transform .6s}
+#events-page #eventsPast .ao-banner:hover img{filter:none}
+#events-page .section-head h2{font-size:1.35rem;font-weight:700}
+#events-page .muted{text-align:center;padding:36px 16px!important;border:2px dashed var(--border);border-radius:16px}
+
+/* ===== モード切替ボタン ===== */
+.theme-toggle-btn{position:relative;overflow:hidden;border-radius:999px!important}
+.theme-toggle-btn .theme-icon{transition:transform .5s cubic-bezier(.3,1.5,.5,1),opacity .3s}
+body.dark-mode .theme-toggle-btn .theme-icon-sun,body:not(.dark-mode) .theme-toggle-btn .theme-icon-moon{transform:rotate(-90deg) scale(.4)}
+body.dark-mode .theme-toggle-btn{box-shadow:0 0 0 1px rgba(147,197,253,.35),0 0 18px -4px rgba(147,197,253,.6)}
+/* 切替時のなめらかな色変化（View Transition 非対応ブラウザ用） */
+body.ui-theme-anim,body.ui-theme-anim *{transition:background-color .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease!important}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ダーク時の調整 */
+body.dark-mode .section{box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 18px 40px -24px rgba(0,0,0,.8)}
+body.dark-mode .gnav .nav-link.active{color:#93c5fd}
+&lt;/style&gt;
+&lt;script&gt;
+(function(){
+  function wrap(){
+    if(typeof window.toggleTheme!=='function'||window.toggleTheme.__ui)return;
+    var orig=window.toggleTheme;
+    var fn=function(){
+      var btn=document.querySelector('.theme-toggle-btn');
+      var r=btn?btn.getBoundingClientRect():{left:innerWidth-40,top:30,width:0,height:0};
+      var x=r.left+r.width/2,y=r.top+r.height/2;
+      var rad=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
+      var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(document.startViewTransition&amp;&amp;!reduce){
+        var t=document.startViewTransition(function(){orig.apply(window,arguments)});
+        t.ready.then(function(){
+          document.documentElement.animate({clipPath:['circle(0px at '+x+'px '+y+'px)','circle('+rad+'px at '+x+'px '+y+'px)']},{duration:650,easing:'cubic-bezier(.4,0,.2,1)',pseudoElement:'::view-transition-new(root)'});
+        }).catch(function(){});
+      }else{
+        document.body.classList.add('ui-theme-anim');orig.apply(window,arguments);
+        setTimeout(function(){document.body.classList.remove('ui-theme-anim')},500);
+      }
+    };
+    fn.__ui=true;window.toggleTheme=fn;
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',wrap);else wrap();
+  window.addEventListener('load',wrap);
+})();
+&lt;/script&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
