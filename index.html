@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="shortcut icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
-  <title>ようこそ -- 仲良し ~*インスタンス*~ 3 情報ポータル</title>
+  <title>ホーム -- 仲良し ~*インスタンス*~ 3 情報ポータル</title>
 
   <!-- 手書き風フォント（Caveat）の読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -333,19 +333,6 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
 <body>
 
   <canvas id="particleCanvas" hidden></canvas>
-  <main class="cf-verify" id="cfVerify">
-    <div class="cf-head">
-      <img class="cf-logo" src="/favicon.png" alt="">
-      <h1 class="cf-domain" id="cfDomain">nakayosi</h1>
-    </div>
-    <h2 class="cf-title" id="cfTitle">Performing security verification</h2>
-    <p class="cf-desc" id="cfDesc">This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.</p>
-    <div class="cf-status"><span class="cf-spinner" id="cfSpinner" aria-label="確認中"></span><span class="cf-ok" id="cfOk" hidden>&#10003;</span></div>
-    <footer class="cf-foot">
-      <div>Ray ID: <code id="cfRay"></code></div>
-      <div>Performance and Security by <a href="javascript:void(0)">Nakayosi</a> <span class="cf-sep">|</span> <a href="javascript:void(0)">Privacy</a></div>
-    </footer>
-  </main>
 
   <iframe id="instanceFrame" title="仲良し ~*インスタンス*~ 3 — 情報ポータル" hidden></iframe>
 
@@ -406,7 +393,7 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
 
     // ===== URLルーティング (/in, /links など) =====
     const CALL_URL = 'https://videolink2me.com/ja/wu1a6s';
-    const ROUTE_PAGES = ['in','home','news','weather','events','calendar','links','games','settings','terms','tools','call'];
+    const ROUTE_PAGES = ['home','ai','news','weather','events','calendar','links','games','settings','terms','tools','call'];
     const ROUTER = (function(){
       const url = new URL(location.href);
       let base, initial = '';
@@ -423,14 +410,14 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
       }
       if (!base.endsWith('/')) base += '/';
       if (initial === 'call') { location.replace(CALL_URL); }
-      if (!ROUTE_PAGES.includes(initial) || initial === 'in' || initial === 'call') initial = 'home';
+      if (!ROUTE_PAGES.includes(initial) || initial === 'call') initial = 'home';
       const qs = url.searchParams.toString();
       const tail = (qs ? '?' + qs : '') + url.hash;
-      history.replaceState({page:'in', target:initial}, '', base + 'in' + tail);
+      history.replaceState({page:initial}, '', base + initial + tail);
       return { base, initial, tail };
     })();
     const PAGE_TITLES = {
-      in:'ようこそ', home:'ホーム', news:'お知らせ', weather:'天気',
+      home:'ホーム', ai:'AI', news:'お知らせ', weather:'天気',
       events:'イベント', calendar:'カレンダー', links:'リンク集', games:'ゲーム',
       tv:'TV', search:'検索', settings:'設定', terms:'利用規約', tools:'ミニ機能', call:'通話'
     };
@@ -469,9 +456,8 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
         history.replaceState({page:ROUTER.initial}, '', routeUrl(ROUTER.initial) + ROUTER.tail);
         window.addEventListener('popstate', (e) => {
           let id = e.state?.page;
-          if (!id || id === 'in') id = 'home';
+          if (!id) id = 'home';
           if (ROUTE_PAGES.includes(id)) go(id);
-          if (e.state?.page === 'in') history.replaceState({page:'home'}, '', routeUrl('home'));
         });
       } catch (err) { console.error('router', err); }
     }
@@ -500,27 +486,13 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
         loaded = true; reveal();
       }, { once: true });
       document.body.classList.add('welcome-fade');
-      setTimeout(() => { faded = true; reveal(); }, 900);
+      faded = true;
       frame.srcdoc = source.content.textContent.replace(/tag\s*:\s*"[^"]*"(?:\s*,\s*tag\s*:\s*"[^"]*")+/g, m => 'tag:' + JSON.stringify((m.match(/"[^"]*"/g)||[]).map(x => x.slice(1,-1))));
     }
     // スキップ：アニメーションを待たずにすぐポータルへ
 
     // 手書きアニメーションが本当に終わってから（最後の文字の animationend）少し余韻を置いて自動で消える
-    (function runVerification() {
-      document.getElementById('cfDomain').textContent = location.hostname || 'nakayosi';
-      document.getElementById('cfRay').textContent = Array.from(crypto.getRandomValues(new Uint8Array(8)), b => b.toString(16).padStart(2,'0')).join('');
-      var VKEY='nakayosiLastVisit', now=Date.now(), last=0;
-      try { last = +localStorage.getItem(VKEY) || 0; localStorage.setItem(VKEY, String(now)); } catch(e) {}
-      // 3日以内に来ていれば認証画面を出さずにすぐ開く
-      if (last && now - last < 3*24*60*60*1000) { document.getElementById('cfVerify').style.display='none'; if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', showInstance, { once: true }); else showInstance(); return; }
-      setTimeout(() => {
-        document.getElementById('cfSpinner').hidden = true;
-        document.getElementById('cfOk').hidden = false;
-        document.getElementById('cfTitle').textContent = 'Verification successful';
-        document.getElementById('cfDesc').textContent = 'Waiting for ' + (location.hostname || 'the site') + ' to respond...';
-        setTimeout(showInstance, 700);
-      }, 2200);
-    })();
+    if (document.readyState==='loading') document.addEventListener('DOMContentLoaded', showInstance, { once: true }); else showInstance();
   </script>
   <template id="instanceSource">
 
@@ -1662,6 +1634,28 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 #links-page .tag-chip[data-tag="MY_FAVORITES"]{--tag-color:var(--favorite)}
 #links-page .tag-chip[data-tag="MY_FAVORITES"].active{background:var(--favorite)!important;color:var(--warning-ink)!important}
 &lt;/style&gt;
+
+&lt;style id="ui-refresh-v3"&gt;
+.ticker-item.tk-eq{font-weight:700}
+#ai-page .ai-frame-wrap{border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:0 18px 40px -28px rgba(15,23,42,.45)}
+#aiFrame{display:block;width:100%;height:calc(100vh - 230px);min-height:520px;border:0}
+.site-header{backdrop-filter:saturate(1.4) blur(6px)}
+.header-inner{gap:18px}
+.brand-logo{border-radius:14px;overflow:hidden;box-shadow:0 6px 18px -10px rgba(15,23,42,.5)}
+.header-search input[type=search]{border-radius:999px!important;padding-left:18px!important}
+.gnav{backdrop-filter:blur(8px)}
+.gnav-links{gap:4px}
+.gnav a.nav-link{border-radius:999px!important;padding:8px 14px!important}
+.gnav a.nav-link.active{background:color-mix(in oklab,var(--primary) 12%,transparent);border-bottom-color:transparent!important}
+.gnav a.nav-link:hover{transform:translateY(-1px)}
+#home-page .hero,#events-page .hero,#games-page .hero,#calendar-page .hero{border-radius:22px!important;box-shadow:0 22px 50px -34px rgba(15,23,42,.55)}
+#home-page .section,#events-page .section,#calendar-page .section,#games-page .section,#settings-page .section,#terms-page .section{border-radius:18px;overflow:hidden;box-shadow:0 14px 34px -30px rgba(15,23,42,.5);transition:transform .2s,box-shadow .2s}
+#home-page .section:hover{transform:translateY(-2px);box-shadow:0 20px 40px -28px rgba(15,23,42,.55)}
+.widget{border-radius:18px;overflow:hidden;box-shadow:0 14px 34px -30px rgba(15,23,42,.5)}
+.widget-head{letter-spacing:.02em}
+.topbar{font-size:.78rem}
+@media(max-width:700px){#aiFrame{height:calc(100vh - 180px);min-height:420px}.gnav a.nav-link{border-radius:12px!important}}
+&lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
@@ -1669,7 +1663,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 &lt;div class="ticker" id="ticker"&gt;
   &lt;div class="ticker-inner"&gt;
     &lt;span class="ticker-label warn" style="background:#f59e0b"&gt;気象警報&lt;/span&gt;
-    &lt;span class="ticker-label news"&gt;お知らせ&lt;/span&gt;
+    &lt;span class="ticker-label news" id="tickerLabel"&gt;お知らせ・ニュース・地震&lt;/span&gt;
     &lt;div class="ticker-track"&gt;&lt;div class="ticker-move" id="tickerMove"&gt;&lt;/div&gt;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
@@ -1726,6 +1720,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;a href="javascript:void(0)" onclick="showPage('events')" class="nav-link" data-page="events"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7Z"/&gt;&lt;/svg&gt;イベント&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('calendar')" class="nav-link" data-page="calendar"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="3" y="5" width="18" height="16" rx="2"/&gt;&lt;path d="M16 3v4M8 3v4M3 10h18"/&gt;&lt;/svg&gt;カレンダー&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('links')" class="nav-link" data-page="links"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/&gt;&lt;path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/&gt;&lt;/svg&gt;リンク集&lt;/a&gt;
+      &lt;a href="javascript:void(0)" onclick="showPage('ai')" class="nav-link" data-page="ai"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8Z"/&gt;&lt;path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8Z"/&gt;&lt;/svg&gt;AI&lt;/a&gt;
       &lt;a href="https://videolink2me.com/ja/wu1a6s" target="_blank" rel="noopener" class="nav-link" data-page="call"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/&gt;&lt;/svg&gt;通話&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('games')" class="nav-link" data-page="games"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2" y="7" width="20" height="11" rx="4"/&gt;&lt;path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/&gt;&lt;/svg&gt;ゲーム&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('settings')" class="nav-link" data-page="settings"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="3"/&gt;&lt;path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/&gt;&lt;/svg&gt;設定&lt;/a&gt;
@@ -1863,6 +1858,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     &lt;/section&gt;
 
     &lt;!-- お知らせ --&gt;
+    &lt;section id="ai-page" class="page"&gt;
+      &lt;div class="ai-frame-wrap"&gt;&lt;iframe id="aiFrame" title="仲良し AI" data-src="https://nakayosi-ai.lovable.app/" allow="clipboard-write; microphone" loading="lazy"&gt;&lt;/iframe&gt;&lt;/div&gt;
+    &lt;/section&gt;
+
     &lt;section id="news-page" class="page"&gt;
       &lt;div class="section"&gt;
         &lt;div class="section-head"&gt;&lt;h2&gt;📢 お知らせ一覧&lt;/h2&gt;&lt;/div&gt;
@@ -2315,7 +2314,7 @@ const LINK_CATEGORIES = [
     { name:"Ragdoll Ar...", tag:"ゲーム",       url:"https://crazygames.cdn.msnfun.com/9msvph3r5r2m/v3/index.html?msstart_sdk_init=eyJwYXJlbnRPcmlnaW4iOiJodHRwczovL3d3dy5tc24uY29tIiwiY2xpZW50SWQiOiIzMEU1Njk0MDg3NTg2MzAyMDU0ODdFMDM4NkEyNjIzOCIsImxvY2FsZSI6ImVuLXVzIiwiZW50cnlQb2ludElkIjoiIiwic3dpdGNoR2FtZVBheWxvYWQiOnsic3dpdGNoZWRUbyI6Ijltc3ZwaDNyNXIybSIsInZhbHVlIjp7fX19" },
     { name:"Resent Client", tag:"ゲーム",       url:"https://r-e-s-e-n-t-cli-en-t.duckdns.org/game.html" },
     { name:"Eaglercraft",   tag:"ゲーム",       url:"https://2-a-e-agl-er.duckdns.org/" },
-    { name:"Minecraft 26.2",tag:"ゲーム",       url:"https://mfmikakann-site-vyslo-mix-fis5.onrender.com/incari-game/play/?build=fast&wakeups=channel" },
+    { name:"Minecraft 26.2",tag:"ゲーム",       url:"https://mfmikakann-site-vyslo-mix-fis5.onrender.com/incari-game/play/?build=fast&amp;wakeups=channel" },
   ]},
   { title:"プロキシ集 𝙽𝙴𝚆", items:[
     { name:"ジョーカー",          tag:"プロキシ",   url:"https://joker-proxy.lovable.app" },
@@ -2401,7 +2400,7 @@ const GAMES = [
   { name:"Sonic EXE", tag:"Horror",                  img:"https://cdn2.steamgriddb.com/logo/31c660c9bfd19dc8145532f33b9dc187.png", url:"https://script.google.com/macros/s/AKfycbzTL1fwvNcRcdaLXcEFo6LIKe6ocPfGanvahDpfRGrg0_FytIvULo8qxZWJsgVX3geHGg/exec" },
   { name:"Rogue Ser...", tag:"Shooter",              img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuVN9CgBy5hRuTi8xPiW8iX-PLx0_WiIG3ZG_I8zbSgcdXkZrnbhk9Z0U&amp;s=10", url:"https://script.google.com/macros/s/AKfycbxoO6zDi8mk7Ef1vm0lr1_4fRRw1qbLcW3ViDjP6YIywNUXN-OFK6HXE4T_gaGMIcCcjg/exec" },
   { name:"Ragdoll Hit", tag:"GAMES",                 img:"https://media.hotgame.io/2026/01/01210043/ragdoll-hit-enhanced.webp", url:"https://script.google.com/macros/s/AKfycbwgrxZmuFfIKSLNgcOMbaP_AqIp0Cw1o3ZPd7ZeXcltvZDWu6--UY3RPoIUhv1n1MCBxQ/exec" },
-  { name:"Ragdoll Archers", tag:"GAMES",             img:"https://imgs.crazygames.com/ragdoll-archers_1x1/20250926080758/ragdoll-archers_1x1-cover?format=auto&quality=100&metadata=none&width=1200", url:"https://crazygames.cdn.msnfun.com/9msvph3r5r2m/v3/index.html?msstart_sdk_init=eyJwYXJlbnRPcmlnaW4iOiJodHRwczovL3d3dy5tc24uY29tIiwiY2xpZW50SWQiOiIzMEU1Njk0MDg3NTg2MzAyMDU0ODdFMDM4NkEyNjIzOCIsImxvY2FsZSI6ImVuLXVzIiwiZW50cnlQb2ludElkIjoiIiwic3dpdGNoR2FtZVBheWxvYWQiOnsic3dpdGNoZWRUbyI6Ijltc3ZwaDNyNXIybSIsInZhbHVlIjp7fX19" },
+  { name:"Ragdoll Archers", tag:"GAMES",             img:"https://imgs.crazygames.com/ragdoll-archers_1x1/20250926080758/ragdoll-archers_1x1-cover?format=auto&amp;quality=100&amp;metadata=none&amp;width=1200", url:"https://crazygames.cdn.msnfun.com/9msvph3r5r2m/v3/index.html?msstart_sdk_init=eyJwYXJlbnRPcmlnaW4iOiJodHRwczovL3d3dy5tc24uY29tIiwiY2xpZW50SWQiOiIzMEU1Njk0MDg3NTg2MzAyMDU0ODdFMDM4NkEyNjIzOCIsImxvY2FsZSI6ImVuLXVzIiwiZW50cnlQb2ludElkIjoiIiwic3dpdGNoR2FtZVBheWxvYWQiOnsic3dpdGNoZWRUbyI6Ijltc3ZwaDNyNXIybSIsInZhbHVlIjp7fX19" },
 
 ];
 
@@ -2412,9 +2411,33 @@ function renderTicker(){
   const move = document.getElementById('tickerMove');
   if(!move) return;
   const newsParts = NEWS_ITEMS.map(t =&gt; `&lt;span class="ticker-item"&gt;${t}&lt;/span&gt;`).join('');
-  const cycle = newsParts;
+  const esc = t =&gt; String(t).replace(/[&amp;&lt;&gt;"]/g, c =&gt; ({'&amp;':'&amp;amp;','&lt;':'&amp;lt;','&gt;':'&amp;gt;','"':'&amp;quot;'}[c]));
+  const eqParts = (window.__EQ_ITEMS||[]).map(t =&gt; `&lt;span class="ticker-item tk-eq"&gt;🔴 地震 ${esc(t)}&lt;/span&gt;`).join('');
+  const nwParts = (window.__NEWS_FEED||[]).map(t =&gt; `&lt;span class="ticker-item tk-news"&gt;📰 ${esc(t)}&lt;/span&gt;`).join('');
+  const cycle = eqParts + newsParts + nwParts;
   move.innerHTML = cycle + cycle;
 }
+// 地震情報（P2P地震情報API）とニュース（NHK RSS）をティッカーに流す
+async function loadLiveTicker(){
+  try{
+    const r = await fetchTimeout('https://api.p2pquake.net/v2/history?codes=551&amp;limit=5', 8000);
+    const d = await r.json();
+    const SC = {10:'1',20:'2',30:'3',40:'4',45:'5弱',50:'5強',55:'6弱',60:'6強',70:'7'};
+    window.__EQ_ITEMS = d.filter(x=&gt;x.earthquake&amp;&amp;x.earthquake.hypocenter).map(x=&gt;{
+      const e=x.earthquake, h=e.hypocenter, t=(e.time||'').slice(5,16).replace('/','/');
+      const tsu = e.domesticTsunami==='None'?'津波の心配なし':(e.domesticTsunami==='Checking'?'津波調査中':'津波情報あり');
+      return `${t} ${h.name||'不明'} 最大震度${SC[e.maxScale]||'-'} M${h.magnitude&gt;0?h.magnitude:'-'} ${tsu}`;
+    });
+  }catch(e){}
+  try{
+    const r = await fetchTimeout('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://www.nhk.or.jp/rss/news/cat0.xml'), 8000);
+    const d = await r.json();
+    window.__NEWS_FEED = (d.items||[]).slice(0,10).map(i=&gt;i.title);
+  }catch(e){}
+  renderTicker();
+}
+setTimeout(loadLiveTicker, 300);
+setInterval(loadLiveTicker, 5*60*1000);
 
 
 // タイムアウト付きfetch（応答のない経路でいつまでも待たされないようにする）
@@ -2783,6 +2806,7 @@ function showPage(id){
   if(id==='calendar') renderCalendar();
   if(id==='links' &amp;&amp; !document.getElementById('linkCats').children.length) renderLinks();
   if(id==='games') renderGames();
+  if(id==='ai'){ const f=document.getElementById('aiFrame'); if(f &amp;&amp; !f.src) f.src=f.dataset.src; }
   document.body.classList.toggle('search-page', id === 'search');
   document.querySelectorAll('.page').forEach(p=&gt;p.classList.remove('active'));
   const el = document.getElementById(id+'-page');
