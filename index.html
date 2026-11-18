@@ -99,7 +99,7 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
     .glow-1 { top: -20%; left: -10%; background: radial-gradient(circle, var(--g-blue) 0%, transparent 68%); }
     .glow-2 { bottom: -20%; right: -10%; background: radial-gradient(circle, var(--g-red) 0%, transparent 68%); animation-delay: -7s; }
     body.instance-active .ambient-glow, body.instance-active #particleCanvas, body.instance-active .bg-overlay { display: none; animation: none; }
-    @media (prefers-reduced-motion: reduce) { .ambient-glow { animation: none; } }
+    @media (prefers-reduced-motion: reduce) and (update: none) { .ambient-glow { animation: none; } }
 
     @keyframes floatGlow {
       0% { transform: translate(0, 0) scale(0.9); }
@@ -308,7 +308,7 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
         font-size: .86rem;
       }
     }
-    @media (prefers-reduced-motion: reduce) { .btn-skip { transition-duration: .15s; } }
+    @media (prefers-reduced-motion: reduce) and (update: none) { .btn-skip { transition-duration: .15s; } }
 
     .cf-verify{position:fixed;inset:0;z-index:5;background:#000;color:#d9d9d9;font-family:Roboto,system-ui,-apple-system,"Segoe UI",sans-serif!important;display:flex;flex-direction:column;padding:clamp(60px,18vh,140px) max(20px,calc((100vw - 900px)/2)) 20px;transition:opacity .6s ease}
     .cf-verify *{font-family:inherit!important}
@@ -1193,7 +1193,7 @@ body.dark-mode .theme-toggle-btn .theme-icon-sun{display:block}
 .r18-actions .r18-go{background:var(--warning);border-color:var(--warning);color:var(--warning-ink)}
 .r18-actions .r18-go:hover{background:color-mix(in oklab,var(--warning) 88%,var(--text))}
 @keyframes r18Enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@media(prefers-reduced-motion:reduce){.r18-box{animation:none}}
+@media(prefers-reduced-motion: reduce) and (update: none){.r18-box{animation:none}}
 .link-trailing .lk-tag + .lk-tag{margin-left:4px}
 .link-tag-bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .tag-chip{background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .18s}
@@ -1290,7 +1290,7 @@ body.dark-mode #links-page .tag-chip[data-tag]:not([data-tag="ALL"]):not(.active
 #links-page .link-empty-icon{font-size:2rem;margin-bottom:8px;opacity:.55}
 #links-page .link-empty strong{display:block;color:var(--text);font-size:.95rem;margin-bottom:3px}
 @media(max-width:700px){#links-page .links-hero{padding:22px 20px}#links-page .links-hero h1{font-size:1.35rem}#links-page .link-toolbar{grid-template-columns:1fr;padding:10px}#links-page .link-result-count{text-align:right}#links-page .link-cats{grid-template-columns:1fr}#links-page .link-cat ul{max-height:360px}#links-page .link-cat li a{grid-template-columns:30px minmax(0,1fr)}#links-page .link-trailing{grid-column:2;flex-wrap:wrap;gap:4px}#links-page .lk-tag{display:inline-block;max-width:100%;font-size:.65rem}}
-@media(prefers-reduced-motion:reduce){#links-page *{scroll-behavior:auto!important;transition:none!important}}
+@media(prefers-reduced-motion: reduce) and (update: none){#links-page *{scroll-behavior:auto!important;transition:none!important}}
 
 &lt;/style&gt;
 &lt;style&gt;
@@ -1535,7 +1535,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 .ao-skip{display:block;margin:13px auto 0;padding:6px 10px;background:none;border:0;color:#94a3b8;cursor:pointer;font-size:.82rem}
 @keyframes aoPop{from{transform:translateY(18px) scale(.96);opacity:0}}@keyframes aoFade{from{opacity:0}}@keyframes aoPulse{50%{opacity:.4}}
 @media(max-width:650px){.ao-banner{grid-template-columns:1fr}.ao-banner-media{min-height:145px;max-height:180px}.ao-banner-media::after{background:linear-gradient(180deg,transparent 35%,#101b4b 100%)}.ao-content{padding:20px}.ao-banner img{min-height:145px}.ao-meta{margin-bottom:15px}}
-@media(prefers-reduced-motion:reduce){.ao-banner img,.ao-btn{transition:none}.ao-banner .tag::before,.ao-card .tag::before{animation:none}}
+@media(prefers-reduced-motion: reduce) and (update: none){.ao-banner img,.ao-btn{transition:none}.ao-banner .tag::before,.ao-card .tag::before{animation:none}}
 
 /* Remote maps replace local tile renderers; load only when their page is visited. */
 .external-map{display:block;width:100%;height:380px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}
@@ -1603,7 +1603,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 #calendar-page .calendar-search {margin-top:12px}
 @media(max-width:850px){#calendar-page .calendar-layout {grid-template-columns:1fr}#calendar-page .calendar-side {display:contents}}
 @media(max-width:550px){#calendar-page .calendar-intro {padding:17px}#calendar-page .calendar-main {padding:12px}#calendar-page .calendar-toolbar {flex-wrap:wrap}#calendar-page .calendar-toolbar h2 {width:100%;font-size:1.2rem}#calendar-page .calendar-day {min-height:67px;padding:4px;gap:2px}#calendar-page .calendar-num {width:25px;height:25px}#calendar-page .calendar-preview {font-size:.61rem;padding:1px 2px}#calendar-page .calendar-more {font-size:.6rem}}
-@media(prefers-reduced-motion:reduce){#calendar-page button {transition:none}}
+@media(prefers-reduced-motion: reduce) and (update: none){#calendar-page button {transition:none}}
 
 /* Shufoo!: inline only, no fixed/sticky placement or automatic ad scripts. */
 .shufoo-ad {
@@ -2270,9 +2270,11 @@ const LINK_CATEGORIES = [
     { name:"NKYS-Tube 𝓷𝓪𝓴𝓪𝔂𝓸𝓼𝓲",      tag:"ようつべ",   url:"https://ww.w.xn--nkystubeprowww-vy3m9etc35pead.plgsync.com" },
     { name:"仙人Tube+ v2",              tag:"ようつべ",   url:"https://snplnkjk.onrender.com/" },
     { name:"チョコTube+",               tag:"ようつべ",   url:"https://ccplnkjk.onrender.com/" },
-    { name:"わかめTube+",               tag:"ようつべ",   url:"https://textbook.f5.si/" },
+    { name:"わかめTube+",               tag:"ようつべ",   url:"https://network-safe.myvnc.com/" },
   ]},
   { title:"ゲーム集 𝙽𝙴𝚆", items:[
+    { name:"CrazyGames",  tag:"ゲームズ",   url:"https://cygms-com.onrender.com/" },
+    { name:"Krunker.io",  tag:"ゲームズ",   url:"https://tktk-vdu1.onrender.com/" },
     { name:"CCPorted",    tag:"ゲームズ",   url:"https://d1yh00vn2fvto7.cloudfront.net/" },
     { name:"Unpkg Games", tag:"ゲームズ",   url:"https://script.google.com/macros/s/AKfycbxl4Wntk5jzzwj3wq71m9v33gMqWRGpNEHWtZXXKomLy_ylOVWRPXrPWJEOwn84ONCr/exec" },
     { name:"Gnmath",      tag:"ゲームズ",   url:"https://gn-ma-th-nkys-in.duckdns.org/" },
@@ -2290,6 +2292,7 @@ const LINK_CATEGORIES = [
     { name:"LINE 本家",    tag:"チャット",tag:"最強",   url:"https://linedayo.onrender.com" },
     { name:"ABEMA 本家",   tag:"ムービー",tag:"最強",   url:"https://abema-cc.f5.si" },
     { name:"ABEMA 本家 予備", tag:"ムービー",tag:"最強",   url:"https://abema.dpdns.org/" },
+    { name:"バンダイチャンネル", tag:"アニメ",tag:"最強",   url:"https://b-ch-innt.onrender.com/" },
     { name:"ゴムロウ",      tag:"漫画",tag:"最強",      url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbyXgstgPTUHNYE-UEHkyc9F_D2ZPbHas8z19rgcJYKRgPJK87CCiZwqZfdxfIb8MZq5/exec" },
     { name:"スクールハブ 1", tag:"ツール",tag:"最強",     url:"https://untitled-hello-1028608754151.us-west1.run.app/" },
     { name:"スクールハブ 2", tag:"ツール",tag:"最強",     url:"https://untitled-hello-y2quwmhn7q-uw.a.run.app/" },
@@ -3623,7 +3626,7 @@ button:active,.gm-btn:active,.tag-chip:active,.cg-chip:active,.cg-hero-play:acti
 }
 
 /* --- モーション低減（控えめに短縮するだけ。完全停止はしない） --- */
-@media (prefers-reduced-motion: reduce){
+@media (prefers-reduced-motion: reduce) and (update: none){
   .rv{transition-duration:.25s !important;transform:none !important}
   .page.active{animation-duration:.2s !important}
 }
@@ -4379,7 +4382,7 @@ body.egg-spin{animation:eggSpin 1.4s cubic-bezier(.4,0,.2,1) 1}
 @keyframes eggShake{0%,100%{transform:translate(0,0)}20%{transform:translate(-8px,4px)}40%{transform:translate(7px,-5px)}60%{transform:translate(-5px,-3px)}80%{transform:translate(6px,4px)}}
 body.egg-shake{animation:eggShake .6s ease-in-out 2}
 body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
-@media (prefers-reduced-motion: reduce){body.egg-spin,body.egg-shake{animation:none}}
+@media (prefers-reduced-motion: reduce) and (update: none){body.egg-spin,body.egg-shake{animation:none}}
 &lt;/style&gt;
 &lt;script&gt;
 (function(){
@@ -4647,7 +4650,7 @@ body.egg-tilt{transform:rotate(-1.5deg);transition:transform .5s}
   @media (max-width:900px){.cg-wrap{grid-template-columns:1fr}.cg-side{position:static}.cg-side-title{display:flex;align-items:center;justify-content:space-between}.cg-cats{display:flex;gap:8px;overflow-x:auto;padding:4px 1px 9px;margin:0}.cg-cat{flex:0 0 auto;padding:9px 13px;border:1px solid var(--border);border-radius:999px;background:var(--surface-2)}.cg-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}}
   @media (max-width:600px){.cg-wrap{gap:12px}.cg-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.cg-head h2{font-size:1.08rem;margin:0}.game-heading-icon{width:30px;height:30px;border-radius:8px}.game-heading-icon svg{width:19px;height:19px}.cg-chips{display:flex;overflow-x:auto;gap:8px;padding:4px 1px 10px;margin:0 -2px}.cg-chip{flex:0 0 auto;min-height:42px;padding:8px 13px;font-size:.8rem}.cg-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.game-card{min-height:155px;border-radius:12px}.game-card .name{font-size:.8rem;padding:7px}.game-card .play-badge{width:48px;height:48px}.game-card .play-badge svg{width:22px;height:22px}.cg-hero{min-height:130px}.cg-hero-card{border-radius:14px}.gm-shell{width:100vw;height:100dvh;border-radius:0}.gm-bar{min-height:58px;padding:8px 10px}.gm-btn{min-width:44px;min-height:44px}.gm-lbl{display:none}}
   @media (min-width:601px) and (max-width:900px){.cg-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.game-card{min-height:170px}}
-  @media (prefers-reduced-motion:reduce){.game-card{transition:none}}
+  @media (prefers-reduced-motion: reduce) and (update: none){.game-card{transition:none}}
 &lt;/style&gt;
 &lt;script&gt;
 (function(){
@@ -5169,7 +5172,7 @@ body.dark-mode,body.glass-mode{
   body.gaming .header-search,body.gaming .mnav,body.tv-fs-mode .header-search,body.tv-fs-mode .mnav{display:none!important}
 }
 @media(max-width:360px){.brand-title{font-size:12px}.header-inner{padding-left:16px;padding-right:16px}.brand{gap:6px}.pixel-clock.brand-clock{font-size:9px!important}#eventBannerHome .ao-content{padding:20px}}
-@media(prefers-reduced-motion:reduce){.mnav button,.home-quick a{transition:none}}
+@media(prefers-reduced-motion: reduce) and (update: none){.mnav button,.home-quick a{transition:none}}
 &lt;/style&gt;
 &lt;script id="safari-mobile-controls"&gt;
 (function(){
@@ -5303,7 +5306,7 @@ body.dark-mode,body.glass-mode{
   #weather-page .wx-today{grid-template-columns:56px minmax(0,1fr)}
   #weather-page .wx-today .icon{width:56px;height:56px}
 }
-@media(prefers-reduced-motion:reduce){#games-page .game-card,#games-page .game-card img,#weather-page .wx-day{transition:none!important}}
+@media(prefers-reduced-motion: reduce) and (update: none){#games-page .game-card,#games-page .game-card img,#weather-page .wx-day{transition:none!important}}
 &lt;/style&gt;
 &lt;style&gt;
 /* Full-width search surface. Other portal pages retain their existing layout. */
@@ -5945,7 +5948,7 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 :focus-visible{outline:3px solid color-mix(in oklab,var(--primary) 55%,transparent);outline-offset:2px;border-radius:8px}
 ::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:color-mix(in oklab,var(--primary) 35%,transparent);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
 @media(max-width:520px){#xmasCountdown{padding:18px 12px}#xmasCountdown .xc-n{gap:8px}#xmasCountdown .xc-n div{min-width:58px;padding:8px}#xmasCountdown .xc-n b{font-size:1.6rem}.nk-date{width:50px;height:50px}.news-list li.nk-news{gap:10px;padding:10px!important}}
-@media(prefers-reduced-motion:reduce){#xmasCountdown,#xmasCountdown::before,#xmasCountdown .xc-big,.news-list li.nk-news,.nk-new{animation:none!important}}
+@media(prefers-reduced-motion: reduce) and (update: none){#xmasCountdown,#xmasCountdown::before,#xmasCountdown .xc-big,.news-list li.nk-news,.nk-new{animation:none!important}}
 &lt;/style&gt;
 &lt;!-- ===== UI リフレッシュ v2（イベント・モード切替・全体） ===== --&gt;
 &lt;style id="ui-refresh-v2"&gt;
@@ -5998,7 +6001,7 @@ body.dark-mode .theme-toggle-btn{box-shadow:0 0 0 1px rgba(147,197,253,.35),0 0 
 /* 切替時のなめらかな色変化（View Transition 非対応ブラウザ用） */
 body.ui-theme-anim,body.ui-theme-anim *{transition:background-color .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease!important}
 ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion: reduce) and (update: none){*{animation:none!important;transition:none!important}}
 /* ダーク時の調整 */
 body.dark-mode .section{box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 18px 40px -24px rgba(0,0,0,.8)}
 body.dark-mode .gnav .nav-link.active{color:#93c5fd}
@@ -6013,7 +6016,7 @@ body.dark-mode .gnav .nav-link.active{color:#93c5fd}
       var r=btn?btn.getBoundingClientRect():{left:innerWidth-40,top:30,width:0,height:0};
       var x=r.left+r.width/2,y=r.top+r.height/2;
       var rad=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
-      var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var reduce=matchMedia('(prefers-reduced-motion: reduce) and (update: none)').matches;
       if(document.startViewTransition&amp;&amp;!reduce){
         var t=document.startViewTransition(function(){orig.apply(window,arguments)});
         t.ready.then(function(){
