@@ -601,7 +601,7 @@ body.dark-mode .pixel-clock{background:#0a1220}
   display:inline-flex;
   gap:56px;
   white-space:nowrap;
-  animation:tickerScroll 70s linear infinite;
+  animation:tickerScroll 130s linear infinite;
 }
 @keyframes tickerScroll{
   0%{transform:translateX(0)}
@@ -1368,7 +1368,7 @@ body.dark-mode #links-page .tag-chip[data-tag]:not([data-tag="ALL"]):not(.active
 
 /* ── ティッカーはモバイルでも十分な速さで流す ── */
 @media(max-width:820px){
-  .ticker-move{animation-duration:40s}
+  .ticker-move{animation-duration:85s}
 }
 &lt;/style&gt;
   &lt;link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@700&amp;display=swap" rel="stylesheet"&gt;
@@ -2138,6 +2138,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;div class="widget-head"&gt;📊 サイト情報&lt;/div&gt;
       &lt;div class="widget-body"&gt;
         &lt;div class="site-today" id="siteToday"&gt;今日の日付を読み込み中…&lt;/div&gt;
+        &lt;div class="site-wx" id="siteWx" onclick="showPage&amp;&amp;showPage('weather')" style="cursor:pointer;margin:8px 0;padding:10px 12px;border-radius:12px;background:rgba(56,189,248,.12);font-size:.9em;line-height:1.5"&gt;🌤 天気を読み込み中…&lt;/div&gt;
+        &lt;div class="site-clock" id="siteClock" style="margin:0 0 8px;font-size:.85em;opacity:.8"&gt;&lt;/div&gt;
         &lt;div class="stat-grid"&gt;&lt;div class="stat-row stat-tile"&gt;&lt;span&gt;登録リンク数&lt;/span&gt;&lt;span id="linkCount"&gt;—&lt;/span&gt;&lt;/div&gt;
         &lt;div class="stat-row stat-tile"&gt;&lt;span&gt;登録ゲーム数&lt;/span&gt;&lt;span id="gameStat"&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;div class="stat-row stat-owner"&gt;&lt;span&gt;運営者&lt;/span&gt;&lt;span&gt;2a_exe&lt;/span&gt;&lt;/div&gt;
@@ -5014,6 +5016,33 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
     var el=document.getElementById('siteToday');if(!el)return;
     var d=new Date(),w=['日','月','火','水','木','金','土'][d.getDay()];
     el.textContent='📅 '+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+w+'）';
+  })();
+  // サイト情報ウィジェット：時計＋天気
+  (function(){
+    var ck=document.getElementById('siteClock');
+    function tick(){if(ck){var d=new Date();ck.textContent='🕒 現在 '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');}}
+    tick();setInterval(tick,1000);
+    var el=document.getElementById('siteWx');if(!el)return;
+    function ico(c){c=String(c||'');var h=c[0];return h==='1'?'☀️':h==='2'?'☁️':h==='3'?'☔':h==='4'?'⛄':'🌤';}
+    async function load(){
+      try{
+        var pref=(typeof WX_PREF!=='undefined'&amp;&amp;WX_PREF)||'';
+        var office=pref&amp;&amp;typeof JMA_OFFICES!=='undefined'?JMA_OFFICES[pref]:'270000';
+        if(!office)office='270000';
+        var r=await fetch('https://www.jma.go.jp/bosai/forecast/data/forecast/'+office+'.json',{cache:'no-store'});
+        if(!r.ok)throw 0;var d=await r.json();var sh=d[0];
+        var areas=sh.timeSeries[0].areas,i=0;
+        if(typeof WX_CITY!=='undefined'&amp;&amp;WX_CITY){var k=areas.findIndex(function(a){return a.area.code===WX_CITY});if(k&gt;=0)i=k;}
+        var a=areas[i],w=(a.weathers&amp;&amp;a.weathers[0]||'').replace(/　/g,' ');
+        var pops=(sh.timeSeries[1]&amp;&amp;sh.timeSeries[1].areas[i]&amp;&amp;sh.timeSeries[1].areas[i].pops)||[];
+        var pop=pops.filter(function(x){return x!==''}).slice(0,1)[0];
+        var t=sh.timeSeries[2]&amp;&amp;sh.timeSeries[2].areas[0].temps||[];
+        var hi=t[1]||t[0],lo=t[0];
+        el.innerHTML='&lt;b&gt;'+ico(a.weatherCodes&amp;&amp;a.weatherCodes[0])+' '+a.area.name+'の天気&lt;/b&gt;&lt;br&gt;'+w+
+          '&lt;br&gt;🌡 '+(hi?hi+'℃':'—')+(lo&amp;&amp;lo!==hi?' / '+lo+'℃':'')+(pop!=null?'　☂ 降水確率 '+pop+'%':'');
+      }catch(e){el.textContent='🌤 天気を取得できませんでした';}
+    }
+    load();setInterval(load,30*60*1000);
   })();
   // サイト情報ウィジェット：おみくじ（1日1回）
   var SITE_OMIKUJI=[
