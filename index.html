@@ -11,9 +11,9 @@
   <title>ホーム -- 仲良し ~*インスタンス*~ 3 情報ポータル</title>
 
   <!-- 手書き風フォント（Caveat）の読み込み -->
-  <link rel="preconnect" href="https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbQ">
-  <link rel="preconnect" href="https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9mb250cy5nc3RhdGljLmNvbQ" crossorigin>
-  <link href="https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbQ/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
 @font-face{font-family:'HuiFont';src:url('/fonts/HuiFontP109.woff') format('woff');font-display:swap}
@@ -510,7 +510,7 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
      データ配列を書き換えるだけでOKです。
    - カラーは :root のCSS変数を編集してください。
    ============================================================ */
-@import url('https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbQ/css2?family=Noto+Sans+JP:wght@400;500;700&amp;family=Noto+Serif+JP:wght@600;700&amp;family=Press+Start+2P&amp;family=M+PLUS+Rounded+1c:wght@400;500;700&amp;family=Kosugi+Maru&amp;family=Zen+Maru+Gothic:wght@400;500;700&amp;family=Shippori+Mincho:wght@500;700&amp;family=Kaisei+Decol:wght@400;700&amp;family=DotGothic16&amp;family=Yusei+Magic&amp;family=Noto+Color+Emoji&amp;display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&amp;family=Noto+Serif+JP:wght@600;700&amp;family=Press+Start+2P&amp;family=M+PLUS+Rounded+1c:wght@400;500;700&amp;family=Kosugi+Maru&amp;family=Zen+Maru+Gothic:wght@400;500;700&amp;family=Shippori+Mincho:wght@500;700&amp;family=Kaisei+Decol:wght@400;700&amp;family=DotGothic16&amp;family=Yusei+Magic&amp;family=Noto+Color+Emoji&amp;display=swap');
 
 /* リアルタイム時計（ピクセルフォント） */
 .pixel-clock{
@@ -1371,7 +1371,7 @@ body.dark-mode #links-page .tag-chip[data-tag]:not([data-tag="ALL"]):not(.active
   .ticker-move{animation-duration:130s}
 }
 &lt;/style&gt;
-  &lt;link href="https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbQ/css2?family=Pixelify+Sans:wght@700&amp;display=swap" rel="stylesheet"&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@700&amp;display=swap" rel="stylesheet"&gt;
 
 &lt;style id="portal-feature-patch-style"&gt;
 .wx-local-map{position:relative;height:380px;overflow:hidden;border:1px solid var(--border);border-radius:12px;background:radial-gradient(circle at 68% 18%,color-mix(in oklab,#38bdf8 18%,transparent),transparent 34%),linear-gradient(135deg,#ddecf4,#b9d3e1);box-shadow:inset 0 0 32px rgba(15,66,92,.16)}
@@ -2086,21 +2086,22 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;/div&gt;
     &lt;/section&gt;
     &lt;section id="settings-page" class="page"&gt;
-      &lt;div class="settings-hero"&gt;&lt;p class="settings-eyebrow"&gt;SETTINGS&lt;/p&gt;&lt;h1&gt;設定&lt;/h1&gt;&lt;p&gt;変更はすぐに反映され、このブラウザに保存されます。&lt;/p&gt;&lt;/div&gt;
+      &lt;div class="settings-hero"&gt;&lt;p class="settings-eyebrow"&gt;SETTINGS&lt;/p&gt;&lt;h1&gt;設定&lt;/h1&gt;&lt;p&gt;変更はすぐに反映され、このブラウザに保存されます。&lt;/p&gt;&lt;div class="settings-search"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;circle cx="11" cy="11" r="8"/&gt;&lt;path d="m21 21-4.3-4.3"/&gt;&lt;/svg&gt;&lt;input type="search" id="settingsSearch" placeholder="設定を検索（例：フォント、背景）" aria-label="設定を検索" autocomplete="off"&gt;&lt;kbd&gt;/&lt;/kbd&gt;&lt;/div&gt;&lt;/div&gt;
       &lt;div class="settings-layout"&gt;
         &lt;nav class="settings-nav" aria-label="設定の項目"&gt;
-          &lt;a href="#set-look" onclick="event.preventDefault();document.getElementById('set-look').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span aria-hidden="true"&gt;🎨&lt;/span&gt;見た目&lt;/a&gt;
-          &lt;a href="#set-bg" onclick="event.preventDefault();document.getElementById('set-bg').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span aria-hidden="true"&gt;🖼️&lt;/span&gt;背景&lt;/a&gt;
-          &lt;a href="#set-clock" onclick="event.preventDefault();document.getElementById('set-clock').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span aria-hidden="true"&gt;🕒&lt;/span&gt;時計とタブ&lt;/a&gt;
-          &lt;a href="#set-weather" onclick="event.preventDefault();document.getElementById('set-weather').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span aria-hidden="true"&gt;📍&lt;/span&gt;天気の地域&lt;/a&gt;
+          &lt;a href="#set-look" onclick="event.preventDefault();document.getElementById('set-look').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span class="sn-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;circle cx="13.5" cy="6.5" r="1.5"/&gt;&lt;circle cx="17.5" cy="10.5" r="1.5"/&gt;&lt;circle cx="8.5" cy="7.5" r="1.5"/&gt;&lt;circle cx="6.5" cy="12.5" r="1.5"/&gt;&lt;path d="M12 2a10 10 0 0 0 0 20c1 0 1.7-.8 1.7-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.8-1.7 1.7-1.7H16a6 6 0 0 0 6-6c0-4.6-4.5-8.4-10-8.4z"/&gt;&lt;/svg&gt;&lt;/span&gt;見た目&lt;/a&gt;
+          &lt;a href="#set-bg" onclick="event.preventDefault();document.getElementById('set-bg').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span class="sn-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;circle cx="9" cy="9" r="2"/&gt;&lt;path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/&gt;&lt;/svg&gt;&lt;/span&gt;背景&lt;/a&gt;
+          &lt;a href="#set-clock" onclick="event.preventDefault();document.getElementById('set-clock').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span class="sn-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="10"/&gt;&lt;path d="M12 6v6l4 2"/&gt;&lt;/svg&gt;&lt;/span&gt;時計とタブ&lt;/a&gt;
+          &lt;a href="#set-weather" onclick="event.preventDefault();document.getElementById('set-weather').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span class="sn-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/&gt;&lt;circle cx="12" cy="10" r="3"/&gt;&lt;/svg&gt;&lt;/span&gt;天気の地域&lt;/a&gt;
+          &lt;a href="#set-keys" onclick="event.preventDefault();document.getElementById('set-keys').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span class="sn-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;rect x="2" y="6" width="20" height="12" rx="2"/&gt;&lt;path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/&gt;&lt;/svg&gt;&lt;/span&gt;ショートカット&lt;/a&gt;
         &lt;/nav&gt;
         &lt;div class="settings-groups"&gt;
         &lt;div class="section settings-group" id="set-look"&gt;
-          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic" aria-hidden="true"&gt;🎨&lt;/span&gt;&lt;div&gt;&lt;h2&gt;見た目&lt;/h2&gt;&lt;p&gt;色・表示モード・文字のスタイル&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;circle cx="13.5" cy="6.5" r="1.5"/&gt;&lt;circle cx="17.5" cy="10.5" r="1.5"/&gt;&lt;circle cx="8.5" cy="7.5" r="1.5"/&gt;&lt;circle cx="6.5" cy="12.5" r="1.5"/&gt;&lt;path d="M12 2a10 10 0 0 0 0 20c1 0 1.7-.8 1.7-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.8-1.7 1.7-1.7H16a6 6 0 0 0 6-6c0-4.6-4.5-8.4-10-8.4z"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;div&gt;&lt;h2&gt;見た目&lt;/h2&gt;&lt;p&gt;色・表示モード・文字のスタイル&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
           &lt;div class="section-body"&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;🎨 テーマカラー&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;circle cx="13.5" cy="6.5" r="1.5"/&gt;&lt;circle cx="17.5" cy="10.5" r="1.5"/&gt;&lt;circle cx="8.5" cy="7.5" r="1.5"/&gt;&lt;circle cx="6.5" cy="12.5" r="1.5"/&gt;&lt;path d="M12 2a10 10 0 0 0 0 20c1 0 1.7-.8 1.7-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.8-1.7 1.7-1.7H16a6 6 0 0 0 6-6c0-4.6-4.5-8.4-10-8.4z"/&gt;&lt;/svg&gt;&lt;/span&gt;テーマカラー&lt;/label&gt;
             &lt;div class="desc"&gt;メインカラーを好きな色に変更できます。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2110,7 +2111,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;🌓 表示モード&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/&gt;&lt;/svg&gt;&lt;/span&gt;表示モード&lt;/label&gt;
             &lt;div class="desc"&gt;ライト／ダーク／チョコ／ハロウィンなどを切り替えます。10月31日はハロウィン、3月9日はミク、2月14日はチョコ、3月14日はホワイトチョコ、2月22日はILoveCATに自動で切り替わり、翌日には元に戻ります。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2121,18 +2122,18 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
               &lt;option value="dark"&gt;ダーク&lt;/option&gt;
               &lt;option value="choco"&gt;ダークチョコ&lt;/option&gt;
               &lt;option value="whitechoco"&gt;ホワイトチョコ&lt;/option&gt;
-              &lt;option value="halloween"&gt;ハロウィン 🎃&lt;/option&gt;
-              &lt;option value="miku"&gt;ミク 🎵&lt;/option&gt;
-              &lt;option value="christmas"&gt;クリスマス 🎄&lt;/option&gt;
-              &lt;option value="teto"&gt;テト 🥖&lt;/option&gt;
-              &lt;option value="ppg"&gt;パワパフ 💥&lt;/option&gt;
-              &lt;option value="cat"&gt;ILoveCAT 🐱&lt;/option&gt;
+              &lt;option value="halloween"&gt;ハロウィン&lt;/option&gt;
+              &lt;option value="miku"&gt;ミク&lt;/option&gt;
+              &lt;option value="christmas"&gt;クリスマス&lt;/option&gt;
+              &lt;option value="teto"&gt;テト&lt;/option&gt;
+              &lt;option value="ppg"&gt;パワパフ&lt;/option&gt;
+              &lt;option value="cat"&gt;ILoveCAT&lt;/option&gt;
             &lt;/select&gt;
             &lt;/div&gt;
           &lt;/div&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;🅰️ サイトフォント&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M4 7V4h16v3M9 20h6M12 4v16"/&gt;&lt;/svg&gt;&lt;/span&gt;サイトフォント&lt;/label&gt;
             &lt;div class="desc"&gt;サイト全体の日本語フォントを変更できます。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2152,7 +2153,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;🔤 文字の大きさ&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M3 7V5h10v2M8 5v14M6 19h4M14 13v-1h7v1M17.5 12v7M16 19h3"/&gt;&lt;/svg&gt;&lt;/span&gt;文字の大きさ&lt;/label&gt;
             &lt;div class="desc"&gt;本文の文字サイズを調整します。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2164,11 +2165,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
         &lt;/div&gt;
         &lt;div class="section settings-group" id="set-bg"&gt;
-          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic" aria-hidden="true"&gt;🖼️&lt;/span&gt;&lt;div&gt;&lt;h2&gt;背景&lt;/h2&gt;&lt;p&gt;背景の模様や画像&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;circle cx="9" cy="9" r="2"/&gt;&lt;path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;div&gt;&lt;h2&gt;背景&lt;/h2&gt;&lt;p&gt;背景の模様や画像&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
           &lt;div class="section-body"&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;✨ 背景パターン&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;rect x="3" y="3" width="7" height="7"/&gt;&lt;rect x="14" y="3" width="7" height="7"/&gt;&lt;rect x="3" y="14" width="7" height="7"/&gt;&lt;rect x="14" y="14" width="7" height="7"/&gt;&lt;/svg&gt;&lt;/span&gt;背景パターン&lt;/label&gt;
             &lt;div class="desc"&gt;サイト背景に模様を表示します。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2181,19 +2182,17 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;🖼️ 背景画像（GIF対応）&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;circle cx="9" cy="9" r="2"/&gt;&lt;path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/&gt;&lt;/svg&gt;&lt;/span&gt;背景画像（GIF対応）&lt;/label&gt;
             &lt;div class="desc"&gt;お好きな画像やGIFアニメを背景に設定できます。画像は端末内に保存されます（〜3MBまで推奨）。&lt;/div&gt;
-              &lt;label style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem"&gt;
-              &lt;label style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem"&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
             &lt;input type="file" id="bg-image-input" accept="image/*,image/gif" onchange="onBgImageSelected(event)"&gt;
             &lt;div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"&gt;
               &lt;button class="btn ghost" onclick="clearBgImage()"&gt;背景画像を削除&lt;/button&gt;
-                &lt;input type="checkbox" id="bg-image-fixed" onchange="toggleBgFixed(this.checked)" checked&gt;
+              &lt;label class="sw-label"&gt;&lt;input type="checkbox" class="sw" id="bg-image-fixed" onchange="toggleBgFixed(this.checked)" checked&gt;
                 スクロールしても固定
               &lt;/label&gt;
-                不透明度
+              &lt;label class="sw-label"&gt;不透明度
                 &lt;input type="range" id="bg-image-opacity" min="20" max="100" value="100" oninput="changeBgOpacity(this.value)"&gt;
                 &lt;span id="bg-image-opacity-val" class="muted"&gt;100%&lt;/span&gt;
               &lt;/label&gt;
@@ -2204,11 +2203,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
         &lt;/div&gt;
         &lt;div class="section settings-group" id="set-clock"&gt;
-          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic" aria-hidden="true"&gt;🕒&lt;/span&gt;&lt;div&gt;&lt;h2&gt;時計とタブ&lt;/h2&gt;&lt;p&gt;時刻の表示とタブの偽装&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="10"/&gt;&lt;path d="M12 6v6l4 2"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;div&gt;&lt;h2&gt;時計とタブ&lt;/h2&gt;&lt;p&gt;時刻の表示とタブの偽装&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
           &lt;div class="section-body"&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;🕒 時刻の表示形式&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="10"/&gt;&lt;path d="M12 6v6l4 2"/&gt;&lt;/svg&gt;&lt;/span&gt;時刻の表示形式&lt;/label&gt;
             &lt;div class="desc"&gt;ヘッダー時計を「24時間表示（通常）」または「AM/PM表示」に切り替えます。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2220,7 +2219,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;🕵️ 偽装モード（タブのタイトル・アイコン）&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/&gt;&lt;circle cx="12" cy="12" r="3"/&gt;&lt;/svg&gt;&lt;/span&gt;偽装モード（タブのタイトル・アイコン）&lt;/label&gt;
             &lt;div class="desc"&gt;ブラウザタブに表示されるページタイトルとファビコンを別のサイトに偽装します。授業中などにこっそり使いたいときに便利です。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2235,11 +2234,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
         &lt;/div&gt;
         &lt;div class="section settings-group" id="set-weather"&gt;
-          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic" aria-hidden="true"&gt;📍&lt;/span&gt;&lt;div&gt;&lt;h2&gt;天気の地域&lt;/h2&gt;&lt;p&gt;天気予報・警報を表示する地域&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/&gt;&lt;circle cx="12" cy="10" r="3"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;div&gt;&lt;h2&gt;天気の地域&lt;/h2&gt;&lt;p&gt;天気予報・警報を表示する地域&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
           &lt;div class="section-body"&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;📍 天気の地域（都道府県）&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/&gt;&lt;circle cx="12" cy="10" r="3"/&gt;&lt;/svg&gt;&lt;/span&gt;天気の地域（都道府県）&lt;/label&gt;
             &lt;div class="desc"&gt;天気予報に使用する地域を選択します。Yahoo!天気リンクにも反映されます。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2248,7 +2247,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;🏙️ 天気の地域（市区町村）&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/&gt;&lt;circle cx="12" cy="10" r="3"/&gt;&lt;/svg&gt;&lt;/span&gt;天気の地域（市区町村）&lt;/label&gt;
             &lt;div class="desc"&gt;より詳しい予報のため、地域内のエリアを選びます。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2257,7 +2256,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;🏘️ 天気の地域（市区町村・詳細）&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/&gt;&lt;circle cx="12" cy="10" r="3"/&gt;&lt;/svg&gt;&lt;/span&gt;天気の地域（市区町村・詳細）&lt;/label&gt;
             &lt;div class="desc"&gt;例：大阪府 → 東大阪市。警報・注意報はこの市区町村の情報を表示します。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2266,7 +2265,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;div class="setting-row"&gt;
             &lt;div class="setting-info"&gt;
-            &lt;label&gt;📡 位置情報から自動設定&lt;/label&gt;
+            &lt;label&gt;&lt;span class="sr-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="3"/&gt;&lt;path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/&gt;&lt;/svg&gt;&lt;/span&gt;位置情報から自動設定&lt;/label&gt;
             &lt;div class="desc"&gt;端末の位置情報を使って、お住まいの地域を自動で選びます。&lt;/div&gt;
             &lt;/div&gt;
             &lt;div class="setting-control"&gt;
@@ -2276,7 +2275,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;/div&gt;
         &lt;/div&gt;
-        &lt;/div&gt;
+        &lt;div class="section settings-group" id="set-keys"&gt;&lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;rect x="2" y="6" width="20" height="12" rx="2"/&gt;&lt;path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;div&gt;&lt;h2&gt;ショートカット&lt;/h2&gt;&lt;p&gt;キーボードと右クリックメニューで素早く操作&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="section-body"&gt;&lt;ul class="key-list"&gt;&lt;li&gt;&lt;span&gt;専用メニューを開く&lt;/span&gt;&lt;kbd&gt;右クリック&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;ホームへ&lt;/span&gt;&lt;kbd&gt;Alt + H&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;カレンダーへ&lt;/span&gt;&lt;kbd&gt;Alt + C&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;お知らせへ&lt;/span&gt;&lt;kbd&gt;Alt + N&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;設定へ&lt;/span&gt;&lt;kbd&gt;Alt + S&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;表示モードを切り替える&lt;/span&gt;&lt;kbd&gt;Alt + D&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;ページの一番上へ&lt;/span&gt;&lt;kbd&gt;Alt + T&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;設定ページで検索欄にフォーカス&lt;/span&gt;&lt;kbd&gt;/&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;メニューを閉じる&lt;/span&gt;&lt;kbd&gt;Esc&lt;/kbd&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
       &lt;/div&gt;
     &lt;/section&gt;
 
@@ -2377,6 +2377,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
 // お知らせ（新しいものを上に）
 const NEWS = [
+  { date:"2026/11/19", cat:"更新",     title:"カレンダーと設定の見た目を変更いたしました" },
   { date:"2026/11/17", cat:"更新",     title:"クリスマス→年明けカウントダウンを追加！お知らせのデザインも新しくなりました" },
   { date:"2026/11/10", cat:"更新",     title:"一部のUIを変更いたしました"  },
   { date:"2026/10/23", cat:"更新",     title:"最強のScholHUBを追加いたしました!! X,Instagram,Youtubeなどを楽しみましょう!!"  },
@@ -2415,7 +2416,7 @@ const EVENTS = [
   { name:"BuckShot", icon:"🔫", status:"ended", kicker:"LIMITED SHOTGUN MISSION",
     desc:"運命のショットガン・ルーレット。ディーラーとの心理戦を制して生き残ろう。",
     meta:["無料で参加","ブラウザで遊べる","終了"],
-    img:"https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0/gh/freebuisness/covers@main/205.png", url:"https://duckshot-nkys.f5.si/" },
+    img:"https://cdn.jsdelivr.net/gh/freebuisness/covers@main/205.png", url:"https://duckshot-nkys.f5.si/" },
   { name:"青鬼イベント", icon:"👹", status:"ended", kicker:"LIMITED HORROR MISSION",
     desc:"恐怖の館を探索し、青鬼から逃げ切ろう。期間限定の脱出ミッション。",
     meta:["無料で参加","ブラウザで遊べる","終了"],
@@ -2442,7 +2443,7 @@ const LINK_CATEGORIES = [
     { name:"TopVAZ",      tag:"ゲームズ",   url:"https://1v1-lolunblocked.gitlab.io/category/popular.html" },
     { name:"MANAGEMENT",  tag:"ゲームズ",   url:"https://cmug.gitlab.io/" },
     { name:"CloudMoon 1", tag:"ゲームズ",   url:"https://3000-ig42ct4o9n1n9j2h01bd0-3c7ff1b5.sandbox.novita.ai/" },
-    { name:"CloudMoon 2", tag:"ゲームズ",   url:"https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9jZG4uanNkZWxpdnIubmV0/gh/CloudMoonApp/web@main/260605.svg" },
+    { name:"CloudMoon 2", tag:"ゲームズ",   url:"https://cdn.jsdelivr.net/gh/CloudMoonApp/web@main/260605.svg" },
     { name:"CloudMoon 3", tag:"ゲームズ",   url:"https://clououououdmoooooon.rren.ch/" },
   ]},
   { title:"その他集", items:[
@@ -2452,9 +2453,8 @@ const LINK_CATEGORIES = [
     { name:"漫画Rw",       tag:"漫画",tag:"最強",      url:"https://mangarw-v2-meow-sleepy-now.onrender.com/" },
     { name:"スクールハブ 1", tag:"ツール",tag:"最強",     url:"https://untitled-hello-1028608754151.us-west1.run.app/" },
     { name:"スクールハブ 2", tag:"ツール",tag:"最強",     url:"https://untitled-hello-y2quwmhn7q-uw.a.run.app/" },
-    { name:"スクールハブ 3", tag:"ツール",tag:"最強",     url:"https://untitled-7100-1028608754151.us-west1.run.app/" },
-    { name:"スクールハブ 4", tag:"ツール",tag:"最強",     url:"https://miruhukaka.ai.studio/" },
-    { name:"スクールハブ 5", tag:"ツール",tag:"最強",     url:"https://untitled-7100.ai.studio/" },
+    { name:"スクールハブ 3", tag:"ツール",tag:"最強",     url:"https://miruhukaka.ai.studio/" },
+    { name:"スクールハブ 4", tag:"ツール",tag:"最強",     url:"https://untitled-7100.ai.studio/" },
     { name:"寿司打",        tag:"タイピング",            url:"https://happy-deployer-pro.lovable.app/" },
   ]},
   { title:"ゲーム(単体)集", items:[
@@ -2485,7 +2485,7 @@ const LINK_CATEGORIES = [
     { name:"すみ - sumi",        tag:"プロキシ",   url:"https://sumimath.s3.us-east-1.amazonaws.com/index.html" },
     { name:"すみ - sumi 予備",    tag:"プロキシ",   url:"https://sumimath.s3.dualstack.us-east-1.amazonaws.com/index.html" },
     { name:"Opium",             tag:"プロキシ",   url:"https://s3.amazonaws.com/opiumbull/study" },
-    { name:"Arctic",            tag:"プロキシ",   url:"https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9nY29yZS5qc2RlbGl2ci5uZXQ/gh/lolration/svg/arctic.svg" },
+    { name:"Arctic",            tag:"プロキシ",   url:"https://gcore.jsdelivr.net/gh/lolration/svg/arctic.svg" },
     { name:"Arctic 予備",        tag:"プロキシ",   url:"https://rawcdn.githack.com/lolration/svg/30b4c3e1fd65c5b092ba58f576937da62cbca343/arctic.svg" },
     { name:"Kite",              tag:"プロキシ",   url:"https://kite.zubex.net/" },
     { name:"Kite 予備1",         tag:"プロキシ",   url:"https://kite.yowie.me/" },
@@ -2508,7 +2508,7 @@ const LINK_CATEGORIES = [
     { name:"INTERSTELLAR 予備1", tag:"プロキシ",   url:"https://interstellar.nana.willstrang.com" },
     { name:"INTERSTELLAR 予備2", tag:"プロキシ",   url:"https://objectstorage.us-ashburn-1.oraclecloud.com/n/idu89bu0aga2/b/quilldesk/o/index.html" },
     { name:"INTERSTELLAR 予備3", tag:"プロキシ",   url:"https://objectstorage.us-ashburn-1.oraclecloud.com/n/idu89bu0aga2/b/birchnotes/o/index.html" },
-    { name:"Dogeub",            tag:"プロキシ",   url:"https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9jYW52YXMtbG1zLnN0b3JhZ2UuZ29vZ2xlYXBpcy5jb20/index.html" },
+    { name:"Dogeub",            tag:"プロキシ",   url:"https://canvas-lms.storage.googleapis.com/index.html" },
     { name:"Utopia",            tag:"プロキシ",   url:"https://uu.utopia.2a.exe.googleapis.com.hospitaldelninodif.gob.mx/" },
     { name:"Utopia 予備",        tag:"プロキシ",   url:"https://u.topia.2a.exe.googleapis.com.hospitaldelninodif.gob.mx/" },
     { name:"Petezah",           tag:"プロキシ",   url:"https://petezah.nana.ekivotos.gr/" },
@@ -2526,13 +2526,13 @@ const GAMES = [
   { name:"N00b miner", tag:"GAMES",                  img:"https://play-lh.googleusercontent.com/yU2xBCEG4x9JJNXj041T8SGRdq2Qos7cgqSOKB1nNOqlx-dDxCpQlVDCuc_YSX-YmJU", url:"https://script.google.com/macros/s/AKfycbxkvPO4mEcWEk5a9TgEuR7qyiYZs7hL80XF5pwK8QMKHqmA7qUqxvIePB3PF9c3Bqc93w/exec" },
   { name:"Fall Guys", tag:"GAMES",                   img:"https://cdn1.epicgames.com/offer/50118b7f954e450f8823df1614b24e80/FGSS04_KeyArt_OfferImagePortrait_1200x1600_1200x1600-4bd46574e78464352e1f2c55714701f7", url:"https://script.google.com/macros/s/AKfycbxzGXZ-dYcADWPNv7OSO6OdaFl8sJtBNY8J1KO5EQ33_I37NN0nQkaej4HqNCAkvxHHqA/exec" },
   { name:"Gun Spin", tag:"GAMES",                    img:"https://say.games/_next/image?url=https%3A%2F%2Fweb-saystore-backend.sgdn.io%2Fgunspiw%2Ficon___bqkktB9DMKoO&amp;w=3840&amp;q=75", url:"https://script.google.com/macros/s/AKfycbzUV7L8dJ4CsDwTGHQA9Bt_xQg7WAYuMbCsGgeVhjMOHycdwG9fJ60dh4_l_q4q_OP2qA/exec" },
-  { name:"Slope City", tag:"GAMES",                  img:"https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9lbmNyeXB0ZWQtdGJuMC5nc3RhdGljLmNvbQ/images?q=tbn:ANd9GcQTTYSqZcSQo-Wj4Lqq1O7PLTolesXzV9IRJQ&amp;s", url:"https://script.google.com/macros/s/AKfycbyendSzfWzjivGUAoNgH5QDpJIxJDyJvSYwXWxcV_8gl9xkdTMV2BvDpjiWNw5pGaVT/exec" },
+  { name:"Slope City", tag:"GAMES",                  img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTTYSqZcSQo-Wj4Lqq1O7PLTolesXzV9IRJQ&amp;s", url:"https://script.google.com/macros/s/AKfycbyendSzfWzjivGUAoNgH5QDpJIxJDyJvSYwXWxcV_8gl9xkdTMV2BvDpjiWNw5pGaVT/exec" },
   { name:"Among Us", tag:"GAMES",                    img:"https://store-images.s-microsoft.com/image/apps.30063.13589262686196899.16e3418a-cbf2-4748-9724-1c9dc9b7a0b9.672da915-9117-4230-960d-4f59f3d7beb5", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;hqpen&amp;interpolate#717953555" },
   { name:"Splatoon", tag:"GAMES",                    img:"https://i.ytimg.com/vi/0X_iKZ9sl8w/maxresdefault.jpg", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;hqpen&amp;interpolate#815938308" },
   { name:"TETRIS", tag:"GAMES",                      img:"https://www.datocms-assets.com/145957/1744284280-tetris-mobile.png?auto=format&amp;fit=max&amp;w=1200", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;interpolate&amp;clones=Infinity&amp;offscreen&amp;hqpen#1000009994" },
   { name:"大乱闘スマッシュブラザーズ", tag:"GAMES",      img:"https://v1.padlet.pics/1/image.webp?t=c_limit%2Cdpr_1%2Ch_360%2Cw_480&amp;url=https%3A%2F%2Fpadlet-artifacts.storage.googleapis.com%2F772a28a8d4b75d6bf5e784ae9d29c547046e54cb%2F6d587b48e304e2b6dddf1c78a196c1d8-h-eecd7c55129fe0f64ab0d624ee3724c6.png", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;offscreen&amp;hqpen&amp;interpolate#993930034" },
   { name:"スイカゲーム", tag:"GAMES",                  img:"https://store-jp.nintendo.com/dw/image/v2/BFGJ_PRD/on/demandware.static/-/Sites-all-master-catalog/ja_JP/dw777a27be/products/D70010000043363/heroBanner/d5f672aaf8d60243399b854ffcb11671121f560715505cec327509d6144958cc.jpg?sw=1368&amp;strip=false", url:"https://mirror.turbowarp.xyz/embed?addons=pause&amp;settings-button&amp;hqpen&amp;interpolate#911281961" },
-  { name:"Armedforces.io", tag:".io",                img:"https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9lbmNyeXB0ZWQtdGJuMC5nc3RhdGljLmNvbQ/images?q=tbn:ANd9GcTLbGVTKPaNajuvDmMvUL1qXSBkerh7uD4jmug97B1rTyuglUegSTRwJls&amp;s=10", url:"https://cmug.gitlab.io/armedforces-io/" },
+  { name:"Armedforces.io", tag:".io",                img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLbGVTKPaNajuvDmMvUL1qXSBkerh7uD4jmug97B1rTyuglUegSTRwJls&amp;s=10", url:"https://cmug.gitlab.io/armedforces-io/" },
   { name:"Masked Special Forces", tag:"Shooter",     img:"https://www.onlinegames.io/media/posts/310/Masked-Special-Forces-FPS.jpg", url:"https://cmug.gitlab.io/masked-special-forces/" },
   { name:"Pixel Gun 3D", tag:"Shooter",              img:"https://m.media-amazon.com/images/I/91tio4WA2YL.png", url:"https://unblockedgames1024.gitlab.io/pixel-gun-3d/" },
   { name:"Masked Forces",tag:"Shooter",              img:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/555750/capsule_616x353.jpg?t=1768141032", url:"https://unblockedgames1024.gitlab.io/masked-forces/" },
@@ -2541,7 +2541,7 @@ const GAMES = [
   { name:"Screw Out Bolts and Nuts", tag:"Puzzle",   img:"https://play-lh.googleusercontent.com/Gmy1Fgu07RuM0gFPe_c1F8l8DCT5bEalZLB9o5Avs05L3bUTv2CQRU2OeQKGaAEEkhZeOU7B4N4Ed6BEHDVO", url:"https://crazygames.cdn.msnfun.com/9nvd4v66kdj7/v5/index.html?msstart_sdk_init=eyJwYXJlbnRPcmlnaW4iOiJodHRwczovL3d3dy5tc24uY29tIiwiY2xpZW50SWQiOiIzMEU1Njk0MDg3NTg2MzAyMDU0ODdFMDM4NkEyNjIzOCIsImxvY2FsZSI6ImVuLXVzIiwiZW50cnlQb2ludElkIjoiIiwic3dpdGNoR2FtZVBheWxvYWQiOnsic3dpdGNoZWRUbyI6IjludmQ0djY2a2RqNyIsInZhbHVlIjp7fX19" },
   { name:"Paper.io 2", tag:".io",                    img:"https://assets.funnygames.jp/1/94341/83842/672x448/paperio-2.webp", url:"https://unblockedgames1024.gitlab.io/paper-2-io/" },
   { name:"Cookie Clicker", tag:"Clicker",            img:"https://image.yoyaku-top10.jp/uploads/product_image/image/2119/8/webp_40550f98-0c2a-4c33-8551-d881801d1997.webp", url:"https://script.google.com/macros/s/AKfycbwBqXgNdPvUhBVIMNezaJWTtAaciacXART1MmryZHkWjOmAMATz48ZB3qMmuFSNlWJf/exec" },
-  { name:"Geometry Dash", tag:"GAMES",               img:"https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9lbmNyeXB0ZWQtdGJuMC5nc3RhdGljLmNvbQ/images?q=tbn:ANd9GcS0zbxFSY_cj0J1bY_Hg_zW1L9HOQ4moJTyiaxroQ31FA&amp;s", url:"https://script.google.com/macros/s/AKfycbyoZOqEbPe_4u9raPNfAJnIF3IGdlQhAKDpcHYcMmm9AlnKdPkqjReDovHJF-GMul8A/exec" },
+  { name:"Geometry Dash", tag:"GAMES",               img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0zbxFSY_cj0J1bY_Hg_zW1L9HOQ4moJTyiaxroQ31FA&amp;s", url:"https://script.google.com/macros/s/AKfycbyoZOqEbPe_4u9raPNfAJnIF3IGdlQhAKDpcHYcMmm9AlnKdPkqjReDovHJF-GMul8A/exec" },
   { name:"Drive Mad", tag:"Horror",                  img:"https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=1200,height=1200,fit=cover,f=png/fb51b7a3920196f313f2d1b081a98e2e/drive-mad-logo.png", url:"https://script.google.com/macros/s/AKfycbxEewkW5fvbDS7Ol8v5bH8pQrJ6aATe_QLDgrTILDmHlln8Lel6ZyAPAk1hRheZXxGH-A/exec" },
   { name:"DYPING", tag:"Horror",                     img:"https://playism.com/wp-content/uploads/2026/02/01_%E3%82%AD%E3%83%BC%E3%83%93%E3%82%B8%E3%83%A5%E3%82%A2%E3%83%AB.png", url:"https://script.google.com/macros/s/AKfycby-yRu226xApn5nu3Tr_qIcMwQEi-lpHL4nD0I5tXMcJ6Sn-jp3-NPMwvE4wBTF0k9L/exec" },
   { name:"R.E.P.O", tag:"Horror",                    img:"https://sc.filehippo.net/images/t_app-icon-l/p/a8dc6518-c07f-47e0-a37a-de302a8793dd/482813549/repo-logo", url:"https://script.google.com/macros/s/AKfycbw7cYqi0QKc4z68fGCBddPXKU8Mv-kh9UWFlYawSSmldLF_s7MUQBZkYRbWeyantriu/exec" },
@@ -2550,13 +2550,13 @@ const GAMES = [
   { name:"2048", tag:"Puzzle",                       img:"https://imgs.crazygames.com/games/2048/cover_1x1-1707828857318.png?format=auto&amp;quality=100&amp;metadata=none&amp;width=1200", url:"https://script.google.com/macros/s/AKfycbwLIlqQrmq1_R1bGBo_pHIi0OaRI96Eph4Fw7aE118E5WFRCJm-q-1DmvR8T1nSBSqZhA/exec" },
   { name:"Cobb can Move", tag:"Horror",              img:"https://slopegame2.com/data/image/Cobb-Can-Move.jpg", url:"https://script.google.com/macros/s/AKfycbze6Yjc9BM5IVNfiK-V9686wtB5Tx5gqdTvaKRR5bD30Qn4sFeqyjsVYrLgTSeW6aIs/exec" },
   { name:"Chiikawa Puzzle", tag:"Puzzle",            img:"https://img.itch.zone/aW1nLzIzMjg3OTkxLnBuZw==/original/9ZQMfo.png", url:"https://script.google.com/macros/s/AKfycbxIiFrheM_xpeehrgVyaR7t0fSxz9mbmnm4bK3Bk-_Xfl1n3M25hc9W_XLk0WaEXhz8/exec" },
-  { name:"Suvaival.io", tag:".io",                   img:"https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9lbmNyeXB0ZWQtdGJuMC5nc3RhdGljLmNvbQ/images?q=tbn:ANd9GcQVbVU_PJPur8N4QhfyDP6pzERkgA-b9051cY1smJ2dnG_JWqtZmKk3wxQ0&amp;s=10", url:"https://script.google.com/macros/s/AKfycbyqcdaA34mwBxA1PIMB3ln8dVnRCdVsPBj85W_NrBRoDmauVDEdWfRJOhuxDajwdo6Z/exec" },
+  { name:"Suvaival.io", tag:".io",                   img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVbVU_PJPur8N4QhfyDP6pzERkgA-b9051cY1smJ2dnG_JWqtZmKk3wxQ0&amp;s=10", url:"https://script.google.com/macros/s/AKfycbyqcdaA34mwBxA1PIMB3ln8dVnRCdVsPBj85W_NrBRoDmauVDEdWfRJOhuxDajwdo6Z/exec" },
   { name:"BLOCK BLAST", tag:"Puzzle",                img:"https://cdn2.fptshop.com.vn/unsafe/1240x0/filters:format(webp):quality(75)/block_blast_6_45a3799a1b.jpg", url:"https://script.google.com/macros/s/AKfycbycxjNgTna7FyTV-LgTQD7Jq2hCCSG-1pajHuYuf1SwQWwcAbfTUEU8SrQCwTqJee4/exec" },
   { name:"GTA", tag:"GAMES",                         img:"https://i.ytimg.com/vi/axY9GOqGYgA/maxresdefault.jpg", url:"https://script.google.com/macros/s/AKfycbwLMXCMH4RQVPyEj5PM4-GePOFbCt542Yq61vjEOPSsyyr9CsPOjtDCCr3BY_Szc5Bl7g/exec" },
   { name:"Hole.io", tag:".io",                       img:"https://m.media-amazon.com/images/I/81QTJgqpy9L.png", url:"https://script.google.com/macros/s/AKfycbxaEAALDwIyOO0i5pMcGew37mv-rHB9kydmlRfjewcmCjDwMOy4E703WwEgSQKOujJS5A/exec" },
   { name:"Magic Tiles 3", tag:"Puzzle",              img:"https://magictiles.org/game/magic-tiles-3.webp", url:"https://script.google.com/macros/s/AKfycbytKeNBxJWqOKQQmuX6-T99F1vpLYUfuo6qD9IwrqilXk4gSaGPhoY7h1rp-mdq3Rts/exec" },
   { name:"Sonic EXE", tag:"Horror",                  img:"https://cdn2.steamgriddb.com/logo/31c660c9bfd19dc8145532f33b9dc187.png", url:"https://script.google.com/macros/s/AKfycbzTL1fwvNcRcdaLXcEFo6LIKe6ocPfGanvahDpfRGrg0_FytIvULo8qxZWJsgVX3geHGg/exec" },
-  { name:"Rogue Ser...", tag:"Shooter",              img:"https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9lbmNyeXB0ZWQtdGJuMC5nc3RhdGljLmNvbQ/images?q=tbn:ANd9GcTuVN9CgBy5hRuTi8xPiW8iX-PLx0_WiIG3ZG_I8zbSgcdXkZrnbhk9Z0U&amp;s=10", url:"https://script.google.com/macros/s/AKfycbxoO6zDi8mk7Ef1vm0lr1_4fRRw1qbLcW3ViDjP6YIywNUXN-OFK6HXE4T_gaGMIcCcjg/exec" },
+  { name:"Rogue Ser...", tag:"Shooter",              img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuVN9CgBy5hRuTi8xPiW8iX-PLx0_WiIG3ZG_I8zbSgcdXkZrnbhk9Z0U&amp;s=10", url:"https://script.google.com/macros/s/AKfycbxoO6zDi8mk7Ef1vm0lr1_4fRRw1qbLcW3ViDjP6YIywNUXN-OFK6HXE4T_gaGMIcCcjg/exec" },
   { name:"Ragdoll Hit", tag:"GAMES",                 img:"https://media.hotgame.io/2026/01/01210043/ragdoll-hit-enhanced.webp", url:"https://script.google.com/macros/s/AKfycbwgrxZmuFfIKSLNgcOMbaP_AqIp0Cw1o3ZPd7ZeXcltvZDWu6--UY3RPoIUhv1n1MCBxQ/exec" },
   { name:"Ragdoll Archers", tag:"GAMES",             img:"https://imgs.crazygames.com/ragdoll-archers_1x1/20250926080758/ragdoll-archers_1x1-cover?format=auto&amp;quality=100&amp;metadata=none&amp;width=1200", url:"https://crazygames.cdn.msnfun.com/9msvph3r5r2m/v3/index.html?msstart_sdk_init=eyJwYXJlbnRPcmlnaW4iOiJodHRwczovL3d3dy5tc24uY29tIiwiY2xpZW50SWQiOiIzMEU1Njk0MDg3NTg2MzAyMDU0ODdFMDM4NkEyNjIzOCIsImxvY2FsZSI6ImVuLXVzIiwiZW50cnlQb2ludElkIjoiIiwic3dpdGNoR2FtZVBheWxvYWQiOnsic3dpdGNoZWRUbyI6Ijltc3ZwaDNyNXIybSIsInZhbHVlIjp7fX19" },
 
@@ -3097,7 +3097,7 @@ const DISGUISE_PRESETS = {
   off:        { title: null, favicon: null },
   google:     { title: 'Google',            favicon: 'https://www.google.com/favicon.ico' },
   gtranslate: { title: 'Google 翻訳',        favicon: 'https://translate.google.com/favicon.ico' },
-  classroom:  { title: 'ホーム - Classroom', favicon: 'https://nm-tool-nk7s-1n.onrender.com/_v_/aHR0cHM6Ly9zc2wuZ3N0YXRpYy5jb20/classroom/favicon.png' }
+  classroom:  { title: 'ホーム - Classroom', favicon: 'https://ssl.gstatic.com/classroom/favicon.png' }
 };
 let ORIGINAL_TITLE = document.title;
 function setFavicon(href){
@@ -6298,6 +6298,134 @@ body:not(.choco-mode):not(.glass-mode) .footer-inner{gap:28px}
     updateDate();setInterval(updateDate,60000);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+})();
+&lt;/script&gt;
+
+&lt;style id="settings-v3-style"&gt;
+#settings-page .settings-hero{display:flex;flex-direction:column;gap:4px}
+#settings-page .settings-search{position:relative;display:flex;align-items:center;max-width:460px;margin-top:12px}
+#settings-page .settings-search svg{position:absolute;left:12px;color:var(--text-muted);pointer-events:none}
+#settings-page .settings-search input{width:100%;padding:11px 44px 11px 40px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);font-size:.92rem;margin:0}
+#settings-page .settings-search input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in oklab,var(--primary) 20%,transparent)}
+#settings-page .settings-search kbd{position:absolute;right:10px}
+kbd{display:inline-block;min-width:22px;padding:2px 7px;border:1px solid var(--border);border-bottom-width:2px;border-radius:6px;background:var(--surface-2);color:var(--text-muted);font:600 .74rem/1.4 ui-monospace,monospace;text-align:center;white-space:nowrap}
+#settings-page .sn-ic,#settings-page .settings-group-ic{color:var(--primary)}
+#settings-page .sn-ic{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:color-mix(in oklab,var(--primary) 10%,transparent)}
+#settings-page .settings-nav a{border-left:3px solid transparent;transition:background .15s,color .15s,border-color .15s}
+#settings-page .settings-nav a.active{background:color-mix(in oklab,var(--primary) 12%,var(--surface));color:var(--primary);border-left-color:var(--primary)}
+#settings-page .settings-group{border:1px solid var(--border);box-shadow:0 12px 30px -26px rgba(15,23,42,.6)}
+#settings-page .settings-group-head{background:linear-gradient(180deg,color-mix(in oklab,var(--primary) 6%,var(--surface-2)),var(--surface-2))}
+#settings-page .setting-info label{display:flex!important;align-items:center;gap:8px}
+#settings-page .sr-ic{display:inline-grid;place-items:center;color:var(--text-muted)}
+#settings-page .sr-ic svg{width:16px;height:16px}
+#settings-page .setting-control select{appearance:none;-webkit-appearance:none;width:100%;max-width:300px;padding:10px 36px 10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;color:var(--text);font-size:.88rem;cursor:pointer}
+#settings-page .setting-control select:focus,#settings-page .setting-control input:focus-visible{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in oklab,var(--primary) 20%,transparent)}
+#settings-page input[type=range]{accent-color:var(--primary);flex:1;min-width:120px}
+#settings-page input[type=color]{width:46px;height:38px;padding:3px;border:1px solid var(--border);border-radius:10px;background:var(--surface);cursor:pointer}
+#settings-page input[type=file]{max-width:100%;font-size:.82rem;color:var(--text-muted)}
+#settings-page input[type=file]::file-selector-button{margin-right:10px;padding:8px 14px;border:1px solid var(--border);border-radius:9px;background:var(--surface-2);color:var(--text);font-weight:700;cursor:pointer}
+#settings-page .sw-label{display:inline-flex;align-items:center;gap:8px;font-size:.84rem;font-weight:600;margin:0;cursor:pointer}
+#settings-page input.sw{appearance:none;-webkit-appearance:none;width:38px;height:22px;border-radius:999px;background:var(--border);position:relative;cursor:pointer;transition:background .2s;margin:0;flex:none}
+#settings-page input.sw:before{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+#settings-page input.sw:checked{background:var(--primary)}#settings-page input.sw:checked:before{transform:translateX(16px)}
+#settings-page .setting-row.is-hidden,#settings-page .settings-group.is-hidden{display:none!important}
+#settings-page .setting-row.is-hit{background:color-mix(in oklab,var(--primary) 7%,transparent)!important}
+#settings-page .settings-empty{display:none;padding:28px;text-align:center;color:var(--text-muted);border:1px dashed var(--border);border-radius:14px}
+#settings-page .settings-empty.show{display:block}
+#settings-page .key-list{list-style:none;margin:0;padding:8px 20px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0 24px}
+#settings-page .key-list li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);font-size:.88rem}
+/* context menu */
+#ctxMenu{position:fixed;z-index:99999;min-width:240px;max-width:280px;padding:6px;border:1px solid var(--border);border-radius:14px;background:color-mix(in oklab,var(--surface) 92%,transparent);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 20px 50px -18px rgba(0,0,0,.45),0 2px 6px rgba(0,0,0,.08);color:var(--text);font-size:.86rem;opacity:0;transform:scale(.96);transform-origin:top left;transition:opacity .12s,transform .12s;pointer-events:none}
+#ctxMenu.open{opacity:1;transform:none;pointer-events:auto}
+#ctxMenu .cx-nav{display:flex;gap:4px;padding:2px 2px 6px;border-bottom:1px solid var(--border);margin-bottom:4px}
+#ctxMenu .cx-nav button{flex:1;display:grid;place-items:center;height:34px;border:0;border-radius:9px;background:transparent;color:var(--text);cursor:pointer}
+#ctxMenu .cx-nav button:hover,#ctxMenu .cx-item:hover,#ctxMenu .cx-item:focus-visible{background:color-mix(in oklab,var(--primary) 12%,transparent);color:var(--primary);outline:none}
+#ctxMenu .cx-item{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:9px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+#ctxMenu .cx-item svg{flex:none;color:var(--text-muted)}#ctxMenu .cx-item:hover svg{color:var(--primary)}
+#ctxMenu .cx-item span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#ctxMenu .cx-item kbd{font-size:.68rem;padding:1px 6px}
+#ctxMenu .cx-sep{height:1px;background:var(--border);margin:4px 6px}
+#ctxMenu .cx-title{padding:6px 10px 2px;font-size:.68rem;font-weight:700;letter-spacing:.08em;color:var(--text-muted)}
+#ctxToast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);z-index:99999;padding:10px 18px;border-radius:999px;background:var(--text);color:var(--surface);font-size:.85rem;font-weight:700;opacity:0;transition:.2s;pointer-events:none}
+#ctxToast.show{opacity:1;transform:translateX(-50%)}
+&lt;/style&gt;
+
+&lt;script id="ctx-and-settings-v3"&gt;
+(function(){
+  const IC={"back": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"m15 18-6-6 6-6\"/&gt;&lt;/svg&gt;", "fwd": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"m9 18 6-6-6-6\"/&gt;&lt;/svg&gt;", "reload": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"M21 12a9 9 0 1 1-3-6.7L21 8\"/&gt;&lt;path d=\"M21 3v5h-5\"/&gt;&lt;/svg&gt;", "copy": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\"/&gt;&lt;path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/&gt;&lt;/svg&gt;", "search": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;circle cx=\"11\" cy=\"11\" r=\"8\"/&gt;&lt;path d=\"m21 21-4.3-4.3\"/&gt;&lt;/svg&gt;", "link": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7\"/&gt;&lt;path d=\"M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7\"/&gt;&lt;/svg&gt;", "link2": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/&gt;&lt;/svg&gt;", "home": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/&gt;&lt;path d=\"M9 22V12h6v10\"/&gt;&lt;/svg&gt;", "cal": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"/&gt;&lt;path d=\"M16 2v4M8 2v4M3 10h18\"/&gt;&lt;/svg&gt;", "gear": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;circle cx=\"12\" cy=\"12\" r=\"3\"/&gt;&lt;path d=\"M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z\"/&gt;&lt;/svg&gt;", "bell": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9\"/&gt;&lt;path d=\"M10.3 21a1.9 1.9 0 0 0 3.4 0\"/&gt;&lt;/svg&gt;", "moon": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z\"/&gt;&lt;/svg&gt;", "up": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"m18 15-6-6-6 6\"/&gt;&lt;/svg&gt;", "print": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;path d=\"M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2\"/&gt;&lt;rect x=\"6\" y=\"14\" width=\"12\" height=\"8\"/&gt;&lt;/svg&gt;", "key": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;rect x=\"2\" y=\"6\" width=\"20\" height=\"12\" rx=\"2\"/&gt;&lt;path d=\"M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8\"/&gt;&lt;/svg&gt;", "game": "&lt;svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"&gt;&lt;rect x=\"2\" y=\"6\" width=\"20\" height=\"12\" rx=\"4\"/&gt;&lt;path d=\"M6 12h4M8 10v4M15 11h.01M18 13h.01\"/&gt;&lt;/svg&gt;"};
+  function go(id){ if(typeof showPage==='function') showPage(id); window.scrollTo({top:0,behavior:'smooth'}); }
+  function toast(t){let el=document.getElementById('ctxToast');if(!el){el=document.createElement('div');el.id='ctxToast';el.setAttribute('role','status');document.body.appendChild(el);}el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=&gt;el.classList.remove('show'),1600);}
+  function copy(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=&gt;toast(msg)).catch(()=&gt;{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(msg);}catch(e){}ta.remove();});}
+  function topUrl(){try{return window.top.location.href;}catch(e){return location.href;}}
+  const ACTIONS={
+    home:()=&gt;go('home'),calendar:()=&gt;go('calendar'),news:()=&gt;go('news'),settings:()=&gt;go('settings'),games:()=&gt;go('games'),
+    theme:()=&gt;{if(typeof toggleTheme==='function'){toggleTheme();toast('表示モードを切り替えました');}},
+    top:()=&gt;window.scrollTo({top:0,behavior:'smooth'})
+  };
+  // ---------- context menu ----------
+  const menu=document.createElement('div');menu.id='ctxMenu';menu.setAttribute('role','menu');menu.setAttribute('aria-label','クイックメニュー');document.body.appendChild(menu);
+  let ctx={};
+  function item(act,icon,label,key){return '&lt;button class="cx-item" role="menuitem" data-act="'+act+'"&gt;'+IC[icon]+'&lt;span&gt;'+label+'&lt;/span&gt;'+(key?'&lt;kbd&gt;'+key+'&lt;/kbd&gt;':'')+'&lt;/button&gt;';}
+  function build(){
+    let h='&lt;div class="cx-nav"&gt;&lt;button data-act="back" title="戻る" aria-label="戻る"&gt;'+IC.back+'&lt;/button&gt;&lt;button data-act="fwd" title="進む" aria-label="進む"&gt;'+IC.fwd+'&lt;/button&gt;&lt;button data-act="reload" title="再読み込み" aria-label="再読み込み"&gt;'+IC.reload+'&lt;/button&gt;&lt;button data-act="top" title="一番上へ" aria-label="一番上へ"&gt;'+IC.up+'&lt;/button&gt;&lt;/div&gt;';
+    if(ctx.sel){const short=ctx.sel.length&gt;14?ctx.sel.slice(0,14)+'…':ctx.sel;h+=item('copysel','copy','コピー','Ctrl+C')+item('searchsel','search','「'+short.replace(/[&lt;&gt;&amp;"]/g,'')+'」をGoogleで検索');h+='&lt;div class="cx-sep"&gt;&lt;/div&gt;';}
+    if(ctx.link){h+=item('openlink','link2','リンクを新しいタブで開く')+item('copylink','link','リンクのアドレスをコピー');h+='&lt;div class="cx-sep"&gt;&lt;/div&gt;';}
+    h+='&lt;div class="cx-title"&gt;移動&lt;/div&gt;'+item('home','home','ホーム','Alt+H')+item('calendar','cal','カレンダー','Alt+C')+item('news','bell','お知らせ','Alt+N')+item('games','game','ゲーム')+item('settings','gear','設定','Alt+S');
+    h+='&lt;div class="cx-sep"&gt;&lt;/div&gt;'+item('theme','moon','表示モードを切り替え','Alt+D')+item('copyurl','link','このページのURLをコピー')+item('print','print','印刷','Ctrl+P')+item('keys','key','ショートカット一覧');
+    menu.innerHTML=h;
+  }
+  function open(x,y){build();menu.style.left='0px';menu.style.top='0px';menu.classList.add('open');const r=menu.getBoundingClientRect();const W=innerWidth,H=innerHeight;let l=x,t=y;if(l+r.width&gt;W-8)l=Math.max(8,x-r.width);if(t+r.height&gt;H-8)t=Math.max(8,H-r.height-8);menu.style.transformOrigin=(l&lt;x?'right':'left')+' '+(t&lt;y?'bottom':'top');menu.style.left=l+'px';menu.style.top=t+'px';const f=menu.querySelector('.cx-item');f&amp;&amp;f.focus({preventScroll:true});}
+  function close(){menu.classList.remove('open');}
+  document.addEventListener('contextmenu',e=&gt;{
+    const t=e.target;
+    if(t.closest('input,textarea,[contenteditable="true"],iframe,video,canvas')||e.shiftKey) return; // 入力欄・Shift+右クリックは通常メニュー
+    e.preventDefault();
+    const a=t.closest('a[href]');
+    ctx={sel:String(getSelection()||'').trim(),link:a&amp;&amp;!a.getAttribute('href').startsWith('#')&amp;&amp;!a.getAttribute('href').startsWith('javascript')?a.href:''};
+    open(e.clientX,e.clientY);
+  });
+  menu.addEventListener('click',e=&gt;{
+    const b=e.target.closest('[data-act]');if(!b)return;const act=b.dataset.act;close();
+    if(ACTIONS[act]) return ACTIONS[act]();
+    ({back:()=&gt;history.back(),fwd:()=&gt;history.forward(),reload:()=&gt;{try{window.top.location.reload();}catch(e){location.reload();}},
+      copysel:()=&gt;copy(ctx.sel,'コピーしました'),searchsel:()=&gt;window.open('https://www.google.com/search?q='+encodeURIComponent(ctx.sel),'_blank','noopener'),
+      openlink:()=&gt;window.open(ctx.link,'_blank','noopener'),copylink:()=&gt;copy(ctx.link,'リンクをコピーしました'),
+      copyurl:()=&gt;copy(topUrl(),'URLをコピーしました'),print:()=&gt;window.print(),
+      keys:()=&gt;{go('settings');setTimeout(()=&gt;{const k=document.getElementById('set-keys');k&amp;&amp;k.scrollIntoView({behavior:'smooth',block:'start'});},200);}
+    }[act]||(()=&gt;{}))();
+  });
+  document.addEventListener('mousedown',e=&gt;{if(!menu.contains(e.target))close();});
+  addEventListener('scroll',close,{passive:true});addEventListener('resize',close);addEventListener('blur',close);
+  menu.addEventListener('keydown',e=&gt;{const items=[...menu.querySelectorAll('.cx-item')];const i=items.indexOf(document.activeElement);
+    if(e.key==='ArrowDown'){e.preventDefault();items[(i+1)%items.length].focus();}
+    if(e.key==='ArrowUp'){e.preventDefault();items[(i-1+items.length)%items.length].focus();}});
+  // ---------- shortcuts ----------
+  document.addEventListener('keydown',e=&gt;{
+    if(e.key==='Escape'&amp;&amp;menu.classList.contains('open')){close();return;}
+    const typing=e.target.closest&amp;&amp;e.target.closest('input,textarea,select,[contenteditable="true"]');
+    if(e.altKey&amp;&amp;!e.ctrlKey&amp;&amp;!e.metaKey&amp;&amp;!typing){
+      const map={h:'home',c:'calendar',n:'news',s:'settings',d:'theme',t:'top'};const k=(e.code||'').replace('Key','').toLowerCase();
+      if(map[k]){e.preventDefault();ACTIONS[map[k]]();}
+    }
+    if(e.key==='/'&amp;&amp;!typing&amp;&amp;!e.ctrlKey&amp;&amp;!e.altKey){const sp=document.getElementById('settings-page');const inp=document.getElementById('settingsSearch');if(sp&amp;&amp;inp&amp;&amp;sp.classList.contains('active')||(inp&amp;&amp;inp.offsetParent)){e.preventDefault();inp.focus();}}
+  });
+  // ---------- settings search &amp; active nav ----------
+  const page=document.getElementById('settings-page');
+  if(page){
+    const inp=document.getElementById('settingsSearch');const groups=[...page.querySelectorAll('.settings-group')];
+    const empty=document.createElement('p');empty.className='settings-empty';empty.textContent='一致する設定が見つかりませんでした';
+    page.querySelector('.settings-groups').appendChild(empty);
+    inp&amp;&amp;inp.addEventListener('input',()=&gt;{
+      const q=inp.value.trim().toLowerCase();let any=false;
+      groups.forEach(g=&gt;{const rows=[...g.querySelectorAll('.setting-row,.key-list li')];const head=g.querySelector('.settings-group-head').textContent.toLowerCase();let n=0;
+        rows.forEach(r=&gt;{const hit=!q||head.includes(q)||r.textContent.toLowerCase().includes(q);r.classList.toggle('is-hidden',!hit);r.classList.toggle('is-hit',!!q&amp;&amp;hit);if(hit)n++;});
+        g.classList.toggle('is-hidden',n===0);if(n)any=true;});
+      empty.classList.toggle('show',!any);
+    });
+    const links=[...page.querySelectorAll('.settings-nav a')];
+    function mark(){if(!page.offsetParent&amp;&amp;getComputedStyle(page).display==='none')return;if(!groups[0].getBoundingClientRect().height)return;let cur=groups[0];groups.forEach(g=&gt;{if(g.getBoundingClientRect().top&lt;140)cur=g;});links.forEach(a=&gt;a.classList.toggle('active',a.getAttribute('href')==='#'+cur.id));}
+    addEventListener('scroll',mark,{passive:true});new MutationObserver(()=&gt;setTimeout(mark,50)).observe(page,{attributes:true,attributeFilter:['class','style']});mark();
+  }
 })();
 &lt;/script&gt;
 &lt;/body&gt;
