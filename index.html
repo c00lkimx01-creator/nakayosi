@@ -1623,6 +1623,67 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 .shufoo-ad-link:focus-visible { outline:2px solid var(--primary); }
 .shufoo-ad-link img { display:block; width:100%; height:auto; aspect-ratio:300 / 113; }
 @media(max-width:600px) { .shufoo-ad { padding:12px; margin-bottom:20px; } }
+/* Settings v2 */
+#settings-page .settings-hero{margin:0 0 18px;padding:24px 28px;border:1px solid color-mix(in oklab,var(--primary) 18%,var(--border));border-radius:16px;background:linear-gradient(120deg,color-mix(in oklab,var(--primary) 9%,var(--surface)),var(--surface))}
+#settings-page .settings-eyebrow{margin:0 0 2px;color:var(--primary);font-weight:800;font-size:.74rem;letter-spacing:.12em}
+#settings-page .settings-hero h1{margin:0;font-size:1.7rem}
+#settings-page .settings-hero p:last-child{margin:4px 0 0;color:var(--text-muted);font-size:.87rem}
+#settings-page .settings-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;align-items:start}
+#settings-page .settings-nav{position:sticky;top:80px;display:flex;flex-direction:column;gap:4px;padding:8px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+#settings-page .settings-nav a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--text);text-decoration:none;font-weight:700;font-size:.9rem}
+#settings-page .settings-nav a:hover{background:color-mix(in oklab,var(--primary) 10%,var(--surface));color:var(--primary)}
+#settings-page .settings-groups{display:flex;flex-direction:column;gap:16px;min-width:0}
+#settings-page .settings-group{scroll-margin-top:80px;border-radius:16px;overflow:hidden}
+#settings-page .settings-group-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border);background:var(--surface-2)}
+#settings-page .settings-group-ic{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:color-mix(in oklab,var(--primary) 14%,var(--surface));font-size:1.1rem}
+#settings-page .settings-group-head h2{margin:0;font-size:1.05rem}
+#settings-page .settings-group-head p{margin:2px 0 0;color:var(--text-muted);font-size:.78rem}
+#settings-page .settings-group .section-body{display:block;padding:0}
+#settings-page .settings-group .setting-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:18px;align-items:center;padding:18px 20px;margin:0;border:0;border-bottom:1px solid var(--border);border-radius:0;background:transparent;transform:none;box-shadow:none}
+#settings-page .settings-group .setting-row:last-child{border-bottom:0}
+#settings-page .settings-group .setting-row:hover{transform:none;box-shadow:none;background:color-mix(in oklab,var(--primary) 4%,transparent)}
+#settings-page .setting-info label{display:block;font-weight:700;font-size:.95rem;margin:0}
+#settings-page .setting-info .desc{margin:3px 0 0;color:var(--text-muted);font-size:.8rem;line-height:1.6}
+#settings-page .setting-control{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:flex-end;min-width:0}
+#settings-page .setting-control select{margin:0}
+#settings-page .setting-control .btn{margin-left:0!important}
+#settings-page .setting-control input[type=range]{max-width:100%}
+@media(max-width:850px){#settings-page .settings-layout{grid-template-columns:1fr}#settings-page .settings-nav{position:sticky;top:56px;z-index:5;flex-direction:row;overflow-x:auto}#settings-page .settings-nav a{white-space:nowrap}}
+@media(max-width:600px){#settings-page .settings-group .setting-row{grid-template-columns:1fr;gap:10px}#settings-page .setting-control{justify-content:flex-start}}
+/* Calendar v2 — 休日を見やすく */
+#calendar-page{--cal-hol:#d9473b;--cal-sat:#2f6fd0;--cal-rest:#2e9b6a}
+#calendar-page .calendar-grid{border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+#calendar-page .calendar-week span:first-child{color:var(--cal-hol)}
+#calendar-page .calendar-week span:last-child{color:var(--cal-sat)}
+#calendar-page .calendar-day{margin:0;border:0;border-right:1px solid var(--border);border-bottom:1px solid var(--border);min-height:96px;transition:background .15s}
+#calendar-page .calendar-day:nth-child(7n){border-right:0}
+#calendar-page .calendar-day-head{display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:0;max-width:100%}
+#calendar-page .calendar-day .calendar-num{color:var(--text)!important}
+#calendar-page .calendar-day.sun .calendar-num,#calendar-page .calendar-day.holiday .calendar-num{color:var(--cal-hol)!important}
+#calendar-page .calendar-day.sat:not(.holiday) .calendar-num{color:var(--cal-sat)!important}
+#calendar-page .calendar-day.sun,#calendar-page .calendar-day.holiday{background:color-mix(in oklab,var(--cal-hol) 7%,var(--surface))}
+#calendar-page .calendar-day.sat:not(.holiday){background:color-mix(in oklab,var(--cal-sat) 6%,var(--surface))}
+#calendar-page .calendar-day.rest{background:repeating-linear-gradient(135deg,color-mix(in oklab,var(--cal-rest) 10%,var(--surface)) 0 8px,color-mix(in oklab,var(--cal-rest) 4%,var(--surface)) 8px 16px)}
+#calendar-page .calendar-day.outside{opacity:.45}
+#calendar-page .calendar-day.today .calendar-num{background:var(--primary)!important;color:var(--surface)!important}
+#calendar-page .calendar-day.selected{box-shadow:inset 0 0 0 2px var(--primary)}
+#calendar-page .calendar-hol{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.66rem;font-weight:800;color:var(--cal-hol)}
+#calendar-page .calendar-hol.rest{color:var(--cal-rest)}
+#calendar-page .calendar-preview.rest{background:color-mix(in oklab,var(--cal-rest) 18%,var(--surface));color:var(--text)}
+#calendar-page .calendar-dots{display:none;gap:3px;justify-content:center;margin-top:auto}
+#calendar-page .calendar-dots i{width:6px;height:6px;border-radius:50%;background:var(--primary)}
+#calendar-page .calendar-dots i.personal{background:var(--cal-warm)}
+#calendar-page .calendar-dots i.rest{background:var(--cal-rest)}
+#calendar-page .calendar-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:.74rem;color:var(--text-muted)}
+#calendar-page .calendar-legend span{display:inline-flex;align-items:center;gap:6px}
+#calendar-page .calendar-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+#calendar-page .lg-holiday{background:color-mix(in oklab,var(--cal-hol) 35%,var(--surface));border:1px solid var(--cal-hol)}
+#calendar-page .lg-sat{background:color-mix(in oklab,var(--cal-sat) 30%,var(--surface));border:1px solid var(--cal-sat)}
+#calendar-page .lg-rest{background:color-mix(in oklab,var(--cal-rest) 30%,var(--surface));border:1px solid var(--cal-rest)}
+#calendar-page .lg-today{background:var(--primary);border-radius:50%!important}
+#calendar-page .calendar-item.holiday{border-left-color:var(--cal-hol);background:color-mix(in oklab,var(--cal-hol) 7%,var(--surface))}
+#calendar-page .calendar-item.rest{border-left-color:var(--cal-rest)}
+@media(max-width:600px){#calendar-page .calendar-day{min-height:58px;padding:5px 3px;align-items:center}#calendar-page .calendar-day-head{align-items:center;gap:0}#calendar-page .calendar-hol{font-size:.55rem;max-width:100%}#calendar-page .calendar-preview,#calendar-page .calendar-more{display:none}#calendar-page .calendar-dots{display:flex}}
 &lt;/style&gt;
 &lt;style&gt;
 :root{--favorite:oklch(.57 .14 75);--favorite-ink:oklch(.24 .03 65)}
@@ -1921,7 +1982,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;p id="calendarSummary" class="calendar-summary" aria-live="polite"&gt;&lt;/p&gt;
           &lt;div class="calendar-week" aria-hidden="true"&gt;&lt;span&gt;日&lt;/span&gt;&lt;span&gt;月&lt;/span&gt;&lt;span&gt;火&lt;/span&gt;&lt;span&gt;水&lt;/span&gt;&lt;span&gt;木&lt;/span&gt;&lt;span&gt;金&lt;/span&gt;&lt;span&gt;土&lt;/span&gt;&lt;/div&gt;
-          &lt;div class="calendar-grid" id="calendarGrid"&gt;&lt;/div&gt;
+          &lt;div class="calendar-grid" id="calendarGrid" role="grid" aria-label="月のカレンダー（矢印キーで日付を移動）"&gt;&lt;/div&gt;
+          &lt;div class="calendar-legend" aria-hidden="true"&gt;&lt;span&gt;&lt;i class="lg-holiday"&gt;&lt;/i&gt;祝日・日曜&lt;/span&gt;&lt;span&gt;&lt;i class="lg-sat"&gt;&lt;/i&gt;土曜&lt;/span&gt;&lt;span&gt;&lt;i class="lg-rest"&gt;&lt;/i&gt;自分の休み&lt;/span&gt;&lt;span&gt;&lt;i class="lg-today"&gt;&lt;/i&gt;今日&lt;/span&gt;&lt;/div&gt;
         &lt;/div&gt;
         &lt;div class="calendar-side"&gt;
           &lt;div class="section calendar-agenda"&gt;
@@ -1930,7 +1992,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
               &lt;form class="calendar-form" onsubmit="addCalendarMemo(event)"&gt;
                 &lt;input id="calendarMemo" maxlength="80" autocomplete="off" placeholder="予定のタイトル" aria-label="予定のタイトル" required&gt;
                 &lt;input id="calendarTime" type="time" aria-label="予定の時刻"&gt;
-                &lt;select id="calendarCategory" aria-label="予定の種類"&gt;&lt;option value="予定"&gt;予定&lt;/option&gt;&lt;option value="仕事"&gt;仕事&lt;/option&gt;&lt;option value="プライベート"&gt;プライベート&lt;/option&gt;&lt;option value="記念日"&gt;記念日&lt;/option&gt;&lt;/select&gt;
+                &lt;select id="calendarCategory" aria-label="予定の種類"&gt;&lt;option value="予定"&gt;予定&lt;/option&gt;&lt;option value="仕事"&gt;仕事&lt;/option&gt;&lt;option value="プライベート"&gt;プライベート&lt;/option&gt;&lt;option value="記念日"&gt;記念日&lt;/option&gt;&lt;option value="休み"&gt;休み&lt;/option&gt;&lt;/select&gt;
                 &lt;div class="calendar-form-actions"&gt;&lt;button type="submit" id="calendarSubmit"&gt;追加する&lt;/button&gt;&lt;button type="button" id="calendarCancelEdit" onclick="cancelCalendarEdit()" hidden&gt;キャンセル&lt;/button&gt;&lt;/div&gt;
               &lt;/form&gt;
               &lt;div class="calendar-items" id="calendarItems" aria-live="polite"&gt;&lt;/div&gt;
@@ -2024,29 +2086,34 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;/div&gt;
     &lt;/section&gt;
     &lt;section id="settings-page" class="page"&gt;
-      &lt;div class="section"&gt;
-        &lt;div class="section-head"&gt;&lt;h2&gt;⚙️ 詳細設定&lt;/h2&gt;&lt;/div&gt;
-        &lt;div class="section-body"&gt;
-
+      &lt;div class="settings-hero"&gt;&lt;p class="settings-eyebrow"&gt;SETTINGS&lt;/p&gt;&lt;h1&gt;設定&lt;/h1&gt;&lt;p&gt;変更はすぐに反映され、このブラウザに保存されます。&lt;/p&gt;&lt;/div&gt;
+      &lt;div class="settings-layout"&gt;
+        &lt;nav class="settings-nav" aria-label="設定の項目"&gt;
+          &lt;a href="#set-look" onclick="event.preventDefault();document.getElementById('set-look').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span aria-hidden="true"&gt;🎨&lt;/span&gt;見た目&lt;/a&gt;
+          &lt;a href="#set-bg" onclick="event.preventDefault();document.getElementById('set-bg').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span aria-hidden="true"&gt;🖼️&lt;/span&gt;背景&lt;/a&gt;
+          &lt;a href="#set-clock" onclick="event.preventDefault();document.getElementById('set-clock').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span aria-hidden="true"&gt;🕒&lt;/span&gt;時計とタブ&lt;/a&gt;
+          &lt;a href="#set-weather" onclick="event.preventDefault();document.getElementById('set-weather').scrollIntoView({behavior:'smooth',block:'start'})"&gt;&lt;span aria-hidden="true"&gt;📍&lt;/span&gt;天気の地域&lt;/a&gt;
+        &lt;/nav&gt;
+        &lt;div class="settings-groups"&gt;
+        &lt;div class="section settings-group" id="set-look"&gt;
+          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic" aria-hidden="true"&gt;🎨&lt;/span&gt;&lt;div&gt;&lt;h2&gt;見た目&lt;/h2&gt;&lt;p&gt;色・表示モード・文字のスタイル&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="section-body"&gt;
           &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;🎨 テーマカラー&lt;/label&gt;
             &lt;div class="desc"&gt;メインカラーを好きな色に変更できます。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;input type="color" id="primary-color-picker" value="#0b5fa5" onchange="changePrimaryColor(this.value)"&gt;
             &lt;button class="btn ghost" onclick="resetPrimaryColor()" style="margin-left:8px"&gt;デフォルトに戻す&lt;/button&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-
           &lt;div class="setting-row"&gt;
-            &lt;label&gt;🕒 時刻の表示形式&lt;/label&gt;
-            &lt;div class="desc"&gt;ヘッダー時計を「24時間表示（通常）」または「AM/PM表示」に切り替えます。&lt;/div&gt;
-            &lt;select id="clock-format-select" onchange="changeClockFormat(this.value)"&gt;
-              &lt;option value="24"&gt;24時間表示（通常タイプ）&lt;/option&gt;
-              &lt;option value="ampm"&gt;AM/PM表示（PMタイプ）&lt;/option&gt;
-            &lt;/select&gt;
-          &lt;/div&gt;
-
-          &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;🌓 表示モード&lt;/label&gt;
             &lt;div class="desc"&gt;ライト／ダーク／チョコ／ハロウィンなどを切り替えます。10月31日はハロウィン、3月9日はミク、2月14日はチョコ、3月14日はホワイトチョコ、2月22日はILoveCATに自動で切り替わり、翌日には元に戻ります。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;button class="btn" onclick="toggleTheme()"&gt;モードを切り替える&lt;/button&gt;
             &lt;select id="site-theme-select" aria-label="表示スタイル" onchange="setSiteTheme(this.value)"&gt;
               &lt;option value="auto"&gt;デバイスに合わせる&lt;/option&gt;
@@ -2061,22 +2128,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
               &lt;option value="ppg"&gt;パワパフ 💥&lt;/option&gt;
               &lt;option value="cat"&gt;ILoveCAT 🐱&lt;/option&gt;
             &lt;/select&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-
           &lt;div class="setting-row"&gt;
-            &lt;label&gt;🕵️ 偽装モード（タブのタイトル・アイコン）&lt;/label&gt;
-            &lt;div class="desc"&gt;ブラウザタブに表示されるページタイトルとファビコンを別のサイトに偽装します。授業中などにこっそり使いたいときに便利です。&lt;/div&gt;
-            &lt;select id="disguise-select" onchange="changeDisguise(this.value)"&gt;
-              &lt;option value="off"&gt;オフ（通常表示）&lt;/option&gt;
-              &lt;option value="google"&gt;Google&lt;/option&gt;
-              &lt;option value="gtranslate"&gt;Google 翻訳&lt;/option&gt;
-              &lt;option value="classroom"&gt;ホーム - Classroom&lt;/option&gt;
-            &lt;/select&gt;
-          &lt;/div&gt;
-
-          &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;🅰️ サイトフォント&lt;/label&gt;
             &lt;div class="desc"&gt;サイト全体の日本語フォントを変更できます。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;select id="font-select" onchange="changeFont(this.value)"&gt;
               &lt;option value="'Noto Sans JP',sans-serif"&gt;Noto Sans JP（標準・ゴシック）&lt;/option&gt;
               &lt;option value="'M PLUS Rounded 1c',sans-serif"&gt;M PLUS Rounded 1c（丸ゴシック）&lt;/option&gt;
@@ -2089,69 +2148,134 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
               &lt;option value="'DotGothic16',monospace"&gt;DotGothic16（ドット・ピクセル）&lt;/option&gt;
               &lt;option value="system-ui,-apple-system,sans-serif"&gt;システム標準&lt;/option&gt;
             &lt;/select&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-
           &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;🔤 文字の大きさ&lt;/label&gt;
             &lt;div class="desc"&gt;本文の文字サイズを調整します。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;span class="muted"&gt;小&lt;/span&gt;
             &lt;input type="range" min="13" max="20" value="15" oninput="changeFontSize(this.value)"&gt;
             &lt;span class="muted"&gt;大&lt;/span&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="section settings-group" id="set-bg"&gt;
+          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic" aria-hidden="true"&gt;🖼️&lt;/span&gt;&lt;div&gt;&lt;h2&gt;背景&lt;/h2&gt;&lt;p&gt;背景の模様や画像&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="section-body"&gt;
           &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;✨ 背景パターン&lt;/label&gt;
             &lt;div class="desc"&gt;サイト背景に模様を表示します。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;select onchange="changeBackgroundPattern(this.value)"&gt;
               &lt;option value="none"&gt;なし（無地）&lt;/option&gt;
               &lt;option value="dots"&gt;水玉ドット&lt;/option&gt;
               &lt;option value="grid"&gt;方眼グリッド&lt;/option&gt;
             &lt;/select&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-
           &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;🖼️ 背景画像（GIF対応）&lt;/label&gt;
             &lt;div class="desc"&gt;お好きな画像やGIFアニメを背景に設定できます。画像は端末内に保存されます（〜3MBまで推奨）。&lt;/div&gt;
+              &lt;label style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem"&gt;
+              &lt;label style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem"&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;input type="file" id="bg-image-input" accept="image/*,image/gif" onchange="onBgImageSelected(event)"&gt;
             &lt;div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"&gt;
               &lt;button class="btn ghost" onclick="clearBgImage()"&gt;背景画像を削除&lt;/button&gt;
-              &lt;label style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem"&gt;
                 &lt;input type="checkbox" id="bg-image-fixed" onchange="toggleBgFixed(this.checked)" checked&gt;
                 スクロールしても固定
               &lt;/label&gt;
-              &lt;label style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem"&gt;
                 不透明度
                 &lt;input type="range" id="bg-image-opacity" min="20" max="100" value="100" oninput="changeBgOpacity(this.value)"&gt;
                 &lt;span id="bg-image-opacity-val" class="muted"&gt;100%&lt;/span&gt;
               &lt;/label&gt;
             &lt;/div&gt;
             &lt;div id="bg-image-preview" style="margin-top:10px"&gt;&lt;/div&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="section settings-group" id="set-clock"&gt;
+          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic" aria-hidden="true"&gt;🕒&lt;/span&gt;&lt;div&gt;&lt;h2&gt;時計とタブ&lt;/h2&gt;&lt;p&gt;時刻の表示とタブの偽装&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="section-body"&gt;
           &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
+            &lt;label&gt;🕒 時刻の表示形式&lt;/label&gt;
+            &lt;div class="desc"&gt;ヘッダー時計を「24時間表示（通常）」または「AM/PM表示」に切り替えます。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
+            &lt;select id="clock-format-select" onchange="changeClockFormat(this.value)"&gt;
+              &lt;option value="24"&gt;24時間表示（通常タイプ）&lt;/option&gt;
+              &lt;option value="ampm"&gt;AM/PM表示（PMタイプ）&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
+            &lt;label&gt;🕵️ 偽装モード（タブのタイトル・アイコン）&lt;/label&gt;
+            &lt;div class="desc"&gt;ブラウザタブに表示されるページタイトルとファビコンを別のサイトに偽装します。授業中などにこっそり使いたいときに便利です。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
+            &lt;select id="disguise-select" onchange="changeDisguise(this.value)"&gt;
+              &lt;option value="off"&gt;オフ（通常表示）&lt;/option&gt;
+              &lt;option value="google"&gt;Google&lt;/option&gt;
+              &lt;option value="gtranslate"&gt;Google 翻訳&lt;/option&gt;
+              &lt;option value="classroom"&gt;ホーム - Classroom&lt;/option&gt;
+            &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="section settings-group" id="set-weather"&gt;
+          &lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic" aria-hidden="true"&gt;📍&lt;/span&gt;&lt;div&gt;&lt;h2&gt;天気の地域&lt;/h2&gt;&lt;p&gt;天気予報・警報を表示する地域&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class="section-body"&gt;
+          &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;📍 天気の地域（都道府県）&lt;/label&gt;
             &lt;div class="desc"&gt;天気予報に使用する地域を選択します。Yahoo!天気リンクにも反映されます。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;select id="wxPref" onchange="onWxPrefChange(this.value)"&gt;&lt;option value=""&gt;▼ 都道府県を選択&lt;/option&gt;&lt;/select&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-
           &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;🏙️ 天気の地域（市区町村）&lt;/label&gt;
             &lt;div class="desc"&gt;より詳しい予報のため、地域内のエリアを選びます。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;select id="wxCity" onchange="onWxCityChange(this.value)"&gt;&lt;option value=""&gt;▼ 地域を選択&lt;/option&gt;&lt;/select&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-
           &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;🏘️ 天気の地域（市区町村・詳細）&lt;/label&gt;
             &lt;div class="desc"&gt;例：大阪府 → 東大阪市。警報・注意報はこの市区町村の情報を表示します。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;select id="wxTown" onchange="onWxTownChange(this.value)"&gt;&lt;option value=""&gt;▼ 市区町村を選択&lt;/option&gt;&lt;/select&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-
           &lt;div class="setting-row"&gt;
+            &lt;div class="setting-info"&gt;
             &lt;label&gt;📡 位置情報から自動設定&lt;/label&gt;
             &lt;div class="desc"&gt;端末の位置情報を使って、お住まいの地域を自動で選びます。&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="setting-control"&gt;
             &lt;button type="button" class="btn" onclick="requestGeoLocation(true)"&gt;現在地から設定する&lt;/button&gt;
             &lt;span id="geoStatus" class="muted" style="margin-left:10px;font-size:.78rem"&gt;&lt;/span&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/section&gt;
@@ -2793,22 +2917,54 @@ function loadCalendarMemos(){try{const data=JSON.parse(localStorage.getItem(CALE
 function calendarEntry(x){return typeof x==='string'?{title:x,time:'',category:'予定',done:false}:x &amp;&amp; typeof x==='object'?{title:String(x.title||''),time:String(x.time||''),category:String(x.category||'予定'),done:!!x.done}:{title:'',time:'',category:'予定',done:false}}
 function saveCalendarMemos(all){try{localStorage.setItem(CALENDAR_KEY,JSON.stringify(all));return true}catch(e){alert('予定を保存できませんでした。ブラウザの保存設定を確認してください。');return false}}
 function calendarNews(key){return NEWS.filter(n=&gt;n.date.replaceAll('/','-')===key)}
+// 日本の祝日（振替休日・国民の休日を含む）
+const _holidayCache={};
+function jpHolidays(y){
+  if(_holidayCache[y])return _holidayCache[y];
+  const h={},k=(m,d)=&gt;y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+  const nthMon=(m,n)=&gt;{const f=new Date(y,m-1,1).getDay();return 1+((8-f)%7)+(n-1)*7};
+  const spring=Math.floor(20.8431+0.242194*(y-1980)-Math.floor((y-1980)/4));
+  const autumn=Math.floor(23.2488+0.242194*(y-1980)-Math.floor((y-1980)/4));
+  h[k(1,1)]='元日';h[k(1,nthMon(1,2))]='成人の日';h[k(2,11)]='建国記念の日';
+  if(y&gt;=2020)h[k(2,23)]='天皇誕生日';
+  h[k(3,spring)]='春分の日';h[k(4,29)]='昭和の日';h[k(5,3)]='憲法記念日';h[k(5,4)]='みどりの日';h[k(5,5)]='こどもの日';
+  if(y===2020){h[k(7,23)]='海の日';h[k(7,24)]='スポーツの日';h[k(8,10)]='山の日'}
+  else if(y===2021){h[k(7,22)]='海の日';h[k(7,23)]='スポーツの日';h[k(8,8)]='山の日'}
+  else{h[k(7,nthMon(7,3))]='海の日';h[k(8,11)]='山の日';h[k(10,nthMon(10,2))]='スポーツの日'}
+  h[k(9,nthMon(9,3))]='敬老の日';h[k(9,autumn)]='秋分の日';h[k(11,3)]='文化の日';h[k(11,23)]='勤労感謝の日';
+  // 国民の休日（祝日に挟まれた平日）
+  for(let d=new Date(y,0,2);d.getFullYear()===y;d.setDate(d.getDate()+1)){
+    const p=new Date(d),n=new Date(d);p.setDate(d.getDate()-1);n.setDate(d.getDate()+1);
+    if(!h[calendarKey(d)]&amp;&amp;d.getDay()!==0&amp;&amp;h[calendarKey(p)]&amp;&amp;h[calendarKey(n)])h[calendarKey(d)]='国民の休日';
+  }
+  // 振替休日
+  Object.keys(h).sort().forEach(key=&gt;{const d=new Date(key+'T00:00:00');if(d.getDay()!==0)return;const n=new Date(d);do{n.setDate(n.getDate()+1)}while(h[calendarKey(n)]);if(n.getFullYear()===y)h[calendarKey(n)]='振替休日'});
+  return _holidayCache[y]=h;
+}
+function jpHoliday(key){return jpHolidays(Number(key.slice(0,4)))[key]||''}
 function renderCalendar(){
   const grid=document.getElementById('calendarGrid');if(!grid)return;
   const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),today=calendarKey(new Date()),selected=calendarKey(calendarSelected),memos=loadCalendarMemos();
   document.getElementById('calendarTitle').textContent=y+'年 '+(m+1)+'月';
-  const monthCount=Object.entries(memos).filter(([key])=&gt;key.startsWith(y+'-'+String(m+1).padStart(2,'0')+'-')).reduce((sum,[,items])=&gt;sum+(Array.isArray(items)?items.length:0),0);
-  document.getElementById('calendarSummary').textContent='今月の予定 '+monthCount+'件';
-  grid.innerHTML=Array.from({length:42},(_,i)=&gt;{const d=new Date(start);d.setDate(start.getDate()+i);const key=calendarKey(d),news=calendarNews(key),items=Array.isArray(memos[key])?memos[key].map(calendarEntry):[];
-    const preview=[...items.map(x=&gt;({title:x.title,personal:true})),...news.map(n=&gt;({title:n.title,personal:false}))];
-    const labels=preview.slice(0,2).map(x=&gt;'&lt;span class="calendar-preview'+(x.personal?' personal':'')+'"&gt;'+safeText(x.title)+'&lt;/span&gt;').join('');
-    return `&lt;button type="button" class="calendar-day${d.getMonth()!==m?' outside':''}${key===today?' today':''}${key===selected?' selected':''}" onclick="selectCalendarDate('${key}')" aria-label="${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日、予定${items.length}件、お知らせ${news.length}件" aria-pressed="${key===selected}"&gt;&lt;span class="calendar-num"&gt;${d.getDate()}&lt;/span&gt;${labels}${preview.length&gt;2?'&lt;span class="calendar-more"&gt;ほか '+(preview.length-2)+' 件&lt;/span&gt;':''}&lt;/button&gt;`}).join('');
+  const prefix=y+'-'+String(m+1).padStart(2,'0')+'-';
+  const monthCount=Object.entries(memos).filter(([key])=&gt;key.startsWith(prefix)).reduce((sum,[,items])=&gt;sum+(Array.isArray(items)?items.length:0),0);
+  const days=new Date(y,m+1,0).getDate();let offCount=0;
+  for(let i=1;i&lt;=days;i++){const d=new Date(y,m,i),key=calendarKey(d),it=Array.isArray(memos[key])?memos[key].map(calendarEntry):[];if(d.getDay()===0||d.getDay()===6||jpHoliday(key)||it.some(x=&gt;x.category==='休み'))offCount++}
+  document.getElementById('calendarSummary').textContent='今月の予定 '+monthCount+'件 ・ お休み '+offCount+'日';
+  const weeks=Math.ceil((first.getDay()+days)/7);
+  grid.innerHTML=Array.from({length:weeks*7},(_,i)=&gt;{const d=new Date(start);d.setDate(start.getDate()+i);const key=calendarKey(d),news=calendarNews(key),items=Array.isArray(memos[key])?memos[key].map(calendarEntry):[],hol=jpHoliday(key),rest=items.some(x=&gt;x.category==='休み'),dow=d.getDay();
+    const preview=[...items.map(x=&gt;({title:x.title,cls:x.category==='休み'?' rest':' personal'})),...news.map(n=&gt;({title:n.title,cls:''}))];
+    const labels=preview.slice(0,2).map(x=&gt;'&lt;span class="calendar-preview'+x.cls+'"&gt;'+safeText(x.title)+'&lt;/span&gt;').join('');
+    const dots=preview.length?'&lt;span class="calendar-dots" aria-hidden="true"&gt;'+preview.slice(0,3).map(x=&gt;'&lt;i class="'+x.cls.trim()+'"&gt;&lt;/i&gt;').join('')+'&lt;/span&gt;':'';
+    const cls=(d.getMonth()!==m?' outside':'')+(key===today?' today':'')+(key===selected?' selected':'')+(dow===0?' sun':'')+(dow===6?' sat':'')+(hol?' holiday':'')+(rest?' rest':'');
+    return `&lt;button type="button" class="calendar-day${cls}" data-key="${key}" tabindex="${key===selected?0:-1}" onclick="selectCalendarDate('${key}')" aria-label="${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日${hol?'、'+hol:''}${rest?'、お休み':''}、予定${items.length}件" aria-pressed="${key===selected}"&gt;&lt;span class="calendar-day-head"&gt;&lt;span class="calendar-num"&gt;${d.getDate()}&lt;/span&gt;${hol?'&lt;span class="calendar-hol"&gt;'+hol+'&lt;/span&gt;':(rest?'&lt;span class="calendar-hol rest"&gt;休み&lt;/span&gt;':'')}&lt;/span&gt;${labels}${preview.length&gt;2?'&lt;span class="calendar-more"&gt;+'+(preview.length-2)+'&lt;/span&gt;':''}${dots}&lt;/button&gt;`}).join('');
+  if(!grid.dataset.kb){grid.dataset.kb='1';grid.addEventListener('keydown',e=&gt;{const step={ArrowLeft:-1,ArrowRight:1,ArrowUp:-7,ArrowDown:7}[e.key];if(!step)return;e.preventDefault();const d=new Date(calendarSelected);d.setDate(d.getDate()+step);selectCalendarDate(calendarKey(d));grid.querySelector('[data-key="'+calendarKey(d)+'"]')?.focus()})}
   renderCalendarItems();renderCalendarUpcoming();
 }
 function renderCalendarItems(){
   const key=calendarKey(calendarSelected),all=loadCalendarMemos(),items=Array.isArray(all[key])?all[key].map(calendarEntry):[],news=calendarNews(key),d=calendarSelected;
   document.getElementById('calendarSelectedTitle').textContent=`${d.getMonth()+1}月${d.getDate()}日（${'日月火水木金土'[d.getDay()]}）の予定`;
-  document.getElementById('calendarItems').innerHTML=[...news.map(n=&gt;`&lt;div class="calendar-item news"&gt;&lt;div class="calendar-item-content"&gt;&lt;span class="calendar-item-title"&gt;${safeText(n.title)}&lt;/span&gt;&lt;small class="calendar-item-meta"&gt;お知らせ&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;`),...items.map((x,i)=&gt;`&lt;div class="calendar-item${x.done?' done':''}"&gt;&lt;div class="calendar-item-content"&gt;&lt;span class="calendar-item-title"&gt;${safeText(x.title)}&lt;/span&gt;&lt;small class="calendar-item-meta"&gt;${x.time?safeText(x.time)+' · ':''}${safeText(x.category)}&lt;/small&gt;&lt;/div&gt;&lt;button type="button" onclick="toggleCalendarMemo(${i})" aria-label="${x.done?'未完了に戻す':'完了にする'}" title="${x.done?'未完了に戻す':'完了にする'}"&gt;${x.done?'↶':'✓'}&lt;/button&gt;&lt;button type="button" onclick="editCalendarMemo(${i})" aria-label="予定を編集" title="編集"&gt;✎&lt;/button&gt;&lt;button type="button" onclick="removeCalendarMemo(${i})" aria-label="予定を削除" title="削除"&gt;×&lt;/button&gt;&lt;/div&gt;`)].join('')||'&lt;div class="calendar-empty"&gt;この日の予定はありません&lt;/div&gt;';
+  const _hol=jpHoliday(key);document.getElementById('calendarItems').innerHTML=[...(_hol?[`&lt;div class="calendar-item holiday"&gt;&lt;div class="calendar-item-content"&gt;&lt;span class="calendar-item-title"&gt;🎌 ${_hol}&lt;/span&gt;&lt;small class="calendar-item-meta"&gt;祝日&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;`]:[]),...news.map(n=&gt;`&lt;div class="calendar-item news"&gt;&lt;div class="calendar-item-content"&gt;&lt;span class="calendar-item-title"&gt;${safeText(n.title)}&lt;/span&gt;&lt;small class="calendar-item-meta"&gt;お知らせ&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;`),...items.map((x,i)=&gt;`&lt;div class="calendar-item${x.done?' done':''}${x.category==='休み'?' rest':''}"&gt;&lt;div class="calendar-item-content"&gt;&lt;span class="calendar-item-title"&gt;${safeText(x.title)}&lt;/span&gt;&lt;small class="calendar-item-meta"&gt;${x.time?safeText(x.time)+' · ':''}${safeText(x.category)}&lt;/small&gt;&lt;/div&gt;&lt;button type="button" onclick="toggleCalendarMemo(${i})" aria-label="${x.done?'未完了に戻す':'完了にする'}" title="${x.done?'未完了に戻す':'完了にする'}"&gt;${x.done?'↶':'✓'}&lt;/button&gt;&lt;button type="button" onclick="editCalendarMemo(${i})" aria-label="予定を編集" title="編集"&gt;✎&lt;/button&gt;&lt;button type="button" onclick="removeCalendarMemo(${i})" aria-label="予定を削除" title="削除"&gt;×&lt;/button&gt;&lt;/div&gt;`)].join('')||'&lt;div class="calendar-empty"&gt;この日の予定はありません&lt;/div&gt;';
 }
 function renderCalendarUpcoming(){
   const box=document.getElementById('calendarUpcoming');if(!box)return;
