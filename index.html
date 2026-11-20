@@ -2905,7 +2905,7 @@ function eventBannerHtml(e){
   const live = e.status==='live';
   const cta = e.type==='movie'?(live?'今すぐ観る':'もう一度観る'):(live?'イベントに参加':'もう一度遊ぶ');
   return `&lt;article class="evx${live?' is-live':' is-ended'}"&gt;
-    &lt;div class="evx-bg" style="background-image:url('${e.img}')"&gt;&lt;/div&gt;
+    &lt;div class="evx-bg" style="background-image:url('${e.img}')"&gt;&lt;/div&gt;&lt;i class="evx-ring" aria-hidden="true"&gt;&lt;/i&gt;
     &lt;div class="evx-grid"&gt;
       &lt;div class="evx-poster"&gt;&lt;div class="evx-poster-inner"&gt;&lt;img loading="lazy" decoding="async" src="${e.img}" alt="${safeText(e.name)}"&gt;&lt;/div&gt;&lt;span class="evx-stamp"&gt;${live?'NOW ON':'ARCHIVE'}&lt;/span&gt;&lt;/div&gt;
       &lt;div class="evx-body"&gt;
@@ -6491,9 +6491,9 @@ html body #home-page .home-quick a svg{width:42px!important;height:42px!importan
 /* ===== イベント（全面リデザイン） ===== */
 .ao-banner{display:none!important}
 .evx{container-type:inline-size;min-width:0;position:relative;margin:0 0 22px;border-radius:26px;overflow:hidden;isolation:isolate;color:#f8fafc;background:#060b1d;box-shadow:0 30px 60px -36px color-mix(in oklab,var(--primary) 80%,#000);border:1px solid rgba(255,255,255,.08)}
-.evx::before{content:"";position:absolute;inset:0;padding:1.5px;border-radius:inherit;background:conic-gradient(from var(--evx-a,0deg),#38bdf8,#2563eb,#a5f3fc,#1d4ed8,#38bdf8);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:3;pointer-events:none;animation:evxSpin 6s linear infinite}
-@property --evx-a{syntax:'&lt;angle&gt;';inherits:false;initial-value:0deg}
-@keyframes evxSpin{to{--evx-a:360deg}}
+.evx-ring{position:absolute;inset:0;padding:1.5px;border-radius:inherit;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:3;pointer-events:none}
+.evx-ring::before{content:"";position:absolute;inset:-200%;background:conic-gradient(from 0deg,#38bdf8,#2563eb,#a5f3fc,#1d4ed8,#38bdf8);animation:evxSpin 6s linear infinite}
+@keyframes evxSpin{to{transform:rotate(360deg)}}
 .evx-bg{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(38px) saturate(1.4) brightness(.55);transform:scale(1.1);z-index:-2}
 .evx::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 80% 0%,rgba(56,189,248,.35),transparent 50%),radial-gradient(circle at 0% 100%,rgba(37,99,235,.4),transparent 55%),linear-gradient(180deg,rgba(6,11,29,.2),rgba(6,11,29,.75));background-image:radial-gradient(circle at 80% 0%,rgba(56,189,248,.35),transparent 50%),radial-gradient(circle at 0% 100%,rgba(37,99,235,.4),transparent 55%),repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 28px),linear-gradient(180deg,rgba(6,11,29,.2),rgba(6,11,29,.78))}
 .evx-grid{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:34px;align-items:center;padding:30px 34px 22px}
@@ -6520,12 +6520,12 @@ html body #home-page .home-quick a svg{width:42px!important;height:42px!importan
 .evx-marquee span{display:inline-block;animation:evxMarquee 40s linear infinite}
 @keyframes evxMarquee{to{transform:translateX(-50%)}}
 .evx.is-ended{filter:saturate(.35)}
-.evx.is-ended::before{animation:none;background:rgba(148,163,184,.4)}
+.evx.is-ended .evx-ring::before{animation:none;background:rgba(148,163,184,.4)}
 .evx.is-ended .evx-status{background:rgba(100,116,139,.25);border-color:rgba(148,163,184,.5);color:#cbd5e1}
 .evx.is-ended .evx-status i{background:#94a3b8;animation:none}
 .evx.is-ended .evx-stamp{background:#475569;box-shadow:none}
 @container(max-width:620px){.evx-grid{grid-template-columns:minmax(0,1fr);gap:24px;padding:24px}.evx-poster{width:100%;max-width:300px;margin:0 auto}.evx-title{font-size:32px!important}.evx-kicker{letter-spacing:0}.evx-btn{max-width:100%}}
-@media(prefers-reduced-motion:reduce){.evx::before,.evx-status i,.evx-marquee span{animation:none}.evx-poster-inner{transition:none}}
+@media(prefers-reduced-motion:reduce){.evx-ring::before,.evx-status i,.evx-marquee span{animation:none}.evx-poster-inner{transition:none}}
 @media(max-width:720px){.evx-grid{grid-template-columns:1fr;gap:26px;padding:22px 20px 18px}.evx-poster{max-width:280px}}
 
 /* ===== ゲーム ===== */
@@ -6563,6 +6563,8 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
 &lt;div class="nk-aurora" aria-hidden="true"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
 &lt;link rel="stylesheet" href="/minecraft-search.css"&gt;
 &lt;script src="/minecraft-search.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="/touch-ripple.css"&gt;
+&lt;script src="/touch-ripple.js"&gt;&lt;/script&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
