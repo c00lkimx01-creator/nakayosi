@@ -1,0 +1,4 @@
+/* タップ/クリックした場所にサイトカラーの青い波紋を表示する（見た目のみ・操作には影響なし） */
+.touch-ripple{position:fixed;z-index:130;pointer-events:none;border-radius:50%;opacity:.85;transform:translate(-50%,-50%) scale(0);background:radial-gradient(circle,color-mix(in oklab,var(--primary) 60%,transparent) 0%,color-mix(in oklab,var(--primary) 28%,transparent) 45%,transparent 72%);animation:touchRipple .75s ease-out forwards}
+.touch-ripple::after{content:"";position:absolute;inset:38%;border-radius:50%;border:2px solid color-mix(in oklab,var(--primary) 75%,#fff)}
+@media(prefers-reduced-motion:reduce){.touch-ripple{display:none}}
