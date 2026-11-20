@@ -2286,16 +2286,16 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
   &lt;!-- ───── サイドバー ───── --&gt;
   &lt;aside class="aside"&gt;
     &lt;div class="widget"&gt;
-      &lt;div class="widget-head"&gt;📊 サイト情報&lt;/div&gt;
+      &lt;div class="widget-head"&gt;&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/&gt;&lt;/svg&gt;サイト情報&lt;/div&gt;
       &lt;div class="widget-body"&gt;
         &lt;div class="site-today" id="siteToday"&gt;今日の日付を読み込み中…&lt;/div&gt;
-        &lt;div class="site-wx" id="siteWx" onclick="showPage&amp;&amp;showPage('weather')" style="cursor:pointer;margin:8px 0;padding:10px 12px;border-radius:12px;background:rgba(56,189,248,.12);font-size:.9em;line-height:1.5"&gt;🌤 天気を読み込み中…&lt;/div&gt;
+        &lt;div class="site-wx" id="siteWx" onclick="showPage&amp;&amp;showPage('weather')" style="cursor:pointer;margin:8px 0;padding:10px 12px;border-radius:12px;background:rgba(56,189,248,.12);font-size:.9em;line-height:1.5"&gt;&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="8.5" cy="8" r="3.2"/&gt;&lt;path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/&gt;&lt;/svg&gt;天気を読み込み中…&lt;/div&gt;
         &lt;div class="site-clock" id="siteClock" style="margin:0 0 8px;font-size:.85em;opacity:.8"&gt;&lt;/div&gt;
         &lt;div class="stat-grid"&gt;&lt;div class="stat-row stat-tile"&gt;&lt;span&gt;登録リンク数&lt;/span&gt;&lt;span id="linkCount"&gt;—&lt;/span&gt;&lt;/div&gt;
         &lt;div class="stat-row stat-tile"&gt;&lt;span&gt;登録ゲーム数&lt;/span&gt;&lt;span id="gameStat"&gt;—&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
         &lt;div class="stat-row stat-owner"&gt;&lt;span&gt;運営者&lt;/span&gt;&lt;span&gt;2a_exe&lt;/span&gt;&lt;/div&gt;
         &lt;div class="site-omikuji-box"&gt;
-          &lt;button type="button" class="site-omikuji-btn" id="siteOmikujiBtn" onclick="drawSiteOmikuji()"&gt;🎋 おみくじを引く&lt;/button&gt;
+          &lt;button type="button" class="site-omikuji-btn" id="siteOmikujiBtn" onclick="drawSiteOmikuji()"&gt;&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M5 21c0-9 5-15 15-16-1 10-7 15-15 16ZM5 21l8-8"/&gt;&lt;/svg&gt;おみくじを引く&lt;/button&gt;
           &lt;div class="site-omikuji-result" id="siteOmikujiResult" aria-live="polite"&gt;&lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
@@ -2303,7 +2303,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
 
     &lt;div class="widget"&gt;
-      &lt;div class="widget-head"&gt;📅 最近の更新&lt;/div&gt;
+      &lt;div class="widget-head"&gt;&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="3" y="5" width="18" height="16" rx="2"/&gt;&lt;path d="M16 3v4M8 3v4M3 10h18"/&gt;&lt;/svg&gt;最近の更新&lt;/div&gt;
       &lt;div class="widget-body"&gt;&lt;ul id="recentNews"&gt;&lt;/ul&gt;&lt;/div&gt;
     &lt;/div&gt;
   &lt;/aside&gt;
@@ -2664,7 +2664,7 @@ function renderNews(){
   document.getElementById('newsListHome').innerHTML = html;
   document.getElementById('newsListAll').innerHTML = html;
   document.getElementById('recentNews').innerHTML =
-    NEWS.slice(0,4).map(n=&gt;`&lt;li class="rn-item"&gt;&lt;div class="rn-meta"&gt;&lt;span class="rn-date"&gt;${n.date}&lt;/span&gt;&lt;span class="rn-cat${n.cat==='更新'?' update':''}"&gt;${n.cat}&lt;/span&gt;&lt;/div&gt;&lt;div class="rn-title"&gt;${n.title}&lt;/div&gt;&lt;/li&gt;`).join('');
+    NEWS.slice(0,4).map(n=&gt;`&lt;li class="rn-item"&gt;&lt;span class="rn-ico"&gt;${n.cat==='更新'?'&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4Z"/&gt;&lt;/svg&gt;':'&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M3 11a8 8 0 0 1 16 0v5l2 3H1l2-3v-5Z"/&gt;&lt;path d="M10 21h4"/&gt;&lt;/svg&gt;'}&lt;/span&gt;&lt;div class="rn-meta"&gt;&lt;span class="rn-date"&gt;${n.date}&lt;/span&gt;&lt;span class="rn-cat${n.cat==='更新'?' update':''}"&gt;${n.cat}&lt;/span&gt;&lt;/div&gt;&lt;div class="rn-title"&gt;${n.title}&lt;/div&gt;&lt;/li&gt;`).join('');
 }
 
 // 通知（お知らせ）
@@ -2884,7 +2884,7 @@ function renderGames(homeOnly){
           &lt;span class="cg-hero-badge"&gt;FEATURED&lt;/span&gt;
           &lt;h3&gt;${h.name}&lt;/h3&gt;
           &lt;p&gt;いま人気のゲーム。今すぐプレイ。&lt;/p&gt;
-          &lt;button class="cg-hero-play"&gt;▶ プレイ&lt;/button&gt;
+          &lt;button class="cg-hero-play"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M8 5v14l11-7z"/&gt;&lt;/svg&gt;プレイ&lt;/button&gt;
         &lt;/div&gt;
       &lt;/div&gt;`;
   }
@@ -2903,8 +2903,23 @@ function filterGamesByTag(tag){
 // イベント描画
 function eventBannerHtml(e){
   const live = e.status==='live';
-  return `&lt;div class="ao-banner${live?'':' ev-ended'}"&gt;&lt;div class="ao-banner-media"&gt;&lt;img loading="lazy" decoding="async" src="${e.img}" alt="${safeText(e.name)}" loading="lazy" decoding="async"&gt;&lt;/div&gt;&lt;div class="ao-content"&gt;&lt;span class="tag"&gt;${live?'EVENT 開催中':'EVENT 終了'}&lt;/span&gt;&lt;p class="ao-kicker"&gt;${safeText(e.kicker)}&lt;/p&gt;&lt;h2&gt;${e.icon} ${safeText(e.name)}&lt;/h2&gt;&lt;p&gt;${safeText(e.desc)}&lt;/p&gt;&lt;ul class="ao-meta"&gt;${e.meta.map(m=&gt;`&lt;li&gt;${safeText(m)}&lt;/li&gt;`).join('')}&lt;/ul&gt;&lt;a class="ao-btn" href="${e.url}" target="_blank" rel="noopener"&gt;&lt;span&gt;${e.type==='movie'?(live?'今すぐ観る':'もう一度観る'):(live?'イベントに参加':'もう一度遊ぶ')}&lt;/span&gt;&lt;span aria-hidden="true"&gt;→&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;`;
+  const cta = e.type==='movie'?(live?'今すぐ観る':'もう一度観る'):(live?'イベントに参加':'もう一度遊ぶ');
+  return `&lt;article class="evx${live?' is-live':' is-ended'}"&gt;
+    &lt;div class="evx-bg" style="background-image:url('${e.img}')"&gt;&lt;/div&gt;
+    &lt;div class="evx-grid"&gt;
+      &lt;div class="evx-poster"&gt;&lt;div class="evx-poster-inner"&gt;&lt;img loading="lazy" decoding="async" src="${e.img}" alt="${safeText(e.name)}"&gt;&lt;/div&gt;&lt;span class="evx-stamp"&gt;${live?'NOW ON':'ARCHIVE'}&lt;/span&gt;&lt;/div&gt;
+      &lt;div class="evx-body"&gt;
+        &lt;div class="evx-top"&gt;&lt;span class="evx-status"&gt;&lt;i&gt;&lt;/i&gt;${live?'開催中':'終了'}&lt;/span&gt;&lt;span class="evx-kicker"&gt;${safeText(e.kicker||'EVENT')}&lt;/span&gt;&lt;/div&gt;
+        &lt;h2 class="evx-title"&gt;${safeText(e.name)}&lt;/h2&gt;
+        &lt;p class="evx-desc"&gt;${safeText(e.desc)}&lt;/p&gt;
+        &lt;ul class="evx-meta"&gt;${(e.meta||[]).map(m=&gt;`&lt;li&gt;${safeText(m)}&lt;/li&gt;`).join('')}&lt;/ul&gt;
+        &lt;a class="evx-btn" href="${e.url}" target="_blank" rel="noopener"&gt;&lt;span&gt;${cta}&lt;/span&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M5 12h14M13 6l6 6-6 6"/&gt;&lt;/svg&gt;&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="evx-marquee" aria-hidden="true"&gt;&lt;span&gt;${(safeText(e.kicker||'EVENT')+' ✦ '+safeText(e.name)+' ✦ ').repeat(8)}&lt;/span&gt;&lt;/div&gt;
+  &lt;/article&gt;`;
 }
+
 function renderEvents(){
   const live = EVENTS.filter(e=&gt;e.status==='live'), past = EVENTS.filter(e=&gt;e.status!=='live');
   const more = `&lt;a class="more ev-more" href="javascript:void(0)" onclick="showPage('events')"&gt;終了したイベントも見る（${past.length}件） ›&lt;/a&gt;`;
@@ -5208,15 +5223,15 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
   (function(){
     var el=document.getElementById('siteToday');if(!el)return;
     var d=new Date(),w=['日','月','火','水','木','金','土'][d.getDay()];
-    el.textContent='📅 '+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+w+'）';
+    el.innerHTML='&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="3" y="5" width="18" height="16" rx="2"/&gt;&lt;path d="M16 3v4M8 3v4M3 10h18"/&gt;&lt;/svg&gt;'+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+w+'）';
   })();
   // サイト情報ウィジェット：時計＋天気
   (function(){
     var ck=document.getElementById('siteClock');
-    function tick(){if(ck){var d=new Date();ck.textContent='🕒 現在 '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');}}
+    function tick(){if(ck){var d=new Date();ck.innerHTML='&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="9"/&gt;&lt;path d="M12 7v5l3 2"/&gt;&lt;/svg&gt;現在 '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0');}}
     tick();setInterval(tick,1000);
     var el=document.getElementById('siteWx');if(!el)return;
-    function ico(c){c=String(c||'');var h=c[0];return h==='1'?'☀️':h==='2'?'☁️':h==='3'?'☔':h==='4'?'⛄':'🌤';}
+    function ico(c){c=String(c||'');var h=c[0];return h==='1'?'&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="4"/&gt;&lt;path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/&gt;&lt;/svg&gt;':h==='2'?'&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M17 19H8a5 5 0 1 1 1-9.9A6 6 0 0 1 20 12a3.5 3.5 0 0 1-3 7Z"/&gt;&lt;/svg&gt;':h==='3'?'&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M17 15H8a5 5 0 1 1 1-9.9A6 6 0 0 1 20 8a3.5 3.5 0 0 1-3 7Z"/&gt;&lt;path d="M8 18l-1 3M12 18l-1 3M16 18l-1 3"/&gt;&lt;/svg&gt;':h==='4'?'&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M12 2v20M4 6l16 12M20 6 4 18"/&gt;&lt;/svg&gt;':'&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="8.5" cy="8" r="3.2"/&gt;&lt;path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/&gt;&lt;/svg&gt;';}
     async function load(){
       try{
         var pref=(typeof WX_PREF!=='undefined'&amp;&amp;WX_PREF)||'';
@@ -5232,8 +5247,8 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
         var t=sh.timeSeries[2]&amp;&amp;sh.timeSeries[2].areas[0].temps||[];
         var hi=t[1]||t[0],lo=t[0];
         el.innerHTML='&lt;b&gt;'+ico(a.weatherCodes&amp;&amp;a.weatherCodes[0])+' '+a.area.name+'の天気&lt;/b&gt;&lt;br&gt;'+w+
-          '&lt;br&gt;🌡 '+(hi?hi+'℃':'—')+(lo&amp;&amp;lo!==hi?' / '+lo+'℃':'')+(pop!=null?'　☂ 降水確率 '+pop+'%':'');
-      }catch(e){el.textContent='🌤 天気を取得できませんでした';}
+          '&lt;br&gt;&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0Z"/&gt;&lt;/svg&gt;'+(hi?hi+'℃':'—')+(lo&amp;&amp;lo!==hi?' / '+lo+'℃':'')+(pop!=null?' &lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M12 3a9 9 0 0 1 9 9H3a9 9 0 0 1 9-9ZM12 12v7a2 2 0 0 0 4 0"/&gt;&lt;/svg&gt;降水確率 '+pop+'%':'');
+      }catch(e){el.innerHTML='&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="8.5" cy="8" r="3.2"/&gt;&lt;path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/&gt;&lt;/svg&gt;天気を取得できませんでした';}
     }
     load();setInterval(load,30*60*1000);
   })();
@@ -5257,7 +5272,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
       var f=SITE_OMIKUJI[saved.idx];
       box.innerHTML='&lt;span class="site-omikuji-rank '+f.c+'"&gt;'+f.r+'&lt;/span&gt;&lt;span class="site-omikuji-msg"&gt;'+f.m+'&lt;/span&gt;';
       box.className='site-omikuji-result show';
-      btn.disabled=true;btn.textContent='本日は引き終わりました 🌙';
+      btn.disabled=true;btn.innerHTML='&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/&gt;&lt;/svg&gt;本日は引き終わりました';
     }
   }
   window.drawSiteOmikuji=function(){
@@ -5270,7 +5285,7 @@ body.glass-mode #search-app&gt;footer{background:rgba(5,22,35,.48);backdrop-filt
     box.className='site-omikuji-result';
     box.innerHTML='&lt;span class="site-omikuji-rank '+f.c+'"&gt;'+f.r+'&lt;/span&gt;&lt;span class="site-omikuji-msg"&gt;'+f.m+'&lt;/span&gt;';
     requestAnimationFrame(function(){requestAnimationFrame(function(){box.className='site-omikuji-result show';});});
-    btn.disabled=true;btn.textContent='本日は引き終わりました 🌙';
+    btn.disabled=true;btn.innerHTML='&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/&gt;&lt;/svg&gt;本日は引き終わりました';
   };
   loadSiteOmikujiState();
 })();
@@ -6297,8 +6312,8 @@ body:not(.choco-mode):not(.glass-mode) .footer-inner{gap:28px}
     function updateDate(){
       var el=document.getElementById('siteToday');if(!el)return;
       var d=new Date(),w=['日','月','火','水','木','金','土'][d.getDay()];
-      var text='📅 '+d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+w+'）';
-      if(el.textContent!==text)el.textContent=text;
+      var text=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日（'+w+'）';
+      if(el.textContent!==text)el.innerHTML='&lt;svg class="nk-ico " viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="3" y="5" width="18" height="16" rx="2"/&gt;&lt;path d="M16 3v4M8 3v4M3 10h18"/&gt;&lt;/svg&gt;'+text;
     }
     updateDate();setInterval(updateDate,60000);
   }
@@ -6433,6 +6448,115 @@ kbd{display:inline-block;min-width:22px;padding:2px 7px;border:1px solid var(--b
   }
 })();
 &lt;/script&gt;
+&lt;style id="nk-redesign-2026"&gt;/* ===== 動くブルーグラデーション背景 ===== */
+.nk-aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:linear-gradient(120deg,color-mix(in oklab,var(--primary) 10%,var(--bg)),var(--bg) 45%,color-mix(in oklab,var(--primary) 14%,var(--bg)));background-size:300% 300%;animation:nkAuroraShift 18s ease-in-out infinite}
+.nk-aurora i{position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(70px);opacity:.38;background:radial-gradient(circle,var(--primary) 0%,transparent 65%);animation:nkBlob 22s ease-in-out infinite alternate}
+.nk-aurora i:nth-child(1){top:-20vmax;left:-15vmax}
+.nk-aurora i:nth-child(2){bottom:-25vmax;right:-15vmax;animation-duration:27s;animation-delay:-6s;background:radial-gradient(circle,color-mix(in oklab,var(--primary) 70%,#38bdf8) 0%,transparent 65%)}
+.nk-aurora i:nth-child(3){top:30%;left:35%;width:45vmax;height:45vmax;opacity:.22;animation-duration:31s;animation-delay:-12s}
+body.dark-mode .nk-aurora i{opacity:.32}
+@keyframes nkAuroraShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes nkBlob{0%{transform:translate(0,0) scale(1)}50%{transform:translate(12vw,8vh) scale(1.15)}100%{transform:translate(-8vw,14vh) scale(.92)}}
+@media (prefers-reduced-motion:reduce){.nk-aurora,.nk-aurora i{animation:none}}
+html,body{background-color:transparent!important}
+html{background:var(--bg)}
+
+/* ===== SVGアイコン共通 ===== */
+.nk-ico{width:1.05em;height:1.05em;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.16em;margin-right:.35em}
+.aside .widget-head .nk-ico{width:18px;height:18px;color:var(--primary);margin:0}
+.aside .widget-head::before{display:none!important}
+#siteWx .nk-ico{color:var(--primary)}
+.site-omikuji-btn .nk-ico{margin-right:.4em}
+#recentNews .rn-item,.home-info-news .rn-item{position:relative;padding-left:48px!important}
+.rn-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:color-mix(in oklab,var(--primary) 14%,transparent);color:var(--primary)}
+.rn-ico .nk-ico{margin:0;width:15px;height:15px}
+
+/* ===== クイックアクセス ===== */
+html body #home-page .home-quick{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+html body #home-page .home-quick a{--qc:var(--primary);position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:10px;min-height:118px;padding:16px!important;border-radius:18px!important;border:1px solid color-mix(in oklab,var(--qc) 30%,var(--border))!important;background:linear-gradient(160deg,color-mix(in oklab,var(--qc) 16%,var(--surface)),var(--surface) 70%)!important;color:var(--text)!important;font-weight:800;font-size:.95rem;overflow:hidden;isolation:isolate;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,border-color .25s;box-shadow:0 10px 24px -20px var(--qc)}
+html body #home-page .home-quick a:nth-child(1){--qc:#f43f5e}
+html body #home-page .home-quick a:nth-child(2){--qc:#0ea5e9}
+html body #home-page .home-quick a:nth-child(3){--qc:#22c55e}
+html body #home-page .home-quick a:nth-child(4){--qc:#f59e0b}
+html body #home-page .home-quick a:nth-child(5){--qc:#6366f1}
+html body #home-page .home-quick a::before{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--qc);opacity:.14;z-index:-1;transition:transform .4s,opacity .3s}
+html body #home-page .home-quick a::after{content:"→";position:absolute;right:14px;bottom:14px;font-size:1rem;color:var(--qc);opacity:0;transform:translateX(-6px);transition:.25s}
+html body #home-page .home-quick a:hover{transform:translateY(-4px);border-color:var(--qc)!important;box-shadow:0 18px 30px -18px var(--qc)}
+html body #home-page .home-quick a:hover::before{transform:scale(1.6);opacity:.22}
+html body #home-page .home-quick a:hover::after{opacity:1;transform:none}
+html body #home-page .home-quick a svg{width:42px!important;height:42px!important;padding:10px;border-radius:13px;background:var(--qc);stroke:#fff!important;color:#fff;fill:none;stroke-width:2;box-shadow:0 8px 16px -8px var(--qc);margin:0!important}
+@media(max-width:700px){html body #home-page .home-quick{grid-template-columns:repeat(2,1fr)}html body #home-page .home-quick a{min-height:96px}}
+
+/* ===== イベント（全面リデザイン） ===== */
+.ao-banner{display:none!important}
+.evx{position:relative;margin:0 0 22px;border-radius:26px;overflow:hidden;isolation:isolate;color:#f8fafc;background:#060b1d;box-shadow:0 30px 60px -36px color-mix(in oklab,var(--primary) 80%,#000);border:1px solid rgba(255,255,255,.08)}
+.evx::before{content:"";position:absolute;inset:0;padding:1.5px;border-radius:inherit;background:conic-gradient(from var(--evx-a,0deg),#38bdf8,#2563eb,#a5f3fc,#1d4ed8,#38bdf8);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;z-index:3;pointer-events:none;animation:evxSpin 6s linear infinite}
+@property --evx-a{syntax:'&lt;angle&gt;';inherits:false;initial-value:0deg}
+@keyframes evxSpin{to{--evx-a:360deg}}
+.evx-bg{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(38px) saturate(1.4) brightness(.55);transform:scale(1.1);z-index:-2}
+.evx::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 80% 0%,rgba(56,189,248,.35),transparent 50%),radial-gradient(circle at 0% 100%,rgba(37,99,235,.4),transparent 55%),linear-gradient(180deg,rgba(6,11,29,.2),rgba(6,11,29,.75));background-image:radial-gradient(circle at 80% 0%,rgba(56,189,248,.35),transparent 50%),radial-gradient(circle at 0% 100%,rgba(37,99,235,.4),transparent 55%),repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 28px),linear-gradient(180deg,rgba(6,11,29,.2),rgba(6,11,29,.78))}
+.evx-grid{display:grid;grid-template-columns:minmax(200px,300px) 1fr;gap:34px;align-items:center;padding:30px 34px 22px}
+.evx-poster{position:relative;perspective:900px}
+.evx-poster-inner{aspect-ratio:4/3;border-radius:20px;overflow:hidden;background:#fff;transform:rotate(-4deg) rotateY(8deg);box-shadow:0 26px 40px -18px rgba(0,0,0,.8),0 0 0 6px rgba(255,255,255,.08);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.evx:hover .evx-poster-inner{transform:rotate(0) rotateY(0) scale(1.03)}
+.evx-poster img{width:100%;height:100%;object-fit:cover;display:block}
+.evx-stamp{position:absolute;right:-10px;bottom:-12px;padding:7px 14px;border-radius:10px;background:linear-gradient(135deg,#38bdf8,#2563eb);color:#fff;font-weight:900;font-size:.72rem;letter-spacing:.2em;transform:rotate(6deg);box-shadow:0 10px 20px -8px #2563eb}
+.evx-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:12px}
+.evx-status{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;background:rgba(239,68,68,.18);border:1px solid rgba(248,113,113,.5);color:#fecaca;font-size:.75rem;font-weight:800}
+.evx-status i{width:8px;height:8px;border-radius:50%;background:#f87171;box-shadow:0 0 0 0 rgba(248,113,113,.7);animation:evxPulse 1.6s infinite}
+@keyframes evxPulse{70%{box-shadow:0 0 0 8px rgba(248,113,113,0)}100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}}
+.evx-kicker{font-size:.72rem;font-weight:800;letter-spacing:.28em;color:#a5f3fc}
+.evx-title{margin:0 0 8px!important;font-size:clamp(2rem,4.4vw,3.2rem)!important;line-height:1!important;font-weight:900!important;letter-spacing:-.02em;color:#fff!important;background:linear-gradient(90deg,#fff 30%,#a5f3fc 70%,#60a5fa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.evx-desc{margin:0 0 14px!important;color:rgba(226,232,240,.9)!important;font-size:.95rem;line-height:1.6}
+.evx-meta{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px!important;padding:0!important}
+.evx-meta li{padding:5px 12px;border-radius:8px;font-size:.78rem;font-weight:700;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px)}
+.evx-btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:14px;font-weight:900;color:#06142e!important;text-decoration:none!important;background:linear-gradient(135deg,#a5f3fc,#38bdf8 50%,#3b82f6);background-size:200% 100%;box-shadow:0 14px 28px -12px #38bdf8;transition:background-position .4s,transform .2s}
+.evx-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.evx-btn:hover{background-position:100% 0;transform:translateY(-2px)}
+.evx-btn:hover svg{transform:translateX(4px)}
+.evx-marquee{overflow:hidden;white-space:nowrap;border-top:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.25);padding:8px 0;font-size:.7rem;font-weight:800;letter-spacing:.3em;color:rgba(165,243,252,.65)}
+.evx-marquee span{display:inline-block;animation:evxMarquee 40s linear infinite}
+@keyframes evxMarquee{to{transform:translateX(-50%)}}
+.evx.is-ended{filter:saturate(.35)}
+.evx.is-ended::before{animation:none;background:rgba(148,163,184,.4)}
+.evx.is-ended .evx-status{background:rgba(100,116,139,.25);border-color:rgba(148,163,184,.5);color:#cbd5e1}
+.evx.is-ended .evx-status i{background:#94a3b8;animation:none}
+.evx.is-ended .evx-stamp{background:#475569;box-shadow:none}
+@media(max-width:720px){.evx-grid{grid-template-columns:1fr;gap:26px;padding:22px 20px 18px}.evx-poster{max-width:280px}}
+
+/* ===== ゲーム ===== */
+.cg-side{background:color-mix(in oklab,var(--surface) 82%,transparent)!important;backdrop-filter:blur(14px);border-radius:20px!important}
+.cg-cat{border-radius:12px!important;gap:8px}
+.cg-cat.active{background:linear-gradient(135deg,var(--primary),color-mix(in oklab,var(--primary) 60%,#38bdf8))!important;box-shadow:0 10px 20px -12px var(--primary)}
+.cg-chip{border-radius:12px!important;background:color-mix(in oklab,var(--surface) 85%,transparent)!important;backdrop-filter:blur(8px)}
+.cg-chip.active{background:var(--primary)!important;color:#fff!important;box-shadow:0 8px 18px -10px var(--primary)}
+.cg-hero-card{min-height:300px!important;border-radius:26px!important}
+.cg-hero-card::after{background:linear-gradient(90deg,rgba(4,10,30,.95) 0%,rgba(10,40,90,.55) 55%,transparent 100%),radial-gradient(circle at 0 100%,color-mix(in oklab,var(--primary) 60%,transparent),transparent 60%)!important}
+.cg-hero-body h3{font-size:2.6rem!important;font-weight:900!important;letter-spacing:-.02em}
+.cg-hero-badge{background:linear-gradient(90deg,#38bdf8,#2563eb)!important;border-radius:8px!important}
+.cg-hero-play{display:inline-flex;align-items:center;gap:8px;padding:12px 26px!important;background:#fff!important;color:#0b1a3a!important}
+.cg-hero-play svg{width:16px;height:16px;fill:currentColor}
+.cg-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))!important;gap:16px!important}
+html body .game-grid .game-card.gc-wide{display:flex!important;flex-direction:column;height:auto!important;border-radius:20px!important;background:var(--surface)!important;color:var(--text)!important;border:1px solid var(--border)!important;box-shadow:0 14px 30px -24px rgba(15,23,42,.7);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s!important;contain:none}
+html body .game-grid .game-card.gc-wide:hover{transform:translateY(-6px)!important;border-color:var(--primary)!important;box-shadow:0 24px 40px -22px var(--primary)}
+html body .game-card.gc-wide .gc-media{aspect-ratio:16/10;height:auto!important;border-radius:0}
+html body .game-card.gc-wide .gc-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+html body .game-card.gc-wide:hover .gc-media img{transform:scale(1.08)}
+html body .game-card.gc-wide .gc-media::after{background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.45))!important}
+html body .game-card.gc-wide .gc-body{position:relative;padding:12px 14px 14px!important;display:flex;flex-direction:column;gap:4px;background:none!important}
+html body .game-card.gc-wide .gc-tag{position:absolute;top:-170%;left:12px}
+html body .game-card.gc-wide .gc-tag{top:auto;bottom:calc(100% + 10px);padding:3px 9px;border-radius:7px;font-size:.66rem;font-weight:900;letter-spacing:.12em;background:linear-gradient(90deg,#f97316,#ef4444);color:#fff;border:0}
+html body .game-card.gc-wide .gc-tag-plain{background:rgba(15,23,42,.7);backdrop-filter:blur(6px)}
+html body .game-card.gc-wide .gc-kicker{margin:0!important;font-size:.65rem;font-weight:800;letter-spacing:.18em;color:var(--primary)!important}
+html body .game-card.gc-wide .gc-title{margin:0!important;font-size:1rem!important;font-weight:800;color:var(--text)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html body .game-card.gc-wide .gc-meta{display:none!important}
+html body .game-card.gc-wide .gc-btn{position:absolute;right:12px;bottom:calc(100% - 18px);width:40px;height:40px;padding:0!important;border-radius:50%!important;display:grid!important;place-items:center;background:var(--primary)!important;color:#fff!important;font-size:0;box-shadow:0 8px 18px -6px var(--primary);transform:scale(.7);opacity:0;transition:.25s}
+html body .game-card.gc-wide .gc-btn span:last-child{font-size:1rem}
+html body .game-card.gc-wide .gc-btn span:first-child{display:none}
+html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
+@media(max-width:600px){.cg-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}.cg-hero-body h3{font-size:1.6rem!important}html body .game-card.gc-wide .gc-btn{opacity:1;transform:scale(.85)}}
+&lt;/style&gt;
+&lt;div class="nk-aurora" aria-hidden="true"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
