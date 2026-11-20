@@ -1,0 +1,13 @@
+:root{--mine-stone:#858585;--mine-stone-light:#a2a2a2;--mine-stone-dark:#686868;--mine-earth:#352c22;--mine-earth-light:#4c4030;--mine-ore:#58ded5;--mine-gold:#eac447;--mine-red:#d64a43;--mine-skin:#a46f50;--mine-skin-light:#b8815f;--mine-skin-dark:#805238;--mine-shadow:#211d18}
+.mine-band{margin:0 0 24px;min-width:0}
+.mine-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px;color:var(--text)}
+.mine-toolbar h2{margin:0!important;font-size:24px!important;letter-spacing:0!important}
+.mine-count{margin-right:auto;font-variant-numeric:tabular-nums;color:var(--text-muted)}
+.mine-toolbar .icon-btn{flex:none;width:44px;height:44px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:6px;display:grid;place-items:center}
+.mine-toolbar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2}
+.mine-board{display:block;width:100%;height:288px;image-rendering:pixelated;touch-action:pan-y;cursor:crosshair}
+#mine-effects{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:140;image-rendering:pixelated}
+body.mine-active .mine-toolbar,body.mine-active .header,body.mine-active .header-search,body.mine-active .gnav,body.mine-active .mnav{position:relative;z-index:141}
+body.mine-active .header-search{position:relative}
+@media(max-width:880px){.mine-board{height:224px}body.mine-active>.header-search{position:fixed}.mine-toolbar h2{font-size:20px!important}.mine-count{font-size:12px}}
+@media(prefers-reduced-motion:reduce){#mine-effects{image-rendering:pixelated}}
