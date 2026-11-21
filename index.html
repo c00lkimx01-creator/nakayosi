@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -2275,7 +2274,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;/div&gt;
           &lt;/div&gt;
         &lt;/div&gt;
-        &lt;div class="section settings-group" id="set-keys"&gt;&lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;rect x="2" y="6" width="20" height="12" rx="2"/&gt;&lt;path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;div&gt;&lt;h2&gt;ショートカット&lt;/h2&gt;&lt;p&gt;キーボードと右クリックメニューで素早く操作&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="section-body"&gt;&lt;ul class="key-list"&gt;&lt;li&gt;&lt;span&gt;専用メニューを開く&lt;/span&gt;&lt;kbd&gt;右クリック&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;ホームへ&lt;/span&gt;&lt;kbd&gt;Alt + H&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;カレンダーへ&lt;/span&gt;&lt;kbd&gt;Alt + C&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;お知らせへ&lt;/span&gt;&lt;kbd&gt;Alt + N&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;設定へ&lt;/span&gt;&lt;kbd&gt;Alt + S&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;表示モードを切り替える&lt;/span&gt;&lt;kbd&gt;Alt + D&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;ページの一番上へ&lt;/span&gt;&lt;kbd&gt;Alt + T&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;設定ページで検索欄にフォーカス&lt;/span&gt;&lt;kbd&gt;/&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;メニューを閉じる&lt;/span&gt;&lt;kbd&gt;Esc&lt;/kbd&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;div class="section settings-group" id="set-keys"&gt;&lt;div class="settings-group-head"&gt;&lt;span class="settings-group-ic"&gt;&lt;svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;rect x="2" y="6" width="20" height="12" rx="2"/&gt;&lt;path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;div&gt;&lt;h2&gt;ショートカット&lt;/h2&gt;&lt;p&gt;キーボードと右クリックメニューで素早く操作&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="section-body"&gt;&lt;ul class="key-list"&gt;&lt;li&gt;&lt;span&gt;専用メニューを開く&lt;/span&gt;&lt;kbd&gt;右クリック&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;ホームへ&lt;/span&gt;&lt;kbd&gt;Alt + H&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;リンクへ&lt;/span&gt;&lt;kbd&gt;Alt + L&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;カレンダーへ&lt;/span&gt;&lt;kbd&gt;Alt + C&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;お知らせへ&lt;/span&gt;&lt;kbd&gt;Alt + N&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;設定へ&lt;/span&gt;&lt;kbd&gt;Alt + S&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;表示モードを切り替える&lt;/span&gt;&lt;kbd&gt;Alt + D&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;ページの一番上へ&lt;/span&gt;&lt;kbd&gt;Alt + T&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;設定ページで検索欄にフォーカス&lt;/span&gt;&lt;kbd&gt;/&lt;/kbd&gt;&lt;/li&gt;&lt;li&gt;&lt;span&gt;メニューを閉じる&lt;/span&gt;&lt;kbd&gt;Esc&lt;/kbd&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;/div&gt;
       &lt;/div&gt;
     &lt;/section&gt;
@@ -3376,6 +3375,41 @@ async function onWxCityChange(v){
   buildWxTownOptions(WX_TOWNS, '');
   fetchWeather(true);
 }
+
+function wxKindOf(text, code){
+  const t = String(text||'');
+  if(/雨|雷|にわか/.test(t)) return 'rain';
+  if(/曇|くもり|雪/.test(t)) return 'cloudy';
+  if(/晴/.test(t)) return 'clear';
+  const c = String(code||'');
+  if(/^3/.test(c)) return 'rain';
+  if(/^[24]/.test(c)) return 'cloudy';
+  return 'clear';
+}
+function ensureWxFx(sec){
+  if(sec.querySelector(':scope &gt; .wx-fx')) return;
+  const fx = document.createElement('div');
+  fx.className = 'wx-fx';
+  fx.setAttribute('aria-hidden', 'true');
+  let clouds = '', drops = '';
+  for(let i=0;i&lt;5;i++){
+    const w = 260 + Math.round(Math.random()*200);
+    clouds += '&lt;i style="--t:'+(4+i*19+Math.round(Math.random()*6))+'%;--w:'+w+'px;--d:'+(60+Math.round(Math.random()*40))+'s;--dl:-'+Math.round(Math.random()*70)+'s"&gt;&lt;/i&gt;';
+  }
+  for(let i=0;i&lt;60;i++){
+    drops += '&lt;i style="--x:'+(Math.random()*100).toFixed(2)+'%;--h:'+(14+Math.round(Math.random()*22))+'px;--o:'+(0.25+Math.random()*0.5).toFixed(2)+';--d:'+(1.6+Math.random()*1.1).toFixed(2)+'s;--dl:-'+(Math.random()*2.6).toFixed(2)+'s"&gt;&lt;/i&gt;';
+  }
+  fx.innerHTML = '&lt;div class="wx-clouds"&gt;'+clouds+'&lt;/div&gt;&lt;div class="wx-drops"&gt;'+drops+'&lt;/div&gt;';
+  sec.appendChild(fx);
+}
+function applyWxKind(text, code){
+  const pg = document.getElementById('weather-page');
+  if(!pg) return;
+  const sec = pg.querySelector(':scope &gt; .section');
+  if(sec) ensureWxFx(sec);
+  pg.dataset.wx = wxKindOf(text, code);
+}
+
 async function fetchWeather(force){
   const locEl = document.getElementById('wxLoc');
   const todayEl = document.getElementById('wxToday');
@@ -3429,6 +3463,7 @@ async function fetchWeather(force){
     if(todayEl){
       const today = weathers[0] || '—';
       const todayCode = codes[0];
+      applyWxKind(today, todayCode);
       // 明日の天気（timeSeries[0]の2件目 = 翌日分。無い/空の場合は週間予報から補完）
       let tmrwText = weathers[1] || '';
       let tmrwCode = codes[1] || '';
@@ -3497,6 +3532,7 @@ async function fetchWeather(force){
       }).join('');
     }
   }catch(e){
+    applyWxKind('', '');
     if(todayEl) todayEl.innerHTML = '&lt;div class="wx-empty"&gt;天気情報を取得できませんでした。時間をおいて再度お試しください。&lt;/div&gt;';
     if(weekEl) weekEl.innerHTML = '';
   }
@@ -6051,6 +6087,23 @@ html body.cat-mode ::selection{background:#d4a63a;color:#1a1206}
 #weather-page h3{color:#fff}
 #weather-page .wx-week&gt;*{background:rgba(255,255,255,.9)!important;color:#0a2a5a!important;border-radius:18px!important;border:none!important}
 #weather-page .wx-actions button,#weather-page .wx-actions a{background:#fff!important;color:#1e6bff!important;border-radius:999px!important;font-weight:800;border:none!important}
+/* ===== 天気によって変わる背景（晴れ=従来の青 / 曇り / 雨）===== */
+html body #weather-page[data-wx] &gt; .section{position:relative}
+html body #weather-page[data-wx] &gt; .section &gt; :not(.wx-fx){position:relative;z-index:1}
+html body #weather-page[data-wx="cloudy"] &gt; .section{background:linear-gradient(170deg,#55667a 0%,#7d8fa3 60%,#a9b7c6 100%)!important;box-shadow:0 24px 60px -24px rgba(60,76,96,.85)!important}
+html body #weather-page[data-wx="rain"] &gt; .section{background:linear-gradient(170deg,#152238 0%,#2a3e5b 55%,#4b6482 100%)!important;box-shadow:0 24px 60px -24px rgba(8,14,28,.9)!important}
+.wx-fx{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;display:none}
+#weather-page[data-wx="cloudy"] .wx-fx,#weather-page[data-wx="rain"] .wx-fx{display:block}
+#weather-page[data-wx="rain"] .wx-clouds{display:none}
+#weather-page[data-wx="cloudy"] .wx-drops{display:none}
+.wx-clouds i{position:absolute;left:-520px;top:var(--t);width:var(--w);height:calc(var(--w)*.28);border-radius:999px;background:rgba(255,255,255,.28);filter:blur(12px);animation:wxDrift var(--d) linear var(--dl) infinite}
+.wx-clouds i:nth-child(odd){background:rgba(255,255,255,.18)}
+@keyframes wxDrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(2400px,0,0)}}
+.wx-drops i{position:absolute;top:-90px;left:var(--x);width:1.5px;height:var(--h);border-radius:2px;background:linear-gradient(rgba(214,234,255,0),rgba(214,234,255,.95));opacity:var(--o);animation:wxFall var(--d) linear var(--dl) infinite;will-change:transform}
+@keyframes wxFall{from{transform:translate3d(0,0,0)}to{transform:translate3d(-90px,1800px,0)}}
+html body #weather-page[data-wx="cloudy"] .wx-today .txt h3,html body #weather-page[data-wx="rain"] .wx-today .txt h3,html body #weather-page[data-wx="cloudy"] .wx-today .txt p,html body #weather-page[data-wx="rain"] .wx-today .txt p,html body #weather-page[data-wx="cloudy"] .wx-today .txt .temps,html body #weather-page[data-wx="rain"] .wx-today .txt .temps{color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.35)}
+html body #weather-page[data-wx="cloudy"] .wx-today .hi,html body #weather-page[data-wx="rain"] .wx-today .hi{color:#ffd0dc!important}
+html body #weather-page[data-wx="cloudy"] .wx-today .lo,html body #weather-page[data-wx="rain"] .wx-today .lo{color:#cfe8ff!important}
 #xmasCountdown{margin:0 0 18px;border-radius:24px;padding:22px 24px;background:linear-gradient(135deg,#0d5c2e,#b3122e);color:#fff;text-align:center;box-shadow:0 18px 40px -18px rgba(179,18,46,.8);position:relative;overflow:hidden}
 #xmasCountdown .xc-t{font-weight:800;letter-spacing:.1em;font-size:.95rem;opacity:.9}
 #xmasCountdown .xc-n{display:flex;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap}
@@ -6379,7 +6432,7 @@ kbd{display:inline-block;min-width:22px;padding:2px 7px;border:1px solid var(--b
   function copy(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=&gt;toast(msg)).catch(()=&gt;{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(msg);}catch(e){}ta.remove();});}
   function topUrl(){try{return window.top.location.href;}catch(e){return location.href;}}
   const ACTIONS={
-    home:()=&gt;go('home'),calendar:()=&gt;go('calendar'),news:()=&gt;go('news'),settings:()=&gt;go('settings'),games:()=&gt;go('games'),
+    home:()=&gt;go('home'),links:()=&gt;go('links'),calendar:()=&gt;go('calendar'),news:()=&gt;go('news'),settings:()=&gt;go('settings'),games:()=&gt;go('games'),
     theme:()=&gt;{if(typeof toggleTheme==='function'){toggleTheme();toast('表示モードを切り替えました');}},
     top:()=&gt;window.scrollTo({top:0,behavior:'smooth'})
   };
@@ -6391,7 +6444,7 @@ kbd{display:inline-block;min-width:22px;padding:2px 7px;border:1px solid var(--b
     let h='&lt;div class="cx-nav"&gt;&lt;button data-act="back" title="戻る" aria-label="戻る"&gt;'+IC.back+'&lt;/button&gt;&lt;button data-act="fwd" title="進む" aria-label="進む"&gt;'+IC.fwd+'&lt;/button&gt;&lt;button data-act="reload" title="再読み込み" aria-label="再読み込み"&gt;'+IC.reload+'&lt;/button&gt;&lt;button data-act="top" title="一番上へ" aria-label="一番上へ"&gt;'+IC.up+'&lt;/button&gt;&lt;/div&gt;';
     if(ctx.sel){const short=ctx.sel.length&gt;14?ctx.sel.slice(0,14)+'…':ctx.sel;h+=item('copysel','copy','コピー','Ctrl+C')+item('searchsel','search','「'+short.replace(/[&lt;&gt;&amp;"]/g,'')+'」をGoogleで検索');h+='&lt;div class="cx-sep"&gt;&lt;/div&gt;';}
     if(ctx.link){h+=item('openlink','link2','リンクを新しいタブで開く')+item('copylink','link','リンクのアドレスをコピー');h+='&lt;div class="cx-sep"&gt;&lt;/div&gt;';}
-    h+='&lt;div class="cx-title"&gt;移動&lt;/div&gt;'+item('home','home','ホーム','Alt+H')+item('calendar','cal','カレンダー','Alt+C')+item('news','bell','お知らせ','Alt+N')+item('games','game','ゲーム')+item('settings','gear','設定','Alt+S');
+    h+='&lt;div class="cx-title"&gt;移動&lt;/div&gt;'+item('home','home','ホーム','Alt+H')+item('links','link','リンク','Alt+L')+item('calendar','cal','カレンダー','Alt+C')+item('news','bell','お知らせ','Alt+N')+item('games','game','ゲーム')+item('settings','gear','設定','Alt+S');
     h+='&lt;div class="cx-sep"&gt;&lt;/div&gt;'+item('theme','moon','表示モードを切り替え','Alt+D')+item('copyurl','link','このページのURLをコピー')+item('print','print','印刷','Ctrl+P')+item('keys','key','ショートカット一覧');
     menu.innerHTML=h;
   }
@@ -6425,7 +6478,7 @@ kbd{display:inline-block;min-width:22px;padding:2px 7px;border:1px solid var(--b
     if(e.key==='Escape'&amp;&amp;menu.classList.contains('open')){close();return;}
     const typing=e.target.closest&amp;&amp;e.target.closest('input,textarea,select,[contenteditable="true"]');
     if(e.altKey&amp;&amp;!e.ctrlKey&amp;&amp;!e.metaKey&amp;&amp;!typing){
-      const map={h:'home',c:'calendar',n:'news',s:'settings',d:'theme',t:'top'};const k=(e.code||'').replace('Key','').toLowerCase();
+      const map={h:'home',l:'links',c:'calendar',n:'news',s:'settings',d:'theme',t:'top'};const k=(e.code||'').replace('Key','').toLowerCase();
       if(map[k]){e.preventDefault();ACTIONS[map[k]]();}
     }
     if(e.key==='/'&amp;&amp;!typing&amp;&amp;!e.ctrlKey&amp;&amp;!e.altKey){const sp=document.getElementById('settings-page');const inp=document.getElementById('settingsSearch');if(sp&amp;&amp;inp&amp;&amp;sp.classList.contains('active')||(inp&amp;&amp;inp.offsetParent)){e.preventDefault();inp.focus();}}
@@ -6450,14 +6503,14 @@ kbd{display:inline-block;min-width:22px;padding:2px 7px;border:1px solid var(--b
 })();
 &lt;/script&gt;
 &lt;style id="nk-redesign-2026"&gt;/* ===== 動くブルーグラデーション背景 ===== */
-.nk-aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:linear-gradient(120deg,color-mix(in oklab,var(--primary) 10%,var(--bg)),var(--bg) 45%,color-mix(in oklab,var(--primary) 14%,var(--bg)));background-size:300% 300%;animation:nkAuroraShift 18s ease-in-out infinite}
-.nk-aurora i{position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(70px);opacity:.38;background:radial-gradient(circle,var(--primary) 0%,transparent 65%);animation:nkBlob 22s ease-in-out infinite alternate}
+.nk-aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:linear-gradient(120deg,color-mix(in oklab,var(--primary) 18%,var(--bg)),var(--bg) 38%,color-mix(in oklab,var(--primary) 28%,var(--bg)),var(--bg) 80%,color-mix(in oklab,var(--primary) 18%,var(--bg)));background-size:240% 240%;animation:nkAuroraShift 9s ease-in-out infinite}
+.nk-aurora i{position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(70px);opacity:.38;background:radial-gradient(circle,var(--primary) 0%,transparent 65%);animation:nkBlob 11s ease-in-out infinite alternate}
 .nk-aurora i:nth-child(1){top:-20vmax;left:-15vmax}
-.nk-aurora i:nth-child(2){bottom:-25vmax;right:-15vmax;animation-duration:27s;animation-delay:-6s;background:radial-gradient(circle,color-mix(in oklab,var(--primary) 70%,#38bdf8) 0%,transparent 65%)}
-.nk-aurora i:nth-child(3){top:30%;left:35%;width:45vmax;height:45vmax;opacity:.22;animation-duration:31s;animation-delay:-12s}
+.nk-aurora i:nth-child(2){bottom:-25vmax;right:-15vmax;animation-duration:14s;animation-delay:-4s;background:radial-gradient(circle,color-mix(in oklab,var(--primary) 70%,#38bdf8) 0%,transparent 65%)}
+.nk-aurora i:nth-child(3){top:30%;left:35%;width:45vmax;height:45vmax;opacity:.22;animation-duration:17s;animation-delay:-7s}
 body.dark-mode .nk-aurora i{opacity:.32}
 @keyframes nkAuroraShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-@keyframes nkBlob{0%{transform:translate(0,0) scale(1)}50%{transform:translate(12vw,8vh) scale(1.15)}100%{transform:translate(-8vw,14vh) scale(.92)}}
+@keyframes nkBlob{0%{transform:translate(0,0) scale(1)}50%{transform:translate(24vw,14vh) scale(1.28)}100%{transform:translate(-16vw,22vh) scale(.85)}}
 
 html,body{background-color:transparent!important}
 html{background:var(--bg)}
