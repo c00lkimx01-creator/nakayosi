@@ -4,6 +4,5 @@ body.dark-mode{--ripple-blue:#8ab4f8}
 .touch-ripple{position:fixed;z-index:-1;pointer-events:none;border-radius:50%;transform:translate(-50%,-50%) scale(0);opacity:.9;mix-blend-mode:normal;background:radial-gradient(circle,rgba(26,115,232,.45) 0%,rgba(26,115,232,.22) 45%,transparent 72%);background:radial-gradient(circle,color-mix(in srgb,var(--ripple-blue) 50%,transparent) 0%,color-mix(in srgb,var(--ripple-blue) 22%,transparent) 45%,transparent 72%);animation:touchRipple .7s ease-out forwards}
 .touch-ripple::after{content:"";position:absolute;inset:36%;border-radius:50%;border:2px solid var(--ripple-blue);opacity:.8}
 @keyframes touchRipple{0%{transform:translate(-50%,-50%) scale(0);opacity:.9}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
-/* スクロール中の軌跡波紋（指の動きに沿って小さく、薄く出る） */
-.touch-ripple.is-trail{opacity:.6;animation-duration:.9s}
-.touch-ripple.is-trail::after{inset:34%;border-width:1.5px}
+/* スクロール中の光の尾：コンテンツの前面に薄く描く（メニューより下・操作には影響なし） */
+.touch-trail-canvas{position:fixed;left:0;top:0;width:100%;height:100%;z-index:9000;pointer-events:none}
