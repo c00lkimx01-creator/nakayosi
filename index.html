@@ -2337,6 +2337,264 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;li&gt;&lt;a href="https://sites.google.com/view/nakayosi-instance/" target="_blank"&gt;公式サイト ↗&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;&lt;/div&gt;
   &lt;/div&gt;
+  &lt;section class="nk-stats" id="nk-stats" aria-label="統計・リアルタイム稼働状況"&gt;
+    &lt;style&gt;
+      #nk-stats{max-width:1180px;margin:0 auto;padding:24px 20px 20px;border-bottom:1px solid var(--border);color:var(--text);font-size:.85rem;box-sizing:border-box}
+      #nk-stats *{box-sizing:border-box}
+      #nk-stats .nk-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:14px}
+      #nk-stats .nk-title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1rem;margin:0}
+      #nk-stats .nk-title svg{width:18px;height:18px;flex:0 0 18px;fill:none;stroke:var(--primary);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+      #nk-stats .nk-note{font-size:.72rem;color:var(--text-muted);border:1px solid var(--border);border-radius:999px;padding:2px 9px;white-space:nowrap}
+      #nk-stats .nk-range{margin-left:auto;display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:3px}
+      #nk-stats .nk-range button{border:0;background:transparent;color:var(--text-muted);padding:6px 12px;border-radius:999px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+      #nk-stats .nk-range button[aria-pressed="true"]{background:color-mix(in oklab,var(--primary) 22%,transparent);color:var(--primary)}
+      #nk-stats .nk-range button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+      #nk-stats .nk-cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:14px}
+      #nk-stats .nk-card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 12px 10px;min-width:0}
+      #nk-stats .nk-k{display:block;font-size:.72rem;color:var(--text-muted);font-weight:700;padding-right:44px}
+      #nk-stats .nk-tag{position:absolute;top:10px;right:10px;font-size:.58rem;font-weight:800;letter-spacing:.04em;padding:1px 6px;border-radius:4px;border:1px solid var(--border);color:var(--text-muted)}
+      #nk-stats .nk-card.is-live .nk-tag{color:#22c55e;border-color:#22c55e88}
+      #nk-stats .nk-card strong{display:block;font-size:1.4rem;margin-top:6px;font-variant-numeric:tabular-nums;line-height:1.2}
+      #nk-stats .nk-card small{display:block;font-size:.68rem;color:var(--text-muted);margin-top:3px}
+      #nk-stats .nk-charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+      #nk-stats .nk-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;min-width:0}
+      #nk-stats .nk-box-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:.8rem;font-weight:700;margin-bottom:8px}
+      #nk-stats .nk-box-head span:last-child{font-weight:500;color:var(--text-muted);font-size:.72rem;white-space:nowrap}
+      #nk-stats .nk-svg{width:100%;height:150px;display:block;overflow:visible}
+      #nk-stats .nk-grid{stroke:var(--border);stroke-width:1;vector-effect:non-scaling-stroke}
+      #nk-stats .nk-line{fill:none;stroke:#22c55e;stroke-width:2;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+      #nk-stats .nk-area{fill:#22c55e26;stroke:none}
+      #nk-stats .nk-bar{fill:var(--primary);opacity:.85}
+      #nk-stats .nk-axis{display:flex;justify-content:space-between;font-size:.66rem;color:var(--text-muted);font-variant-numeric:tabular-nums;margin-top:4px}
+      #nk-stats .nk-bottom{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+      #nk-stats ol,#nk-stats ul{list-style:none;margin:0;padding:0}
+      #nk-stats .nk-rank li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+      #nk-stats .nk-rank .nk-rk{font-size:.7rem;font-weight:800;color:var(--text-muted);text-align:center;background:var(--surface-2);border-radius:4px;padding:1px 0}
+      #nk-stats .nk-nm{min-width:0}
+      #nk-stats .nk-nm&gt;span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+      #nk-stats .nk-nm i{display:block;height:4px;border-radius:2px;background:color-mix(in oklab,var(--primary) 70%,transparent);margin-top:5px}
+      #nk-stats .nk-ct{font-size:.76rem;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+      #nk-stats .nk-hist li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:8px;padding:7px 0;border-bottom:1px solid var(--border);align-items:center}
+      #nk-stats .nk-hist li&gt;span:last-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      #nk-stats .nk-time{font-size:.74rem;color:var(--text-muted);font-variant-numeric:tabular-nums}
+      #nk-stats .nk-empty{color:var(--text-muted);padding:10px 0;font-size:.8rem;display:block!important}
+      #nk-stats .nk-foot{margin:12px 0 0;font-size:.7rem;color:var(--text-muted);line-height:1.6}
+      @media(max-width:900px){#nk-stats .nk-cards{grid-template-columns:repeat(3,minmax(0,1fr))}#nk-stats .nk-charts,#nk-stats .nk-bottom{grid-template-columns:1fr}}
+      @media(max-width:520px){#nk-stats .nk-cards{grid-template-columns:repeat(2,minmax(0,1fr))}#nk-stats .nk-range{margin-left:0;width:100%}#nk-stats .nk-range button{flex:1;padding:6px 4px}}
+    &lt;/style&gt;
+    &lt;div class="nk-head"&gt;
+      &lt;h3 class="nk-title"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M2 12h4l2-6 4 12 3-9 2 3h5"/&gt;&lt;/svg&gt;統計・リアルタイム稼働状況&lt;/h3&gt;
+      &lt;span class="nk-note"&gt;この端末で計測した値&lt;/span&gt;
+      &lt;div class="nk-range" role="group" aria-label="集計期間"&gt;
+        &lt;button type="button" data-range="60" aria-pressed="true"&gt;60分（1分単位）&lt;/button&gt;
+        &lt;button type="button" data-range="1440" aria-pressed="false"&gt;24時間（30分単位）&lt;/button&gt;
+        &lt;button type="button" data-range="month" aria-pressed="false"&gt;30日（日単位）&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="nk-cards"&gt;
+      &lt;div class="nk-card is-live"&gt;&lt;span class="nk-k"&gt;現在の同時接続数&lt;/span&gt;&lt;span class="nk-tag"&gt;LIVE&lt;/span&gt;&lt;strong id="nkLive"&gt;—&lt;/strong&gt;&lt;small&gt;この端末で開いているタブ&lt;/small&gt;&lt;/div&gt;
+      &lt;div class="nk-card"&gt;&lt;span class="nk-k"&gt;本日の最大同時接続&lt;/span&gt;&lt;span class="nk-tag"&gt;PEAK&lt;/span&gt;&lt;strong id="nkPeak"&gt;—&lt;/strong&gt;&lt;small&gt;今日（JST）の最大値&lt;/small&gt;&lt;/div&gt;
+      &lt;div class="nk-card"&gt;&lt;span class="nk-k"&gt;本日の訪問者数&lt;/span&gt;&lt;span class="nk-tag"&gt;TODAY&lt;/span&gt;&lt;strong id="nkToday"&gt;—&lt;/strong&gt;&lt;small&gt;JST 00:00 以降&lt;/small&gt;&lt;/div&gt;
+      &lt;div class="nk-card"&gt;&lt;span class="nk-k"&gt;累計訪問者数&lt;/span&gt;&lt;span class="nk-tag"&gt;TOTAL&lt;/span&gt;&lt;strong id="nkTotal"&gt;—&lt;/strong&gt;&lt;small&gt;この端末の累計&lt;/small&gt;&lt;/div&gt;
+      &lt;div class="nk-card"&gt;&lt;span class="nk-k"&gt;累計PV数&lt;/span&gt;&lt;span class="nk-tag"&gt;PV&lt;/span&gt;&lt;strong id="nkPv"&gt;—&lt;/strong&gt;&lt;small&gt;総ページビュー数&lt;/small&gt;&lt;/div&gt;
+      &lt;div class="nk-card"&gt;&lt;span class="nk-k"&gt;通信サービス&lt;/span&gt;&lt;span class="nk-tag"&gt;ACTIVE&lt;/span&gt;&lt;strong id="nkActive"&gt;—&lt;/strong&gt;&lt;small&gt;リンクを開いた件数&lt;/small&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="nk-charts"&gt;
+      &lt;div class="nk-box"&gt;
+        &lt;div class="nk-box-head"&gt;&lt;span&gt;同時接続数の推移&lt;/span&gt;&lt;span id="nkLiveNote"&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;svg id="nkLineSvg" class="nk-svg" viewBox="0 0 600 150" preserveAspectRatio="none" role="img" aria-label="同時接続数の推移"&gt;&lt;/svg&gt;
+        &lt;div class="nk-axis" id="nkAxisA"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="nk-box"&gt;
+        &lt;div class="nk-box-head"&gt;&lt;span&gt;訪問者数の推移&lt;/span&gt;&lt;span id="nkVisNote"&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;svg id="nkBarSvg" class="nk-svg" viewBox="0 0 600 150" preserveAspectRatio="none" role="img" aria-label="訪問者数の推移"&gt;&lt;/svg&gt;
+        &lt;div class="nk-axis" id="nkAxisB"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="nk-bottom"&gt;
+      &lt;div class="nk-box"&gt;
+        &lt;div class="nk-box-head"&gt;&lt;span&gt;通信ランキング（サービス別）&lt;/span&gt;&lt;span&gt;リンクを開いた回数&lt;/span&gt;&lt;/div&gt;
+        &lt;ol class="nk-rank" id="nkRank"&gt;&lt;/ol&gt;
+      &lt;/div&gt;
+      &lt;div class="nk-box"&gt;
+        &lt;div class="nk-box-head"&gt;&lt;span&gt;最新通信・訪問履歴&lt;/span&gt;&lt;span&gt;直近8件&lt;/span&gt;&lt;/div&gt;
+        &lt;ul class="nk-hist" id="nkHist"&gt;&lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;p class="nk-foot"&gt;※ 数値はこのブラウザ内で計測したものです。サイト全体の同時接続数や累計を表示するには、集計用のサーバー（外部DB）との連携が必要です。&lt;/p&gt;
+  &lt;/section&gt;
+  &lt;script&gt;
+  (function(){
+    var root=document.getElementById('nk-stats');
+    if(!root||root.dataset.ready)return;root.dataset.ready='1';
+    var KEY='nk_stats_v1',SKEY='nk_stats_session_v1',MIN=60000,DAY=86400000;
+    var st=null;
+    try{st=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){st=null;}
+    if(!st||typeof st!=='object')st={};
+    st.totals=st.totals||{v:0,pv:0};
+    st.daily=st.daily||{};
+    st.samples=Array.isArray(st.samples)?st.samples:[];
+    st.links=st.links||{};
+    st.events=Array.isArray(st.events)?st.events:[];
+    var range='60';
+
+    function save(){
+      var keys=Object.keys(st.daily).sort();
+      while(keys.length&gt;62)delete st.daily[keys.shift()];
+      try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}
+    }
+    function jstDay(t){return new Date(t+9*3600000).toISOString().slice(0,10);}
+    function minuteOf(t){return Math.floor(t/MIN);}
+    function day(k){return st.daily[k]||(st.daily[k]={v:0,pv:0,peak:0});}
+    function sampleAt(m){
+      var arr=st.samples,last=arr[arr.length-1];
+      if(last&amp;&amp;last.m===m)return last;
+      var s={m:m,c:0,v:0};arr.push(s);
+      var cut=m-1500;while(arr.length&amp;&amp;arr[0].m&lt;cut)arr.shift();
+      return s;
+    }
+    function esc(s){return String(s).replace(/[&amp;&lt;&gt;"']/g,function(c){return{'&amp;':'&amp;amp;','&lt;':'&amp;lt;','&gt;':'&amp;gt;','"':'&amp;quot;',"'":'&amp;#39;'}[c];});}
+    function fmt(n){return Number(n||0).toLocaleString('ja-JP');}
+    function hm(t,sec){return new Date(t).toLocaleTimeString('ja-JP',{timeZone:'Asia/Tokyo',hour:'2-digit',minute:'2-digit',second:sec?'2-digit':undefined,hour12:false});}
+    function setText(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+
+    /* 同一端末の他タブを BroadcastChannel で数えて同時接続とみなす */
+    var tabId=Math.random().toString(36).slice(2),peers={},bc=null;
+    if(typeof BroadcastChannel!=='undefined'){
+      try{bc=new BroadcastChannel('nk_presence_v1');bc.onmessage=function(e){if(e.data&amp;&amp;e.data.id){if(e.data.gone)delete peers[e.data.id];else peers[e.data.id]=Date.now();}};}catch(e){bc=null;}
+    }
+    function liveCount(){
+      var t=Date.now(),n=0;
+      peers[tabId]=t;
+      Object.keys(peers).forEach(function(k){if(t-peers[k]&lt;45000)n++;else delete peers[k];});
+      return Math.max(1,n);
+    }
+
+    /* 訪問は「タブ単位の初回読み込み」で1件とし、PVは毎回加算 */
+    var counted=false;
+    try{if(!sessionStorage.getItem(SKEY)){sessionStorage.setItem(SKEY,'1');counted=true;}}catch(e){counted=true;}
+    (function(){
+      var t=Date.now(),d=day(jstDay(t));
+      st.totals.pv++;d.pv++;
+      if(counted){st.totals.v++;d.v++;sampleAt(minuteOf(t)).v++;}
+      save();
+    })();
+
+    /* 外部リンクのクリックを通信として記録 */
+    document.addEventListener('click',function(e){
+      var a=e.target&amp;&amp;e.target.closest?e.target.closest('a[href]'):null;
+      if(!a)return;
+      var h=a.getAttribute('href')||'';
+      if(!/^https?:\/\//.test(h))return;
+      var name=(a.textContent||'').replace(/\s+/g,' ').trim().slice(0,40);
+      if(!name){try{name=new URL(h).hostname;}catch(_){name='外部リンク';}}
+      st.links[name]=(st.links[name]||0)+1;
+      st.events.unshift({t:Date.now(),n:name});
+      st.events=st.events.slice(0,8);
+      save();renderAll(liveCount());
+    },true);
+
+    function series(){
+      var t=Date.now(),nowM=minuteOf(t),map={},out=[],i,j;
+      st.samples.forEach(function(s){map[s.m]=s;});
+      if(range==='60'){
+        for(i=59;i&gt;=0;i--){var m=nowM-i,s=map[m]||{c:0,v:0};out.push({c:s.c,v:s.v,l:hm(m*MIN,false)});}
+      }else if(range==='1440'){
+        for(i=47;i&gt;=0;i--){
+          var start=nowM-(i+1)*30+1,c=0,v=0;
+          for(j=0;j&lt;30;j++){var q=map[start+j];if(q){c=Math.max(c,q.c);v+=q.v;}}
+          out.push({c:c,v:v,l:hm((start+29)*MIN,false)});
+        }
+      }else{
+        for(i=29;i&gt;=0;i--){
+          var k=jstDay(t-i*DAY),d=st.daily[k]||{v:0,peak:0};
+          out.push({c:d.peak||0,v:d.v||0,l:k.slice(5).replace('-','/')});
+        }
+      }
+      return out;
+    }
+
+    function drawGrid(W,H,P){var g='';for(var i=1;i&lt;4;i++){var y=(P+i*(H-2*P)/4).toFixed(1);g+='&lt;line class="nk-grid" x1="0" x2="'+W+'" y1="'+y+'" y2="'+y+'"/&gt;';}return g;}
+    function drawLine(id,data){
+      var svg=document.getElementById(id);if(!svg)return;
+      var W=600,H=150,P=6,n=data.length,max=4,i;
+      for(i=0;i&lt;n;i++)max=Math.max(max,data[i].c);
+      max=Math.ceil(max*1.15);
+      function X(k){return n&lt;=1?W/2:P+k*(W-2*P)/(n-1);}
+      function Y(v){return H-P-(v/max)*(H-2*P);}
+      var pts=[];for(i=0;i&lt;n;i++)pts.push(X(i).toFixed(1)+','+Y(data[i].c).toFixed(1));
+      var line='M'+pts.join(' L');
+      var area=n?line+' L'+X(n-1).toFixed(1)+','+(H-P)+' L'+X(0).toFixed(1)+','+(H-P)+' Z':'';
+      svg.innerHTML=drawGrid(W,H,P)+'&lt;path class="nk-area" d="'+area+'"/&gt;&lt;path class="nk-line" d="'+line+'"/&gt;';
+    }
+    function drawBars(id,data){
+      var svg=document.getElementById(id);if(!svg)return;
+      var W=600,H=150,P=6,n=data.length,max=1,i;
+      for(i=0;i&lt;n;i++)max=Math.max(max,data[i].v);
+      var bw=(W-2*P)/Math.max(n,1),html='';
+      for(i=0;i&lt;n;i++){
+        var v=data[i].v;if(!v)continue;
+        var h=Math.max(2,(v/max)*(H-2*P));
+        html+='&lt;rect class="nk-bar" x="'+(P+i*bw+bw*0.2).toFixed(1)+'" y="'+(H-P-h).toFixed(1)+'" width="'+(bw*0.6).toFixed(1)+'" height="'+h.toFixed(1)+'" rx="1.5"/&gt;';
+      }
+      svg.innerHTML=drawGrid(W,H,P)+html;
+    }
+    function axis(id,data){
+      var el=document.getElementById(id);if(!el)return;
+      var n=data.length;if(!n){el.innerHTML='';return;}
+      var idx=[0,Math.round((n-1)/3),Math.round((n-1)*2/3),n-1];
+      el.innerHTML=idx.map(function(i){return '&lt;span&gt;'+esc(data[i].l)+'&lt;/span&gt;';}).join('');
+    }
+    function renderRank(){
+      var el=document.getElementById('nkRank');if(!el)return;
+      var arr=Object.keys(st.links).map(function(k){return{n:k,c:st.links[k]};})
+        .sort(function(a,b){return b.c-a.c;}).slice(0,11);
+      if(!arr.length){el.innerHTML='&lt;li class="nk-empty"&gt;まだ通信がありません（リンクを開くと集計されます）&lt;/li&gt;';return;}
+      var max=arr[0].c;
+      el.innerHTML=arr.map(function(r,i){
+        return '&lt;li&gt;&lt;span class="nk-rk"&gt;'+(i+1)+'&lt;/span&gt;&lt;span class="nk-nm"&gt;&lt;span&gt;'+esc(r.n)+'&lt;/span&gt;&lt;i style="width:'+(r.c/max*100).toFixed(1)+'%"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span class="nk-ct"&gt;通信 '+fmt(r.c)+'回&lt;/span&gt;&lt;/li&gt;';
+      }).join('');
+    }
+    function renderHist(){
+      var el=document.getElementById('nkHist');if(!el)return;
+      if(!st.events.length){el.innerHTML='&lt;li class="nk-empty"&gt;まだ履歴がありません&lt;/li&gt;';return;}
+      el.innerHTML=st.events.map(function(e){return '&lt;li&gt;&lt;span class="nk-time"&gt;'+hm(e.t,true)+'&lt;/span&gt;&lt;span&gt;'+esc(e.n)+'&lt;/span&gt;&lt;/li&gt;';}).join('');
+    }
+    function renderAll(live){
+      var data=series(),maxC=0,sumV=0,i,today=day(jstDay(Date.now()));
+      for(i=0;i&lt;data.length;i++){maxC=Math.max(maxC,data[i].c);sumV+=data[i].v;}
+      setText('nkLive',fmt(live)+'人');
+      setText('nkPeak',fmt(Math.max(today.peak||0,live))+'人');
+      setText('nkToday',fmt(today.v)+'人');
+      setText('nkTotal',fmt(st.totals.v)+'人');
+      setText('nkPv',fmt(st.totals.pv));
+      setText('nkActive',fmt(Object.keys(st.links).length)+'件');
+      setText('nkLiveNote','現在 '+fmt(live)+'人 / 最大 '+fmt(maxC)+'人');
+      setText('nkVisNote','期間 '+fmt(sumV)+'人 / 累計 '+fmt(st.totals.v)+'人');
+      drawLine('nkLineSvg',data);drawBars('nkBarSvg',data);
+      axis('nkAxisA',data);axis('nkAxisB',data);
+      renderRank();renderHist();
+    }
+    function tick(){
+      var t=Date.now(),live=liveCount();
+      if(bc){try{bc.postMessage({id:tabId});}catch(e){}}
+      var s=sampleAt(minuteOf(t));s.c=Math.max(s.c,live);
+      var d=day(jstDay(t));d.peak=Math.max(d.peak||0,live);
+      save();renderAll(live);
+    }
+
+    root.querySelectorAll('.nk-range button').forEach(function(b){
+      b.addEventListener('click',function(){
+        range=b.getAttribute('data-range');
+        root.querySelectorAll('.nk-range button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+        renderAll(liveCount());
+      });
+    });
+    tick();
+    setInterval(tick,15000);
+    window.addEventListener('pagehide',function(){if(bc){try{bc.postMessage({id:tabId,gone:true});}catch(e){}}});
+  })();
+  &lt;/script&gt;
   &lt;div class="footer-copy"&gt;© 2026 2a_exe. All Rights Reserved.&lt;/div&gt;
 &lt;/footer&gt;
 
