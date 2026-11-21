@@ -1,6 +1,6 @@
-/* タップ/クリックした場所の背景にサイトカラーの青い波紋を表示（見た目のみ・操作には影響なし） */
+/* タップ/クリックした場所の背景にサイトカラーの青い波紋を表示（背景レイヤーに描画し、コンテンツの後ろに出る・操作には影響なし） */
 :root{--ripple-blue:#1a73e8}
 body.dark-mode{--ripple-blue:#8ab4f8}
-.touch-ripple{position:fixed;z-index:2147483000;pointer-events:none;border-radius:50%;transform:translate(-50%,-50%) scale(0);opacity:.9;mix-blend-mode:normal;background:radial-gradient(circle,rgba(26,115,232,.45) 0%,rgba(26,115,232,.22) 45%,transparent 72%);background:radial-gradient(circle,color-mix(in srgb,var(--ripple-blue) 50%,transparent) 0%,color-mix(in srgb,var(--ripple-blue) 22%,transparent) 45%,transparent 72%);animation:touchRipple .7s ease-out forwards}
+.touch-ripple{position:fixed;z-index:-1;pointer-events:none;border-radius:50%;transform:translate(-50%,-50%) scale(0);opacity:.9;mix-blend-mode:normal;background:radial-gradient(circle,rgba(26,115,232,.45) 0%,rgba(26,115,232,.22) 45%,transparent 72%);background:radial-gradient(circle,color-mix(in srgb,var(--ripple-blue) 50%,transparent) 0%,color-mix(in srgb,var(--ripple-blue) 22%,transparent) 45%,transparent 72%);animation:touchRipple .7s ease-out forwards}
 .touch-ripple::after{content:"";position:absolute;inset:36%;border-radius:50%;border:2px solid var(--ripple-blue);opacity:.8}
 @keyframes touchRipple{0%{transform:translate(-50%,-50%) scale(0);opacity:.9}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
