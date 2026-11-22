@@ -392,7 +392,7 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
 
     // ===== URLルーティング (/in, /links など) =====
     const CALL_URL = 'https://videolink2me.com/ja/wu1a6s';
-    const ROUTE_PAGES = ['home','ai','news','weather','events','calendar','links','games','settings','terms','tools','call'];
+    const ROUTE_PAGES = ['home','ai','youtube','news','weather','events','links','games','settings','terms','tools','call'];
     const ROUTER = (function(){
       const url = new URL(location.href);
       let base, initial = '';
@@ -417,7 +417,7 @@ body,button{font-family:'HuiFont','Zen Maru Gothic',sans-serif!important}
     })();
     const PAGE_TITLES = {
       home:'ホーム', ai:'AI', news:'お知らせ', weather:'天気',
-      events:'イベント', calendar:'カレンダー', links:'リンク集', games:'ゲーム',
+      events:'イベント', youtube:'YouTube', links:'リンク集', games:'ゲーム',
       tv:'TV', search:'検索', settings:'設定', terms:'利用規約', tools:'ミニ機能', call:'通話'
     };
     function pageTitle(id){ return (PAGE_TITLES[id] || PAGE_TITLES.home) + ' -- 仲良し ~*インスタンス*~ 3 情報ポータル'; }
@@ -1778,12 +1778,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       &lt;a href="javascript:void(0)" onclick="showPage('news')" class="nav-link" data-page="news"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M3 11a8 8 0 0 1 16 0v5l2 3H1l2-3v-5Z"/&gt;&lt;path d="M10 21h4"/&gt;&lt;/svg&gt;お知らせ&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('weather')" class="nav-link" data-page="weather"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="8.5" cy="8" r="3.2"/&gt;&lt;path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/&gt;&lt;/svg&gt;天気&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('events')" class="nav-link" data-page="events"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7Z"/&gt;&lt;/svg&gt;イベント&lt;/a&gt;
-      &lt;a href="javascript:void(0)" onclick="showPage('calendar')" class="nav-link" data-page="calendar"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="3" y="5" width="18" height="16" rx="2"/&gt;&lt;path d="M16 3v4M8 3v4M3 10h18"/&gt;&lt;/svg&gt;カレンダー&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('links')" class="nav-link" data-page="links"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/&gt;&lt;path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/&gt;&lt;/svg&gt;リンク集&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('ai')" class="nav-link" data-page="ai"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8Z"/&gt;&lt;path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8Z"/&gt;&lt;/svg&gt;AI&lt;/a&gt;
       &lt;a href="https://videolink2me.com/ja/wu1a6s" target="_blank" rel="noopener" class="nav-link" data-page="call"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/&gt;&lt;/svg&gt;通話&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('games')" class="nav-link" data-page="games"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2" y="7" width="20" height="11" rx="4"/&gt;&lt;path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/&gt;&lt;/svg&gt;ゲーム&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('settings')" class="nav-link" data-page="settings"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="12" cy="12" r="3"/&gt;&lt;path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/&gt;&lt;/svg&gt;設定&lt;/a&gt;
+      &lt;a href="javascript:void(0)" onclick="showPage('youtube')" class="nav-link" data-page="youtube"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2" y="5" width="20" height="14" rx="4"/&gt;&lt;path d="m10 9 5 3-5 3Z"/&gt;&lt;/svg&gt;YouTube&lt;/a&gt;
       &lt;a href="javascript:void(0)" onclick="showPage('terms')" class="nav-link" data-page="terms"&gt;&lt;svg class="nav-ic" viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/&gt;&lt;path d="M14 3v5h5M9 13h6M9 17h4"/&gt;&lt;/svg&gt;利用規約&lt;/a&gt;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -1815,9 +1815,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           &lt;div class="home-quick"&gt;
             &lt;a href="javascript:void(0)" onclick="showPage('news')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M3 11a8 8 0 0 1 16 0v5l2 3H1l2-3v-5Z"/&gt;&lt;path d="M10 21h4"/&gt;&lt;/svg&gt;お知らせ&lt;/a&gt;
             &lt;a href="javascript:void(0)" onclick="showPage('weather')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;circle cx="8.5" cy="8" r="3.2"/&gt;&lt;path d="M17 19H8a4 4 0 0 1 0-8 5.2 5.2 0 0 1 9.9 1.4A3.4 3.4 0 0 1 17 19Z"/&gt;&lt;/svg&gt;天気&lt;/a&gt;
-            &lt;a href="javascript:void(0)" onclick="showPage('calendar')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="3" y="5" width="18" height="16" rx="2"/&gt;&lt;path d="M16 3v4M8 3v4M3 10h18"/&gt;&lt;/svg&gt;カレンダー&lt;/a&gt;
             &lt;a href="javascript:void(0)" onclick="showPage('links')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/&gt;&lt;path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/&gt;&lt;/svg&gt;リンク集&lt;/a&gt;
             &lt;a href="javascript:void(0)" onclick="showPage('games')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2" y="7" width="20" height="11" rx="4"/&gt;&lt;path d="M7 12h3M8.5 10.5v3M16 11.5h.01M18 13.5h.01"/&gt;&lt;/svg&gt;ゲーム&lt;/a&gt;
+            &lt;a href="javascript:void(0)" onclick="showPage('youtube')"&gt;&lt;svg viewBox="0 0 24 24" aria-hidden="true"&gt;&lt;rect x="2" y="5" width="20" height="14" rx="4"/&gt;&lt;path d="m10 9 5 3-5 3Z"/&gt;&lt;/svg&gt;YouTube&lt;/a&gt;
           &lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
@@ -1948,6 +1948,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     &lt;section id="ai-page" class="page"&gt;
       &lt;div class="ai-frame-wrap"&gt;&lt;iframe id="aiFrame" title="仲良し AI" data-src="https://nakayosi-ai.lovable.app/" allow="clipboard-write; microphone" loading="lazy"&gt;&lt;/iframe&gt;&lt;/div&gt;
     &lt;/section&gt;
+    &lt;section id="youtube-page" class="page"&gt;
+      &lt;div class="yt-full-bar"&gt;&lt;strong&gt;YouTube&lt;/strong&gt;&lt;button type="button" class="yt-full-btn" onclick="ytFullscreen()"&gt;⛶ 全画面&lt;/button&gt;&lt;/div&gt;
+      &lt;div class="ai-frame-wrap yt-frame-wrap" id="ytWrap"&gt;&lt;iframe id="ytFrame" title="YouTube" data-src="https://nk3tools.lovable.app/youtube/" allow="autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write" allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;
+    &lt;/section&gt;
 
     &lt;section id="news-page" class="page"&gt;
       &lt;div class="section"&gt;
@@ -1969,45 +1973,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     &lt;/section&gt;
 
 &lt;!-- カレンダー --&gt;
-    &lt;section id="calendar-page" class="page"&gt;
-      &lt;div class="calendar-intro"&gt;&lt;p class="calendar-eyebrow"&gt;MY SCHEDULE&lt;/p&gt;&lt;h1&gt;カレンダー&lt;/h1&gt;&lt;p&gt;大切な日も、ふだんの予定も。&lt;/p&gt;&lt;/div&gt;
-      &lt;div class="calendar-layout"&gt;
-        &lt;div class="section calendar-main"&gt;
-          &lt;div class="calendar-toolbar"&gt;
-            &lt;h2 id="calendarTitle"&gt;&lt;/h2&gt;
-            &lt;button type="button" onclick="moveCalendar(-1)" aria-label="前の月" title="前の月"&gt;‹&lt;/button&gt;
-            &lt;button type="button" onclick="calendarToday()" class="calendar-today"&gt;今日&lt;/button&gt;
-            &lt;button type="button" onclick="moveCalendar(1)" aria-label="次の月" title="次の月"&gt;›&lt;/button&gt;
-          &lt;/div&gt;
-          &lt;p id="calendarSummary" class="calendar-summary" aria-live="polite"&gt;&lt;/p&gt;
-          &lt;div class="calendar-week" aria-hidden="true"&gt;&lt;span&gt;日&lt;/span&gt;&lt;span&gt;月&lt;/span&gt;&lt;span&gt;火&lt;/span&gt;&lt;span&gt;水&lt;/span&gt;&lt;span&gt;木&lt;/span&gt;&lt;span&gt;金&lt;/span&gt;&lt;span&gt;土&lt;/span&gt;&lt;/div&gt;
-          &lt;div class="calendar-grid" id="calendarGrid" role="grid" aria-label="月のカレンダー（矢印キーで日付を移動）"&gt;&lt;/div&gt;
-          &lt;div class="calendar-legend" aria-hidden="true"&gt;&lt;span&gt;&lt;i class="lg-holiday"&gt;&lt;/i&gt;祝日・日曜&lt;/span&gt;&lt;span&gt;&lt;i class="lg-sat"&gt;&lt;/i&gt;土曜&lt;/span&gt;&lt;span&gt;&lt;i class="lg-rest"&gt;&lt;/i&gt;自分の休み&lt;/span&gt;&lt;span&gt;&lt;i class="lg-today"&gt;&lt;/i&gt;今日&lt;/span&gt;&lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class="calendar-side"&gt;
-          &lt;div class="section calendar-agenda"&gt;
-            &lt;div class="section-head"&gt;&lt;h2 id="calendarSelectedTitle"&gt;予定&lt;/h2&gt;&lt;/div&gt;
-            &lt;div class="section-body"&gt;
-              &lt;form class="calendar-form" onsubmit="addCalendarMemo(event)"&gt;
-                &lt;input id="calendarMemo" maxlength="80" autocomplete="off" placeholder="予定のタイトル" aria-label="予定のタイトル" required&gt;
-                &lt;input id="calendarTime" type="time" aria-label="予定の時刻"&gt;
-                &lt;select id="calendarCategory" aria-label="予定の種類"&gt;&lt;option value="予定"&gt;予定&lt;/option&gt;&lt;option value="仕事"&gt;仕事&lt;/option&gt;&lt;option value="プライベート"&gt;プライベート&lt;/option&gt;&lt;option value="記念日"&gt;記念日&lt;/option&gt;&lt;option value="休み"&gt;休み&lt;/option&gt;&lt;/select&gt;
-                &lt;div class="calendar-form-actions"&gt;&lt;button type="submit" id="calendarSubmit"&gt;追加する&lt;/button&gt;&lt;button type="button" id="calendarCancelEdit" onclick="cancelCalendarEdit()" hidden&gt;キャンセル&lt;/button&gt;&lt;/div&gt;
-              &lt;/form&gt;
-              &lt;div class="calendar-items" id="calendarItems" aria-live="polite"&gt;&lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;div class="section"&gt;
-            &lt;div class="section-head"&gt;&lt;h2&gt;これからの予定&lt;/h2&gt;&lt;/div&gt;
-            &lt;div class="section-body"&gt;
-              &lt;div class="calendar-actions"&gt;&lt;button type="button" onclick="exportCalendarIcs()" title="予定をカレンダーアプリに取り込む"&gt;予定を書き出す&lt;/button&gt;&lt;/div&gt;
-              &lt;input type="search" id="calendarSearch" class="calendar-search" placeholder="予定を探す" aria-label="予定を検索" oninput="renderCalendarUpcoming()"&gt;
-              &lt;div id="calendarUpcoming" class="calendar-upcoming" aria-live="polite"&gt;&lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/section&gt;
+
 
         &lt;!-- リンク集 --&gt;
     &lt;section id="links-page" class="page"&gt;
@@ -3270,10 +3236,14 @@ function showPage(id){
   if(id==='search') id='home';
   if(parent !== window &amp;&amp; typeof parent.updatePageTitle === 'function') parent.updatePageTitle(id);
   document.body.classList.toggle('chats-active', id === 'chats');
-  if(id==='calendar') renderCalendar();
+  document.body.classList.toggle('yt-active', id === 'youtube');
+  if(id==='calendar') id='home';
   if(id==='links' &amp;&amp; !document.getElementById('linkCats').children.length) renderLinks();
   if(id==='games') renderGames();
-  if(id==='ai'){ const f=document.getElementById('aiFrame'); if(f &amp;&amp; !f.src) f.src=f.dataset.src; }
+  [['ai','aiFrame'],['youtube','ytFrame']].forEach(([pid,fid])=&gt;{ const f=document.getElementById(fid); if(!f) return;
+    if(id===pid){ if(!f.getAttribute('src')) f.src=f.dataset.src; }
+    else if(f.getAttribute('src')){ f.removeAttribute('src'); try{ f.contentWindow &amp;&amp; f.contentWindow.location.replace('about:blank'); }catch(_){ } f.removeAttribute('src'); }
+  });
   document.body.classList.toggle('search-page', id === 'search');
   document.querySelectorAll('.page').forEach(p=&gt;p.classList.remove('active'));
   const el = document.getElementById(id+'-page');
@@ -6690,7 +6660,7 @@ kbd{display:inline-block;min-width:22px;padding:2px 7px;border:1px solid var(--b
   function copy(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=&gt;toast(msg)).catch(()=&gt;{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(msg);}catch(e){}ta.remove();});}
   function topUrl(){try{return window.top.location.href;}catch(e){return location.href;}}
   const ACTIONS={
-    home:()=&gt;go('home'),links:()=&gt;go('links'),calendar:()=&gt;go('calendar'),news:()=&gt;go('news'),settings:()=&gt;go('settings'),games:()=&gt;go('games'),
+    home:()=&gt;go('home'),links:()=&gt;go('links'),youtube:()=&gt;go('youtube'),news:()=&gt;go('news'),settings:()=&gt;go('settings'),games:()=&gt;go('games'),
     theme:()=&gt;{if(typeof toggleTheme==='function'){toggleTheme();toast('表示モードを切り替えました');}},
     top:()=&gt;window.scrollTo({top:0,behavior:'smooth'})
   };
@@ -6872,6 +6842,52 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
 @media(max-width:600px){.cg-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important}.cg-hero-body h3{font-size:1.6rem!important}html body .game-card.gc-wide .gc-btn{opacity:1;transform:scale(.85)}}
 &lt;/style&gt;
 &lt;div class="nk-aurora" aria-hidden="true"&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+
+&lt;style&gt;
+/* YouTube full embed */
+#youtube-page .yt-full-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
+#youtube-page .yt-full-bar strong{font-size:1.15rem}
+#youtube-page .yt-full-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;padding:7px 14px;font-weight:700;cursor:pointer}
+#youtube-page .yt-full-btn:hover{border-color:var(--primary);color:var(--primary)}
+#youtube-page .yt-frame-wrap{border:1px solid var(--border);border-radius:18px;overflow:hidden;background:#000}
+body.yt-active .wrap{grid-template-columns:minmax(0,1fr)!important;max-width:min(1600px,100%)}
+body.yt-active .wrap &gt; .aside{display:none!important}
+#ytFrame{display:block;width:100%;height:calc(100vh - 150px);min-height:560px;border:0}
+#ytWrap:fullscreen #ytFrame{height:100vh;min-height:0}
+@media(max-width:700px){#ytFrame{height:calc(100vh - 130px);min-height:440px}}
+/* Links: easier toolbar */
+#links-page .link-toolbar{position:sticky;top:8px;z-index:20;backdrop-filter:blur(8px)}
+#links-page .link-search-input{font-size:1rem;min-height:46px}
+#links-page .link-cat li a{min-height:58px}
+#links-page .link-cat li a .lk-copy{margin-left:6px}
+.lk-copy-btn{border:1px solid var(--border);background:var(--surface);color:var(--text-muted);border-radius:7px;font-size:.7rem;padding:3px 7px;cursor:pointer;flex:0 0 auto}
+.lk-copy-btn:hover{color:var(--primary);border-color:var(--primary)}
+#links-page .link-cat li{display:flex;align-items:center;gap:4px}
+#links-page .link-cat li &gt; a{flex:1;min-width:0}
+&lt;/style&gt;
+&lt;script&gt;
+function ytFullscreen(){const w=document.getElementById('ytWrap');if(!w)return;if(document.fullscreenElement){document.exitFullscreen();return;}(w.requestFullscreen||w.webkitRequestFullscreen||function(){}).call(w);}
+(function(){
+  // リンク集: 「/」キーで検索、Escでクリア、各リンクにURLコピー
+  document.addEventListener('keydown',function(e){
+    const page=document.getElementById('links-page');if(!page||!page.classList.contains('active'))return;
+    const t=e.target;const typing=t&amp;&amp;(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable);
+    if(e.key==='/'&amp;&amp;!typing){e.preventDefault();const i=document.getElementById('linkSearchInput');if(i)i.focus();}
+    else if(e.key==='Escape'&amp;&amp;t&amp;&amp;t.id==='linkSearchInput'&amp;&amp;typeof clearLinkSearch==='function'){clearLinkSearch();}
+  });
+  function addCopy(){
+    document.querySelectorAll('#linkCats li').forEach(li=&gt;{
+      if(li.querySelector('.lk-copy-btn'))return;const a=li.querySelector('a[data-url]');if(!a)return;
+      const b=document.createElement('button');b.type='button';b.className='lk-copy-btn';b.textContent='コピー';b.setAttribute('aria-label',(a.dataset.name||'')+'のURLをコピー');
+      b.onclick=function(ev){ev.preventDefault();ev.stopPropagation();const done=()=&gt;{b.textContent='✓';setTimeout(()=&gt;b.textContent='コピー',1200);};
+        if(navigator.clipboard)navigator.clipboard.writeText(a.dataset.url).then(done,()=&gt;{prompt('URL',a.dataset.url)});else prompt('URL',a.dataset.url);};
+      li.appendChild(b);
+    });
+  }
+  const start=()=&gt;{const c=document.getElementById('linkCats');if(!c)return;new MutationObserver(addCopy).observe(c,{childList:true});addCopy();};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+&lt;/script&gt;
 &lt;link rel="stylesheet" href="/minecraft-search.css"&gt;
 &lt;script src="/minecraft-search.js"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="/touch-ripple.css"&gt;
