@@ -1827,7 +1827,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
         &lt;h2 id="homeInfoTitle"&gt;今日の情報&lt;/h2&gt;
         &lt;div class="home-info-grid"&gt;
           &lt;article class="home-info-item"&gt;
-            &lt;h3&gt;🌤 天気・日時&lt;/h3&gt;
+            &lt;h3&gt;<svg class="ui-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.4" cy="8" r="3"/><path d="M8.4 2.6v1.6M3 8H1.6M4.6 4.2 3.5 3.1M12.2 4.2l1.1-1.1"/><path d="M9 19.5h8.4a3.5 3.5 0 0 0 .3-7 5.2 5.2 0 0 0-9.9-.9A3.6 3.6 0 0 0 9 19.5z"/></svg> 天気・日時&lt;/h3&gt;
             &lt;div data-info-source="siteToday"&gt;日付を読み込み中…&lt;/div&gt;
             &lt;div class="info-clock" data-info-source="siteClock"&gt;&lt;/div&gt;
             &lt;a class="info-weather" href="javascript:void(0)" onclick="showPage('weather')" data-info-source="siteWx"&gt;天気を読み込み中…&lt;/a&gt;
@@ -2018,14 +2018,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     &lt;!-- 天気（気象庁公式データ） --&gt;
     &lt;section id="weather-page" class="page"&gt;
       &lt;div class="section"&gt;
-        &lt;div class="section-head"&gt;&lt;h2&gt;🌤️ 天気予報&lt;/h2&gt;&lt;span class="muted" style="font-size:.8rem"&gt;提供: 気象庁 / Yahoo!天気&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="section-head"&gt;&lt;h2&gt;<svg class="ui-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.4" cy="8" r="3"/><path d="M8.4 2.6v1.6M3 8H1.6M4.6 4.2 3.5 3.1M12.2 4.2l1.1-1.1"/><path d="M9 19.5h8.4a3.5 3.5 0 0 0 .3-7 5.2 5.2 0 0 0-9.9-.9A3.6 3.6 0 0 0 9 19.5z"/></svg> 天気予報&lt;/h2&gt;&lt;span class="muted" style="font-size:.8rem"&gt;提供: 気象庁 / Yahoo!天気&lt;/span&gt;&lt;/div&gt;
         &lt;div class="section-body"&gt;
           &lt;div class="wx-head"&gt;
             &lt;div class="wx-loc" id="wxLoc"&gt;読み込み中…&lt;/div&gt;
             &lt;div class="wx-actions"&gt;
-              &lt;button onclick="showPage('settings');setTimeout(()=&gt;document.getElementById('wxPref')?.focus(),100)"&gt;📍 地域を変更&lt;/button&gt;
+              &lt;button onclick="showPage('settings');setTimeout(()=&gt;document.getElementById('wxPref')?.focus(),100)"&gt;<svg class="ui-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg> 地域を変更&lt;/button&gt;
               &lt;a id="wxYahooLink" href="https://weather.yahoo.co.jp/weather/" target="_blank" rel="noopener"&gt;Yahoo!天気で開く ↗&lt;/a&gt;
-              &lt;button onclick="fetchWeather(true)"&gt;🔄 更新&lt;/button&gt;
+              &lt;button onclick="fetchWeather(true)"&gt;<svg class="ui-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg> 更新&lt;/button&gt;
             &lt;/div&gt;
           &lt;/div&gt;
           &lt;div id="wxAlert"&gt;&lt;/div&gt;
@@ -2268,7 +2268,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
   &lt;section class="footer-info-band" aria-label="日時とサイト情報"&gt;
     &lt;div&gt;&lt;span data-info-source="siteToday"&gt;日付を読み込み中…&lt;/span&gt;&lt;span class="info-clock" data-info-source="siteClock"&gt;&lt;/span&gt;&lt;/div&gt;
     &lt;div class="footer-info-stats"&gt;&lt;span&gt;登録リンク数 &lt;strong data-info-source="linkCount"&gt;—&lt;/strong&gt;&lt;/span&gt;&lt;span&gt;登録ゲーム数 &lt;strong data-info-source="gameStat"&gt;—&lt;/strong&gt;&lt;/span&gt;&lt;/div&gt;
-    &lt;a href="javascript:void(0)" onclick="showPage('weather')"&gt;🌤 天気を見る ↗&lt;/a&gt;
+    &lt;a href="javascript:void(0)" onclick="showPage('weather')"&gt;<svg class="ui-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.4" cy="8" r="3"/><path d="M8.4 2.6v1.6M3 8H1.6M4.6 4.2 3.5 3.1M12.2 4.2l1.1-1.1"/><path d="M9 19.5h8.4a3.5 3.5 0 0 0 .3-7 5.2 5.2 0 0 0-9.9-.9A3.6 3.6 0 0 0 9 19.5z"/></svg> 天気を見る ↗&lt;/a&gt;
   &lt;/section&gt;
 
   &lt;div class="footer-inner"&gt;
@@ -3633,7 +3633,7 @@ async function fetchWeather(force){
   if(typeof fetchWxWarnings === 'function') fetchWxWarnings();
   if(!WX_PREF){
     if(locEl) locEl.innerHTML = '地域が未設定です &lt;small&gt;「設定」から都道府県を選んでください&lt;/small&gt;';
-    if(todayEl) todayEl.innerHTML = '&lt;div class="wx-empty"&gt;「設定」ページの「📍天気の地域」で都道府県を選ぶと、ここに天気が表示されます。&lt;/div&gt;';
+    if(todayEl) todayEl.innerHTML = '&lt;div class="wx-empty"&gt;「設定」ページの「<svg class="ui-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>天気の地域」で都道府県を選ぶと、ここに天気が表示されます。&lt;/div&gt;';
     if(weekEl) weekEl.innerHTML = '';
     if(yahoo) yahoo.href = 'https://weather.yahoo.co.jp/weather/';
     return;
@@ -3742,7 +3742,7 @@ async function fetchWeather(force){
             ${wMax[i]?`&lt;span class="hi"&gt;${wMax[i]}°&lt;/span&gt;`:''}
             ${wMin[i]?`&lt;span class="lo"&gt;${wMin[i]}°&lt;/span&gt;`:''}
           &lt;/div&gt;
-          ${wPops[i]?`&lt;div class="p"&gt;☂ ${wPops[i]}%&lt;/div&gt;`:''}
+          ${wPops[i]?`&lt;div class="p"&gt;<svg class="ui-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 18 0z"/><path d="M12 12v7a2 2 0 0 1-4 0"/></svg> ${wPops[i]}%&lt;/div&gt;`:''}
         &lt;/div&gt;`;
       }).join('');
     }
@@ -5882,6 +5882,7 @@ html body.choco-mode .ao-banner-media::after{background:linear-gradient(90deg,tr
 html body.choco-mode .ao-kicker{color:#f0bd80!important}
 html body.choco-mode .ao-meta li{background:rgba(26,15,10,.6)!important;border-color:#5a3826!important;color:#f7e9d7!important}
 html body.choco-mode .ticker-label.news{background:#8a4f2a!important;color:#fff4e6!important}
+.ui-ico{width:1.05em;height:1.05em;vertical-align:-0.15em;display:inline-block;flex:none}
 /* ===== CHOCO SIGNATURE LOOK : 残った青をキャラメル/ビターに置換し、ヘッダー下にチョコの垂れを追加 ===== */
 html body.choco-mode .site-header::before{content:"";position:absolute;left:0;right:0;top:100%;height:14px;pointer-events:none;z-index:0;background:radial-gradient(ellipse 7px 12px at 30px 0,#2a190f 96%,transparent 100%) 0 0/92px 14px repeat-x,radial-gradient(ellipse 5px 7px at 66px 0,#2a190f 96%,transparent 100%) 0 0/92px 14px repeat-x,radial-gradient(ellipse 9px 10px at 52px 0,#2a190f 96%,transparent 100%) 0 0/160px 14px repeat-x;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
 html body.choco-mode #search-app .logo{color:#f0bd80}
@@ -6033,6 +6034,8 @@ html body.whitechoco-mode :is(input,select,textarea,button,a):focus-visible{outl
 html body.whitechoco-mode .ticker{background:linear-gradient(90deg,#f3e3cf,#fff3e2,#f3e3cf)!important;border-color:#e6d3bd!important;color:#4a2e20}
 html body.whitechoco-mode .muted{color:#8a6a52!important}
 html body.whitechoco-mode ::selection{background:#f0bd80;color:#4a2e20}
+/* ===== WHITE CHOCO SIGNATURE LOOK : ヘッダー下にホワイトチョコの垂れを追加 ===== */
+html body.whitechoco-mode .site-header::before{content:"";position:absolute;left:0;right:0;top:100%;height:14px;pointer-events:none;z-index:0;background:radial-gradient(ellipse 7px 12px at 30px 0,#f6ebdc 96%,transparent 100%) 0 0/92px 14px repeat-x,radial-gradient(ellipse 5px 7px at 66px 0,#f6ebdc 96%,transparent 100%) 0 0/92px 14px repeat-x,radial-gradient(ellipse 9px 10px at 52px 0,#f6ebdc 96%,transparent 100%) 0 0/160px 14px repeat-x;filter:drop-shadow(0 2px 2px rgba(122,74,42,.22))}
 
 /* ===== HALLOWEEN ===== */
 html body.halloween-mode,html body.halloween-mode.dark-mode{
