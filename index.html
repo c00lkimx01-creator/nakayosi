@@ -6908,7 +6908,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   /* ---------- 設定（軽さ優先） ---------- */
   var MAX_BALLS = 14, MELT_AFTER_MS = 180000, MELT_SWEEP_MS = 15000;
   var TIER_PX = [0, 26, 40, 54];
-  var SURF_SEL = '.site-header,.gnav,.home-hero,footer,.card,.section,.news-card,.widget,.setting-row,.btn';
+  var SURF_SEL = '.site-header,.gnav,.home-hero,footer,.card,.section,.news-card,.widget,.setting-row,.btn,.nk-card,.mini-tool-card,.stat-tile,.calendar-item,.home-info-item,.news-list &gt; li,.game-grid &gt; *';
   var MAX_SURF = 160;
   var FRAME_MS = 1000 / 60;             // 60fps（スクロールとのズレを減らす）
   var SNOW_FREE_TOP = 220;              // ページ上端からこの高さ(px)までは雪が積もらない
@@ -6918,7 +6918,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   var GRAV = 1100, MAX_FALL = 1100;     // 重力(px/s²)
   var SNOW_BREAK_V = 650;              // この速さ以上で着地すると雪だるまが崩れる(px/s)
   var BASE = 10, BIN = 10;               // 地面の基本の雪の厚さ / 地面の列幅
-  var ELEM_MAX = 10, FLOOR_MAX = 36;     // 積もる上限(px)
+  var ELEM_MAX = 10, FLOOR_MAX = 28;     // 積もる上限(px)
   var FLOOR_INIT = 16, ELEM_INIT = 4.5;
   var SNOW = 'rgba(248,251,255,0.96)';
   var SLOPE_G = 900, ROLL_FRICTION = 1.6;     // 斜面で転がる加速度・転がりの摩擦
@@ -6958,6 +6958,40 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   function binIndex(x){ return clamp(Math.floor(x / BIN), 0, bins.length - 1); }
   function floorY(x){ return H - BASE - bins[binIndex(x)]; }
 
+  /* ---------- 面（要素の上の雪）は列ごとの厚さで持つ：転がした場所だけ減らせる ---------- */
+  function colCount(s){ return Math.max(1, Math.ceil((s.x1 - s.x0) / BIN)); }
+  function refreshDepth(s){
+    var m = 0;
+    if(s.cols) for(var i = 0; i &lt; s.cols.length; i++) if(s.cols[i] &gt; m) m = s.cols[i];
+    s.depth = m; s.ver = (s.ver || 0) + 1;
+  }
+  function ensureCols(s){
+    var n = colCount(s);
+    if(s.cols &amp;&amp; s.cols.length === n) return;
+    var old = s.cols, nc = new Float32Array(n);
+    for(var i = 0; i &lt; n; i++){
+      nc[i] = old ? old[Math.min(old.length - 1, Math.floor(i * old.length / n))] : (s.depth || 0);
+    }
+    s.cols = nc;
+    refreshDepth(s);
+  }
+  function colIndex(s, x){ return clamp(Math.floor((x - s.x0) / BIN), 0, s.cols.length - 1); }
+  /* その位置の面の雪の厚さ */
+  function surfDepthAt(s, x){ return s.cols ? s.cols[colIndex(s, x)] : s.depth; }
+  /* その位置の列だけ雪を足す／減らす */
+  function addSurfAt(s, x, amt){
+    if(!s.cols) return;
+    var i = colIndex(s, x);
+    s.cols[i] = Math.min(ELEM_MAX, s.cols[i] + amt);
+    refreshDepth(s);
+  }
+  function takeSurfAt(s, x, amt){
+    if(!s.cols) return;
+    var i = colIndex(s, x);
+    s.cols[i] = Math.max(0, s.cols[i] - amt);
+    refreshDepth(s);
+  }
+
   function toast(msg){ return; // 雪のお知らせ表示はしない
     var t = document.getElementById('ws-toast');
     if(!t){
@@ -6995,7 +7029,8 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       s.y = r.top;
       s.docTop = r.top + window.pageYOffset;
       s.rl = rl; s.rr = rr; s.ew = r.width;
-      if(s.docTop &lt; SNOW_FREE_TOP){ s.depth = 0; s.spill = 0; }   // 上の方には積もらない
+      ensureCols(s);
+      if(s.docTop &lt; SNOW_FREE_TOP &amp;&amp; (s.depth &gt; 0 || s.spill)){ s.cols.fill(0); refreshDepth(s); s.spill = 0; }   // 上の方には積もらない
       s.visible = r.top &gt;= 0 &amp;&amp; r.top &lt; H - BASE - 4;
       list.push(s);
     }
@@ -7066,7 +7101,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     for(var i = 0; i &lt; surfaces.length; i++){
       var k = surfaces[i];
       if(!k.visible || cx &lt; k.x0 || cx &gt; k.x1) continue;
-      var ty = k.y - k.depth + 2;
+      var ty = k.y - surfDepthAt(k, cx) + 2;
       if(ty &lt; bestY &amp;&amp; ok(ty)){ best = {kind: 'el', s: k}; bestY = ty; }
     }
     var mine = chainOf(b);
@@ -7104,7 +7139,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     b.vx *= 0.5;                                    // 着地で少し減速して転がり続ける
     if(c.kind === 'el'){
       b.support = {kind: 'el', s: c.s};
-      setPos(b, b.left, c.s.y - c.s.depth + 2 - sz);
+      setPos(b, b.left, c.s.y - surfDepthAt(c.s, cx) + 2 - sz);
     } else {
       b.support = {kind: 'floor'};
       setPos(b, b.left, floorY(cx) - sz);
@@ -7164,7 +7199,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       var cx = nl + sz / 2, gy = groundUnder(cx, b.top + sz);
       if(gy !== null){
         b.dist = (b.dist || 0) + Math.abs(moved);
-        consumeSnow(cx, gy - 1, Math.min(0.6, Math.abs(moved) * 0.04));
+        consumeSnow(cx, gy - 1, Math.min(1.5, Math.abs(moved) * 0.15));
         growBall(b, b);
       }
     }
@@ -7189,7 +7224,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   function grainFloor(x, y){
     var gy = floorY(x);
     for(var i = 0; i &lt; surfaces.length; i++){
-      var su = surfaces[i], sy = su.y - su.depth + 2;
+      var su = surfaces[i], sy = su.y - surfDepthAt(su, x) + 2;
       if(su.visible &amp;&amp; x &gt;= su.x0 &amp;&amp; x &lt;= su.x1 &amp;&amp; sy &gt;= y - 2) gy = Math.min(gy, sy);
     }
     return gy;
@@ -7209,7 +7244,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   function snowTarget(x, y){
     var best = {kind: 'floor', y: floorY(x)};
     for(var i = 0; i &lt; surfaces.length; i++){
-      var su = surfaces[i], sy = su.y - su.depth + 2;
+      var su = surfaces[i], sy = su.y - surfDepthAt(su, x) + 2;
       if(su.visible &amp;&amp; x &gt;= su.x0 &amp;&amp; x &lt;= su.x1 &amp;&amp; sy &gt;= y - 2 &amp;&amp; sy &lt; best.y){
         best = {kind: 'el', s: su, y: sy};
       }
@@ -7224,7 +7259,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       var bi = binIndex(p.x);
       bins[bi] = Math.min(FLOOR_MAX, bins[bi] + p.mass);
     } else {
-      t.s.depth = Math.min(ELEM_MAX, t.s.depth + p.mass);
+      addSurfAt(t.s, p.x, p.mass);
     }
   }
   function updateShards(s){
@@ -7283,19 +7318,28 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if(reduceMotion) return;
     for(var i = 0; i &lt; surfaces.length; i++){
       var k = surfaces[i];
-      if(!k.visible || k.docTop &lt; SNOW_FREE_TOP) continue;
+      if(!k.visible || k.docTop &lt; SNOW_FREE_TOP || !k.cols) continue;
       var excess = k.depth - SPILL_AT;
       if(excess &lt;= 0) continue;
       var take = Math.min(excess, SPILL_RATE * s * (0.6 + excess * 0.15));   // 高いほど多くこぼれる
-      k.depth -= take;
-      k.spill = (k.spill || 0) + take;
+      var sumOver = 0, c;
+      for(c = 0; c &lt; k.cols.length; c++) if(k.cols[c] &gt; SPILL_AT) sumOver += k.cols[c] - SPILL_AT;
+      if(sumOver &lt;= 0) continue;
+      var got = 0;
+      for(c = 0; c &lt; k.cols.length; c++){
+        var over = k.cols[c] - SPILL_AT;
+        if(over &lt;= 0) continue;
+        var d = take * over / sumOver;                 // 高く積もった列ほど多くこぼれる
+        k.cols[c] -= d; got += d;
+      }
+      refreshDepth(k);
+      k.spill = (k.spill || 0) + got;
       if(k.spill &lt; 0.9) continue;
       var mass = k.spill; k.spill = 0;
-      var top = k.y - k.depth;
       for(var dir = -1; dir &lt;= 1; dir += 2){
         var ex = dir &lt; 0 ? k.x0 : k.x1;
         for(var j = 0; j &lt; 2; j++){
-          addShard(ex + dir * rnd(1, 3), top + rnd(-2, 2), dir * rnd(30, 90), rnd(-20, 20),
+          addShard(ex + dir * rnd(1, 3), k.y - surfDepthAt(k, ex) + rnd(-2, 2), dir * rnd(30, 90), rnd(-20, 20),
                    rnd(1.6, 2.8), mass / 4, true, 'chip');
         }
       }
@@ -7331,7 +7375,8 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     var cx = b.left + sz / 2, by = b.top + sz;
     var amt = sz / 3.5 * (1 - profile.retained), sup = b.support;
     if(sup &amp;&amp; sup.kind === 'el' &amp;&amp; sup.s){
-      sup.s.depth = Math.min(ELEM_MAX, sup.s.depth + amt * 0.6);
+      var hk = Math.ceil(sz * 0.9 / BIN);
+      for(var kk = -hk; kk &lt;= hk; kk++){ addSurfAt(sup.s, cx + kk * BIN, amt * 0.6 * (1 - Math.abs(kk) / (hk + 1))); }
     } else if(bins){
       var half = Math.ceil(sz * 0.9 / BIN), c = binIndex(cx);
       for(var k = -half; k &lt;= half; k++){
@@ -7389,7 +7434,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       if(single) rollBall(b, s);
       var cx = b.left + sz / 2;
       if(cx &lt; sup.s.x0 || cx &gt; sup.s.x1){ b.support = null; b.falling = true; b.vy = 0; return; }
-      setPos(b, b.left, sup.s.y - sup.s.depth + 2 - sz);
+      setPos(b, b.left, sup.s.y - surfDepthAt(sup.s, cx) + 2 - sz);
       setVis(b, sup.s.visible);
     } else if(sup.kind === 'ball'){
       var t = sup.t, st = size(t);
@@ -7422,7 +7467,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if(plowTimer) clearTimeout(plowTimer);
     plowTimer = setTimeout(startPlow, ms);
   }
-  var PLOW_CAP = 48;                    // 刃の前に積む雪の山の高さの上限(px)
+  var PLOW_CAP = 30, PLOW_LOAD_MAX = 90; // 刃の前に積む雪の山の高さの上限(px) / 押せる雪の量の上限
   function updatePlow(s){
     if(!plow) return;
     plow.x += plow.dir * PLOW_SPEED * s;
@@ -7431,10 +7476,17 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     // 刃の下の雪はすくい取る（消さずに、刃に載せて運ぶ）
     var got = 0;
     for(var i = i0; i &lt;= i1; i++){
-      if(bins[i] &gt; 0){ got += bins[i]; bins[i] = 0; }
+      if(bins[i] &gt; 0){ var keep = Math.min(bins[i], 1.5); got += bins[i] - keep; bins[i] = keep; }   // 全部はさらわず薄く残す
     }
     if(got &gt; 1 &amp;&amp; Math.random() &lt; 0.4) puff(plow.dir &gt; 0 ? R : L, H - BASE - 2, 2, 4, 90);
     plow.load += got;
+    // 積みすぎた雪は後ろ（通ったあと）に落として、前の山を大きくしない
+    if(plow.load &gt; PLOW_LOAD_MAX){
+      var extra = plow.load - PLOW_LOAD_MAX; plow.load = PLOW_LOAD_MAX;
+      var bx = plow.dir &gt; 0 ? L : R, bj = binIndex(bx), bj2 = binIndex(bx - BIN * 2);
+      bins[bj] = Math.min(FLOOR_MAX, bins[bj] + extra * 0.5);
+      bins[bj2] = Math.min(FLOOR_MAX, bins[bj2] + extra * 0.5);
+    }
     // 運んでいる雪は刃の前の山として見せる。壁の奥まで出たら、外へ落として消す
     var front = plow.dir &gt; 0 ? R + 2 : L - 2;
     if(!(front &gt;= 0 &amp;&amp; front &lt; W) &amp;&amp; plow.load &gt; 0){
@@ -7666,7 +7718,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   }
   /* 積もった雪も風で流れてならされる */
   function driftSnow(s){
-    var n = bins.length, k = Math.min(0.5, 2.5 * s), sh = gust * s * 0.02;
+    var n = bins.length, k = Math.min(0.5, 0.35 * s), sh = gust * s * 0.02;
     var nb = new Float32Array(n);
     for(var i = 0; i &lt; n; i++){
       var l = bins[Math.max(0, i - 1)], r = bins[Math.min(n - 1, i + 1)], c = bins[i];
@@ -7725,9 +7777,9 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       for(var k = 0; !landed &amp;&amp; k &lt; surfaces.length; k++){
         var su = surfaces[k];
         if(!su.visible || su.docTop &lt; SNOW_FREE_TOP || f.x &lt; su.x0 || f.x &gt; su.x1) continue;
-        var ty = su.y - su.depth;
+        var ty = su.y - surfDepthAt(su, f.x);
         if(py &lt;= ty &amp;&amp; f.y &gt;= ty){
-          su.depth = Math.min(ELEM_MAX, su.depth + 0.12);
+          addSurfAt(su, f.x, 0.12);
           landed = true;
         }
       }
@@ -7739,6 +7791,18 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   var surfLayer = null;
   var snowDivs = [];
   var MOUND_SVG = '&lt;svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" style="display:block;overflow:visible"&gt;&lt;path d="M0 100 C12 -30 88 -30 100 100 Z" fill="' + SNOW + '"/&gt;&lt;/svg&gt;';
+  /* 列ごとの高さで、面の雪の上面を描く（転がした場所だけくぼむ） */
+  function setMound(k, w, h){
+    var cols = k.cols || [h], n = cols.length;
+    var d = 'M0 ' + h.toFixed(2);
+    for(var i = 0; i &lt; n; i++){
+      var x = Math.min(w, (i + 0.5) * BIN), y = h - cols[i];
+      d += ' L' + x.toFixed(1) + ' ' + y.toFixed(2);
+    }
+    d += ' L' + w.toFixed(1) + ' ' + (h - cols[n - 1]).toFixed(2) + ' L' + w.toFixed(1) + ' ' + h.toFixed(2) + ' Z';
+    k.svg.setAttribute('viewBox', '0 0 ' + w.toFixed(1) + ' ' + h.toFixed(2));
+    k.path.setAttribute('d', d);
+  }
   function drawSurfaces(){
     if(!surfLayer){
       surfLayer = document.createElement('div');
@@ -7760,27 +7824,28 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
         k.snow.className = 'ws-surf-snow';
         k.snow.style.cssText = 'position:absolute;pointer-events:none;display:none';
         k.snow.innerHTML = MOUND_SVG;
+        k.svg = k.snow.firstChild; k.path = k.svg.firstChild;
         (inEl ? k.el : surfLayer).appendChild(k.snow);
         snowDivs.push(k.snow);
         k.geo = '';
       }
-      var show, geo, st = k.snow.style;
+      var h = k.depth, w = k.x1 - k.x0, show, geo, st = k.snow.style;
       if(k.inEl){
         var iw = k.ew - k.rl - k.rr;
-        show = k.depth &gt;= 0.3 &amp;&amp; iw &gt;= 8;
-        geo = show ? [k.depth, k.rl, iw].join(',') : 'off';
+        show = h &gt;= 0.3 &amp;&amp; iw &gt;= 8;
+        geo = show ? [k.ver, k.rl, iw, h].join(',') : 'off';
         if(geo === k.geo) continue;
         k.geo = geo;
         if(!show){ st.display = 'none'; continue; }
         st.display = '';
         st.left = k.rl + 'px';
-        st.top = (1 - k.depth) + 'px';                  // 要素の上端（少し内側）を底にする
+        st.top = (1 - h) + 'px';                        // 要素の上端（少し内側）を底にする
         st.width = iw + 'px';
-        st.height = k.depth + 'px';
+        st.height = h + 'px';
+        setMound(k, iw, h);
       } else {
-        var w = k.x1 - k.x0, h = k.depth;
         show = h &gt;= 0.3 &amp;&amp; w &gt;= 8;
-        geo = show ? [k.x0, k.docTop, w, h].join(',') : 'off';
+        geo = show ? [k.ver, k.x0, k.docTop, w, h].join(',') : 'off';
         if(geo === k.geo) continue;
         k.geo = geo;
         if(!show){ st.display = 'none'; continue; }
@@ -7789,6 +7854,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
         st.top = (k.docTop + 1 - h) + 'px';
         st.width = w + 'px';
         st.height = h + 'px';
+        setMound(k, w, h);
       }
     }
   }
@@ -7820,7 +7886,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if(plow &amp;&amp; plow.load &gt; 0.5){
       // 除雪機が運んでいる雪の山（運んでいる量に応じて大きくなる）
       var dir = plow.dir, fx = dir &gt; 0 ? plow.x + PLOW_W + 2 : plow.x - 2;
-      var hh = Math.min(64, 4 + Math.sqrt(plow.load) * 3.2), ww = Math.min(120, 40 + plow.load * 0.25);
+      var hh = Math.min(PLOW_CAP, 4 + Math.sqrt(plow.load) * 2.6), ww = Math.min(72, 30 + plow.load * 0.2);
       var base = H - BASE;
       ctx.beginPath();
       ctx.moveTo(fx, base);
@@ -7878,7 +7944,8 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     for(var i = 0; i &lt; surfaces.length; i++){
       var k = surfaces[i];
       if(!k.visible || x &lt; k.x0 || x &gt; k.x1) continue;
-      if(k.depth &gt;= 0.8 &amp;&amp; Math.abs(y - (k.y - k.depth)) &lt;= 8) return {kind: 'el', s: k};
+      var dk = surfDepthAt(k, x);
+      if(dk &gt;= 0.8 &amp;&amp; Math.abs(y - (k.y - dk)) &lt;= 8) return {kind: 'el', s: k};
     }
     return null;
   }
@@ -7886,12 +7953,15 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   function consumeSnow(x, y, amount){
     var sn = snowAt(x, y);
     if(!sn) return false;
-    if(sn.kind === 'floor'){
-      // 通った場所の雪だけを減らす
-       var bi = binIndex(x);
-      bins[bi] = Math.max(0, bins[bi] - amount);
-    } else {
-      sn.s.depth = Math.max(0, sn.s.depth - amount);
+    // 転がした場所（真ん中）を減らし、両隣は少しだけ。離れた所の雪は減らさない
+    for(var d = -1; d &lt;= 1; d++){
+      var f = d === 0 ? 1 : 0.35, xx = x + d * BIN;
+      if(sn.kind === 'floor'){
+        var bi = binIndex(xx);
+        bins[bi] = Math.max(0, bins[bi] - amount * f);
+      } else {
+        takeSurfAt(sn.s, xx, amount * f);
+      }
     }
     return true;
   }
@@ -7903,8 +7973,8 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if(bottom &gt;= fy - 28 &amp;&amp; bins[binIndex(x)] &gt;= 0.2) return fy;
     for(var i = 0; i &lt; surfaces.length; i++){
       var k = surfaces[i];
-      if(!k.visible || x &lt; k.x0 || x &gt; k.x1 || k.depth &lt; 0.2) continue;
-      var sy = k.y - k.depth;
+      if(!k.visible || x &lt; k.x0 || x &gt; k.x1 || surfDepthAt(k, x) &lt; 0.2) continue;
+      var sy = k.y - surfDepthAt(k, x);
       if(Math.abs(bottom - sy) &lt;= 28) return sy;
     }
     return null;
@@ -7960,9 +8030,9 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     // 要素の上の雪も吹き飛ぶ
     for(var m = 0; m &lt; surfaces.length; m++){
       var su = surfaces[m];
-      if(!su.visible || x &lt; su.x0 || x &gt; su.x1 || Math.abs(y - su.y) &gt; 30 || su.depth &lt; 0.5) continue;
-      su.depth = Math.max(0, su.depth - 0.5);
-      puff(x, su.y - su.depth, 4, 10, 120);
+      if(!su.visible || x &lt; su.x0 || x &gt; su.x1 || Math.abs(y - su.y) &gt; 30 || surfDepthAt(su, x) &lt; 0.5) continue;
+      takeSurfAt(su, x, 0.5);
+      puff(x, su.y - surfDepthAt(su, x), 4, 10, 120);
       for(var q = puffs.length - 4; q &lt; puffs.length; q++) if(q &gt;= 0) puffs[q].vx += vx * 0.5;
     }
   }
@@ -8007,7 +8077,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     var step = Math.abs(nl - b.left);
     if(gy !== null &amp;&amp; step &gt; 0){
       g.dist += step;                                 // 雪の上を転がした距離だけ大きくなる
-      consumeSnow(cxr, gy - 1, Math.min(0.6, step * 0.04));
+      consumeSnow(cxr, gy - 1, Math.min(1.5, step * 0.15));
       b.rot += step / (sz / 2) * 57.3 * (nl &gt; b.left ? 1 : -1);
       b.el.style.transform = 'rotate(' + b.rot.toFixed(1) + 'deg)';
     }
