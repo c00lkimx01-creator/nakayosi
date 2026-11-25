@@ -7131,7 +7131,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
 
   /* 雪玉1つ（または積み上げ全体）の毎フレーム更新 */
   /* 転がる（横の速さ・摩擦・回転） */
-  function roll(b, s){
+  function rollBall(b, s){
     var sz = size(b);
     b.vx *= Math.exp(-ROLL_FRICTION * s);
     if(Math.abs(b.vx) &lt; 3) b.vx = 0;
@@ -7148,7 +7148,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     var cx = b.left + size(b) / 2;
     var slope = (floorY(cx + 6) - floorY(cx - 6)) / 12;
     if(Math.abs(slope) &gt; 0.02) b.vx += SLOPE_G * slope * s;
-    roll(b, s);
+    rollBall(b, s);
   }
 
   function updateBall(b, s){
@@ -7185,7 +7185,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       setPos(b, b.left, floorY(b.left + sz / 2) - sz);
       setVis(b, true);
     } else if(sup.kind === 'el'){
-      if(single) roll(b, s);
+      if(single) rollBall(b, s);
       var cx = b.left + sz / 2;
       if(cx &lt; sup.s.x0 || cx &gt; sup.s.x1){ b.support = null; b.falling = true; b.vy = 0; return; }
       setPos(b, b.left, sup.s.y - sup.s.depth + 2 - sz);
