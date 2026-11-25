@@ -6947,7 +6947,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   }
   function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
   function rnd(a, b){ return a + Math.random() * (b - a); }
-  function size(b){ return TIER_PX[b.tier]; }
+  function size(b){ return b.px || TIER_PX[b.tier]; }
   function binIndex(x){ return clamp(Math.floor(x / BIN), 0, bins.length - 1); }
   function floorY(x){ return H - BASE - bins[binIndex(x)]; }
 
@@ -6998,7 +6998,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     el.setAttribute('aria-label', '雪玉（タップで大きく、ドラッグで積み上げ）');
     el.style.width = el.style.height = TIER_PX[tier] + 'px';
     document.body.appendChild(el);
-    var b = {el: el, tier: tier, above: null, below: null, left: NaN, top: NaN,
+    var b = {el: el, tier: tier, px: TIER_PX[tier], above: null, below: null, left: NaN, top: NaN,
              vy: 0, vx: 0, rot: 0, falling: !!falling, support: null, dragging: false, melting: false, born: Date.now()};
     setPos(b, clamp(left, 0, W - TIER_PX[tier]), top);
     balls.push(b);
@@ -7138,11 +7138,21 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if(Math.abs(b.vx) &lt; 3) b.vx = 0;
     var nl = clamp(b.left + b.vx * s, 0, W - sz);
     if(nl !== b.left + b.vx * s) b.vx = 0;
+    var moved = nl - b.left;
     if(nl !== b.left){
-      b.rot += (nl - b.left) / (sz / 2) * 57.3;
+      b.rot += moved / (sz / 2) * 57.3;
       b.el.style.transform = 'rotate(' + b.rot.toFixed(1) + 'deg)';
     }
     b.left = nl;
+    // 吹っ飛ばした・投げた玉も、雪の上を転がるほど大きくなる（まわりの雪は減る）
+    if(moved !== 0 &amp;&amp; !b.above &amp;&amp; !b.below){
+      var cx = nl + sz / 2, gy = groundUnder(cx, b.top + sz);
+      if(gy !== null){
+        b.dist = (b.dist || 0) + Math.abs(moved);
+        consumeSnow(cx, gy - 1, Math.min(0.6, Math.abs(moved) * 0.04));
+        growBall(b, b);
+      }
+    }
   }
   /* 斜面（雪の積もり方の違い）を転がり落ちる */
   function rollOnFloor(b, s){
@@ -7152,6 +7162,32 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     rollBall(b, s);
   }
 
+  /* 高いところから落ちた雪玉はつぶれて飛び散る */
+  var SQUASH_V = 780;   // この速さ以上で着地すると雪玉がつぶれる(px/s) ≒ 約28cm(280px)以上の高さ
+  function squash(b){
+    var sz = size(b);
+    b.melting = true;
+    b.el.style.transformOrigin = '50% 100%';
+    b.el.style.transition = 'transform .12s ease-out, opacity .5s ease .25s, border-radius .12s';
+    b.el.style.borderRadius = '50% 50% 45% 45% / 70% 70% 30% 30%';
+    b.el.style.transform = 'scale(1.7, 0.3)';
+    b.el.style.opacity = '0';
+    if(typeof puff === 'function') puff(b.left + sz / 2, b.top + sz - 2, 10 + sz / 4, 12, 220);
+    // つぶれた分の雪がその場に積もる
+    var cx = b.left + sz / 2, sup = b.support, amt = sz / 3.5;
+    if(sup &amp;&amp; sup.kind === 'el' &amp;&amp; sup.s){
+      sup.s.depth = Math.min(ELEM_MAX, sup.s.depth + amt * 0.6);
+    } else if(bins){
+      var half = Math.ceil(sz * 0.9 / BIN), c = binIndex(cx);
+      for(var k = -half; k &lt;= half; k++){
+        var j = c + k; if(j &lt; 0 || j &gt;= bins.length) continue;
+        var f = 1 - Math.abs(k) / (half + 1);
+        bins[j] = Math.min(FLOOR_MAX, bins[j] + amt * f);
+      }
+    }
+    setTimeout(function(){ removeBall(b); }, 800);
+    toast('💦 雪玉がつぶれた！');
+  }
   function updateBall(b, s){
     if(b.dragging || b.below || b.melting) return;
     var sz = size(b), single = !b.above;
@@ -7168,6 +7204,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       if(hit){
         var impact = b.vy;
         land(b, hit);
+        if(single &amp;&amp; impact &gt; SQUASH_V){ squash(b); return; }
         var r = root(b);
         if(!reduceMotion &amp;&amp; chainLen(r) &gt;= 3 &amp;&amp; impact &gt; SNOW_BREAK_V) collapse(r);
       } else {
@@ -7589,24 +7626,37 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     var sn = snowAt(x, y);
     if(!sn) return false;
     if(sn.kind === 'floor'){
-      var bi = binIndex(x);
+      // 通った場所の雪だけを減らす
+       var bi = binIndex(x);
       bins[bi] = Math.max(0, bins[bi] - amount);
     } else {
       sn.s.depth = Math.max(0, sn.s.depth - amount);
     }
     return true;
   }
-  /* 転がした距離に応じて雪玉が大きくなる（40pxで中、110pxで大） */
-  function growBall(b, g){
-    var want = g.dist &gt;= 110 ? 3 : (g.dist &gt;= 40 ? 2 : 1);
-    while(b.tier &lt; want){
-      var old = size(b);
-      b.tier++;
-      var s = size(b);
-      b.el.style.width = b.el.style.height = s + 'px';
-      setPos(b, b.left - (s - old) / 2, b.top - (s - old));
-      b.el.classList.remove('ws-pop'); void b.el.offsetWidth; b.el.classList.add('ws-pop');
+  /* 転がした距離に応じて雪玉が大きくなる（150pxで中、400pxで大） */
+  /* 玉の真下にある雪面の高さ（近くに雪がなければ null） */
+  function groundUnder(x, bottom){
+    if(!bins) return null;
+    var fy = floorY(x);
+    if(bottom &gt;= fy - 28 &amp;&amp; bins[binIndex(x)] &gt;= 0.2) return fy;
+    for(var i = 0; i &lt; surfaces.length; i++){
+      var k = surfaces[i];
+      if(!k.visible || x &lt; k.x0 || x &gt; k.x1 || k.depth &lt; 0.2) continue;
+      var sy = k.y - k.depth;
+      if(Math.abs(bottom - sy) &lt;= 28) return sy;
     }
+    return null;
+  }
+  function growBall(b, g){
+    // 転がした距離に応じて少しずつ大きくなる（見た目は連続的に変化）
+    var px = Math.min(TIER_PX[3], TIER_PX[1] + g.dist * 0.06);
+    if(px &lt;= (b.px || TIER_PX[1])) return;
+    var old = size(b);
+    b.px = px;
+    b.tier = px &gt;= 46 ? 3 : (px &gt;= 33 ? 2 : 1);
+    b.el.style.width = b.el.style.height = px + 'px';
+    setPos(b, b.left - (px - old) / 2, b.top - (px - old));
   }
 
   /* 雪の上を押さえて動かす（転がす）と雪玉ができる。押すだけ・雪のない所では作れない */
@@ -7691,9 +7741,16 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     var b = g.ball, sz = size(b);
     var nl = clamp(b.left + (e.clientX - g.lastX), 0, W - sz);
     var nt = clamp(b.top + (e.clientY - g.lastY), 0, H - sz);
-    var step = Math.hypot(nl - b.left, nt - b.top);
+    var cxr = nl + sz / 2, gy = groundUnder(cxr, nt + sz);
+    if(gy !== null) nt = gy - sz;                     // 雪の上では玉を雪面に沿わせて転がす
+    var step = Math.abs(nl - b.left);
+    if(gy !== null &amp;&amp; step &gt; 0){
+      g.dist += step;                                 // 雪の上を転がした距離だけ大きくなる
+      consumeSnow(cxr, gy - 1, Math.min(0.6, step * 0.04));
+      b.rot += step / (sz / 2) * 57.3 * (nl &gt; b.left ? 1 : -1);
+      b.el.style.transform = 'rotate(' + b.rot.toFixed(1) + 'deg)';
+    }
     setPos(b, nl, nt);
-    if(consumeSnow(nl + sz / 2, nt + sz - 4, 0.12)) g.dist += step;   // 玉の底が雪に触れて転がったときだけ距離がたまる
     g.lastX = e.clientX; g.lastY = e.clientY;
     growBall(b, g);
   }
@@ -7712,6 +7769,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       return;
     }
     var b = g.ball;
+    b.dist = g.dist;
     b.dragging = false;
     b.el.classList.remove('dragging');
     var throwV = 0, h = g.hist;
