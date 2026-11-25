@@ -7121,6 +7121,11 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     var parts = chainOf(r);
     parts.forEach(function(m){ m.below = null; m.above = null; });
     parts.forEach(function(m, i){
+      if(m.el.animate){
+        m.el.style.transformOrigin = '50% 100%';
+        m.el.animate([{transform:'scale(1,1)'},{transform:'scale(1.25,0.72)'},{transform:'scale(0.9,1.1)'},{transform:'scale(1,1)'}], {duration: 380, easing:'ease-out'});
+      }
+      chunks(m.left + size(m) / 2, m.top + size(m), size(m) * 0.6, 0.5);
       m.falling = true; m.support = null;
       m.vy = -(60 + Math.random() * 120);
       var dir = i === 0 ? -1 : (i === 1 ? 1 : (Math.random() &lt; 0.5 ? -1 : 1));
@@ -7164,15 +7169,41 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
 
   /* 高いところから落ちた雪玉はつぶれて飛び散る */
   var SQUASH_V = 780;   // この速さ以上で着地すると雪玉がつぶれる(px/s) ≒ 約28cm(280px)以上の高さ
-  function squash(b){
-    var sz = size(b);
+  /* 飛び散る雪のかけら（重力つき） */
+  function chunks(cx, by, sz, power){
+    var n = Math.round(6 + sz / 6 + power * 6);
+    for(var i = 0; i &lt; n; i++){
+      var c = document.createElement('div');
+      var d = rnd(3, 4 + sz / 7);
+      c.style.cssText = 'position:fixed;z-index:955;pointer-events:none;border-radius:50% 45% 55% 40%;width:'+d+'px;height:'+(d*rnd(.7,1))+'px;left:'+(cx-d/2+rnd(-sz/3,sz/3))+'px;top:'+(by-d)+'px;background:radial-gradient(circle at 35% 30%,#fff,#e3eef8);box-shadow:0 1px 2px rgba(50,80,110,.25)';
+      document.body.appendChild(c);
+      var vx = rnd(-1, 1) * (80 + power * 220), vy = -rnd(80, 160 + power * 260), g = 1400, T = rnd(.45, .8), kf = [];
+      for(var k = 0; k &lt;= 10; k++){
+        var t = T * k / 10, y = vy * t + g * t * t / 2;
+        if(y &gt; 0) y = 0;
+        kf.push({transform:'translate('+(vx*t)+'px,'+y+'px) rotate('+(vx*t*3)+'deg) scale('+(1-k/14)+')', opacity: k &lt; 7 ? 1 : 1 - (k-7)/3});
+      }
+      c.animate(kf, {duration: T * 1000, easing: 'linear', fill: 'forwards'}).onfinish = (function(c){ return function(){ c.remove(); }; })(c);
+    }
+  }
+  function squash(b, impact){
+    var sz = size(b), power = clamp(((impact || SQUASH_V) - SQUASH_V) / 600 + 0.4, 0.3, 1.2);
     b.melting = true;
+    b.el.style.transition = 'none';
     b.el.style.transformOrigin = '50% 100%';
-    b.el.style.transition = 'transform .12s ease-out, opacity .5s ease .25s, border-radius .12s';
-    b.el.style.borderRadius = '50% 50% 45% 45% / 70% 70% 30% 30%';
-    b.el.style.transform = 'scale(1.7, 0.3)';
-    b.el.style.opacity = '0';
+    var fx = b.el.querySelectorAll('.ws-face,.ws-nose,.ws-hat');
+    for(var q = 0; q &lt; fx.length; q++) fx[q].style.opacity = '0';
+    var w = 1.5 + power * 0.6, h = 0.32 - power * 0.12;
+    b.el.animate([
+      {transform:'scale(1,1)', borderRadius:'50%', opacity:1},
+      {transform:'scale(0.82,1.22)', borderRadius:'50%', opacity:1, offset:.08},
+      {transform:'scale('+(w*0.75)+','+(h*1.6)+')', borderRadius:'50% 50% 42% 42% / 75% 75% 25% 25%', opacity:1, offset:.2},
+      {transform:'scale('+w+','+h+')', borderRadius:'48% 52% 40% 44% / 90% 85% 10% 12%', opacity:1, offset:.35},
+      {transform:'scale('+(w*1.08)+','+(h*0.85)+')', borderRadius:'45% 55% 38% 46% / 95% 90% 6% 8%', opacity:.85, offset:.6},
+      {transform:'scale('+(w*1.12)+','+(h*0.6)+')', borderRadius:'45% 55% 38% 46% / 95% 90% 6% 8%', opacity:0}
+    ], {duration: 900, easing:'cubic-bezier(.2,.7,.3,1)', fill:'forwards'});
     if(typeof puff === 'function') puff(b.left + sz / 2, b.top + sz - 2, 10 + sz / 4, 12, 220);
+    chunks(b.left + sz / 2, b.top + sz, sz, power);
     // つぶれた分の雪がその場に積もる
     var cx = b.left + sz / 2, sup = b.support, amt = sz / 3.5;
     if(sup &amp;&amp; sup.kind === 'el' &amp;&amp; sup.s){
@@ -7204,7 +7235,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       if(hit){
         var impact = b.vy;
         land(b, hit);
-        if(single &amp;&amp; impact &gt; SQUASH_V){ squash(b); return; }
+        if(single &amp;&amp; impact &gt; SQUASH_V){ squash(b, impact); return; }
         var r = root(b);
         if(!reduceMotion &amp;&amp; chainLen(r) &gt;= 3 &amp;&amp; impact &gt; SNOW_BREAK_V) collapse(r);
       } else {
@@ -7317,8 +7348,18 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
         var aMoved = nudge(A.root, dir * ox / 2);
         nudge(B.root, aMoved - dir * ox);        // Aが端で止まった分はBが多く押し出す
         // ぶつかった玉は、相手に向かう速さを跳ね返す（転がりの衝突）
-        if(!A.root.above &amp;&amp; !A.root.below &amp;&amp; A.root.vx * (-dir) &gt; 0) A.root.vx *= -0.3;
-        if(!B.root.above &amp;&amp; !B.root.below &amp;&amp; B.root.vx * dir &gt; 0) B.root.vx *= -0.3;
+        // ぶつかった玉同士で勢いを受け渡す（当てられた玉が転がる）
+        var aS = !A.root.above &amp;&amp; !A.root.below, bS = !B.root.above &amp;&amp; !B.root.below;
+        var rel = (A.root.vx - B.root.vx) * (-dir);   // 近づく速さ
+        if(rel &gt; 0 &amp;&amp; aS &amp;&amp; bS){
+          var ma = Math.pow(size(A.root), 2), mb = Math.pow(size(B.root), 2), e = 0.6;
+          var va = A.root.vx, vb = B.root.vx;
+          A.root.vx = (ma * va + mb * vb - mb * e * (va - vb)) / (ma + mb);
+          B.root.vx = (ma * va + mb * vb + ma * e * (va - vb)) / (ma + mb);
+        } else {
+          if(aS &amp;&amp; A.root.vx * (-dir) &gt; 0) A.root.vx *= -0.3;
+          if(bS &amp;&amp; B.root.vx * dir &gt; 0) B.root.vx *= -0.3;
+        }
         boxes[i] = chainBox(A.root);
         boxes[j] = chainBox(B.root);
       }
