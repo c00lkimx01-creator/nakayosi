@@ -6916,7 +6916,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   var SNOW = 'rgba(248,251,255,0.96)';
   var SLOPE_G = 900, ROLL_FRICTION = 1.6;     // 斜面で転がる加速度・転がりの摩擦
   var PLOW_W = 96, PLOW_H = 36, PLOW_SPEED = 170;
-  var PLOW_FIRST_MS = 40000, PLOW_EVERY_MS = 180000;
+  var PLOW_FIRST_MS = 8000, PLOW_EVERY_MS = 45000;
   var PLOW_SVG = '&lt;svg viewBox="0 0 96 36" width="96" height="36" xmlns="http://www.w3.org/2000/svg"&gt;' +
     '&lt;rect x="18" y="10" width="52" height="16" rx="3" fill="#ffc107" stroke="#7a5b00" stroke-width="1.5"/&gt;' +
     '&lt;rect x="10" y="2" width="24" height="24" rx="3" fill="#ffb300" stroke="#7a5b00" stroke-width="1.5"/&gt;' +
@@ -6925,12 +6925,12 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     '&lt;rect x="80" y="10" width="6" height="22" rx="1.5" fill="#4a4a4a"/&gt;' +
     '&lt;circle cx="26" cy="30" r="5" fill="#222"/&gt;&lt;circle cx="62" cy="30" r="5" fill="#222"/&gt;' +
     '&lt;/svg&gt;';
-  var reduceMotion = !!(window.matchMedia &amp;&amp; window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var reduceMotion = false; // 端末の「動きを減らす」設定でも雪玉の重力・転がりを動かす
 
   var active = false, loopId = 0, lastT = 0, lastScan = 0, scrollDirty = true;
   var sweepTimer = null, syncTimer = null;
   var W = 0, H = 0, DPR = 1;
-  var cvs = null, ctx = null, sprite = null, flakes = [];
+  var cvs = null, ctx = null, sprite = null, flakes = [], puffs = [];
   var gust = 0, gustTarget = 0, gustUntil = 0, nextGust = 0;
   var surfMap = new WeakMap(), surfaces = [], bins = null, balls = [], snowmen = 0;
   var plow = null, plowTimer = null, roll = null;
@@ -7066,6 +7066,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   }
 
   function land(b, c){
+    if(b.vy &gt; 150) puff(b.left + size(b) / 2, b.top + size(b), 8, size(b) / 2, 90);
     b.falling = false; b.vy = 0;
     var sz = size(b), cx = b.left + sz / 2;
     if(c.kind === 'ball'){
@@ -7226,7 +7227,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     plow.x += plow.dir * PLOW_SPEED * s;
     var L = plow.x, R = plow.x + PLOW_W;
     var i0 = binIndex(Math.max(0, L)), i1 = binIndex(Math.min(W, R));
-    for(var i = i0; i &lt;= i1; i++){ bins[i] = Math.min(bins[i], 0.5); }
+    for(var i = i0; i &lt;= i1; i++){ if(bins[i] &gt; 1) puff(i * BIN, H - BASE - bins[i], 2, 4, 120); bins[i] = 0; }
     var plowTop = H - PLOW_H;
     balls.slice().forEach(function(b){
       if(b.dragging || b.melting || b.below) return;
@@ -7243,7 +7244,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if((plow.dir &gt; 0 &amp;&amp; L &gt; W + 4) || (plow.dir &lt; 0 &amp;&amp; R &lt; -4)){
       if(plow.el.parentNode) plow.el.parentNode.removeChild(plow.el);
       plow = null;
-      schedulePlow(PLOW_EVERY_MS + Math.random() * 60000);
+      schedulePlow(PLOW_EVERY_MS + Math.random() * 15000);
     }
   }
 
@@ -7388,15 +7389,46 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       x: Math.random() * W,
       y: init ? Math.random() * H : -8 - Math.random() * 40,
       z: z,
-      r: (0.7 + z * 1.7) * (0.9 + Math.random() * 0.2),
-      vy: 22 + z * 45 + Math.random() * 8,
+      r: (0.35 + z * 1.0) * (0.8 + Math.random() * 0.4),
+      vy: 28 + z * 55 + Math.random() * 12,
       amp: 4 + Math.random() * 6,
       ph: Math.random() * 6.283,
       fr: 0.35 + Math.random() * 0.5,
-      a: 0.22 + z * 0.4
+      a: 0.45 + z * 0.45
     };
   }
   function respawn(f){ f.x = Math.random() * W; f.y = -8 - Math.random() * 40; }
+  /* 粉雪の舞い上がり */
+  function puff(x, y, n, spread, up){
+    for(var i = 0; i &lt; n &amp;&amp; puffs.length &lt; 400; i++){
+      puffs.push({x: x + rnd(-spread, spread), y: y + rnd(-3, 3), vx: rnd(-60, 60), vy: -rnd(20, up),
+                  r: rnd(0.3, 1.1), life: rnd(0.6, 1.4), t: 0});
+    }
+  }
+  function updatePuffs(s){
+    for(var i = puffs.length - 1; i &gt;= 0; i--){
+      var q = puffs[i];
+      q.t += s;
+      if(q.t &gt;= q.life){ puffs.splice(i, 1); continue; }
+      q.vy += 140 * s; q.vx += gust * 0.8 * s; q.vx *= Math.exp(-1.5 * s);
+      q.x += q.vx * s; q.y += q.vy * s;
+    }
+  }
+  /* 積もった雪も風で流れてならされる */
+  function driftSnow(s){
+    var n = bins.length, k = Math.min(0.5, 2.5 * s), sh = gust * s * 0.02;
+    var nb = new Float32Array(n);
+    for(var i = 0; i &lt; n; i++){
+      var l = bins[Math.max(0, i - 1)], r = bins[Math.min(n - 1, i + 1)], c = bins[i];
+      var v = c + k * ((l + r) / 2 - c);
+      if(sh &gt; 0) v += (l - c) * Math.min(0.3, sh); else if(sh &lt; 0) v += (r - c) * Math.min(0.3, -sh);
+      nb[i] = Math.max(0, v);
+    }
+    bins = nb;
+    if(Math.abs(gust) &gt; 30 &amp;&amp; Math.random() &lt; s * 3){
+      var x = Math.random() * W; puff(x, floorY(x), 4, 6, 50);
+    }
+  }
   function makeSprite(){
     var c = document.createElement('canvas');
     c.width = c.height = 32;
@@ -7420,7 +7452,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     var nb = Math.ceil(W / BIN) + 1, nbins = new Float32Array(nb);
     for(var i = 0; i &lt; nb; i++){ nbins[i] = (bins &amp;&amp; bins[i] !== undefined) ? bins[i] : FLOOR_INIT; }
     bins = nbins;
-    var n = clamp(Math.round(W * H / 30000), 14, 40);
+    var n = clamp(Math.round(W * H / 5000), 60, 260);
     while(flakes.length &lt; n) flakes.push(makeFlake(true));
     flakes.length = n;
   }
@@ -7428,6 +7460,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   function updateFlakes(s, t){
     for(var i = 0; i &lt; flakes.length; i++){
       var f = flakes[i], py = f.y;
+      if(f.px || f.py){ f.x += f.px * s; f.y += f.py * s; var dk = Math.exp(-3 * s); f.px *= dk; f.py *= dk; if(Math.abs(f.px) &lt; 2 &amp;&amp; Math.abs(f.py) &lt; 2){ f.px = 0; f.py = 0; } }
       f.y += f.vy * s;
       f.x += (gust * (0.3 + f.z) + Math.cos(t * f.fr + f.ph) * f.amp) * s;
       if(f.x &lt; -10) f.x = W + 5;
@@ -7506,6 +7539,11 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
         ctx.globalAlpha = f.a;
         ctx.drawImage(sprite, f.x - d / 2, f.y - d / 2, d, d);
       }
+      for(var j = 0; j &lt; puffs.length; j++){
+        var q = puffs[j], dd = q.r * 7;
+        ctx.globalAlpha = 0.85 * (1 - q.t / q.life);
+        ctx.drawImage(sprite, q.x - dd / 2, q.y - dd / 2, dd, dd);
+      }
       ctx.globalAlpha = 1;
     }
   }
@@ -7513,7 +7551,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   function frame(now){
     loopId = requestAnimationFrame(frame);
     var dt = now - lastT;
-    if(dt &lt; FRAME_MS) return;
+    if(dt &lt; FRAME_MS &amp;&amp; !scrollDirty) return;
     lastT = now;
     var s = Math.min(dt, 100) / 1000, t = now / 1000;
     if(scrollDirty || now - lastScan &gt; 400){ scrollDirty = false; lastScan = now; scan(); }
@@ -7525,6 +7563,8 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if(now &gt; gustUntil) gustTarget = 0;
     gust += (gustTarget - gust) * Math.min(1, s * 1.2);
     updateFlakes(s, t);
+    driftSnow(s);
+    updatePuffs(s);
     updatePlow(s);
     for(var i = 0; i &lt; balls.length; i++) updateBall(balls[i], s);
     separate();
@@ -7570,6 +7610,52 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   }
 
   /* 雪の上を押さえて動かす（転がす）と雪玉ができる。押すだけ・雪のない所では作れない */
+  /* 押したまま素早く動かすと、雪を吹っ飛ばせる（軽い処理：近くの粒だけ動かす） */
+  var blow = null;
+  function onBlowDown(e){
+    if(!active) return;
+    if(e.button !== undefined &amp;&amp; e.button !== 0) return;
+    var tg = e.target;
+    if(tg &amp;&amp; tg.closest &amp;&amp; tg.closest('.ws-ball')) return;
+    blow = {id: e.pointerId, x: e.clientX, y: e.clientY, t: performance.now()};
+  }
+  function onBlowMove(e){
+    if(!blow || e.pointerId !== blow.id) return;
+    var now = performance.now(), dt = Math.max(8, now - blow.t);
+    var dx = e.clientX - blow.x, dy = e.clientY - blow.y;
+    var vx = dx / dt * 1000, vy = dy / dt * 1000, sp = Math.hypot(vx, vy);
+    blow.x = e.clientX; blow.y = e.clientY; blow.t = now;
+    if(sp &lt; 500 || (roll &amp;&amp; roll.ball)) return;          // ゆっくりは雪玉づくり、素早くは吹っ飛ばす
+    if(roll &amp;&amp; !roll.ball){ roll = null; detachRoll(); }
+    var x = e.clientX, y = e.clientY, R = 70, k = Math.min(1.6, sp / 900);
+    for(var i = 0; i &lt; flakes.length; i++){
+      var f = flakes[i], ox = f.x - x, oy = f.y - y;
+      if(ox * ox + oy * oy &gt; R * R) continue;
+      f.px = (f.px || 0) + vx * 0.6 * k;
+      f.py = (f.py || 0) + vy * 0.6 * k - 40;
+    }
+    // 地面の雪を巻き上げる
+    if(bins &amp;&amp; y &gt; floorY(x) - 40){
+      var i0 = binIndex(x - 20), i1 = binIndex(x + 20);
+      for(var j = i0; j &lt;= i1; j++){
+        if(bins[j] &gt; 0.3){
+          var take = Math.min(bins[j], 0.6);
+          bins[j] -= take;
+          if(puffs.length &lt; 400) puffs.push({x: j * BIN, y: H - BASE - bins[j], vx: vx * 0.5 * rnd(0.6, 1.2), vy: -rnd(60, 200),
+                                             r: rnd(0.4, 1.2), life: rnd(0.7, 1.5), t: 0});
+        }
+      }
+    }
+    // 要素の上の雪も吹き飛ぶ
+    for(var m = 0; m &lt; surfaces.length; m++){
+      var su = surfaces[m];
+      if(!su.visible || x &lt; su.x0 || x &gt; su.x1 || Math.abs(y - su.y) &gt; 30 || su.depth &lt; 0.5) continue;
+      su.depth = Math.max(0, su.depth - 0.5);
+      puff(x, su.y - su.depth, 4, 10, 120);
+      for(var q = puffs.length - 4; q &lt; puffs.length; q++) if(q &gt;= 0) puffs[q].vx += vx * 0.5;
+    }
+  }
+  function onBlowUp(e){ if(blow &amp;&amp; e.pointerId === blow.id) blow = null; }
   function onSnowDown(e){
     if(!active || roll) return;
     if(e.button !== undefined &amp;&amp; e.button !== 0) return;
@@ -7681,6 +7767,10 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     scan();
     lastScan = performance.now();
     document.addEventListener('pointerdown', onSnowDown);
+    document.addEventListener('pointerdown', onBlowDown);
+    window.addEventListener('pointermove', onBlowMove, {passive: true});
+    window.addEventListener('pointerup', onBlowUp);
+    window.addEventListener('pointercancel', onBlowUp);
     window.addEventListener('resize', onResize);
     window.addEventListener('scroll', onScroll, {passive: true});
     document.addEventListener('visibilitychange', onVis);
@@ -7704,6 +7794,10 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if(plow &amp;&amp; plow.el.parentNode) plow.el.parentNode.removeChild(plow.el);
     plow = null;
     document.removeEventListener('pointerdown', onSnowDown);
+    document.removeEventListener('pointerdown', onBlowDown);
+    window.removeEventListener('pointermove', onBlowMove);
+    window.removeEventListener('pointerup', onBlowUp);
+    window.removeEventListener('pointercancel', onBlowUp);
     detachRoll();
     roll = null;
     window.removeEventListener('resize', onResize);
