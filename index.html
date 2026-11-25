@@ -6912,7 +6912,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   var cvs = null, ctx = null, sprite = null, flakes = [], puffs = [];
   var gust = 0, gustTarget = 0, gustUntil = 0, nextGust = 0;
   var surfMap = new WeakMap(), surfaces = [], bins = null, balls = [], snowmen = 0;
-  var tracked = [], lastAlive = 0;   // 画面に出ている面の一覧（画面切り替えの確認用）
+  var tracked = [], lastAlive = 0, switchAt = -1e9;   // 画面に出ている面の一覧（画面切り替えの確認用）
   var plow = null, plowTimer = null, roll = null;
 
   /* 冬期間: 11/25〜1/31（テーマ設定とは無関係） */
@@ -6993,7 +6993,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
         surfMap.set(el, s);
         tracked.push(s);
         s.chrome = !!el.closest('.site-header');
-        s.depth = el.tagName === 'FOOTER' ? 2 : ELEM_INIT;
+        s.depth = (performance.now() - switchAt &lt; 1500) ? 0 : (el.tagName === 'FOOTER' ? 2 : ELEM_INIT);   // ページ切り替え直後に出た面だけ雪0から積もり始める
       }
       // 角丸の分だけ雪の範囲を内側に寄せる（角の空中に雪が浮かないようにする）
       var cs = getComputedStyle(el), w = r.width;
@@ -7341,10 +7341,12 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   function alive(el){ return el.isConnected &amp;&amp; el.getClientRects().length &gt; 0; }
   function checkAlive(){
     var gone = tracked.filter(function(s){ return !alive(s.el); });
-    gone.forEach(departSurface);
+    var mass = gone.length &gt; 3;   // ページ切り替えなどで一度に消えたときは地面に雪を落とさない
+    if(mass) switchAt = performance.now();
+    gone.forEach(function(s){ departSurface(s, mass); });
   }
-  function departSurface(s){
-    if(s.cols &amp;&amp; bins){
+  function departSurface(s, mass){
+    if(s.cols &amp;&amp; bins &amp;&amp; !mass){
       var n = s.cols.length, step = Math.max(1, Math.ceil(n / 16));
       for(var i = 0; i &lt; n; i++){
         var v = s.cols[i];
@@ -8247,7 +8249,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if(cvs &amp;&amp; cvs.parentNode) cvs.parentNode.removeChild(cvs);
     cvs = null; ctx = null; flakes = []; surfaces = []; bins = null; shards = [];
     if(surfLayer &amp;&amp; surfLayer.parentNode) surfLayer.parentNode.removeChild(surfLayer);
-    surfLayer = null; surfMap = new WeakMap(); tracked = [];
+    surfLayer = null; surfMap = new WeakMap(); tracked = []; switchAt = -1e9;
     snowDivs.forEach(function(d){ if(d.parentNode) d.parentNode.removeChild(d); }); snowDivs = [];
     var t = document.getElementById('ws-toast');
     if(t) t.remove();
@@ -8291,6 +8293,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (max-width:820px){
   .gnav a{padding-top:12px;padding-bottom:12px;font-size:1rem}
   body{line-height:1.65}
+}
+&lt;/style&gt;
+&lt;style id="glass-ui"&gt;
+/* UIを少し透かして濃いぼかし */
+.site-header,.gnav,.section,.widget,.news-card,.nk-card,.home-hero,footer,
+.link-toolbar,.link-cat,.link-cat-head,.link-search-input,.lk-copy-btn,
+html body.christmas-mode .gnav{
+  background-color:color-mix(in srgb,var(--surface,#fff) 72%,transparent)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(170%)!important;
+  backdrop-filter:blur(24px) saturate(170%)!important;
 }
 &lt;/style&gt;
 &lt;/body&gt;
