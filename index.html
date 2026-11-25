@@ -1745,7 +1745,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     &lt;a class="brand" href="javascript:void(0)" onclick="showPage('home')"&gt;
       &lt;div class="brand-logo"&gt;&lt;img loading="lazy" decoding="async" src="/Site-logo.png" alt="仲良し ~*インスタンス*~ 3 ロゴ"&gt;&lt;/div&gt;
       &lt;div&gt;
-        &lt;div class="brand-title"&gt;仲良し ~*インスタンス*~ 3 &lt;img class="brand-counter" src="https://count.getloli.com/@nkys-instance?theme=booru-smtg&amp;amp;padding=7&amp;amp;offset=0&amp;amp;align=bottom&amp;amp;scale=2&amp;amp;pixelated=1&amp;amp;darkmode=0&amp;amp;prefix=0" alt="アクセスカウンター" loading="lazy" decoding="async"&gt;&lt;/div&gt;
+        &lt;div class="brand-title"&gt;仲良し ~*インスタンス*~ 3 &lt;img class="brand-counter" src="https://count.getloli.com/@nkys-instance?theme=green&amp;amp;padding=7&amp;amp;offset=0&amp;amp;align=bottom&amp;amp;scale=2&amp;amp;pixelated=1&amp;amp;darkmode=0&amp;amp;prefix=0" alt="アクセスカウンター" loading="lazy" decoding="async"&gt;&lt;/div&gt;
         &lt;div class="brand-sub"&gt;NAKAYOSI IN 3 ／ Information Portal&lt;/div&gt;
       &lt;/div&gt;
     &lt;/a&gt;
@@ -2640,7 +2640,7 @@ const EVENTS = [
 const LINK_CATEGORIES = [
   { title:"イベント集", items: EVENTS.map(e =&gt; ({ name:e.name+(e.status==='live'?' 【開催中】':' 【終了】'), tag:"EVENT", url:e.url })) },
   { title:"ようつべ集", items:[
-    { name:"NKYS-Tube 𝓷𝓪𝓴𝓪𝔂𝓸𝓼𝓲",         tag:"最強",tag:"ようつべ",   url:"https://nk3.nkys.pro.gooogle.com.plgsync.com/" },
+    { name:"なかよしTube Pro",tag:"最強",tag:"ようつべ",   url:"https://nk3.nkys.pro.gooogle.com.plgsync.com/" },
     { name:"仙人Tube+",                 tag:"ようつべ",   url:"https://snplnkjk.onrender.com/" },
     { name:"チョコTube+",               tag:"ようつべ",   url:"https://ccplnkjk.onrender.com/" },
     { name:"わかめTube+",               tag:"ようつべ",   url:"https://textbook.f5.si/" },
@@ -2664,7 +2664,6 @@ const LINK_CATEGORIES = [
   { title:"その他集", items:[
     { name:"LINE 本家",     tag:"チャット",tag:"最強",   url:"https://linedayo.onrender.com" },
     { name:"ABEMA 本家 1",  tag:"ムービー",tag:"最強",   url:"https://abema-cc.f5.si" },
-    { name:"ABEMA 本家 2",  tag:"ムービー",tag:"最強",   url:"https://abema.dpdns.org/" },
     { name:"漫画Rw",        tag:"漫画",tag:"最強",       url:"https://mangarw-v2-meow-sleepy-now.onrender.com/" },
     { name:"スクールハブ 1", tag:"ツール",tag:"最強",     url:"https://untitled-hello-1028608754151.us-west1.run.app/" },
     { name:"スクールハブ 2", tag:"ツール",tag:"最強",     url:"https://untitled-hello-y2quwmhn7q-uw.a.run.app/" },
@@ -2672,10 +2671,10 @@ const LINK_CATEGORIES = [
     { name:"スクールハブ 4", tag:"ツール",tag:"最強",     url:"https://miruhukaka.ai.studio/" },
     { name:"スクールハブ 5", tag:"ツール",tag:"最強",     url:"https://untitled-7100-y2quwmhn7q-uw.a.run.app/" },
     { name:"スクールハブ 6", tag:"ツール",tag:"最強",     url:"https://untitled-7100-1028608754151.us-west1.run.app/" },
+    { name:"スクールハブ 7", tag:"ツール",tag:"最強",     url:"https://zygote.ai.studio/" },
     { name:"寿司打 本家",    tag:"タイピング",            url:"https://happy-deployer-pro.lovable.app/" },
   ]},
   { title:"ゲーム(単体)集", items:[
-    { name:"Bloxd.io",      tag:"ゲーム",       url:"https://dloxd-proxy-deployment--hikagemusub1.replit.app/" },
     { name:"青鬼2016",       tag:"ゲーム",       url:"https://script.google.com/a/macros/city.higashiosaka-osk.ed.jp/s/AKfycbyTGZlPFMZZGWT4E9t5ydlwjUUwChyLy7zeSK0P8TCvLfnhOSUzXdl8oo60kL-r4m3QOA/exec" },
     { name:"GTA",           tag:"ゲーム",       url:"https://script.google.com/macros/s/AKfycbwVMCqNXcXs6ZZRAiRAyO1yz45PMkXNym4n7cV3MVwYwAwtM5U1S8fo9ScG7xJ0Bn5WnQ/exec" },
     { name:"geometry dash", tag:"ゲーム",       url:"https://script.google.com/macros/s/AKfycbx4MAnwFh0UnUKGq1loS7APoWouzuYpxQFsyGYJnA_MljyJfAlLuzvSzjhKvuXCVNjq/exec" },
@@ -2689,10 +2688,8 @@ const LINK_CATEGORIES = [
     { name:"Ragdoll Ar...", tag:"ゲーム",       url:"https://crazygames.cdn.msnfun.com/9msvph3r5r2m/v3/index.html?msstart_sdk_init=eyJwYXJlbnRPcmlnaW4iOiJodHRwczovL3d3dy5tc24uY29tIiwiY2xpZW50SWQiOiIzMEU1Njk0MDg3NTg2MzAyMDU0ODdFMDM4NkEyNjIzOCIsImxvY2FsZSI6ImVuLXVzIiwiZW50cnlQb2ludElkIjoiIiwic3dpdGNoR2FtZVBheWxvYWQiOnsic3dpdGNoZWRUbyI6Ijltc3ZwaDNyNXIybSIsInZhbHVlIjp7fX19" },
     { name:"Resent Client", tag:"ゲーム",       url:"https://r-e-s-e-n-t-cli-en-t.duckdns.org/game.html" },
     { name:"Eaglercraft",   tag:"ゲーム",       url:"https://2-a-e-agl-er.duckdns.org/" },
-    { name:"Minecraft 26.2",tag:"ゲーム",       url:"https://eaglercraft-publisher--hikagemusub4.replit.app/" },
   ]},
   { title:"プロキシ集 𝙽𝙴𝚆", items:[
-    { name:"Joker",             tag:"プロキシ",   url:"https://joker-proxy.lovable.app" },
     { name:"Achroma 1",         tag:"プロキシ",   url:"https://dz2z1x7nmgnek.cloudfront.net" },
     { name:"Achroma 2",         tag:"プロキシ",   url:"https://d1yd3j8ypn4f12.cloudfront.net" },
     { name:"Achroma 3",         tag:"プロキシ",   url:"https://d2md2bc53t43kn.cloudfront.net" },
@@ -2701,35 +2698,15 @@ const LINK_CATEGORIES = [
     { name:"Refract 3",         tag:"プロキシ",   url:"https://dbv5jzwuxfrc8.cloudfront.net" },
     { name:"すみ - sumi 1",      tag:"プロキシ",   url:"https://sumimath.s3.us-east-1.amazonaws.com/index.html" },
     { name:"すみ - sumi 2",      tag:"プロキシ",   url:"https://sumimath.s3.dualstack.us-east-1.amazonaws.com/index.html" },
-    { name:"Arctic 1",          tag:"プロキシ",   url:"https://gcore.jsdelivr.net/gh/lolration/svg/arctic.svg" },
-    { name:"Arctic 2",          tag:"プロキシ",   url:"https://rawcdn.githack.com/lolration/svg/30b4c3e1fd65c5b092ba58f576937da62cbca343/arctic.svg" },
-    { name:"Kite 1",            tag:"プロキシ",   url:"https://kite.zubex.net/" },
-    { name:"Kite 2",            tag:"プロキシ",   url:"https://kite.yowie.me/" },
-    { name:"Kite 3",            tag:"プロキシ",   url:"https://kite.xzolx.org/" },
     { name:"Flare 1",           tag:"プロキシ",   url:"https://safe.mascarenhas.inf.br/" },
-    { name:"Flare 2",           tag:"プロキシ",   url:"https://train.lovethosetrains.com/" },
-    { name:"Flare 3",           tag:"プロキシ",   url:"https://fler.govt.hu/" },
-    { name:"Flare 4",           tag:"プロキシ",   url:"https://fler.esperanto.eu.org/" },
-    { name:"TungTung 1",        tag:"プロキシ",   url:"https://tt.govt.hu/" },
-    { name:"TungTung 2",        tag:"プロキシ",   url:"https://tt.klauto.ch/" },
+    { name:"Flare 2",           tag:"プロキシ",   url:"https://fler.esperanto.eu.org/" },
     { name:"StudyHUB 1",        tag:"プロキシ",   url:"https://studyhub.claudesteiner.ch/" },
-    { name:"StudyHUB 2",        tag:"プロキシ",   url:"https://studyhub.actadigital.com.ar/" },
-    { name:"Rook 1",            tag:"プロキシ",   url:"https://rk.ninehells.com/" },
-    { name:"Rook 2",            tag:"プロキシ",   url:"https://rk.molnarjozsias.ro/" },
-    { name:"Rammer Head 1",     tag:"プロキシ",tag:"最強",   url:"https://rammer.nana.3d-mart.ru/" },
-    { name:"Rammer Head 2",     tag:"プロキシ",tag:"最強",   url:"https://test-mix.ddo.jp" },
-    { name:"Rammer Head 3",     tag:"プロキシ",tag:"最強",   url:"https://rammer.onthewifi.com" },
-    { name:"Rammer Head 4",     tag:"プロキシ",tag:"最強",   url:"https://study-math.hopto.org" },
-    { name:"INTERSTELLAR 1",    tag:"プロキシ",   url:"https://interstellar-nana-02.panel-laboralcj.gob.mx" },
-    { name:"INTERSTELLAR 2",    tag:"プロキシ",   url:"https://interstellar.nana.willstrang.com" },
-    { name:"INTERSTELLAR 3",    tag:"プロキシ",   url:"https://objectstorage.us-ashburn-1.oraclecloud.com/n/idu89bu0aga2/b/quilldesk/o/index.html" },
-    { name:"INTERSTELLAR 4",    tag:"プロキシ",   url:"https://objectstorage.us-ashburn-1.oraclecloud.com/n/idu89bu0aga2/b/birchnotes/o/index.html" },
+    { name:"Rammer Head 1",     tag:"プロキシ",   url:"https://rammer.nana.3d-mart.ru/" },
+    { name:"Rammer Head 2",     tag:"プロキシ",   url:"https://test-mix.ddo.jp" },
     { name:"Dogeub 1",          tag:"プロキシ",   url:"https://canvas-lms.storage.googleapis.com/index.html" },
     { name:"Dogeub 2",          tag:"プロキシ",   url:"https://studygate.us-lax-4.linodeobjects.com/index.html" },
     { name:"Utopia 1",          tag:"プロキシ",   url:"https://uu.utopia.2a.exe.googleapis.com.hospitaldelninodif.gob.mx/" },
     { name:"Utopia 2",          tag:"プロキシ",   url:"https://u.topia.2a.exe.googleapis.com.hospitaldelninodif.gob.mx/" },
-    { name:"Petezah 1",         tag:"プロキシ",tag:"最強",   url:"https://petezah.nana.ekivotos.gr/" },
-    { name:"Petezah 2",         tag:"プロキシ",tag:"最強",   url:"https://petezah.nana.plgsync.com/" },
   ]},
 ];
 
