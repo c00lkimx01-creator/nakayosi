@@ -6951,7 +6951,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   function binIndex(x){ return clamp(Math.floor(x / BIN), 0, bins.length - 1); }
   function floorY(x){ return H - BASE - bins[binIndex(x)]; }
 
-  function toast(msg){
+  function toast(msg){ return; // 雪のお知らせ表示はしない
     var t = document.getElementById('ws-toast');
     if(!t){
       t = document.createElement('div');
@@ -7142,7 +7142,10 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     b.vx *= Math.exp(-ROLL_FRICTION * s);
     if(Math.abs(b.vx) &lt; 3) b.vx = 0;
     var nl = clamp(b.left + b.vx * s, 0, W - sz);
-    if(nl !== b.left + b.vx * s) b.vx = 0;
+    if(nl !== b.left + b.vx * s){
+      if(Math.abs(b.vx) &gt; WALL_V &amp;&amp; !b.above &amp;&amp; !b.below &amp;&amp; !b.melting){ squash(b, SQUASH_V + Math.abs(b.vx) - WALL_V, b.vx &lt; 0 ? 'left' : 'right'); return; }
+      b.vx = 0;
+    }
     var moved = nl - b.left;
     if(nl !== b.left){
       b.rot += moved / (sz / 2) * 57.3;
@@ -7168,6 +7171,8 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   }
 
   /* 高いところから落ちた雪玉はつぶれて飛び散る */
+  var WALL_V = 420;     // この速さ以上で画面の端にぶつかると雪玉がつぶれる(px/s)
+  var HIT_POWER = 1.35; // 当てたときの威力の倍率
   var SQUASH_V = 780;   // この速さ以上で着地すると雪玉がつぶれる(px/s) ≒ 約28cm(280px)以上の高さ
   /* 飛び散る雪のかけら（重力つき） */
   function chunks(cx, by, sz, power){
@@ -7186,7 +7191,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       c.animate(kf, {duration: T * 1000, easing: 'linear', fill: 'forwards'}).onfinish = (function(c){ return function(){ c.remove(); }; })(c);
     }
   }
-  function squash(b, impact){
+  function squash(b, impact, side){
     var sz = size(b), power = clamp(((impact || SQUASH_V) - SQUASH_V) / 600 + 0.4, 0.3, 1.2);
     b.melting = true;
     b.el.style.transition = 'none';
@@ -7194,6 +7199,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     var fx = b.el.querySelectorAll('.ws-face,.ws-nose,.ws-hat');
     for(var q = 0; q &lt; fx.length; q++) fx[q].style.opacity = '0';
     var w = 1.5 + power * 0.6, h = 0.32 - power * 0.12;
+    if(side){ b.el.style.transformOrigin = side === 'left' ? '0% 50%' : '100% 50%'; var tmp = w; w = h; h = tmp; }
     b.el.animate([
       {transform:'scale(1,1)', borderRadius:'50%', opacity:1},
       {transform:'scale(0.82,1.22)', borderRadius:'50%', opacity:1, offset:.08},
@@ -7226,6 +7232,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       b.vy = Math.min(MAX_FALL, b.vy + GRAV * s);
       b.vx *= Math.exp(-2.5 * s);
       var nl = b.left + b.vx * s;
+      if((nl &lt; 0 || nl &gt; W - sz) &amp;&amp; single &amp;&amp; Math.abs(b.vx) &gt; WALL_V){ b.left = clamp(nl, 0, W - sz); squash(b, SQUASH_V + Math.abs(b.vx) - WALL_V, nl &lt; 0 ? 'left' : 'right'); return; }
       if(nl &lt; 0){ nl = 0; b.vx = Math.abs(b.vx) * 0.4; }
       if(nl &gt; W - sz){ nl = W - sz; b.vx = -Math.abs(b.vx) * 0.4; }
       var prevBottom = b.top + sz;
@@ -7343,7 +7350,22 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
         var ox = Math.min(A.x1, B.x1) - Math.max(A.x0, B.x0);
         var oy = Math.min(A.y1, B.y1) - Math.max(A.y0, B.y0);
         if(ox &lt;= 0 || oy &lt;= 3) continue;
-        if(A.root.dragging || B.root.dragging) continue;   // ドラッグ中は押さない（積み上げの邪魔をしない）
+        if(A.root.dragging &amp;&amp; B.root.dragging) continue;
+        if(A.root.dragging || B.root.dragging){
+          // 持ち上げている雪玉にも当たり判定：相手を押しのけて弾く（真上から重ねるときは押さない）
+          var D = A.root.dragging ? A : B, O = D === A ? B : A;
+          if(D.y1 &lt; O.y0 + (O.y1 - O.y0) * 0.35) continue;
+          var dd = (D.x0 + D.x1) / 2 &lt; (O.x0 + O.x1) / 2 ? 1 : -1;
+          var mv = nudge(O.root, dd * ox);
+          if(!O.root.above &amp;&amp; !O.root.below){
+            var sp = Math.abs(D.root.dragV || 0);
+            var push = dd * Math.max(sp * HIT_POWER * clamp(sp / 500, 0.6, 1.8), 120);
+            if(O.root.vx * dd &lt; Math.abs(push)) O.root.vx = push;
+          }
+          if(Math.abs(mv) &lt; ox - 0.5 &amp;&amp; D.root.el){ /* 端で動けない場合はそのまま */ }
+          boxes[i] = chainBox(A.root); boxes[j] = chainBox(B.root);
+          continue;
+        }
         var dir = (A.x0 + A.x1) / 2 &lt; (B.x0 + B.x1) / 2 ? -1 : 1;
         var aMoved = nudge(A.root, dir * ox / 2);
         nudge(B.root, aMoved - dir * ox);        // Aが端で止まった分はBが多く押し出す
@@ -7352,10 +7374,13 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
         var aS = !A.root.above &amp;&amp; !A.root.below, bS = !B.root.above &amp;&amp; !B.root.below;
         var rel = (A.root.vx - B.root.vx) * (-dir);   // 近づく速さ
         if(rel &gt; 0 &amp;&amp; aS &amp;&amp; bS){
-          var ma = Math.pow(size(A.root), 2), mb = Math.pow(size(B.root), 2), e = 0.6;
+          var ma = Math.pow(size(A.root), 2), mb = Math.pow(size(B.root), 2), e = clamp(0.5 + rel / 1500, 0.5, 0.95);
           var va = A.root.vx, vb = B.root.vx;
           A.root.vx = (ma * va + mb * vb - mb * e * (va - vb)) / (ma + mb);
           B.root.vx = (ma * va + mb * vb + ma * e * (va - vb)) / (ma + mb);
+          // 速く当てるほど威力が上がる（当てられた側を強く弾く）
+          var boost = HIT_POWER * clamp(rel / 600, 0.6, 1.8);
+          if(Math.abs(A.root.vx) &lt; Math.abs(B.root.vx)) B.root.vx *= boost; else A.root.vx *= boost;
         } else {
           if(aS &amp;&amp; A.root.vx * (-dir) &gt; 0) A.root.vx *= -0.3;
           if(bS &amp;&amp; B.root.vx * dir &gt; 0) B.root.vx *= -0.3;
@@ -7414,6 +7439,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
       drag.hist.push({t: performance.now(), x: e.clientX});
       if(drag.hist.length &gt; 6) drag.hist.shift();
+      if(drag.hist.length &gt;= 2){ var h0 = drag.hist[0], h1 = drag.hist[drag.hist.length-1]; b.dragV = clamp((h1.x - h0.x) / Math.max(16, h1.t - h0.t) * 1000, -900, 900); }
       if(!drag.moved){
         if(Math.hypot(dx, dy) &lt; 6) return;
         drag.moved = true;
