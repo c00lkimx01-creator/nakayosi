@@ -6818,7 +6818,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
 
 &lt;style&gt;
 /* Links: easier toolbar */
-#links-page .link-toolbar{position:sticky;top:8px;z-index:20;backdrop-filter:blur(8px)}
+#links-page .link-toolbar{position:sticky;top:calc(var(--links-nav-offset,0px) + 8px);z-index:20;backdrop-filter:blur(8px)}
 #links-page .link-search-input{font-size:1rem;min-height:46px}
 #links-page .link-cat li a{min-height:58px}
 #links-page .link-cat li a .lk-copy{margin-left:6px}
@@ -6829,6 +6829,16 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
 &lt;/style&gt;
 &lt;script&gt;
 (function(){
+  // 上部メニューの実際の高さに合わせる。スマホの下部メニューは上の余白に含めない。
+  function syncLinkToolbarOffset(){
+    const nav=document.querySelector('.gnav');
+    const height=nav &amp;&amp; getComputedStyle(nav).position==='sticky' ? nav.getBoundingClientRect().height : 0;
+    document.documentElement.style.setProperty('--links-nav-offset',height+'px');
+  }
+  const nav=document.querySelector('.gnav');
+  if(nav &amp;&amp; typeof ResizeObserver!=='undefined')new ResizeObserver(syncLinkToolbarOffset).observe(nav);
+  window.addEventListener('resize',syncLinkToolbarOffset,{passive:true});
+  syncLinkToolbarOffset();
   // リンク集: 「/」キーで検索、Escでクリア、各リンクにURLコピー
   document.addEventListener('keydown',function(e){
     const page=document.getElementById('links-page');if(!page||!page.classList.contains('active'))return;
@@ -6886,6 +6896,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   /* ---------- 設定（軽さ優先） ---------- */
   var MAX_BALLS = 14, MELT_AFTER_MS = 180000, MELT_SWEEP_MS = 15000;
   var TIER_PX = [0, 26, 40, 54];
+  var MAX_BALL_PX = 160; // 転がして育てられる直径の上限
   var SURF_SEL = '.gnav,.home-hero,footer,.card,.section,.news-card,.widget,.setting-row,.btn,.nk-card,.mini-tool-card,.stat-tile,.calendar-item,.home-info-item,.news-list &gt; li,.game-grid &gt; *,img,picture,[class*="banner"],[class*="thumb"]';
   var MAX_SURF = 160;
   var FRAME_MS = 4;             // 60fps（スクロールとのズレを減らす）
@@ -6894,7 +6905,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   var SPILL_RATE = 2.5;                 // こぼれる速さ(px/秒)
   var SHARD_MAX = 320;                  // 同時に飛ぶ雪のかけらの上限
   var GRAV = 1100, MAX_FALL = 1100;     // 重力(px/s²)
-  var SNOW_BREAK_V = 650;              // この速さ以上で着地すると雪だるまが崩れる(px/s)
+  var SNOW_BREAK_V = 420;              // この速さ以上で着地すると雪だるまが崩れる(px/s)
   var REST_SLOPE = 3, EDGE_MAX = 5, BREAK_V = 560;   // 雪が崩れ始める傾き(px/列) / 端から落ちる厚さ / 落ちて割れる速さ(px/s)
   var BASE = 6, BIN = 10;                // 地面の基本の雪の厚さ / 地面の列幅
   var ELEM_MAX = 16, FLOOR_MAX = 16;     // 積もる上限(px)
@@ -6904,6 +6915,9 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   var PLOW_W = 96, PLOW_H = 36, PLOW_SPEED = 170;
   var PLOW_FIRST_MS = 6000, PLOW_EVERY_MS = 30000;
   var PLOW_SVG = '&lt;svg viewBox="0 0 96 36" width="96" height="36" xmlns="http://www.w3.org/2000/svg"&gt;&lt;defs&gt;&lt;linearGradient id="wp-body" x1="0" y1="0" x2="0" y2="1"&gt;&lt;stop offset="0" stop-color="#ffd54a"/&gt;&lt;stop offset="1" stop-color="#f59e0b"/&gt;&lt;/linearGradient&gt;&lt;linearGradient id="wp-blade" x1="0" y1="0" x2="1" y2="0"&gt;&lt;stop offset="0" stop-color="#9fb2c6"/&gt;&lt;stop offset=".55" stop-color="#e8f0f8"/&gt;&lt;stop offset="1" stop-color="#b6c6d8"/&gt;&lt;/linearGradient&gt;&lt;linearGradient id="wp-beam" x1="0" y1="0" x2="1" y2="0"&gt;&lt;stop offset="0" stop-color="#fff6b0" stop-opacity=".55"/&gt;&lt;stop offset="1" stop-color="#fff6b0" stop-opacity="0"/&gt;&lt;/linearGradient&gt;&lt;radialGradient id="wp-glow"&gt;&lt;stop offset="0" stop-color="#ffb02e" stop-opacity=".9"/&gt;&lt;stop offset="1" stop-color="#ffb02e" stop-opacity="0"/&gt;&lt;/radialGradient&gt;&lt;/defs&gt;&lt;ellipse cx="46" cy="35" rx="40" ry="1.6" fill="#000" opacity=".18"/&gt;&lt;polygon points="79,19 96,12 96,28" fill="url(#wp-beam)"/&gt;&lt;rect x="10" y="22" width="68" height="6" rx="2" fill="#2f343c"/&gt;&lt;path d="M12 11h34v13H12z" fill="url(#wp-body)" stroke="#8a5a00" stroke-width="1.1" stroke-linejoin="round"/&gt;&lt;path d="M12 11h34" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".85"/&gt;&lt;path d="M17 14v8M23 14v8M29 14v8M35 14v8M41 14v8" stroke="#8a5a00" stroke-width="1" opacity=".35"/&gt;&lt;path d="M46 8h14c2 0 3 1 4 3l4 6h6c2 0 3 1 3 3v6H46z" fill="url(#wp-body)" stroke="#8a5a00" stroke-width="1.1" stroke-linejoin="round"/&gt;&lt;path d="M50 11h9c1 0 2 .6 2.6 1.6L64 17H50z" fill="#bfe6ff" stroke="#5a7a95" stroke-width=".9" stroke-linejoin="round"/&gt;&lt;path d="M52 12.5l5-.1-4 4z" fill="#fff" opacity=".6"/&gt;&lt;path d="M46 20h30" stroke="#d1291f" stroke-width="1.6"/&gt;&lt;rect x="73" y="18.5" width="4" height="3" rx="1" fill="#fff3a0" stroke="#8a5a00" stroke-width=".6"/&gt;&lt;rect x="53" y="4.5" width="7" height="3.5" rx="1" fill="#ff8a00" stroke="#7a4300" stroke-width=".7"/&gt;&lt;circle cx="56.5" cy="5" r="6" fill="url(#wp-glow)"&gt;&lt;animate attributeName="opacity" values="1;.1;1" dur=".9s" repeatCount="indefinite"/&gt;&lt;/circle&gt;&lt;path d="M13 10.5q5-4 11-1.4 4-2 9 .4 4-1.6 9 .6l3 .4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".95"/&gt;&lt;path d="M76 24h5l2 3h-7z" fill="#2f343c"/&gt;&lt;path d="M80.5 9.5q9-.5 12 2.5l2 3-2 17.5h-8l-4 1.5z" fill="url(#wp-blade)" stroke="#5b6b7c" stroke-width="1.1" stroke-linejoin="round"/&gt;&lt;path d="M82.5 12q6 .5 9 3" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" opacity=".9"/&gt;&lt;path d="M84 17v12" stroke="#5b6b7c" stroke-width=".8" opacity=".5"/&gt;&lt;path d="M80 30.5h12.6l-.2 2.3H79z" fill="#3a3f47"/&gt;&lt;path d="M82.5 9.6l-2.5 4M86.5 9.4l-3 5M90.5 10.2l-3.2 4.8" stroke="#d1291f" stroke-width="1.4" stroke-linecap="round"/&gt;&lt;g&gt;&lt;circle cx="26" cy="29" r="6.2" fill="#1d2025"/&gt;&lt;circle cx="26" cy="29" r="3.2" fill="#aab4be"/&gt;&lt;g&gt;&lt;path d="M26 25.8v6.4M22.8 29h6.4" stroke="#59636e" stroke-width="1"/&gt;&lt;animateTransform attributeName="transform" type="rotate" from="0 26 29" to="360 26 29" dur=".7s" repeatCount="indefinite"/&gt;&lt;/g&gt;&lt;circle cx="26" cy="29" r="1" fill="#2f343c"/&gt;&lt;/g&gt;&lt;g&gt;&lt;circle cx="62" cy="29" r="6.2" fill="#1d2025"/&gt;&lt;circle cx="62" cy="29" r="3.2" fill="#aab4be"/&gt;&lt;g&gt;&lt;path d="M62 25.8v6.4M58.8 29h6.4" stroke="#59636e" stroke-width="1"/&gt;&lt;animateTransform attributeName="transform" type="rotate" from="0 62 29" to="360 62 29" dur=".7s" repeatCount="indefinite"/&gt;&lt;/g&gt;&lt;circle cx="62" cy="29" r="1" fill="#2f343c"/&gt;&lt;/g&gt;&lt;path d="M18.8 28a7.2 7.2 0 0 1 14.4 0M54.8 28a7.2 7.2 0 0 1 14.4 0" fill="none" stroke="#8a5a00" stroke-width="1.2"/&gt;&lt;/svg&gt;';
+  var SLEIGH_SVG = '&lt;svg viewBox="0 0 96 36" width="96" height="36" xmlns="http://www.w3.org/2000/svg"&gt;&lt;defs&gt;&lt;linearGradient id="sl-body" x1="0" y1="0" x2="0" y2="1"&gt;&lt;stop offset="0" stop-color="#e63946"/&gt;&lt;stop offset="1" stop-color="#9b1c24"/&gt;&lt;/linearGradient&gt;&lt;linearGradient id="sl-gold" x1="0" y1="0" x2="1" y2="0"&gt;&lt;stop offset="0" stop-color="#b8860b"/&gt;&lt;stop offset=".5" stop-color="#ffe08a"/&gt;&lt;stop offset="1" stop-color="#c9971c"/&gt;&lt;/linearGradient&gt;&lt;/defs&gt;&lt;ellipse cx="48" cy="35" rx="40" ry="1.6" fill="#000" opacity=".18"/&gt;&lt;path d="M6 31h70c8 0 12-3 13-8" fill="none" stroke="url(#sl-gold)" stroke-width="2.6" stroke-linecap="round"/&gt;&lt;path d="M20 26v5M44 26v5M66 26v5" stroke="#b8860b" stroke-width="2"/&gt;&lt;ellipse cx="30" cy="10" rx="14" ry="9" fill="#8a5a2b" stroke="#5a3a1a" stroke-width="1"/&gt;&lt;path d="M22 6q8-5 16 0" fill="none" stroke="#5a3a1a" stroke-width="1.2"/&gt;&lt;rect x="34" y="4" width="8" height="7" rx="1" fill="#2a9d4b" stroke="#145a2a" stroke-width=".8"/&gt;&lt;path d="M38 4v7M34 7.5h8" stroke="#ffd54a" stroke-width="1.2"/&gt;&lt;path d="M8 12h52c6 0 10 3 12 8l2 6H14c-4 0-6-3-6-7z" fill="url(#sl-body)" stroke="#5c0f14" stroke-width="1.1" stroke-linejoin="round"/&gt;&lt;path d="M60 12q12-6 16 4" fill="none" stroke="url(#sl-gold)" stroke-width="2.4" stroke-linecap="round"/&gt;&lt;path d="M12 15h46" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".6"/&gt;&lt;path d="M14 22h56" stroke="url(#sl-gold)" stroke-width="1.6"/&gt;&lt;circle cx="24" cy="18" r="1.4" fill="#ffe08a"/&gt;&lt;circle cx="40" cy="18" r="1.4" fill="#ffe08a"/&gt;&lt;circle cx="56" cy="18" r="1.4" fill="#ffe08a"/&gt;&lt;circle cx="80" cy="12" r="2.2" fill="#ffd54a" stroke="#8a5a00" stroke-width=".6"&gt;&lt;animate attributeName="opacity" values="1;.4;1" dur="1s" repeatCount="indefinite"/&gt;&lt;/circle&gt;&lt;/svg&gt;';
+  var REINDEER_IMAGE = "/__l5e/assets-v1/fa133f25-b684-4cf9-a3c1-a33aea4b2ef4/xmas-reindeer.png";
+  var reindeer = null;
   var reduceMotion = false; // 端末の「動きを減らす」設定でも雪玉の重力・転がりを動かす
 
   var active = false, loopId = 0, lastT = 0, lastScan = 0, scrollDirty = true;
@@ -7086,7 +7100,8 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     for(var j = 0; j &lt; balls.length; j++){
       var t = balls[j];
       if(t === b || t.dragging || t.melting || t.above || mine.indexOf(t) &gt;= 0) continue;
-      if(chainLen(root(t)) &gt;= 3) continue;          // 雪だるまの頭には乗らない（横にずらす）
+      if(chainLen(root(t)) &gt;= 3) continue;
+      if(b.thrownAt &amp;&amp; performance.now() - b.thrownAt &lt; 2000) continue;   // 投げてばらけた雪玉は空中で再び積み重ならない          // 雪だるまの頭には乗らない（横にずらす）
       if(cx &lt; t.left || cx &gt; t.left + size(t)) continue;
       if(t.top &lt; bestY &amp;&amp; ok(t.top)){ best = {kind: 'ball', t: t}; bestY = t.top; }
     }
@@ -7210,6 +7225,9 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   /* 落下先（雪の積もった面・地面）を探す。下にある一番近い面を返す */
   function snowTarget(x, y){
     var best = {kind: 'floor', y: floorY(x)};
+    var hb = hitBallTop(x, y);
+    if(hb &amp;&amp; hb.y &lt; best.y) best = hb;
+    if(plow &amp;&amp; x &gt;= plow.x &amp;&amp; x &lt;= plow.x + PLOW_W &amp;&amp; H - PLOW_H + 8 &gt;= y - 2 &amp;&amp; H - PLOW_H + 8 &lt; best.y) best = {kind: 'plow', y: H - PLOW_H + 8};
     for(var i = 0; i &lt; surfaces.length; i++){
       var su = surfaces[i], sy = su.y - surfDepthAt(su, x) + 2;
       if(su.visible &amp;&amp; x &gt;= su.x0 &amp;&amp; x &lt;= su.x1 &amp;&amp; sy &gt;= y - 2 &amp;&amp; sy &lt; best.y){
@@ -7222,12 +7240,27 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
   function finishShard(p){
     if(!p.dep || !p.mass || !p.tgt) return;
     var t = p.tgt;
+    if(t.kind === 'ball') return;
+    if(t.kind === 'plow'){ if(plow) plow.load += p.mass; return; }
     if(t.kind === 'floor'){
       var bi = binIndex(p.x);
       bins[bi] = Math.min(FLOOR_MAX, bins[bi] + p.mass);
     } else {
       addSurfAt(t.s, p.x, p.mass);
     }
+  }
+  /* 雪玉・雪だるまの上面（円）の高さ。y より下で一番近いものを返す */
+  function hitBallTop(x, y){
+    var best = null;
+    for(var i = 0; i &lt; balls.length; i++){
+      var b = balls[i];
+      if(b.dragging || b.melting) continue;
+      var r = size(b) / 2, dx = x - (b.left + r);
+      if(dx &lt;= -r || dx &gt;= r) continue;
+      var ty = b.top + r - Math.sqrt(r * r - dx * dx);
+      if(ty &gt;= y - 2 &amp;&amp; (!best || ty &lt; best.y)) best = {kind: 'ball', b: b, y: ty};
+    }
+    return best;
   }
   function updateShards(s){
     for(var i = shards.length - 1; i &gt;= 0; i--){
@@ -7470,10 +7503,12 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     }
     if(sup.kind === 'floor'){
       if(single) rollOnFloor(b, s);
+      sz = size(b);
       setPos(b, b.left, floorY(b.left + sz / 2) - sz);
       setVis(b, true);
     } else if(sup.kind === 'el'){
       if(single) rollBall(b, s);
+      sz = size(b);
       var cx = b.left + sz / 2;
       if(cx &lt; sup.s.x0 || cx &gt; sup.s.x1){ b.support = null; b.falling = true; b.vy = 0; return; }
       setPos(b, b.left, sup.s.y - surfDepthAt(sup.s, cx) + 2 - sz);
@@ -7494,7 +7529,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     var el = document.createElement('div');
     el.id = 'ws-plow';
     el.setAttribute('aria-hidden', 'true');
-    el.innerHTML = PLOW_SVG;
+    el.innerHTML = (new Date().getMonth() === 11) ? SLEIGH_SVG : PLOW_SVG;   // 12月は除雪機の代わりにソリ
     document.body.appendChild(el);
     var dir = Math.random() &lt; 0.5 ? 1 : -1;
     plow = {el: el, dir: dir, x: dir &gt; 0 ? -PLOW_W - 10 : W + 10, svg: el.firstChild, load: 0};
@@ -7680,7 +7715,17 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
         el.classList.add('dragging');
       }
       var s = size(b);
-      setPos(b, clamp(drag.left + dx, 0, W - s), clamp(drag.top + dy, 0, H - s));
+      var nl = clamp(drag.left + dx, 0, W - s), nt = clamp(drag.top + dy, 0, H - s);
+      var step = Math.abs(nl - b.left), gy = groundUnder(nl + s / 2, nt + s);
+      if(!b.above &amp;&amp; !b.below &amp;&amp; gy !== null &amp;&amp; step &gt; 0){
+        nt = gy - s;
+        b.dist = Math.max(b.dist || 0, (s - TIER_PX[1]) / 0.06) + step;
+        consumeSnow(nl + s / 2, gy - 1, Math.min(1.5, step * 0.15));
+        setPos(b, nl, nt);
+        growBall(b, b);
+        drag.left += b.left - nl;
+        drag.top += b.top - clamp(drag.top + dy, 0, H - s);
+      } else setPos(b, nl, nt);
       layoutAbove(b);
     });
     function end(e){
@@ -7695,6 +7740,19 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       if(h.length &gt;= 2){
         var a = h[0], z = h[h.length - 1], dt = Math.max(16, z.t - a.t);
         if(performance.now() - z.t &lt; 120) throwV = clamp((z.x - a.x) / dt * 1000 * 0.7, -900, 900);
+      }
+      if(b.above &amp;&amp; Math.abs(throwV) &gt; 180){
+        // 雪だるまを投げたら形を保てずにばらばらになる
+        var parts = chainOf(b), now2 = performance.now();
+        parts.forEach(function(m){ m.below = null; m.above = null; });
+        updateFaces();
+        parts.forEach(function(m, i){
+          m.support = null; m.falling = true; m.thrownAt = now2;
+          m.vx = throwV * rnd(0.7, 1.15) + rnd(-60, 60) * i;
+          m.vy = -rnd(20, 90) * i;
+        });
+        puff(b.left + size(b) / 2, b.top, 6, size(b) / 2, 60);
+        return;
       }
       b.vx = (!b.above &amp;&amp; !b.below) ? throwV : 0;
       dropBall(b);
@@ -7823,6 +7881,19 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
           landed = true;
         }
       }
+      if(!landed){
+        for(var bb = 0; bb &lt; balls.length; bb++){
+          var ba = balls[bb];
+          if(ba.melting) continue;
+          var br = size(ba) / 2, bdx = f.x - (ba.left + br);
+          if(bdx &lt;= -br || bdx &gt;= br) continue;
+          var bty = ba.top + br - Math.sqrt(br * br - bdx * bdx);
+          if(py &lt;= bty + 2 &amp;&amp; f.y &gt;= bty){ landed = true; break; }
+        }
+      }
+      if(!landed &amp;&amp; plow &amp;&amp; f.x &gt;= plow.x &amp;&amp; f.x &lt;= plow.x + PLOW_W &amp;&amp; f.y &gt;= H - PLOW_H + 8){
+        plow.load += 0.05; landed = true;
+      }
       if(landed) respawn(f);
     }
   }
@@ -7909,6 +7980,30 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
       }
     }
   }
+  /* サイト情報の雪の上にトナカイ */
+  function drawReindeer(){
+    var st = document.getElementById('siteToday'), w = st &amp;&amp; st.closest ? st.closest('.widget') : null;
+    var k = w ? surfMap.get(w) : null;
+    var show = !!(k &amp;&amp; k.visible &amp;&amp; k.depth &gt;= 1 &amp;&amp; surfaces.indexOf(k) &gt;= 0);
+    if(!show){ if(reindeer) reindeer.style.display = 'none'; return; }
+    if(!reindeer){
+      reindeer = document.createElement('img');
+      reindeer.id = 'ws-reindeer';
+      reindeer.setAttribute('aria-hidden', 'true');
+      reindeer.style.cssText = 'position:fixed;width:48px;height:48px;object-fit:contain;image-rendering:pixelated;pointer-events:none;z-index:45';
+      reindeer.alt = '';
+      reindeer.src = REINDEER_IMAGE;
+      document.body.appendChild(reindeer);
+    }
+    var x = k.x0 + (k.x1 - k.x0) * 0.72;
+    var top = k.y + 1 - surfDepthAt(k, x) - 48;
+    var nav = document.querySelector('.gnav'), nb = nav ? nav.getBoundingClientRect().bottom : 0;
+    if(k.y &lt; nb){ reindeer.style.display = 'none'; return; }   // 雪がメニューの下に隠れたら出さない
+    reindeer.style.display = '';
+    reindeer.style.opacity = k.op === undefined ? 1 : k.op;
+    reindeer.style.left = (x - 24) + 'px';
+    reindeer.style.top = top + 'px';
+  }
   function drawFloor(){
     var n = bins.length, grd = ctx.createLinearGradient(0, H - 24, 0, H);
     grd.addColorStop(0, 'rgba(255,255,255,0.98)');
@@ -7933,6 +8028,7 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     ctx.clearRect(0, 0, W, H);
     drawFloor();
     drawSurfaces();
+    drawReindeer();
     drawShards();
     if(plow &amp;&amp; plow.load &gt; 0.5){
       // 除雪機が運んでいる雪の山（運んでいる量に応じて大きくなる）
@@ -8032,9 +8128,12 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     }
     return null;
   }
+  function grownDiameter(distance, width, height){
+    return Math.min(MAX_BALL_PX, Math.min(width, height) * 0.45, TIER_PX[1] + distance * 0.06);
+  }
   function growBall(b, g){
     // 転がした距離に応じて少しずつ大きくなる（見た目は連続的に変化）
-    var px = Math.min(TIER_PX[3], TIER_PX[1] + g.dist * 0.06);
+    var px = grownDiameter(g.dist, W, H);
     if(px &lt;= (b.px || TIER_PX[1])) return;
     var old = size(b);
     b.px = px;
@@ -8235,6 +8334,8 @@ html body .game-card.gc-wide:hover .gc-btn{transform:none;opacity:1}
     if(plowTimer){ clearTimeout(plowTimer); plowTimer = null; }
     if(plow &amp;&amp; plow.el.parentNode) plow.el.parentNode.removeChild(plow.el);
     plow = null;
+    if(reindeer &amp;&amp; reindeer.parentNode) reindeer.parentNode.removeChild(reindeer);
+    reindeer = null;
     document.removeEventListener('pointerdown', onSnowDown);
     document.removeEventListener('pointerdown', onBlowDown);
     window.removeEventListener('pointermove', onBlowMove);
